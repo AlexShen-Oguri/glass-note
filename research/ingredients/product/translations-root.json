@@ -1,0 +1,48 @@
+{
+  "food-rice": {
+    "zh": "大米"
+  },
+  "food-glutinous-rice": {
+    "zh": "糯米"
+  },
+  "food-black-rice": {
+    "zh": "黑米"
+  },
+  "food-brown-rice": {
+    "zh": "糙米",
+    "ko": "현미"
+  },
+  "food-red-rice": {
+    "zh": "红米",
+    "ko": "적미",
+    "ja": "赤米"
+  },
+  "food-basmati-rice": {
+    "zh": "巴斯马蒂香米"
+  },
+  "food-gelatin": {
+    "zh": "明胶",
+    "fr": "gélatine",
+    "de": "Gelatine",
+    "es": "gelatina",
+    "ko": "젤라틴"
+  },
+  "food-citric-acid": {
+    "zh": "柠檬酸"
+  },
+  "food-gum-arabic": {
+    "zh": "阿拉伯胶"
+  },
+  "food-agar": {
+    "zh": "琼脂"
+  },
+  "food-maple-syrup": {
+    "zh": "枫糖浆",
+    "fr": "sirop d’érable",
+    "de": "Ahornsirup",
+    "es": "sirope de arce",
+    "ko": "메이플 시럽",
+    "ja": "メープルシロップ",
+    "it": "sciroppo d’acero"
+  }
+}

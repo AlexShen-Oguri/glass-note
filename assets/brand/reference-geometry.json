@@ -1,0 +1,41 @@
+{
+  "source": "design/brand/selected-reference.png",
+  "sourceSha256": "13d2cce880a22c5e15e45bd26b9fc42d209571c926ff2b1cfa3b11a611eb692f",
+  "method": "Marching squares at midtone 129 in original R/G pixel samples; linear subpixel interpolation; original wordmark and relative positions; no font substitution or hand-redrawn geometry",
+  "regions": {
+    "lockup": {
+      "referenceRegion": {
+        "x": 500,
+        "y": 772,
+        "width": 540,
+        "height": 160
+      },
+      "viewBox": "12.158 11.269 513.808 137.768",
+      "bounds": {
+        "left": 12.157738095238095,
+        "top": 11.268707482993197,
+        "right": 525.9653739612188,
+        "bottom": 149.0366568914956
+      },
+      "loops": 16,
+      "contourPoints": 3884
+    },
+    "appMark": {
+      "referenceRegion": {
+        "x": 135,
+        "y": 770,
+        "width": 172,
+        "height": 168
+      },
+      "viewBox": "10.336 9.762 150.774 148.489",
+      "bounds": {
+        "left": 10.335820895522389,
+        "top": 9.761980830670927,
+        "right": 161.1098901098901,
+        "bottom": 158.25079872204472
+      },
+      "loops": 4,
+      "contourPoints": 1406
+    }
+  }
+}

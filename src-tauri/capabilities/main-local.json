@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "main-local",
+  "description": "Local bundled Glass Notes window; no remote origin or arbitrary filesystem plugin access.",
+  "windows": ["main"],
+  "permissions": ["core:default"]
+}

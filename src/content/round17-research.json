@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "topicId": "world-class-us-2024-winner-recipes",
+  "selectionScope": "two-published-winner-recipes",
+  "officialFieldCount": null,
+  "checkedAt": "2026-09-15",
+  "sources": [
+    {
+      "id": "usbg-2024-winner-identity",
+      "kind": "identity",
+      "title": "USBG · World Class US Bartender of the Year Advances to Shanghai",
+      "url": "https://www.usbg.org/news/world-class-us-bartender-year-advances-shanghai",
+      "availability": "available",
+      "checkedAt": "2026-09-15",
+      "fact": "USBG identifies Jonathan Stanyard as the 2024 World Class US Bartender of the Year."
+    },
+    {
+      "id": "diageo-such-great-heights",
+      "kind": "recipe",
+      "title": "Diageo Bar Academy · Such Great Heights",
+      "url": "https://www.diageobaracademy.com/en-us/home/explore-all-recipes/such-great-heights",
+      "availability": "unavailable",
+      "checkedAt": "2026-09-15",
+      "httpStatus": 410,
+      "lastPriorCheck": "2026-09-08",
+      "fact": "The existing project transcription records a finished serve, a short method and a coconut cold-brew preparation from the page as checked on 2026-09-08; this pass adds no recipe facts."
+    },
+    {
+      "id": "diageo-apples-for-whales",
+      "kind": "recipe",
+      "title": "Diageo Bar Academy · Apples for Whales",
+      "url": "https://www.diageobaracademy.com/en-us/home/explore-all-recipes/apples-for-whales",
+      "availability": "unavailable",
+      "checkedAt": "2026-09-15",
+      "httpStatus": 410,
+      "lastPriorCheck": "2026-09-08",
+      "fact": "The existing project transcription records a finished serve, a short method and an apple-vodka infusion from the page as checked on 2026-09-08; this pass adds no recipe facts."
+    }
+  ],
+  "works": [
+    {
+      "workId": "world-class-us-2024-such-great-heights",
+      "sourceIds": ["diageo-such-great-heights", "usbg-2024-winner-identity"],
+      "dimensions": [
+        {"dimension": "finished-recipe", "status": "published", "note": "finished-recipe-recorded"},
+        {"dimension": "preparations", "status": "partial", "note": "coconut-components-partial"},
+        {"dimension": "quantities", "status": "partial", "note": "garnish-and-ratio-unclear"},
+        {"dimension": "technique", "status": "published", "note": "technique-recorded"},
+        {"dimension": "dilution", "status": "unknown", "note": "dilution-not-published"},
+        {"dimension": "finished-abv", "status": "unknown", "note": "abv-not-calculable"}
+      ],
+      "editorialNote": "verify-custom-components"
+    },
+    {
+      "workId": "world-class-us-2024-apples-for-whales",
+      "sourceIds": ["diageo-apples-for-whales", "usbg-2024-winner-identity"],
+      "dimensions": [
+        {"dimension": "finished-recipe", "status": "published", "note": "finished-recipe-recorded"},
+        {"dimension": "preparations", "status": "partial", "note": "apple-components-partial"},
+        {"dimension": "quantities", "status": "partial", "note": "scraps-and-dusting-unclear"},
+        {"dimension": "technique", "status": "published", "note": "technique-recorded"},
+        {"dimension": "dilution", "status": "unknown", "note": "dilution-not-published"},
+        {"dimension": "finished-abv", "status": "unknown", "note": "abv-not-calculable"}
+      ],
+      "editorialNote": "verify-custom-components"
+    }
+  ]
+}

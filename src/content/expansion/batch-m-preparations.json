@@ -1,0 +1,1147 @@
+[
+  {
+    "versionId": "bahama-mama-batch-m",
+    "status": "disclosed",
+    "summary": {
+      "en": "Prepare these ingredients before mixing.",
+      "zh": "调制前先准备这些材料。",
+      "fr": "Préparer ces ingrédients avant le mélange.",
+      "de": "Diese Zutaten vor dem Mixen vorbereiten.",
+      "es": "Prepara estos ingredientes antes de mezclar.",
+      "ko": "칵테일을 만들기 전에 이 재료를 준비하세요.",
+      "ja": "調合前にこれらの材料を準備してください。",
+      "it": "Preparare questi ingredienti prima della miscelazione."
+    },
+    "gaps": [],
+    "checkedAt": "2026-09-24",
+    "cards": [
+      {
+        "id": "m-bahama-mama-coconut-milk-syrup",
+        "ingredientId": "coconut-milk-syrup",
+        "title": {
+          "en": "Coconut-milk syrup",
+          "zh": "椰奶糖浆",
+          "fr": "Sirop de lait de coco",
+          "de": "Kokosmilchsirup",
+          "es": "Almíbar de leche de coco",
+          "ko": "코코넛 밀크 시럽",
+          "ja": "ココナッツミルクシロップ",
+          "it": "Sciroppo di latte di cocco"
+        },
+        "role": "prepared-ingredient",
+        "status": "disclosed",
+        "inputs": [
+          {
+            "en": "1 cup full-fat coconut milk; 1 cup sugar.",
+            "zh": "全脂椰奶 1 杯；糖 1 杯。",
+            "fr": "1 tasse de lait de coco entier ; 1 tasse de sucre.",
+            "de": "1 Tasse vollfette Kokosmilch; 1 Tasse Zucker.",
+            "es": "1 taza de leche de coco entera; 1 taza de azúcar.",
+            "ko": "전지 코코넛 밀크 1컵, 설탕 1컵.",
+            "ja": "全脂肪ココナッツミルク1カップ、砂糖1カップ。",
+            "it": "1 tazza di latte di cocco intero; 1 tazza di zucchero."
+          }
+        ],
+        "steps": [
+          {
+            "en": "Heat gently and stir until the sugar dissolves. Cool before use.",
+            "zh": "轻热搅拌至糖溶解，冷却后使用。",
+            "fr": "Chauffer doucement en remuant pour dissoudre le sucre, puis refroidir.",
+            "de": "Sanft erhitzen und rühren, bis sich der Zucker löst; vor Gebrauch abkühlen.",
+            "es": "Calienta suavemente y remueve hasta disolver el azúcar; deja enfriar.",
+            "ko": "약하게 가열하며 설탕을 녹이고 식혀 사용합니다.",
+            "ja": "弱く加熱して砂糖を溶かし、冷まして使います。",
+            "it": "Scaldare piano mescolando fino a sciogliere lo zucchero; raffreddare."
+          }
+        ],
+        "gaps": [],
+        "sources": [
+          {
+            "title": "Bahama Mama",
+            "url": "https://punchdrink.com/recipes/bahama-mama/"
+          }
+        ]
+      },
+      {
+        "id": "m-bahama-mama-reduced-pomegranate-syrup",
+        "ingredientId": "reduced-pomegranate-syrup",
+        "title": {
+          "en": "Reduced pomegranate syrup",
+          "zh": "浓缩石榴糖浆",
+          "fr": "Sirop de grenade réduit",
+          "de": "Eingekochter Granatapfelsirup",
+          "es": "Almíbar de granada reducido",
+          "ko": "농축 석류 시럽",
+          "ja": "濃縮ザクロシロップ",
+          "it": "Sciroppo di melagrana ridotto"
+        },
+        "role": "prepared-ingredient",
+        "status": "disclosed",
+        "inputs": [
+          {
+            "en": "1 cup unsweetened pomegranate juice; 1 cup sugar.",
+            "zh": "无糖石榴汁 1 杯；糖 1 杯。",
+            "fr": "1 tasse de jus de grenade non sucré ; 1 tasse de sucre.",
+            "de": "1 Tasse ungesüßter Granatapfelsaft; 1 Tasse Zucker.",
+            "es": "1 taza de zumo de granada sin azúcar; 1 taza de azúcar.",
+            "ko": "무가당 석류즙 1컵, 설탕 1컵.",
+            "ja": "無糖ザクロ果汁1カップ、砂糖1カップ。",
+            "it": "1 tazza di succo di melagrana non zuccherato; 1 tazza di zucchero."
+          }
+        ],
+        "steps": [
+          {
+            "en": "Reduce half the juice to about 2 tablespoons over medium-low heat. Add the remaining juice and sugar, stir to dissolve, then cool.",
+            "zh": "取一半果汁中小火浓缩至约 2 汤匙，加入其余果汁和糖，搅溶后冷却。",
+            "fr": "Réduire la moitié du jus à environ 2 cuillères à soupe à feu moyen-doux ; ajouter le reste et le sucre, dissoudre et refroidir.",
+            "de": "Die Hälfte des Safts bei mittlerer bis kleiner Hitze auf etwa 2 EL reduzieren; Rest und Zucker zugeben, auflösen und abkühlen.",
+            "es": "Reduce la mitad del zumo a unas 2 cucharadas a fuego medio-bajo; añade el resto y azúcar, disuelve y enfría.",
+            "ko": "과즙 절반을 중약불에서 약 2큰술까지 줄이고 나머지와 설탕을 넣어 녹인 뒤 식힙니다.",
+            "ja": "果汁の半分を中弱火で約大さじ2まで煮詰め、残りと砂糖を加えて溶かし、冷まします。",
+            "it": "Ridurre metà succo a circa 2 cucchiai a fuoco medio-basso; aggiungere il resto e lo zucchero, sciogliere e raffreddare."
+          }
+        ],
+        "gaps": [],
+        "sources": [
+          {
+            "title": "Bahama Mama",
+            "url": "https://punchdrink.com/recipes/bahama-mama/"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "versionId": "bennett-batch-m",
+    "status": "disclosed",
+    "summary": {
+      "en": "Prepare these ingredients before mixing.",
+      "zh": "调制前先准备这些材料。",
+      "fr": "Préparer ces ingrédients avant le mélange.",
+      "de": "Diese Zutaten vor dem Mixen vorbereiten.",
+      "es": "Prepara estos ingredientes antes de mezclar.",
+      "ko": "칵테일을 만들기 전에 이 재료를 준비하세요.",
+      "ja": "調合前にこれらの材料を準備してください。",
+      "it": "Preparare questi ingredienti prima della miscelazione."
+    },
+    "gaps": [],
+    "checkedAt": "2026-09-24",
+    "cards": [
+      {
+        "id": "m-bennett-lime-cinnamon-cordial",
+        "ingredientId": "lime-cinnamon-cordial",
+        "title": {
+          "en": "Lime-cinnamon cordial",
+          "zh": "青柠肉桂可迪尔",
+          "fr": "Cordial citron vert-cannelle",
+          "de": "Limetten-Zimt-Cordial",
+          "es": "Cordial de lima y canela",
+          "ko": "라임 시나몬 코디얼",
+          "ja": "ライムシナモンコーディアル",
+          "it": "Cordial lime e cannella"
+        },
+        "role": "prepared-ingredient",
+        "status": "disclosed",
+        "inputs": [
+          {
+            "en": "16 oz strained lime juice; 16 oz sugar; zest of 4 limes; 2 pieces cassia bark.",
+            "zh": "过滤青柠汁 16 盎司；糖 16 盎司；4 个青柠的皮屑；桂皮 2 块。",
+            "fr": "16 oz de jus de citron vert filtré ; 16 oz de sucre ; zestes de 4 citrons verts ; 2 morceaux de casse.",
+            "de": "16 oz gefilterter Limettensaft; 16 oz Zucker; Zesten von 4 Limetten; 2 Stück Cassia.",
+            "es": "16 oz de zumo de lima colado; 16 oz de azúcar; ralladura de 4 limas; 2 trozos de casia.",
+            "ko": "거른 라임즙 16온스, 설탕 16온스, 라임 4개 제스트, 카시아 2조각.",
+            "ja": "こしたライム果汁16 oz、砂糖16 oz、ライム4個分のゼスト、カシア2片。",
+            "it": "16 oz di succo di lime filtrato; 16 oz di zucchero; scorza di 4 lime; 2 pezzi di cassia."
+          }
+        ],
+        "steps": [
+          {
+            "en": "Seal in a heat-safe food bag and hold in a 175°F water bath for 2 hours. Chill the sealed bag in ice water, then strain out the bark.",
+            "zh": "放入耐热食品袋密封，在 175°F 水浴中保持 2 小时；密封袋移入冰水降温，再滤去桂皮。",
+            "fr": "Sceller dans un sachet alimentaire thermorésistant, maintenir 2 h au bain à 175°F, refroidir le sachet dans l’eau glacée puis filtrer.",
+            "de": "Im hitzefesten Lebensmittelbeutel verschließen, 2 Stunden bei 175°F im Wasserbad halten, im Eisbad kühlen und Rinde abseihen.",
+            "es": "Sella en bolsa alimentaria resistente al calor, mantén 2 h en baño a 175°F, enfría la bolsa en agua helada y cuela.",
+            "ko": "내열 식품용 봉투에 밀봉해 175°F 수조에 2시간 두고 얼음물에 식힌 뒤 계피를 거릅니다.",
+            "ja": "耐熱食品袋に密封し175°Fの湯せんで2時間保ち、袋ごと氷水で冷やして樹皮をこします。",
+            "it": "Sigillare in un sacchetto alimentare termoresistente, tenere 2 ore a bagnomaria a 175°F, raffreddare in acqua ghiacciata e filtrare."
+          }
+        ],
+        "gaps": [],
+        "sources": [
+          {
+            "title": "The Bennett",
+            "url": "https://punchdrink.com/recipes/the-bennett/"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "versionId": "celery-gimlet-batch-m",
+    "status": "disclosed",
+    "summary": {
+      "en": "Prepare these ingredients before mixing.",
+      "zh": "调制前先准备这些材料。",
+      "fr": "Préparer ces ingrédients avant le mélange.",
+      "de": "Diese Zutaten vor dem Mixen vorbereiten.",
+      "es": "Prepara estos ingredientes antes de mezclar.",
+      "ko": "칵테일을 만들기 전에 이 재료를 준비하세요.",
+      "ja": "調合前にこれらの材料を準備してください。",
+      "it": "Preparare questi ingredienti prima della miscelazione."
+    },
+    "gaps": [],
+    "checkedAt": "2026-09-24",
+    "cards": [
+      {
+        "id": "m-celery-gimlet-lime-zest-syrup",
+        "ingredientId": "lime-zest-syrup",
+        "title": {
+          "en": "Lime-zest syrup",
+          "zh": "青柠皮糖浆",
+          "fr": "Sirop de zeste de citron vert",
+          "de": "Limettenzestensirup",
+          "es": "Almíbar de piel de lima",
+          "ko": "라임 제스트 시럽",
+          "ja": "ライムゼストシロップ",
+          "it": "Sciroppo di scorza di lime"
+        },
+        "role": "prepared-ingredient",
+        "status": "disclosed",
+        "inputs": [
+          {
+            "en": "1 quart simple syrup (1:1 sugar:water); zest of 6 limes.",
+            "zh": "1 夸脱 1∶1 糖水；6 个青柠的皮屑。",
+            "fr": "1 quart de sirop simple (sucre:eau 1:1) ; zestes de 6 citrons verts.",
+            "de": "1 Quart Zuckersirup (1:1 Zucker:Wasser); Zesten von 6 Limetten.",
+            "es": "1 cuarto de galón de almíbar simple (1:1); ralladura de 6 limas.",
+            "ko": "1:1 시럽 1쿼트, 라임 6개의 제스트.",
+            "ja": "1:1シュガーシロップ1クォート、ライム6個分のゼスト。",
+            "it": "1 quarto di gallone di sciroppo semplice (1:1); scorza di 6 lime."
+          }
+        ],
+        "steps": [
+          {
+            "en": "Combine and boil gently for 5 minutes. Cool and strain.",
+            "zh": "合并后小火微沸 5 分钟，冷却并过滤。",
+            "fr": "Réunir, bouillir doucement 5 minutes, refroidir et filtrer.",
+            "de": "Mischen, 5 Minuten leicht köcheln, abkühlen und abseihen.",
+            "es": "Mezcla, hierve suave 5 minutos, enfría y cuela.",
+            "ko": "섞어 5분 약하게 끓이고 식혀 거릅니다.",
+            "ja": "合わせて5分弱く沸かし、冷ましてこします。",
+            "it": "Unire, sobbollire 5 minuti, raffreddare e filtrare."
+          }
+        ],
+        "gaps": [],
+        "sources": [
+          {
+            "title": "Celery Gimlet",
+            "url": "https://punchdrink.com/recipes/celery-gimlet/"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "versionId": "donn-day-afternoon-batch-m",
+    "status": "disclosed",
+    "summary": {
+      "en": "Prepare these ingredients before mixing.",
+      "zh": "调制前先准备这些材料。",
+      "fr": "Préparer ces ingrédients avant le mélange.",
+      "de": "Diese Zutaten vor dem Mixen vorbereiten.",
+      "es": "Prepara estos ingredientes antes de mezclar.",
+      "ko": "칵테일을 만들기 전에 이 재료를 준비하세요.",
+      "ja": "調合前にこれらの材料を準備してください。",
+      "it": "Preparare questi ingredienti prima della miscelazione."
+    },
+    "gaps": [],
+    "checkedAt": "2026-09-24",
+    "cards": [
+      {
+        "id": "m-donn-day-afternoon-sc-cinnamon-syrup",
+        "ingredientId": "sc-cinnamon-syrup",
+        "title": {
+          "en": "Smuggler’s Cove cinnamon syrup",
+          "zh": "走私者湾肉桂糖浆",
+          "fr": "Sirop de cannelle Smuggler’s Cove",
+          "de": "Smuggler’s-Cove-Zimtsirup",
+          "es": "Almíbar de canela Smuggler’s Cove",
+          "ko": "스머글러스 코브 시나몬 시럽",
+          "ja": "スマグラーズ・コーブ・シナモンシロップ",
+          "it": "Sciroppo di cannella Smuggler’s Cove"
+        },
+        "role": "prepared-ingredient",
+        "status": "disclosed",
+        "inputs": [
+          {
+            "en": "2 cups water; three 6-inch cinnamon sticks, halved; 4 cups sugar.",
+            "zh": "水 2 杯；6 英寸肉桂棒 3 根，各折半；糖 4 杯。",
+            "fr": "2 tasses d’eau ; 3 bâtons de cannelle de 6 pouces coupés en deux ; 4 tasses de sucre.",
+            "de": "2 Tassen Wasser; 3 halbierte 6-Zoll-Zimtstangen; 4 Tassen Zucker.",
+            "es": "2 tazas de agua; 3 ramas de canela de 6 pulgadas partidas; 4 tazas de azúcar.",
+            "ko": "물 2컵, 6인치 계피 3개를 반으로, 설탕 4컵.",
+            "ja": "水2カップ、6インチのシナモン3本を半分に、砂糖4カップ。",
+            "it": "2 tazze d’acqua; 3 stecche di cannella da 6 pollici dimezzate; 4 tazze di zucchero."
+          }
+        ],
+        "steps": [
+          {
+            "en": "Boil water with cinnamon, dissolve the sugar and immediately remove from heat. Cover for 12 hours at room temperature, strain and refrigerate.",
+            "zh": "水与肉桂煮沸，加入糖搅溶后立即离火，盖住室温浸泡 12 小时，过滤冷藏。",
+            "fr": "Bouillir eau et cannelle, dissoudre le sucre et retirer aussitôt du feu. Couvrir 12 h à température ambiante, filtrer et réfrigérer.",
+            "de": "Wasser mit Zimt aufkochen, Zucker lösen und sofort vom Herd nehmen. 12 Stunden abgedeckt bei Raumtemperatur ziehen lassen, abseihen und kühlen.",
+            "es": "Hierve agua y canela, disuelve el azúcar y retira enseguida. Tapa 12 h a temperatura ambiente, cuela y refrigera.",
+            "ko": "물과 계피를 끓여 설탕을 녹인 즉시 불에서 내립니다. 덮어 실온 12시간 후 거르고 냉장합니다.",
+            "ja": "水とシナモンを沸かし砂糖を溶かしてすぐ火を止め、蓋をして室温で12時間置き、こして冷蔵します。",
+            "it": "Bollire acqua e cannella, sciogliere lo zucchero e togliere subito dal fuoco. Coprire 12 ore a temperatura ambiente, filtrare e refrigerare."
+          }
+        ],
+        "gaps": [],
+        "sources": [
+          {
+            "title": "Donn Day Afternoon",
+            "url": "https://punchdrink.com/recipes/donn-day-afternoon/"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "versionId": "dr-strangelove-batch-m",
+    "status": "disclosed",
+    "summary": {
+      "en": "Prepare these ingredients before mixing.",
+      "zh": "调制前先准备这些材料。",
+      "fr": "Préparer ces ingrédients avant le mélange.",
+      "de": "Diese Zutaten vor dem Mixen vorbereiten.",
+      "es": "Prepara estos ingredientes antes de mezclar.",
+      "ko": "칵테일을 만들기 전에 이 재료를 준비하세요.",
+      "ja": "調合前にこれらの材料を準備してください。",
+      "it": "Preparare questi ingredienti prima della miscelazione."
+    },
+    "gaps": [],
+    "checkedAt": "2026-09-24",
+    "cards": [
+      {
+        "id": "m-dr-strangelove-kiwi-syrup",
+        "ingredientId": "kiwi-syrup",
+        "title": {
+          "en": "Kiwi syrup",
+          "zh": "奇异果糖浆",
+          "fr": "Sirop de kiwi",
+          "de": "Kiwisirup",
+          "es": "Almíbar de kiwi",
+          "ko": "키위 시럽",
+          "ja": "キウイシロップ",
+          "it": "Sciroppo di kiwi"
+        },
+        "role": "prepared-ingredient",
+        "status": "disclosed",
+        "inputs": [
+          {
+            "en": "Equal weights of strained kiwi juice and sugar.",
+            "zh": "过滤奇异果汁与糖等重。",
+            "fr": "Jus de kiwi filtré et sucre à poids égal.",
+            "de": "Gefilterter Kiwisaft und Zucker zu gleichen Gewichten.",
+            "es": "Pesos iguales de zumo de kiwi colado y azúcar.",
+            "ko": "거른 키위즙과 설탕을 같은 중량으로.",
+            "ja": "こしたキウイ果汁と砂糖を同重量。",
+            "it": "Succo di kiwi filtrato e zucchero di pari peso."
+          }
+        ],
+        "steps": [
+          {
+            "en": "Blend briefly to dissolve the sugar; avoid overblending.",
+            "zh": "短暂搅打至糖溶解，避免过度搅打。",
+            "fr": "Mixer brièvement pour dissoudre le sucre, sans excès.",
+            "de": "Zum Lösen des Zuckers kurz mixen, nicht übermixen.",
+            "es": "Licúa brevemente hasta disolver el azúcar, sin excederte.",
+            "ko": "설탕이 녹도록 짧게 블렌딩하며 과하게 갈지 않습니다.",
+            "ja": "砂糖が溶けるまで短くブレンドし、回しすぎを避けます。",
+            "it": "Frullare brevemente per sciogliere lo zucchero, senza eccedere."
+          }
+        ],
+        "gaps": [],
+        "sources": [
+          {
+            "title": "Dr. Strangelove",
+            "url": "https://punchdrink.com/recipes/dr-strangelove/"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "versionId": "earl-grey-marteani-batch-m",
+    "status": "disclosed",
+    "summary": {
+      "en": "Prepare these ingredients before mixing.",
+      "zh": "调制前先准备这些材料。",
+      "fr": "Préparer ces ingrédients avant le mélange.",
+      "de": "Diese Zutaten vor dem Mixen vorbereiten.",
+      "es": "Prepara estos ingredientes antes de mezclar.",
+      "ko": "칵테일을 만들기 전에 이 재료를 준비하세요.",
+      "ja": "調合前にこれらの材料を準備してください。",
+      "it": "Preparare questi ingredienti prima della miscelazione."
+    },
+    "gaps": [],
+    "checkedAt": "2026-09-24",
+    "cards": [
+      {
+        "id": "m-earl-grey-marteani-earl-grey-gin",
+        "ingredientId": "earl-grey-gin",
+        "title": {
+          "en": "Earl Grey-infused gin",
+          "zh": "伯爵茶浸泡金酒",
+          "fr": "Gin infusé à l’Earl Grey",
+          "de": "Mit Earl Grey infundierter Gin",
+          "es": "Ginebra infusionada con Earl Grey",
+          "ko": "얼그레이 인퓨즈드 진",
+          "ja": "アールグレイ浸漬ジン",
+          "it": "Gin infuso all’Earl Grey"
+        },
+        "role": "prepared-ingredient",
+        "status": "disclosed",
+        "inputs": [
+          {
+            "en": "750 ml gin; 4 tablespoons loose Earl Grey tea.",
+            "zh": "金酒 750 毫升；散装伯爵茶 4 汤匙。",
+            "fr": "750 ml de gin ; 4 cuillères à soupe de thé Earl Grey en vrac.",
+            "de": "750 ml Gin; 4 EL loser Earl-Grey-Tee.",
+            "es": "750 ml de ginebra; 4 cucharadas de té Earl Grey suelto.",
+            "ko": "진 750ml, 잎차 얼그레이 4큰술.",
+            "ja": "ジン750 ml、アールグレイ茶葉大さじ4。",
+            "it": "750 ml di gin; 4 cucchiai di tè Earl Grey sfuso."
+          }
+        ],
+        "steps": [
+          {
+            "en": "Infuse together for 2 hours at room temperature. Fine-strain or coffee-filter into a clean bottle.",
+            "zh": "室温浸泡 2 小时，细筛或咖啡滤纸过滤入洁净瓶。",
+            "fr": "Infuser ensemble 2 h à température ambiante, puis filtrer finement dans une bouteille propre.",
+            "de": "2 Stunden bei Raumtemperatur ziehen lassen, fein oder durch Kaffeefilter in eine saubere Flasche filtern.",
+            "es": "Infusiona 2 h a temperatura ambiente y filtra finamente a una botella limpia.",
+            "ko": "실온에서 2시간 우린 뒤 고운 체나 커피 필터로 깨끗한 병에 거릅니다.",
+            "ja": "室温で2時間浸漬し、細かいこし器かコーヒーフィルターで清潔な瓶へこします。",
+            "it": "Infondere per 2 ore a temperatura ambiente, poi filtrare finemente in una bottiglia pulita."
+          }
+        ],
+        "gaps": [],
+        "sources": [
+          {
+            "title": "Earl Grey MarTEAni",
+            "url": "https://punchdrink.com/recipes/earl-grey-marteani/"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "versionId": "golden-ananas-batch-m",
+    "status": "disclosed",
+    "summary": {
+      "en": "Prepare these ingredients before mixing.",
+      "zh": "调制前先准备这些材料。",
+      "fr": "Préparer ces ingrédients avant le mélange.",
+      "de": "Diese Zutaten vor dem Mixen vorbereiten.",
+      "es": "Prepara estos ingredientes antes de mezclar.",
+      "ko": "칵테일을 만들기 전에 이 재료를 준비하세요.",
+      "ja": "調合前にこれらの材料を準備してください。",
+      "it": "Preparare questi ingredienti prima della miscelazione."
+    },
+    "gaps": [],
+    "checkedAt": "2026-09-24",
+    "cards": [
+      {
+        "id": "m-golden-ananas-cinnamon-syrup",
+        "ingredientId": "cinnamon-syrup",
+        "title": {
+          "en": "Cinnamon syrup",
+          "zh": "肉桂糖浆",
+          "fr": "Sirop de cannelle",
+          "de": "Zimtsirup",
+          "es": "Almíbar de canela",
+          "ko": "시나몬 시럽",
+          "ja": "シナモンシロップ",
+          "it": "Sciroppo di cannella"
+        },
+        "role": "prepared-ingredient",
+        "status": "disclosed",
+        "inputs": [
+          {
+            "en": "1 cup sugar; 1 cup water; one 2-inch piece cinnamon bark.",
+            "zh": "糖 1 杯；水 1 杯；2 英寸桂皮 1 块。",
+            "fr": "1 tasse de sucre ; 1 tasse d’eau ; un morceau de cannelle de 2 pouces.",
+            "de": "1 Tasse Zucker; 1 Tasse Wasser; ein 2-Zoll-Stück Zimtrinde.",
+            "es": "1 taza de azúcar; 1 taza de agua; un trozo de canela de 2 pulgadas.",
+            "ko": "설탕 1컵, 물 1컵, 2인치 계피 한 조각.",
+            "ja": "砂糖1カップ、水1カップ、2インチのシナモン1片。",
+            "it": "1 tazza di zucchero; 1 tazza d’acqua; un pezzo di cannella di 2 pollici."
+          }
+        ],
+        "steps": [
+          {
+            "en": "Heat together on low for 5 minutes, leave overnight and strain.",
+            "zh": "小火加热 5 分钟，浸泡过夜后过滤。",
+            "fr": "Chauffer à feu doux 5 minutes, laisser une nuit et filtrer.",
+            "de": "5 Minuten sanft erhitzen, über Nacht ziehen lassen und abseihen.",
+            "es": "Calienta suave 5 minutos, deja reposar una noche y cuela.",
+            "ko": "약불에 5분 가열하고 하룻밤 둔 뒤 거릅니다.",
+            "ja": "弱火で5分加熱し、一晩置いてこします。",
+            "it": "Scaldare a fuoco basso 5 minuti, lasciare una notte e filtrare."
+          }
+        ],
+        "gaps": [],
+        "sources": [
+          {
+            "title": "The Golden Ananás",
+            "url": "https://punchdrink.com/recipes/the-golden-ananas/"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "versionId": "grapefruit-cooler-batch-m",
+    "status": "disclosed",
+    "summary": {
+      "en": "Prepare these ingredients before mixing.",
+      "zh": "调制前先准备这些材料。",
+      "fr": "Préparer ces ingrédients avant le mélange.",
+      "de": "Diese Zutaten vor dem Mixen vorbereiten.",
+      "es": "Prepara estos ingredientes antes de mezclar.",
+      "ko": "칵테일을 만들기 전에 이 재료를 준비하세요.",
+      "ja": "調合前にこれらの材料を準備してください。",
+      "it": "Preparare questi ingredienti prima della miscelazione."
+    },
+    "gaps": [],
+    "checkedAt": "2026-09-24",
+    "cards": [
+      {
+        "id": "m-grapefruit-cooler-food-grapefruit-syrup",
+        "ingredientId": "food-grapefruit-syrup",
+        "title": {
+          "en": "grapefruit syrup",
+          "zh": "西柚糖浆",
+          "fr": "sirop de pamplemousse",
+          "de": "Grapefruitsirup",
+          "es": "jarabe de pomelo",
+          "ko": "자몽 시럽",
+          "ja": "グレープフルーツシロップ",
+          "it": "sciroppo di pompelmo"
+        },
+        "role": "prepared-ingredient",
+        "status": "disclosed",
+        "inputs": [
+          {
+            "en": "2 cups sugar; 2 cups water; peel of 1 small grapefruit.",
+            "zh": "糖 2 杯；水 2 杯；小葡萄柚 1 个的皮。",
+            "fr": "2 tasses de sucre ; 2 tasses d’eau ; peau d’un petit pamplemousse.",
+            "de": "2 Tassen Zucker; 2 Tassen Wasser; Schale einer kleinen Grapefruit.",
+            "es": "2 tazas de azúcar; 2 tazas de agua; piel de un pomelo pequeño.",
+            "ko": "설탕 2컵, 물 2컵, 작은 자몽 한 개 껍질.",
+            "ja": "砂糖2カップ、水2カップ、小さなグレープフルーツ1個の皮。",
+            "it": "2 tazze di zucchero; 2 tazze d’acqua; scorza di un piccolo pompelmo."
+          }
+        ],
+        "steps": [
+          {
+            "en": "Warm sugar and water to dissolve, then cool. Add the peel, cover and refrigerate 24 hours, then remove the peel.",
+            "zh": "糖与水加热溶解后冷却，放入果皮，盖住冷藏 24 小时后去皮。",
+            "fr": "Dissoudre le sucre dans l’eau chaude puis refroidir. Ajouter la peau, couvrir et réfrigérer 24 h, puis retirer la peau.",
+            "de": "Zucker in warmem Wasser lösen und abkühlen. Schale zugeben, abgedeckt 24 Stunden kühlen und Schale entfernen.",
+            "es": "Disuelve azúcar en agua caliente y enfría. Añade piel, tapa, refrigera 24 h y retírala.",
+            "ko": "설탕과 물을 데워 녹여 식힌 뒤 껍질을 넣고 덮어 24시간 냉장 후 껍질을 뺍니다.",
+            "ja": "砂糖を温めた水に溶かして冷まし、皮を加えて蓋をして24時間冷蔵し、皮を除きます。",
+            "it": "Sciogliere zucchero in acqua calda e raffreddare; aggiungere scorza, coprire e refrigerare 24 ore, poi rimuoverla."
+          }
+        ],
+        "gaps": [],
+        "sources": [
+          {
+            "title": "Grapefruit Cooler",
+            "url": "https://punchdrink.com/recipes/grapefruit-cooler/"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "versionId": "kalimotxo-punch-batch-m",
+    "status": "disclosed",
+    "summary": {
+      "en": "Prepare these ingredients before mixing.",
+      "zh": "调制前先准备这些材料。",
+      "fr": "Préparer ces ingrédients avant le mélange.",
+      "de": "Diese Zutaten vor dem Mixen vorbereiten.",
+      "es": "Prepara estos ingredientes antes de mezclar.",
+      "ko": "칵테일을 만들기 전에 이 재료를 준비하세요.",
+      "ja": "調合前にこれらの材料を準備してください。",
+      "it": "Preparare questi ingredienti prima della miscelazione."
+    },
+    "gaps": [],
+    "checkedAt": "2026-09-24",
+    "cards": [
+      {
+        "id": "m-kalimotxo-punch-cinnamon-syrup",
+        "ingredientId": "cinnamon-syrup",
+        "title": {
+          "en": "Cinnamon syrup",
+          "zh": "肉桂糖浆",
+          "fr": "Sirop de cannelle",
+          "de": "Zimtsirup",
+          "es": "Almíbar de canela",
+          "ko": "시나몬 시럽",
+          "ja": "シナモンシロップ",
+          "it": "Sciroppo di cannella"
+        },
+        "role": "prepared-ingredient",
+        "status": "disclosed",
+        "inputs": [
+          {
+            "en": "10 cinnamon sticks; 500 g hot water; 500 g sugar.",
+            "zh": "肉桂棒 10 根；热水 500 克；糖 500 克。",
+            "fr": "10 bâtons de cannelle ; 500 g d’eau chaude ; 500 g de sucre.",
+            "de": "10 Zimtstangen; 500 g heißes Wasser; 500 g Zucker.",
+            "es": "10 ramas de canela; 500 g de agua caliente; 500 g de azúcar.",
+            "ko": "계피 10개, 뜨거운 물 500g, 설탕 500g.",
+            "ja": "シナモン10本、湯500 g、砂糖500 g。",
+            "it": "10 stecche di cannella; 500 g d’acqua calda; 500 g di zucchero."
+          }
+        ],
+        "steps": [
+          {
+            "en": "Crush the cinnamon and steep in the water for 15 minutes. Strain, then dissolve the sugar in the infusion.",
+            "zh": "肉桂压碎，热水浸泡 15 分钟，过滤后将糖溶入浸液。",
+            "fr": "Concasser la cannelle, infuser 15 minutes dans l’eau, filtrer puis y dissoudre le sucre.",
+            "de": "Zimt zerstoßen, 15 Minuten im Wasser ziehen lassen, abseihen und Zucker im Aufguss lösen.",
+            "es": "Tritura la canela, infusiona 15 minutos, cuela y disuelve el azúcar en la infusión.",
+            "ko": "계피를 부숴 물에 15분 우리고 거른 뒤 설탕을 녹입니다.",
+            "ja": "シナモンを砕いて湯で15分浸出し、こして砂糖を溶かします。",
+            "it": "Pestare la cannella, infondere 15 minuti, filtrare e sciogliere lo zucchero nell’infuso."
+          }
+        ],
+        "gaps": [],
+        "sources": [
+          {
+            "title": "El Quijote’s Kalimotxo",
+            "url": "https://punchdrink.com/recipes/el-quijotes-kalimotxo/"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "versionId": "melon-lime-soda-batch-m",
+    "status": "disclosed",
+    "summary": {
+      "en": "Prepare these ingredients before mixing.",
+      "zh": "调制前先准备这些材料。",
+      "fr": "Préparer ces ingrédients avant le mélange.",
+      "de": "Diese Zutaten vor dem Mixen vorbereiten.",
+      "es": "Prepara estos ingredientes antes de mezclar.",
+      "ko": "칵테일을 만들기 전에 이 재료를 준비하세요.",
+      "ja": "調合前にこれらの材料を準備してください。",
+      "it": "Preparare questi ingredienti prima della miscelazione."
+    },
+    "gaps": [],
+    "checkedAt": "2026-09-24",
+    "cards": [
+      {
+        "id": "m-melon-lime-soda-matcha-lime-cordial",
+        "ingredientId": "matcha-lime-cordial",
+        "title": {
+          "en": "Matcha-lime cordial",
+          "zh": "抹茶青柠可迪尔",
+          "fr": "Cordial matcha-citron vert",
+          "de": "Matcha-Limetten-Cordial",
+          "es": "Cordial de matcha y lima",
+          "ko": "말차 라임 코디얼",
+          "ja": "抹茶ライムコーディアル",
+          "it": "Cordial matcha e lime"
+        },
+        "role": "prepared-ingredient",
+        "status": "disclosed",
+        "inputs": [
+          {
+            "en": "1¼ cups sugar; 1¼ cups water; zest of 4 limes; 2½ teaspoons matcha.",
+            "zh": "糖 1¼ 杯；水 1¼ 杯；4 个青柠的皮屑；抹茶 2½ 茶匙。",
+            "fr": "1¼ tasse de sucre ; 1¼ tasse d’eau ; zestes de 4 citrons verts ; 2½ cuillères à café de matcha.",
+            "de": "1¼ Tassen Zucker; 1¼ Tassen Wasser; Zesten von 4 Limetten; 2½ TL Matcha.",
+            "es": "1¼ tazas de azúcar; 1¼ tazas de agua; ralladura de 4 limas; 2½ cucharaditas de matcha.",
+            "ko": "설탕 1¼컵, 물 1¼컵, 라임 4개 제스트, 말차 2½작은술.",
+            "ja": "砂糖1¼カップ、水1¼カップ、ライム4個のゼスト、抹茶小さじ2½。",
+            "it": "1¼ tazze di zucchero; 1¼ tazze d’acqua; scorza di 4 lime; 2½ cucchiaini di matcha."
+          }
+        ],
+        "steps": [
+          {
+            "en": "Reserve 3 tablespoons of water. Warm the rest with sugar to dissolve, remove from heat as it starts to simmer, add zest and cool covered. Strain. Whisk matcha into the reserved water and combine with the syrup. Shake before use.",
+            "zh": "留出 3 汤匙水，其余与糖加热溶解，刚微沸便离火，加果皮盖住冷却并过滤。抹茶用预留水调匀后混入糖浆，用前摇匀。",
+            "fr": "Réserver 3 cuillères à soupe d’eau. Dissoudre le sucre dans le reste chauffé, retirer au début du frémissement, ajouter les zestes et refroidir couvert. Filtrer, délayer le matcha dans l’eau réservée et réunir. Agiter avant usage.",
+            "de": "3 EL Wasser reservieren. Rest mit Zucker erwärmen, beim ersten Köcheln vom Herd nehmen, Zesten zugeben und bedeckt abkühlen. Abseihen, Matcha mit reserviertem Wasser verrühren und zugeben. Vor Gebrauch schütteln.",
+            "es": "Reserva 3 cucharadas de agua. Calienta el resto con azúcar, retira al primer hervor suave, añade ralladura y enfría tapado. Cuela, bate matcha con agua reservada y mezcla. Agita antes de usar.",
+            "ko": "물 3큰술을 남기고 나머지에 설탕을 가열해 녹인 뒤 끓기 시작하면 내립니다. 제스트를 넣고 덮어 식혀 거른 뒤 말차를 남긴 물에 풀어 섞습니다. 쓰기 전 흔듭니다.",
+            "ja": "水大さじ3を取り分け、残りと砂糖を温めて沸き始めたら火を止めます。ゼストを加え蓋をして冷ましてこし、取り分けた水で抹茶を溶いて合わせます。使用前に振ります。",
+            "it": "Tenere da parte 3 cucchiai d’acqua. Scaldare il resto con zucchero, togliere al primo sobbollore, aggiungere scorze e raffreddare coperto. Filtrare, sciogliere matcha nell’acqua tenuta e unire. Agitare prima dell’uso."
+          }
+        ],
+        "gaps": [],
+        "sources": [
+          {
+            "title": "Melon-Lime Soda",
+            "url": "https://punchdrink.com/recipes/melon-lime-soda/"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "versionId": "michelada-batch-m",
+    "status": "disclosed",
+    "summary": {
+      "en": "Prepare these ingredients before mixing.",
+      "zh": "调制前先准备这些材料。",
+      "fr": "Préparer ces ingrédients avant le mélange.",
+      "de": "Diese Zutaten vor dem Mixen vorbereiten.",
+      "es": "Prepara estos ingredientes antes de mezclar.",
+      "ko": "칵테일을 만들기 전에 이 재료를 준비하세요.",
+      "ja": "調合前にこれらの材料を準備してください。",
+      "it": "Preparare questi ingredienti prima della miscelazione."
+    },
+    "gaps": [],
+    "checkedAt": "2026-09-24",
+    "cards": [
+      {
+        "id": "m-michelada-lemon-basil-ice",
+        "ingredientId": "lemon-basil-ice",
+        "title": {
+          "en": "Lemon-basil ice",
+          "zh": "柠檬罗勒冰块",
+          "fr": "Glaçon citron-basilic",
+          "de": "Zitronen-Basilikum-Eis",
+          "es": "Hielo de limón y albahaca",
+          "ko": "레몬 바질 얼음",
+          "ja": "レモンバジル氷",
+          "it": "Ghiaccio limone-basilico"
+        },
+        "role": "prepared-ingredient",
+        "status": "disclosed",
+        "inputs": [
+          {
+            "en": "3 jalapeños; 1 quart water; ½ lemon, peel included; 4 basil leaves; a pinch of salt and pepper to taste.",
+            "zh": "墨西哥辣椒 3 个；水 1 夸脱；带皮柠檬 ½ 个；罗勒叶 4 片；盐一撮，黑胡椒适量。",
+            "fr": "3 jalapeños ; 1 quart d’eau ; ½ citron avec peau ; 4 feuilles de basilic ; pincée de sel et poivre au goût.",
+            "de": "3 Jalapeños; 1 Quart Wasser; ½ Zitrone mit Schale; 4 Basilikumblätter; Prise Salz und Pfeffer nach Geschmack.",
+            "es": "3 jalapeños; 1 cuarto de galón de agua; ½ limón con piel; 4 hojas de albahaca; pizca de sal y pimienta al gusto.",
+            "ko": "할라페뇨 3개, 물 1쿼트, 껍질째 레몬 ½개, 바질 4장, 소금 한 꼬집과 후추 적당량.",
+            "ja": "ハラペーニョ3個、水1クォート、皮付きレモン½個、バジル4枚、塩ひとつまみと胡椒適量。",
+            "it": "3 jalapeños; 1 quarto di gallone d’acqua; ½ limone con buccia; 4 foglie di basilico; pizzico di sale e pepe a piacere."
+          }
+        ],
+        "steps": [
+          {
+            "en": "Remove pepper stems and slice. Blend all ingredients smooth, strain into large ice moulds and freeze overnight.",
+            "zh": "辣椒去蒂切片，将所有材料搅打细滑，过滤入大冰模，冷冻过夜。",
+            "fr": "Équeuter et trancher les piments. Mixer le tout, filtrer dans de grands moules à glaçons et congeler une nuit.",
+            "de": "Chilistiele entfernen und schneiden. Alles glatt mixen, in große Eisformen abseihen und über Nacht gefrieren.",
+            "es": "Retira tallos y corta los chiles. Licúa todo, cuela en moldes grandes y congela una noche.",
+            "ko": "고추 꼭지를 떼고 썹니다. 모두 곱게 갈아 큰 얼음 틀에 거르고 하룻밤 얼립니다.",
+            "ja": "唐辛子のへたを除いて切り、全材料を滑らかにブレンドして大きな製氷型にこし、一晩凍らせます。",
+            "it": "Togliere i gambi e affettare i peperoncini; frullare tutto, filtrare in grandi stampi per ghiaccio e congelare una notte."
+          }
+        ],
+        "gaps": [],
+        "sources": [
+          {
+            "title": "Michelada de la Madre",
+            "url": "https://punchdrink.com/recipes/michelada/"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "versionId": "queens-road-batch-m",
+    "status": "disclosed",
+    "summary": {
+      "en": "Prepare these ingredients before mixing.",
+      "zh": "调制前先准备这些材料。",
+      "fr": "Préparer ces ingrédients avant le mélange.",
+      "de": "Diese Zutaten vor dem Mixen vorbereiten.",
+      "es": "Prepara estos ingredientes antes de mezclar.",
+      "ko": "칵테일을 만들기 전에 이 재료를 준비하세요.",
+      "ja": "調合前にこれらの材料を準備してください。",
+      "it": "Preparare questi ingredienti prima della miscelazione."
+    },
+    "gaps": [],
+    "checkedAt": "2026-09-24",
+    "cards": [
+      {
+        "id": "m-queens-road-food-ginger-syrup",
+        "ingredientId": "food-ginger-syrup",
+        "title": {
+          "en": "ginger syrup",
+          "zh": "姜糖浆",
+          "fr": "sirop de gingembre",
+          "de": "Ingwersirup",
+          "es": "jarabe de jengibre",
+          "ko": "생강 시럽",
+          "ja": "ジンジャーシロップ",
+          "it": "sciroppo di zenzero"
+        },
+        "role": "prepared-ingredient",
+        "status": "disclosed",
+        "inputs": [
+          {
+            "en": "Equal parts fresh ginger juice and sugar.",
+            "zh": "新鲜姜汁与糖等份。",
+            "fr": "Jus de gingembre frais et sucre à parts égales.",
+            "de": "Frischer Ingwersaft und Zucker zu gleichen Teilen.",
+            "es": "Partes iguales de zumo de jengibre fresco y azúcar.",
+            "ko": "생강즙과 설탕 동량.",
+            "ja": "生姜汁と砂糖を等量。",
+            "it": "Succo di zenzero fresco e zucchero in parti uguali."
+          }
+        ],
+        "steps": [
+          {
+            "en": "Blend briefly to dissolve the sugar; avoid overblending.",
+            "zh": "短暂搅打至糖溶解，避免过度搅打。",
+            "fr": "Mixer brièvement pour dissoudre le sucre, sans excès.",
+            "de": "Zum Lösen des Zuckers kurz mixen, nicht übermixen.",
+            "es": "Licúa brevemente hasta disolver el azúcar, sin excederte.",
+            "ko": "설탕이 녹도록 짧게 블렌딩하며 과하게 갈지 않습니다.",
+            "ja": "砂糖が溶けるまで短くブレンドし、回しすぎを避けます。",
+            "it": "Frullare brevemente per sciogliere lo zucchero, senza eccedere."
+          }
+        ],
+        "gaps": [],
+        "sources": [
+          {
+            "title": "Queen’s Road",
+            "url": "https://punchdrink.com/recipes/queens-road/"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "versionId": "red-sangria-batch-m",
+    "status": "disclosed",
+    "summary": {
+      "en": "Prepare these ingredients before mixing.",
+      "zh": "调制前先准备这些材料。",
+      "fr": "Préparer ces ingrédients avant le mélange.",
+      "de": "Diese Zutaten vor dem Mixen vorbereiten.",
+      "es": "Prepara estos ingredientes antes de mezclar.",
+      "ko": "칵테일을 만들기 전에 이 재료를 준비하세요.",
+      "ja": "調合前にこれらの材料を準備してください。",
+      "it": "Preparare questi ingredienti prima della miscelazione."
+    },
+    "gaps": [],
+    "checkedAt": "2026-09-24",
+    "cards": [
+      {
+        "id": "m-red-sangria-food-ginger-syrup",
+        "ingredientId": "food-ginger-syrup",
+        "title": {
+          "en": "ginger syrup",
+          "zh": "姜糖浆",
+          "fr": "sirop de gingembre",
+          "de": "Ingwersirup",
+          "es": "jarabe de jengibre",
+          "ko": "생강 시럽",
+          "ja": "ジンジャーシロップ",
+          "it": "sciroppo di zenzero"
+        },
+        "role": "prepared-ingredient",
+        "status": "disclosed",
+        "inputs": [
+          {
+            "en": "1 cup sugar; ½ cup cold-pressed ginger juice.",
+            "zh": "糖 1 杯；冷榨姜汁 ½ 杯。",
+            "fr": "1 tasse de sucre ; ½ tasse de jus de gingembre pressé à froid.",
+            "de": "1 Tasse Zucker; ½ Tasse kaltgepresster Ingwersaft.",
+            "es": "1 taza de azúcar; ½ taza de zumo de jengibre prensado en frío.",
+            "ko": "설탕 1컵, 냉압착 생강즙 ½컵.",
+            "ja": "砂糖1カップ、コールドプレス生姜汁½カップ。",
+            "it": "1 tazza di zucchero; ½ tazza di succo di zenzero spremuto a freddo."
+          }
+        ],
+        "steps": [
+          {
+            "en": "Warm only enough to dissolve the sugar; do not boil. Cool.",
+            "zh": "仅加热到糖溶解，不要煮沸，随后冷却。",
+            "fr": "Chauffer juste pour dissoudre, sans bouillir, puis refroidir.",
+            "de": "Nur bis zum Lösen erwärmen, nicht kochen, dann abkühlen.",
+            "es": "Calienta solo hasta disolver, sin hervir; enfría.",
+            "ko": "끓이지 않고 설탕만 녹도록 데운 뒤 식힙니다.",
+            "ja": "砂糖が溶けるまで温め、沸騰させず冷まします。",
+            "it": "Scaldare solo per sciogliere, senza bollire, e raffreddare."
+          }
+        ],
+        "gaps": [],
+        "sources": [
+          {
+            "title": "Red Sangria",
+            "url": "https://punchdrink.com/recipes/red-sangria/"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "versionId": "tinto-de-verano-batch-m",
+    "status": "disclosed",
+    "summary": {
+      "en": "Prepare these ingredients before mixing.",
+      "zh": "调制前先准备这些材料。",
+      "fr": "Préparer ces ingrédients avant le mélange.",
+      "de": "Diese Zutaten vor dem Mixen vorbereiten.",
+      "es": "Prepara estos ingredientes antes de mezclar.",
+      "ko": "칵테일을 만들기 전에 이 재료를 준비하세요.",
+      "ja": "調合前にこれらの材料を準備してください。",
+      "it": "Preparare questi ingredienti prima della miscelazione."
+    },
+    "gaps": [],
+    "checkedAt": "2026-09-24",
+    "cards": [
+      {
+        "id": "m-tinto-de-verano-lemon-juice-syrup",
+        "ingredientId": "lemon-juice-syrup",
+        "title": {
+          "en": "Lemon-juice syrup",
+          "zh": "柠檬汁糖浆",
+          "fr": "Sirop au jus de citron",
+          "de": "Zitronensaftsirup",
+          "es": "Almíbar de zumo de limón",
+          "ko": "레몬즙 시럽",
+          "ja": "レモン果汁シロップ",
+          "it": "Sciroppo al succo di limone"
+        },
+        "role": "prepared-ingredient",
+        "status": "disclosed",
+        "inputs": [
+          {
+            "en": "1 cup lemon juice; 1 cup sugar.",
+            "zh": "柠檬汁 1 杯；糖 1 杯。",
+            "fr": "1 tasse de jus de citron ; 1 tasse de sucre.",
+            "de": "1 Tasse Zitronensaft; 1 Tasse Zucker.",
+            "es": "1 taza de zumo de limón; 1 taza de azúcar.",
+            "ko": "레몬즙 1컵, 설탕 1컵.",
+            "ja": "レモン果汁1カップ、砂糖1カップ。",
+            "it": "1 tazza di succo di limone; 1 tazza di zucchero."
+          }
+        ],
+        "steps": [
+          {
+            "en": "Heat gently and stir until the sugar dissolves. Cool before use.",
+            "zh": "轻热搅拌至糖溶解，冷却后使用。",
+            "fr": "Chauffer doucement en remuant pour dissoudre le sucre, puis refroidir.",
+            "de": "Sanft erhitzen und rühren, bis sich der Zucker löst; vor Gebrauch abkühlen.",
+            "es": "Calienta suavemente y remueve hasta disolver el azúcar; deja enfriar.",
+            "ko": "약하게 가열하며 설탕을 녹이고 식혀 사용합니다.",
+            "ja": "弱く加熱して砂糖を溶かし、冷まして使います。",
+            "it": "Scaldare piano mescolando fino a sciogliere lo zucchero; raffreddare."
+          }
+        ],
+        "gaps": [],
+        "sources": [
+          {
+            "title": "Tinto de Verano",
+            "url": "https://punchdrink.com/recipes/tinto-de-verano/"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "versionId": "watermelon-sgroppino-batch-m",
+    "status": "disclosed",
+    "summary": {
+      "en": "Prepare these ingredients before mixing.",
+      "zh": "调制前先准备这些材料。",
+      "fr": "Préparer ces ingrédients avant le mélange.",
+      "de": "Diese Zutaten vor dem Mixen vorbereiten.",
+      "es": "Prepara estos ingredientes antes de mezclar.",
+      "ko": "칵테일을 만들기 전에 이 재료를 준비하세요.",
+      "ja": "調合前にこれらの材料を準備してください。",
+      "it": "Preparare questi ingredienti prima della miscelazione."
+    },
+    "gaps": [],
+    "checkedAt": "2026-09-24",
+    "cards": [
+      {
+        "id": "m-watermelon-sgroppino-watermelon-sorbet",
+        "ingredientId": "watermelon-sorbet",
+        "title": {
+          "en": "Watermelon sorbet",
+          "zh": "西瓜雪葩",
+          "fr": "Sorbet à la pastèque",
+          "de": "Wassermelonensorbet",
+          "es": "Sorbete de sandía",
+          "ko": "수박 소르베",
+          "ja": "スイカソルベ",
+          "it": "Sorbetto all’anguria"
+        },
+        "role": "prepared-ingredient",
+        "status": "disclosed",
+        "inputs": [
+          {
+            "en": "20 oz watermelon juice; 10 oz simple syrup; 1 oz lime or lemon juice.",
+            "zh": "西瓜汁 20 盎司；糖浆 10 盎司；青柠或柠檬汁 1 盎司。",
+            "fr": "20 oz de jus de pastèque ; 10 oz de sirop simple ; 1 oz de jus de citron vert ou jaune.",
+            "de": "20 oz Wassermelonensaft; 10 oz Zuckersirup; 1 oz Limetten- oder Zitronensaft.",
+            "es": "20 oz de zumo de sandía; 10 oz de almíbar simple; 1 oz de zumo de lima o limón.",
+            "ko": "수박즙 20온스, 시럽 10온스, 라임 또는 레몬즙 1온스.",
+            "ja": "スイカ果汁20 oz、シロップ10 oz、ライムかレモン果汁1 oz。",
+            "it": "20 oz di succo d’anguria; 10 oz di sciroppo semplice; 1 oz di succo di lime o limone."
+          }
+        ],
+        "steps": [
+          {
+            "en": "Combine and refrigerate in a sealed container for 2–4 hours, then churn following the sorbet-machine instructions.",
+            "zh": "混合密封冷藏 2–4 小时，再按雪葩机说明搅冻。",
+            "fr": "Mélanger et réfrigérer couvert 2–4 h, puis turbiner selon la sorbetière.",
+            "de": "Mischen, verschlossen 2–4 Stunden kühlen und nach Anleitung der Eismaschine gefrieren.",
+            "es": "Mezcla, refrigera tapado 2–4 h y manteca según la heladera.",
+            "ko": "섞어 밀폐 냉장 2~4시간 후 소르베 기계 설명에 따라 만듭니다.",
+            "ja": "混ぜて密閉冷蔵で2〜4時間冷やし、ソルベメーカーの説明に従って攪拌冷凍します。",
+            "it": "Mescolare e refrigerare chiuso 2–4 ore, poi mantecare secondo la sorbettiera."
+          }
+        ],
+        "gaps": [],
+        "sources": [
+          {
+            "title": "Watermelon Sgroppino",
+            "url": "https://punchdrink.com/recipes/watermelon-sgroppino/"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "versionId": "yellow-bird-batch-m",
+    "status": "partial",
+    "summary": {
+      "en": "Prepare these ingredients before mixing.",
+      "zh": "调制前先准备这些材料。",
+      "fr": "Préparer ces ingrédients avant le mélange.",
+      "de": "Diese Zutaten vor dem Mixen vorbereiten.",
+      "es": "Prepara estos ingredientes antes de mezclar.",
+      "ko": "칵테일을 만들기 전에 이 재료를 준비하세요.",
+      "ja": "調合前にこれらの材料を準備してください。",
+      "it": "Preparare questi ingredienti prima della miscelazione."
+    },
+    "gaps": [],
+    "checkedAt": "2026-09-24",
+    "cards": [
+      {
+        "id": "m-yellow-bird-acidified-lime-cordial",
+        "ingredientId": "acidified-lime-cordial",
+        "title": {
+          "en": "Acid-adjusted lime cordial",
+          "zh": "调酸青柠可迪尔",
+          "fr": "Cordial de citron vert ajusté en acidité",
+          "de": "Säureangepasster Limetten-Cordial",
+          "es": "Cordial de lima con acidez ajustada",
+          "ko": "산도 조절 라임 코디얼",
+          "ja": "酸度調整ライムコーディアル",
+          "it": "Cordial al lime ad acidità regolata"
+        },
+        "role": "prepared-ingredient",
+        "status": "partial",
+        "inputs": [
+          {
+            "en": "1000 g clarified lime juice; 1000 g sugar; peels of 3 limes. Per finished litre: 14.5 g citric acid and 7.5 g malic acid.",
+            "zh": "澄清青柠汁 1000 克；糖 1000 克；3 个青柠的皮。每升成品加柠檬酸 14.5 克、苹果酸 7.5 克。",
+            "fr": "1000 g de jus de citron vert clarifié ; 1000 g de sucre ; peaux de 3 citrons verts. Par litre fini : 14,5 g d’acide citrique et 7,5 g d’acide malique.",
+            "de": "1000 g geklärter Limettensaft; 1000 g Zucker; Schalen von 3 Limetten. Pro fertigem Liter: 14,5 g Zitronensäure und 7,5 g Apfelsäure.",
+            "es": "1000 g de zumo de lima clarificado; 1000 g de azúcar; pieles de 3 limas. Por litro final: 14,5 g de ácido cítrico y 7,5 g de málico.",
+            "ko": "정제 라임즙 1000g, 설탕 1000g, 라임 3개 껍질. 완성액 1L당 구연산 14.5g, 사과산 7.5g.",
+            "ja": "清澄ライム果汁1000 g、砂糖1000 g、ライム3個の皮。完成1 Lあたりクエン酸14.5 gとリンゴ酸7.5 g。",
+            "it": "1000 g di succo di lime chiarificato; 1000 g di zucchero; scorze di 3 lime. Per litro finito: 14,5 g di acido citrico e 7,5 g di malico."
+          }
+        ],
+        "steps": [
+          {
+            "en": "Simmer juice, sugar and peels until the sugar dissolves and peel oils infuse. Blend in the acids per final litre. The source permits Demerara syrup instead; it does not specify the juice-clarification method.",
+            "zh": "果汁、糖与果皮微煮至糖溶解、皮油浸出，按成品体积混入酸。来源允许以德梅拉拉糖浆替代，但未公开果汁澄清方法。",
+            "fr": "Frémir jus, sucre et peaux pour dissoudre et infuser, puis incorporer les acides par litre fini. La source autorise un sirop Demerara en remplacement ; la clarification du jus n’est pas décrite.",
+            "de": "Saft, Zucker und Schalen sanft köcheln bis gelöst und aromatisiert, Säuren pro fertigem Liter einmixen. Demerara-Sirup ist laut Quelle erlaubt; Saftklärung nicht beschrieben.",
+            "es": "Cuece suave zumo, azúcar y pieles hasta disolver e infusionar; incorpora los ácidos por litro final. La fuente permite almíbar Demerara como sustituto; no explica la clarificación.",
+            "ko": "과즙, 설탕, 껍질을 약하게 끓여 녹이고 향을 낸 뒤 최종 리터당 산을 섞습니다. 출처는 데메라라 시럽 대체를 허용하지만 과즙 정제법은 미기재입니다.",
+            "ja": "果汁、砂糖、皮を弱く煮て溶かし香りを出し、完成量に応じた酸を混ぜます。出典はデメララシロップ代用を認めますが、果汁の清澄方法は未記載です。",
+            "it": "Sobbollire succo, zucchero e scorze per sciogliere e aromatizzare, poi incorporare gli acidi per litro finito. È ammesso sciroppo Demerara in alternativa; la chiarificazione non è descritta."
+          }
+        ],
+        "gaps": [
+          {
+            "en": "Simmer juice, sugar and peels until the sugar dissolves and peel oils infuse. Blend in the acids per final litre. The source permits Demerara syrup instead; it does not specify the juice-clarification method.",
+            "zh": "果汁、糖与果皮微煮至糖溶解、皮油浸出，按成品体积混入酸。来源允许以德梅拉拉糖浆替代，但未公开果汁澄清方法。",
+            "fr": "Frémir jus, sucre et peaux pour dissoudre et infuser, puis incorporer les acides par litre fini. La source autorise un sirop Demerara en remplacement ; la clarification du jus n’est pas décrite.",
+            "de": "Saft, Zucker und Schalen sanft köcheln bis gelöst und aromatisiert, Säuren pro fertigem Liter einmixen. Demerara-Sirup ist laut Quelle erlaubt; Saftklärung nicht beschrieben.",
+            "es": "Cuece suave zumo, azúcar y pieles hasta disolver e infusionar; incorpora los ácidos por litro final. La fuente permite almíbar Demerara como sustituto; no explica la clarificación.",
+            "ko": "과즙, 설탕, 껍질을 약하게 끓여 녹이고 향을 낸 뒤 최종 리터당 산을 섞습니다. 출처는 데메라라 시럽 대체를 허용하지만 과즙 정제법은 미기재입니다.",
+            "ja": "果汁、砂糖、皮を弱く煮て溶かし香りを出し、完成量に応じた酸を混ぜます。出典はデメララシロップ代用を認めますが、果汁の清澄方法は未記載です。",
+            "it": "Sobbollire succo, zucchero e scorze per sciogliere e aromatizzare, poi incorporare gli acidi per litro finito. È ammesso sciroppo Demerara in alternativa; la chiarificazione non è descritta."
+          }
+        ],
+        "sources": [
+          {
+            "title": "Yellow Bird",
+            "url": "https://punchdrink.com/recipes/yellow-bird/"
+          }
+        ]
+      },
+      {
+        "id": "m-yellow-bird-saline-twenty-percent",
+        "ingredientId": "saline-twenty-percent",
+        "title": {
+          "en": "Saline solution (20% salt by weight)",
+          "zh": "盐水（盐占总重 20%）",
+          "fr": "Solution saline (20 % en masse)",
+          "de": "Salzlösung (20 Gewichtsprozent)",
+          "es": "Solución salina (20 % en peso)",
+          "ko": "소금물(중량 20%)",
+          "ja": "食塩水（重量比20%）",
+          "it": "Soluzione salina (20% in peso)"
+        },
+        "role": "prepared-ingredient",
+        "status": "disclosed",
+        "inputs": [
+          {
+            "en": "80 g water; 20 g salt.",
+            "zh": "水 80 克；盐 20 克。",
+            "fr": "80 g d’eau ; 20 g de sel.",
+            "de": "80 g Wasser; 20 g Salz.",
+            "es": "80 g de agua; 20 g de sal.",
+            "ko": "물 80g, 소금 20g.",
+            "ja": "水80 g、塩20 g。",
+            "it": "80 g d’acqua; 20 g di sale."
+          }
+        ],
+        "steps": [
+          {
+            "en": "Stir until dissolved.",
+            "zh": "搅拌至溶解。",
+            "fr": "Remuer pour dissoudre.",
+            "de": "Rühren, bis gelöst.",
+            "es": "Remueve hasta disolver.",
+            "ko": "녹을 때까지 젓습니다.",
+            "ja": "溶けるまで混ぜます。",
+            "it": "Mescolare fino a sciogliere."
+          }
+        ],
+        "gaps": [],
+        "sources": [
+          {
+            "title": "Yellow Bird",
+            "url": "https://punchdrink.com/recipes/yellow-bird/"
+          }
+        ]
+      }
+    ]
+  }
+]

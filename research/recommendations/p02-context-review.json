@@ -1,0 +1,3144 @@
+{
+  "reviewedAt": "2026-09-15T19:19:12.232Z",
+  "editorial": true,
+  "note": "Tags are Glass Notes editorial suggestions, not assertions that the original author assigned these occasions or seasons. No location, harvest, batching, or health inference.",
+  "entries": [
+    {
+      "versionId": "daiquiri-iba",
+      "sourceId": "iba-daiquiri",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/daiquiri/",
+      "note": "朗姆、青柠与糖；甜酸柑橘结构，冰摇后饮用。",
+      "recipeDigest": "f63d2981ec36feba832416e3897dfd3829370e61501c6672354df215ccafbb1f",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-daiquiri",
+        "ingredients": [
+          {
+            "ingredientId": "white-rum",
+            "amount": 60,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "lime-juice",
+            "amount": 20,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "superfine-sugar",
+            "amount": 2,
+            "unit": "barspoon"
+          }
+        ],
+        "originalSteps": [
+          "The listed ingredients are stirred in a shaker until the sugar dissolves.",
+          "Ice is added for a shake before straining into a chilled cocktail glass."
+        ],
+        "flavours": [
+          "citrus"
+        ],
+        "tastes": [
+          "sour",
+          "sweet"
+        ],
+        "strength": "medium",
+        "glass": {
+          "en": "Cocktail glass",
+          "zh": "鸡尾酒杯",
+          "fr": "Verre à cocktail",
+          "de": "Cocktailglas",
+          "es": "Copa de cóctel",
+          "ko": "칵테일 글라스",
+          "ja": "カクテルグラス",
+          "it": "Coppetta da cocktail"
+        }
+      }
+    },
+    {
+      "versionId": "dry-martini-iba",
+      "sourceId": "iba-dry-martini",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/dry-martini/",
+      "note": "金酒与干味美思搅拌；现有干爽、强度标签，未把它解释成低酒精餐前饮品。",
+      "recipeDigest": "d6165c04999f7356848682063322466193ab7e48bd26507e57cb73218d8215aa",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-dry-martini",
+        "ingredients": [
+          {
+            "ingredientId": "gin",
+            "amount": 60,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "dry-vermouth",
+            "amount": 10,
+            "unit": "ml"
+          }
+        ],
+        "originalSteps": [
+          "The gin and dry vermouth are stirred with ice in a mixing glass.",
+          "The chilled mixture is strained into a martini glass."
+        ],
+        "flavours": [
+          "herbal",
+          "citrus"
+        ],
+        "tastes": [
+          "dry",
+          "bitter"
+        ],
+        "strength": "strong",
+        "glass": {
+          "en": "Martini cocktail glass",
+          "zh": "马天尼杯",
+          "fr": "Verre à martini",
+          "de": "Martini-Glas",
+          "es": "Copa de martini",
+          "ko": "마티니 글라스",
+          "ja": "マティーニグラス",
+          "it": "Coppa Martini"
+        }
+      }
+    },
+    {
+      "versionId": "mojito-iba",
+      "sourceId": "iba-mojito",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/mojito/",
+      "note": "青柠、薄荷、苏打与冰；原方没有指定杯型，因此不推断高杯。",
+      "recipeDigest": "14ee0326f11a3e8340573e7cb4cd9b23e74e25d1de3ee66d864154a37e79171a",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-mojito",
+        "ingredients": [
+          {
+            "ingredientId": "white-rum",
+            "amount": 45,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "lime-juice",
+            "amount": 20,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "mint-sprigs",
+            "amount": 6,
+            "unit": "piece",
+            "note": {
+              "en": "Six mint sprigs, as written by the source.",
+              "zh": "来源原文为 6 枝薄荷。",
+              "fr": "Six brins de menthe, comme l’indique la source.",
+              "de": "Sechs Minzzweige, wie von der Quelle angegeben.",
+              "es": "Seis ramas de menta, tal como indica la fuente.",
+              "ko": "출처 표기대로 민트 가지 6개입니다.",
+              "ja": "出典どおりミントの枝6本です。",
+              "it": "Sei rametti di menta, come indicato dalla fonte."
+            }
+          },
+          {
+            "ingredientId": "white-cane-sugar",
+            "amount": 2,
+            "unit": "tsp"
+          },
+          {
+            "ingredientId": "soda-water",
+            "amount": null,
+            "unit": "top",
+            "note": {
+              "en": "Soda water; top up, with no fixed volume in the source.",
+              "zh": "苏打水；补满，来源未给固定毫升数。",
+              "fr": "Eau gazeuse à compléter ; la source ne donne pas de volume fixe.",
+              "de": "Sodawasser zum Auffüllen; die Quelle nennt keine feste Menge.",
+              "es": "Agua con gas para completar; la fuente no fija un volumen.",
+              "ko": "탄산수로 채웁니다. 출처에 고정 용량은 없습니다.",
+              "ja": "ソーダ水で満たします。出典に固定量はありません。",
+              "it": "Acqua soda per colmare; la fonte non indica un volume fisso."
+            }
+          }
+        ],
+        "originalSteps": [
+          "Mint sprigs are mixed with sugar and lime, then a splash of soda and ice are added.",
+          "The rum is poured in, the glass is topped with soda, and the drink is stirred lightly."
+        ],
+        "flavours": [
+          "citrus",
+          "herbal"
+        ],
+        "tastes": [
+          "sour",
+          "sweet",
+          "refreshing"
+        ],
+        "strength": "medium",
+        "glass": {
+          "en": "Not specified by the source",
+          "zh": "来源未指定杯型",
+          "fr": "Verre non précisé par la source",
+          "de": "Von der Quelle nicht angegebenes Glas",
+          "es": "Vaso no especificado por la fuente",
+          "ko": "출처에 잔이 지정되지 않음",
+          "ja": "出典にグラス指定なし",
+          "it": "Bicchiere non specificato dalla fonte"
+        }
+      }
+    },
+    {
+      "versionId": "negroni-iba",
+      "sourceId": "iba-negroni",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/negroni/",
+      "note": "金酒、金巴利及甜味美思等份；苦味和烈酒取向来自现有原方及编辑风味档案。",
+      "recipeDigest": "f3c3a3e346b0057a5ee4519666f83b20a163d7f10293b474ecc21d59a643a0ef",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-negroni",
+        "ingredients": [
+          {
+            "ingredientId": "gin",
+            "amount": 30,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "campari",
+            "amount": 30,
+            "unit": "ml",
+            "brandId": "brand-campari"
+          },
+          {
+            "ingredientId": "sweet-red-vermouth",
+            "amount": 30,
+            "unit": "ml"
+          }
+        ],
+        "originalSteps": [
+          "The equal parts are poured into a chilled, ice-filled old fashioned glass.",
+          "The drink is stirred gently in the glass."
+        ],
+        "flavours": [
+          "citrus",
+          "herbal"
+        ],
+        "tastes": [
+          "bitter",
+          "sweet",
+          "dry"
+        ],
+        "strength": "strong",
+        "glass": {
+          "en": "Old fashioned glass",
+          "zh": "古典杯",
+          "fr": "Verre old fashioned",
+          "de": "Old-Fashioned-Glas",
+          "es": "Vaso old fashioned",
+          "ko": "올드 패션드 글라스",
+          "ja": "オールドファッションドグラス",
+          "it": "Old fashioned"
+        }
+      }
+    },
+    {
+      "versionId": "old-fashioned-iba",
+      "sourceId": "iba-old-fashioned",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/old-fashioned/",
+      "note": "威士忌、芳香苦精、糖；香料风味标签，不声称热饮。",
+      "recipeDigest": "e1e2311f02ef60dc1d91a69c76b01a1200c42f390ae6e8399ac0ec7849fade07",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-old-fashioned",
+        "ingredients": [
+          {
+            "ingredientId": "whiskey",
+            "amount": 45,
+            "unit": "ml",
+            "note": {
+              "en": "The source permits bourbon or rye whiskey.",
+              "zh": "来源允许使用波本或黑麦威士忌。",
+              "fr": "La source autorise le bourbon ou le whiskey de seigle.",
+              "de": "Die Quelle erlaubt Bourbon oder Rye-Whiskey.",
+              "es": "La fuente permite bourbon o whiskey de centeno.",
+              "ko": "출처는 버번 또는 라이 위스키를 허용합니다.",
+              "ja": "出典はバーボンまたはライウイスキーを認めています。",
+              "it": "La fonte ammette bourbon o rye whiskey."
+            }
+          },
+          {
+            "ingredientId": "sugar-cube",
+            "amount": 1,
+            "unit": "piece"
+          },
+          {
+            "ingredientId": "angostura-bitters",
+            "amount": null,
+            "unit": "dash",
+            "note": {
+              "en": "A few dashes; the source does not quantify them.",
+              "zh": "几 dash；来源未量化。",
+              "fr": "Quelques traits ; la source ne les quantifie pas.",
+              "de": "Einige Dashes; die Quelle quantifiziert sie nicht.",
+              "es": "Unos dashes; la fuente no los cuantifica.",
+              "ko": "몇 대시; 출처에 정량이 없습니다.",
+              "ja": "数ダッシュ。出典に定量はありません。",
+              "it": "Alcuni dash; la fonte non li quantifica."
+            }
+          },
+          {
+            "ingredientId": "plain-water",
+            "amount": null,
+            "unit": "dash",
+            "note": {
+              "en": "A few dashes; the source does not quantify them.",
+              "zh": "几 dash；来源未量化。",
+              "fr": "Quelques traits ; la source ne les quantifie pas.",
+              "de": "Einige Dashes; die Quelle quantifiziert sie nicht.",
+              "es": "Unos dashes; la fuente no los cuantifica.",
+              "ko": "몇 대시; 출처에 정량이 없습니다.",
+              "ja": "数ダッシュ。出典に定量はありません。",
+              "it": "Alcuni dash; la fonte non li quantifica."
+            }
+          }
+        ],
+        "originalSteps": [
+          "The sugar cube is wetted with bitters and water in the serving glass and muddled until dissolved.",
+          "Ice and whiskey are added, then the drink is stirred gently."
+        ],
+        "flavours": [
+          "citrus",
+          "spice"
+        ],
+        "tastes": [
+          "sweet",
+          "bitter",
+          "dry"
+        ],
+        "strength": "strong",
+        "glass": {
+          "en": "Old fashioned glass",
+          "zh": "古典杯",
+          "fr": "Verre old fashioned",
+          "de": "Old-Fashioned-Glas",
+          "es": "Vaso old fashioned",
+          "ko": "올드 패션드 글라스",
+          "ja": "オールドファッションドグラス",
+          "it": "Old fashioned"
+        }
+      }
+    },
+    {
+      "versionId": "paloma-iba",
+      "sourceId": "iba-paloma",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/paloma/",
+      "note": "龙舌兰、青柠、西柚苏打；原文在高杯直调。",
+      "recipeDigest": "1bddbdcb465007d721a16a91b7ed65a60287a0386c8303ac5ba35bde55782568",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-paloma",
+        "ingredients": [
+          {
+            "ingredientId": "tequila",
+            "amount": 50,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "lime-juice",
+            "amount": 5,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "salt",
+            "amount": 1,
+            "unit": "pinch",
+            "note": {
+              "en": "A pinch, as written by the source.",
+              "zh": "来源原文为一撮。",
+              "fr": "Une pincée, comme l’indique la source.",
+              "de": "Eine Prise, wie von der Quelle angegeben.",
+              "es": "Una pizca, tal como indica la fuente.",
+              "ko": "출처 표기대로 한 꼬집입니다.",
+              "ja": "出典どおりひとつまみです。",
+              "it": "Un pizzico, come indicato dalla fonte."
+            }
+          },
+          {
+            "ingredientId": "pink-grapefruit-soda",
+            "amount": 100,
+            "unit": "ml"
+          }
+        ],
+        "originalSteps": [
+          "Tequila and lime are placed in a highball, then ice and a pinch of salt are added.",
+          "Pink grapefruit soda fills the glass before a gentle stir."
+        ],
+        "flavours": [
+          "citrus",
+          "fruit"
+        ],
+        "tastes": [
+          "sour",
+          "sweet",
+          "refreshing"
+        ],
+        "strength": "medium",
+        "glass": {
+          "en": "Highball",
+          "zh": "高球杯",
+          "fr": "Highball",
+          "de": "Highball-Glas",
+          "es": "Highball",
+          "ko": "하이볼 글라스",
+          "ja": "ハイボールグラス",
+          "it": "Highball"
+        }
+      }
+    },
+    {
+      "versionId": "tom-collins-iba",
+      "sourceId": "iba-john-collins",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/john-collins/",
+      "note": "原方高杯直调，柠檬与苏打；没有批量制作保证。",
+      "recipeDigest": "bb1b07b80d6e2d2b89038800664b270815340290f79802e40a5b411ab309ee74",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-john-collins",
+        "ingredients": [
+          {
+            "ingredientId": "gin",
+            "amount": 45,
+            "unit": "ml",
+            "note": {
+              "en": "The IBA note says to use Old Tom gin for Tom Collins.",
+              "zh": "IBA 注明 Tom Collins 使用 Old Tom 金酒。",
+              "fr": "La note IBA indique d’utiliser un gin Old Tom pour le Tom Collins.",
+              "de": "Der IBA-Hinweis nennt Old Tom Gin für den Tom Collins.",
+              "es": "La nota IBA indica usar ginebra Old Tom para el Tom Collins.",
+              "ko": "IBA 주석은 톰 콜린스에 올드 톰 진을 쓰라고 합니다.",
+              "ja": "IBAの注記はトム・コリンズにオールドトムジンを使うよう示します。",
+              "it": "La nota IBA indica l’Old Tom per il Tom Collins."
+            }
+          },
+          {
+            "ingredientId": "lemon-juice",
+            "amount": 30,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "simple-syrup",
+            "amount": 15,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "soda-water",
+            "amount": 60,
+            "unit": "ml"
+          }
+        ],
+        "originalSteps": [
+          "The ingredients are poured directly into an ice-filled highball.",
+          "The source calls for a gentle stir and notes Old Tom gin for the Tom Collins style."
+        ],
+        "flavours": [
+          "citrus"
+        ],
+        "tastes": [
+          "sour",
+          "sweet",
+          "refreshing"
+        ],
+        "strength": "medium",
+        "glass": {
+          "en": "Highball",
+          "zh": "高球杯",
+          "fr": "Highball",
+          "de": "Highball-Glas",
+          "es": "Highball",
+          "ko": "하이볼 글라스",
+          "ja": "ハイボールグラス",
+          "it": "Highball"
+        }
+      }
+    },
+    {
+      "versionId": "espresso-martini-iba",
+      "sourceId": "iba-espresso-martini",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/espresso-martini/",
+      "note": "浓缩咖啡与咖啡利口酒；原方冰摇，浓郁不等于热。",
+      "recipeDigest": "f5220b6719492c6a3834c9cd111a746afde2ac98407b3fe91653a4fbf428a597",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-espresso-martini",
+        "ingredients": [
+          {
+            "ingredientId": "vodka",
+            "amount": 50,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "coffee-liqueur",
+            "amount": 30,
+            "unit": "ml",
+            "brandId": "brand-kahlua"
+          },
+          {
+            "ingredientId": "simple-syrup",
+            "amount": 10,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "espresso",
+            "amount": 1,
+            "unit": "piece",
+            "note": {
+              "en": "One strong espresso.",
+              "zh": "1 杯浓缩咖啡。",
+              "fr": "Un espresso corsé.",
+              "de": "Ein kräftiger Espresso.",
+              "es": "Un espresso intenso.",
+              "ko": "진한 에스프레소 1잔.",
+              "ja": "濃いエスプレッソ1杯。",
+              "it": "Un espresso intenso."
+            }
+          }
+        ],
+        "originalSteps": [
+          "All four ingredients are placed in a shaker.",
+          "They are shaken well with ice and strained into a chilled cocktail glass."
+        ],
+        "flavours": [
+          "coffee"
+        ],
+        "tastes": [
+          "bitter",
+          "sweet",
+          "creamy"
+        ],
+        "strength": "strong",
+        "glass": {
+          "en": "Cocktail glass",
+          "zh": "鸡尾酒杯",
+          "fr": "Verre à cocktail",
+          "de": "Cocktailglas",
+          "es": "Copa de cóctel",
+          "ko": "칵테일 글라스",
+          "ja": "カクテルグラス",
+          "it": "Coppetta da cocktail"
+        }
+      }
+    },
+    {
+      "versionId": "mojito-mocktail-good-food",
+      "sourceId": "good-food-mojito-mocktail",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/mojito-mocktail",
+      "note": "两杯份数的无酒精青柠薄荷苏打；气泡来自苏打，不推断全部聚会配方均可放大。",
+      "recipeDigest": "ff220f76ef065d498ef5d5b54b4cfe88c351c08a026d799f55760e9adee3f027",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "good-food-mojito-mocktail",
+        "ingredients": [
+          {
+            "ingredientId": "superfine-sugar",
+            "amount": 1,
+            "unit": "tbsp",
+            "note": {
+              "en": "One tablespoon, as written by the source.",
+              "zh": "来源原文为一汤匙。",
+              "fr": "Une cuillère à soupe, comme l’indique la source.",
+              "de": "Ein Esslöffel, wie von der Quelle angegeben.",
+              "es": "Una cucharada, tal como indica la fuente.",
+              "ko": "출처 표기대로 1테이블스푼입니다.",
+              "ja": "出典どおり大さじ1です。",
+              "it": "Un cucchiaio, come indicato dalla fonte."
+            }
+          },
+          {
+            "ingredientId": "mint-leaves",
+            "amount": 1,
+            "unit": "bunch",
+            "note": {
+              "en": "Small bunch, as written by the source.",
+              "zh": "来源原文为一小把。",
+              "fr": "Petite botte, comme l’indique la source.",
+              "de": "Kleine Handvoll, wie von der Quelle angegeben.",
+              "es": "Manojo pequeño, tal como indica la fuente.",
+              "ko": "출처 표기대로 작은 한 줌입니다.",
+              "ja": "出典どおり小さな束です。",
+              "it": "Piccolo mazzetto, come indicato dalla fonte."
+            }
+          },
+          {
+            "ingredientId": "lime-juice",
+            "amount": 3,
+            "unit": "piece",
+            "note": {
+              "en": "Juice of three limes.",
+              "zh": "3 个青柠榨汁。",
+              "fr": "Jus de trois citrons verts.",
+              "de": "Saft von drei Limetten.",
+              "es": "Zumo de tres limas.",
+              "ko": "라임 3개를 짠 즙.",
+              "ja": "ライム3個分の果汁。",
+              "it": "Succo di tre lime."
+            }
+          },
+          {
+            "ingredientId": "soda-water",
+            "amount": null,
+            "unit": "top",
+            "note": {
+              "en": "Top up; the source gives no fixed volume.",
+              "zh": "补满；来源未给固定容量。",
+              "fr": "Compléter ; la source ne donne pas de volume fixe.",
+              "de": "Zum Auffüllen; die Quelle nennt kein festes Volumen.",
+              "es": "Para completar; la fuente no da un volumen fijo.",
+              "ko": "채우기. 출처에 고정 용량은 없습니다.",
+              "ja": "満たす。出典に固定量はありません。",
+              "it": "Per colmare; la fonte non dà un volume fisso."
+            }
+          }
+        ],
+        "originalSteps": [
+          "The sugar is muddled with mint leaves.",
+          "Crushed ice, lime juice, and the mint mixture are divided between two tall glasses and topped with soda."
+        ],
+        "flavours": [
+          "citrus",
+          "herbal"
+        ],
+        "tastes": [
+          "sour",
+          "sweet",
+          "refreshing"
+        ],
+        "strength": "none",
+        "glass": {
+          "en": "Two tall glasses",
+          "zh": "两只高杯",
+          "fr": "Deux grands verres",
+          "de": "Zwei hohe Gläser",
+          "es": "Dos vasos altos",
+          "ko": "긴 잔 2개",
+          "ja": "背の高いグラス2つ",
+          "it": "Due bicchieri alti"
+        }
+      }
+    },
+    {
+      "versionId": "amaretto-sour-alcohol-free-good-food",
+      "sourceId": "good-food-alcohol-free-amaretto-sour",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/alcohol-free-amaretto-sour",
+      "note": "菠萝、柠檬、樱桃与蛋白的无酒精泡沫饮；蛋白仍受严格材料排除约束。",
+      "recipeDigest": "c0ef2140bf01670c81d90d43c52e042904825fd38d6d0811c60db6a22f6a384e",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "good-food-alcohol-free-amaretto-sour",
+        "ingredients": [
+          {
+            "ingredientId": "pineapple-juice",
+            "amount": 100,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "lemon-juice",
+            "amount": 50,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "egg-white",
+            "amount": 0.5,
+            "unit": "piece",
+            "note": {
+              "en": "Half an egg white.",
+              "zh": "半个蛋清。",
+              "fr": "Un demi-blanc d’œuf.",
+              "de": "Ein halbes Eiweiß.",
+              "es": "Media clara de huevo.",
+              "ko": "달걀흰자 반 개.",
+              "ja": "卵白1/2個分。",
+              "it": "Mezzo albume."
+            }
+          },
+          {
+            "ingredientId": "cherry-syrup",
+            "amount": 10,
+            "unit": "ml",
+            "note": {
+              "en": "Syrup from cocktail cherries; the source allows more if preferred.",
+              "zh": "鸡尾酒樱桃中的糖浆；来源允许按喜好增加。",
+              "fr": "Sirop de cerises à cocktail ; la source autorise davantage selon le goût.",
+              "de": "Sirup aus Cocktailkirschen; laut Quelle nach Geschmack auch mehr möglich.",
+              "es": "Almíbar de cerezas de cóctel; la fuente permite más al gusto.",
+              "ko": "칵테일 체리 시럽. 출처는 기호에 따라 더 넣어도 된다고 합니다.",
+              "ja": "カクテルチェリーのシロップ。出典は好みで増量可としています。",
+              "it": "Sciroppo di ciliegie da cocktail; la fonte consente di usarne di più a piacere."
+            }
+          },
+          {
+            "ingredientId": "almond-extract",
+            "amount": null,
+            "unit": "drop",
+            "note": {
+              "en": "A few drops; the source does not quantify them.",
+              "zh": "几滴；来源未量化。",
+              "fr": "Quelques gouttes ; la source ne les quantifie pas.",
+              "de": "Einige Tropfen; die Quelle quantifiziert sie nicht.",
+              "es": "Unas gotas; la fuente no las cuantifica.",
+              "ko": "몇 방울; 출처에 정량이 없습니다.",
+              "ja": "数滴。出典に定量はありません。",
+              "it": "Alcune gocce; la fonte non le quantifica."
+            }
+          },
+          {
+            "ingredientId": "cocktail-cherries",
+            "amount": null,
+            "unit": "piece",
+            "optional": true,
+            "note": {
+              "en": "Cherries to serve.",
+              "zh": "上桌时添加樱桃。",
+              "fr": "Cerises pour le service.",
+              "de": "Kirschen zum Servieren.",
+              "es": "Cerezas para servir.",
+              "ko": "내기 위한 체리.",
+              "ja": "仕上げ用のチェリー。",
+              "it": "Ciliegie per servire."
+            }
+          }
+        ],
+        "originalSteps": [
+          "The juices, egg white, cherry syrup, and almond extract are blended until pale and beginning to foam.",
+          "The drink is chilled with ice by blending or stirring, then poured and finished with cherries."
+        ],
+        "flavours": [
+          "fruit",
+          "citrus"
+        ],
+        "tastes": [
+          "sour",
+          "sweet",
+          "creamy"
+        ],
+        "strength": "none",
+        "glass": {
+          "en": "Glasses",
+          "zh": "杯子",
+          "fr": "Verres",
+          "de": "Gläser",
+          "es": "Vasos",
+          "ko": "잔",
+          "ja": "グラス",
+          "it": "Bicchieri"
+        }
+      }
+    },
+    {
+      "versionId": "aviation-iba",
+      "sourceId": "iba-aviation",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/aviation/",
+      "note": "紫罗兰利口酒与柠檬；花香是现有配方资料的编辑风味标签。",
+      "recipeDigest": "3c65e240849826f817e4984abb4c377bc0d0c584d2e9aacd21f5792eb8bad9e4",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-aviation",
+        "ingredients": [
+          {
+            "ingredientId": "gin",
+            "amount": 45,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "maraschino-liqueur",
+            "amount": 15,
+            "unit": "ml",
+            "brandId": "brand-luxardo"
+          },
+          {
+            "ingredientId": "lemon-juice",
+            "amount": 15,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "creme-de-violette",
+            "amount": 1,
+            "unit": "barspoon"
+          }
+        ],
+        "originalSteps": [
+          "Add every ingredient to a shaker.",
+          "Shake with cracked ice and strain into the chilled glass."
+        ],
+        "flavours": [
+          "floral",
+          "citrus"
+        ],
+        "tastes": [
+          "sour",
+          "sweet",
+          "dry"
+        ],
+        "strength": "medium",
+        "glass": {
+          "en": "Chilled cocktail glass",
+          "zh": "冰镇鸡尾酒杯",
+          "fr": "Verre à cocktail refroidi",
+          "de": "Gekühltes Cocktailglas",
+          "es": "Copa de cóctel fría",
+          "ko": "차갑게 식힌 칵테일 글라스",
+          "ja": "冷やしたカクテルグラス",
+          "it": "Coppetta da cocktail fredda"
+        }
+      }
+    },
+    {
+      "versionId": "clover-club-iba",
+      "sourceId": "iba-clover-club",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/clover-club/",
+      "note": "覆盆子糖浆、柠檬和蛋白；果味与绵密泡沫，蛋白不隐藏。",
+      "recipeDigest": "df2875b4832e78c0b7be1bdfdaf831ee7fe9def0e76d71f8acd778a821b63408",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-clover-club",
+        "ingredients": [
+          {
+            "ingredientId": "gin",
+            "amount": 45,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "raspberry-syrup",
+            "amount": 15,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "lemon-juice",
+            "amount": 15,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "egg-white",
+            "amount": null,
+            "unit": "drop",
+            "note": {
+              "en": "IBA specifies a few drops.",
+              "zh": "IBA 标为数滴。",
+              "fr": "L’IBA indique quelques gouttes.",
+              "de": "Die IBA nennt einige Tropfen.",
+              "es": "La IBA indica unas gotas.",
+              "ko": "IBA는 몇 방울로 명시합니다.",
+              "ja": "IBAは数滴と指定しています。",
+              "it": "L’IBA indica alcune gocce."
+            }
+          }
+        ],
+        "originalSteps": [
+          "Add all ingredients to a shaker with ice.",
+          "Shake well and strain into the chilled glass."
+        ],
+        "flavours": [
+          "fruit",
+          "citrus"
+        ],
+        "tastes": [
+          "sour",
+          "sweet",
+          "creamy"
+        ],
+        "strength": "medium",
+        "glass": {
+          "en": "Chilled cocktail glass",
+          "zh": "冰镇鸡尾酒杯",
+          "fr": "Verre à cocktail refroidi",
+          "de": "Gekühltes Cocktailglas",
+          "es": "Copa de cóctel fría",
+          "ko": "차갑게 식힌 칵테일 글라스",
+          "ja": "冷やしたカクテルグラス",
+          "it": "Coppetta da cocktail fredda"
+        }
+      }
+    },
+    {
+      "versionId": "bramble-iba",
+      "sourceId": "iba-bramble",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/bramble/",
+      "note": "黑莓利口酒、柠檬和碎冰；秋季仅为莓果风格建议，不代表当地成熟期。",
+      "recipeDigest": "8f9d9644f6390f2e47390682aed30a25d5382c177b7fb401a82dce1323500cc7",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-bramble",
+        "ingredients": [
+          {
+            "ingredientId": "gin",
+            "amount": 50,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "lemon-juice",
+            "amount": 25,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "simple-syrup",
+            "amount": 12.5,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "creme-de-mure",
+            "amount": 15,
+            "unit": "ml"
+          }
+        ],
+        "originalSteps": [
+          "Shake the gin, lemon juice, and sugar syrup with ice, then strain over crushed ice in the chilled glass.",
+          "Pour the crème de mûre over the drink in a circular motion."
+        ],
+        "flavours": [
+          "fruit",
+          "citrus"
+        ],
+        "tastes": [
+          "sour",
+          "sweet",
+          "refreshing"
+        ],
+        "strength": "medium",
+        "glass": {
+          "en": "Old fashioned glass",
+          "zh": "古典杯",
+          "fr": "Verre old fashioned",
+          "de": "Old-Fashioned-Glas",
+          "es": "Vaso old fashioned",
+          "ko": "올드 패션드 글라스",
+          "ja": "オールドファッションドグラス",
+          "it": "Bicchiere old fashioned"
+        }
+      }
+    },
+    {
+      "versionId": "french-75-iba",
+      "sourceId": "iba-french-75",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/french-75/",
+      "note": "柠檬、金酒与香槟；先摇后加起泡酒。",
+      "recipeDigest": "b6b7acc9f24da2e4f8a5107ea7f1cae525f653aef9f271e5e20486442eb43d69",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-french-75",
+        "ingredients": [
+          {
+            "ingredientId": "gin",
+            "amount": 30,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "lemon-juice",
+            "amount": 15,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "simple-syrup",
+            "amount": 15,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "champagne",
+            "amount": 60,
+            "unit": "ml"
+          }
+        ],
+        "originalSteps": [
+          "Shake the gin, lemon juice, and sugar syrup with ice, then strain into the flute.",
+          "Top with Champagne and stir gently."
+        ],
+        "flavours": [
+          "citrus"
+        ],
+        "tastes": [
+          "sour",
+          "dry",
+          "refreshing"
+        ],
+        "strength": "medium",
+        "glass": {
+          "en": "Champagne flute",
+          "zh": "香槟笛形杯",
+          "fr": "Flûte à Champagne",
+          "de": "Champagnerflöte",
+          "es": "Copa flauta",
+          "ko": "샴페인 플루트",
+          "ja": "シャンパンフルート",
+          "it": "Flute da Champagne"
+        }
+      }
+    },
+    {
+      "versionId": "manhattan-iba",
+      "sourceId": "iba-manhattan",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/manhattan/",
+      "note": "黑麦威士忌、味美思、芳香苦精，现有香料标签。",
+      "recipeDigest": "8fe8fdd3eb236a1b056f71ec6779c6f4c1db6a5be04f822fea5833fe3cf2118c",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-manhattan",
+        "ingredients": [
+          {
+            "ingredientId": "rye-whiskey",
+            "amount": 50,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "sweet-red-vermouth",
+            "amount": 20,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "angostura-bitters",
+            "amount": 1,
+            "unit": "dash",
+            "brandId": "brand-angostura-aromatic"
+          }
+        ],
+        "originalSteps": [
+          "Add all ingredients to a mixing glass with ice cubes.",
+          "Stir well and strain into the chilled glass."
+        ],
+        "flavours": [
+          "spice",
+          "herbal"
+        ],
+        "tastes": [
+          "sweet",
+          "bitter",
+          "dry"
+        ],
+        "strength": "strong",
+        "glass": {
+          "en": "Chilled cocktail glass",
+          "zh": "冰镇鸡尾酒杯",
+          "fr": "Verre à cocktail refroidi",
+          "de": "Gekühltes Cocktailglas",
+          "es": "Copa de cóctel fría",
+          "ko": "차갑게 식힌 칵테일 글라스",
+          "ja": "冷やしたカクテルグラス",
+          "it": "Coppetta da cocktail fredda"
+        }
+      }
+    },
+    {
+      "versionId": "boulevardier-iba",
+      "sourceId": "iba-boulevardier",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/boulevardier/",
+      "note": "威士忌、金巴利、味美思，现有香料与苦味资料。",
+      "recipeDigest": "6309521a47f146519b8c852cf3abfe37a0ec5b893d1a7ae8a106b5aa1eaba2de",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-boulevardier",
+        "ingredients": [
+          {
+            "ingredientId": "whiskey",
+            "amount": 45,
+            "unit": "ml",
+            "note": {
+              "en": "IBA permits bourbon or rye whiskey.",
+              "zh": "IBA 允许使用波本或黑麦威士忌。",
+              "fr": "L’IBA autorise le bourbon ou le rye whiskey.",
+              "de": "Die IBA erlaubt Bourbon oder Rye Whiskey.",
+              "es": "La IBA permite bourbon o whiskey de centeno.",
+              "ko": "IBA는 버번 또는 라이 위스키를 허용합니다.",
+              "ja": "IBAはバーボンまたはライウイスキーを認めています。",
+              "it": "L’IBA ammette bourbon o rye whiskey."
+            }
+          },
+          {
+            "ingredientId": "campari",
+            "amount": 30,
+            "unit": "ml",
+            "brandId": "brand-campari"
+          },
+          {
+            "ingredientId": "sweet-red-vermouth",
+            "amount": 30,
+            "unit": "ml"
+          }
+        ],
+        "originalSteps": [
+          "Add all ingredients to a mixing glass with ice cubes.",
+          "Stir well and strain into the chilled glass."
+        ],
+        "flavours": [
+          "herbal",
+          "spice"
+        ],
+        "tastes": [
+          "bitter",
+          "sweet",
+          "dry"
+        ],
+        "strength": "strong",
+        "glass": {
+          "en": "Chilled cocktail glass",
+          "zh": "冰镇鸡尾酒杯",
+          "fr": "Verre à cocktail refroidi",
+          "de": "Gekühltes Cocktailglas",
+          "es": "Copa de cóctel fría",
+          "ko": "차갑게 식힌 칵테일 글라스",
+          "ja": "冷やしたカクテルグラス",
+          "it": "Coppetta da cocktail fredda"
+        }
+      }
+    },
+    {
+      "versionId": "mint-julep-iba",
+      "sourceId": "iba-mint-julep",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/mint-julep/",
+      "note": "朱利普杯、碎冰和薄荷；夏季根据冷却与清爽风格建议，不声称低酒精。",
+      "recipeDigest": "7a2b9892de3e391081a8c5da35b625801bbde1d8373bbcfe2604dd4d222d7936",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-mint-julep",
+        "ingredients": [
+          {
+            "ingredientId": "bourbon-whiskey",
+            "amount": 60,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "mint-sprigs",
+            "amount": 4,
+            "unit": "piece"
+          },
+          {
+            "ingredientId": "powdered-sugar",
+            "amount": 1,
+            "unit": "tsp"
+          },
+          {
+            "ingredientId": "plain-water",
+            "amount": 2,
+            "unit": "tsp"
+          }
+        ],
+        "originalSteps": [
+          "Gently muddle the mint with the powdered sugar and water in a julep cup.",
+          "Fill with cracked ice, add bourbon, and stir until the cup frosts."
+        ],
+        "flavours": [
+          "herbal"
+        ],
+        "tastes": [
+          "sweet",
+          "refreshing"
+        ],
+        "strength": "strong",
+        "glass": {
+          "en": "Stainless-steel julep cup",
+          "zh": "不锈钢朱利普杯",
+          "fr": "Timbale à julep en acier inoxydable",
+          "de": "Julepbecher aus Edelstahl",
+          "es": "Copa julep de acero inoxidable",
+          "ko": "스테인리스 줄렙 컵",
+          "ja": "ステンレス製ジュレップカップ",
+          "it": "Coppa da julep in acciaio inox"
+        }
+      }
+    },
+    {
+      "versionId": "penicillin-iba",
+      "sourceId": "iba-penicillin",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/penicillin/",
+      "note": "新鲜姜、蜂蜜、柠檬和苏格兰威士忌；姜香，不代表热饮或医疗作用。",
+      "recipeDigest": "78027c4df67ffa1798b6769bb93aaebd515ec9ca26d5d6ebb46940ceb25e69f3",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-penicillin",
+        "ingredients": [
+          {
+            "ingredientId": "scotch-whisky",
+            "amount": 60,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "islay-whisky",
+            "amount": 7.5,
+            "unit": "ml",
+            "brandId": "brand-lagavulin",
+            "note": {
+              "en": "The IBA specifies Lagavulin 16-year-old.",
+              "zh": "IBA 指定 Lagavulin 16 年。",
+              "fr": "L’IBA précise Lagavulin 16 ans.",
+              "de": "Die IBA gibt Lagavulin 16 Jahre an.",
+              "es": "La IBA especifica Lagavulin de 16 años.",
+              "ko": "IBA는 Lagavulin 16년을 지정합니다.",
+              "ja": "IBAはラガヴーリン16年を指定しています。",
+              "it": "L’IBA specifica Lagavulin 16 anni."
+            }
+          },
+          {
+            "ingredientId": "lemon-juice",
+            "amount": 22.5,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "honey-syrup",
+            "amount": 22.5,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "ginger",
+            "amount": null,
+            "unit": "piece",
+            "note": {
+              "en": "IBA specifies 2–3 quarter-size fresh slices.",
+              "zh": "IBA 标为 2–3 片约硬币大小的鲜姜。",
+              "fr": "L’IBA indique 2 à 3 rondelles fraîches de la taille d’une pièce.",
+              "de": "Die IBA nennt 2–3 münzgroße frische Scheiben.",
+              "es": "La IBA indica 2–3 rodajas frescas del tamaño de una moneda.",
+              "ko": "IBA는 동전 크기의 생강 슬라이스 2–3개를 명시합니다.",
+              "ja": "IBAは硬貨大の生姜スライス2～3枚を指定しています。",
+              "it": "L’IBA indica 2–3 fettine fresche grandi quanto una moneta."
+            }
+          }
+        ],
+        "originalSteps": [
+          "Muddle the ginger in a shaker. Add every ingredient except the Islay whisky, fill with ice, and shake.",
+          "Fine-strain into the chilled glass over ice, then float the Islay whisky on top."
+        ],
+        "flavours": [
+          "spice",
+          "citrus"
+        ],
+        "tastes": [
+          "sour",
+          "sweet"
+        ],
+        "strength": "strong",
+        "glass": {
+          "en": "Old fashioned glass",
+          "zh": "古典杯",
+          "fr": "Verre old fashioned",
+          "de": "Old-Fashioned-Glas",
+          "es": "Vaso old fashioned",
+          "ko": "올드 패션드 글라스",
+          "ja": "オールドファッションドグラス",
+          "it": "Bicchiere old fashioned"
+        }
+      }
+    },
+    {
+      "versionId": "penicillin-punch-proper-drink",
+      "sourceId": "punch-penicillin",
+      "sourceUrl": "https://punchdrink.com/recipes/penicillin/",
+      "note": "此独立来源采用蜂蜜姜糖浆；标签不把它混成 IBA 新鲜姜版本。",
+      "recipeDigest": "806308a9709cfcd81fd87b8d83b750fc23722aaff14319bd19fa1bac2dfb6868",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "punch-penicillin",
+        "ingredients": [
+          {
+            "ingredientId": "scotch-whisky",
+            "amount": 2,
+            "unit": "oz",
+            "note": {
+              "en": "The source gives Famous Grouse only as an example.",
+              "zh": "来源仅以 Famous Grouse 作为示例。",
+              "fr": "La source cite Famous Grouse uniquement comme exemple.",
+              "de": "Die Quelle nennt Famous Grouse nur als Beispiel.",
+              "es": "La fuente menciona Famous Grouse solo como ejemplo.",
+              "ko": "출처는 Famous Grouse를 예시로만 듭니다.",
+              "ja": "出典はFamous Grouseを例としてのみ挙げています。",
+              "it": "La fonte cita Famous Grouse solo come esempio."
+            }
+          },
+          {
+            "ingredientId": "honey-ginger-syrup",
+            "amount": 0.75,
+            "unit": "oz",
+            "note": {
+              "en": "Prepared syrup; the source page provides its separate method.",
+              "zh": "预制糖浆；来源页面另列制法。",
+              "fr": "Sirop préparé ; la page source donne sa méthode séparément.",
+              "de": "Vorbereiteter Sirup; die Quellseite beschreibt die Zubereitung separat.",
+              "es": "Sirope preparado; la página fuente ofrece su método por separado.",
+              "ko": "미리 만든 시럽으로, 출처 페이지에 별도 제조법이 있습니다.",
+              "ja": "作り置きシロップ。出典ページに別途作り方があります。",
+              "it": "Sciroppo preparato; la pagina fonte ne riporta a parte il metodo."
+            }
+          },
+          {
+            "ingredientId": "lemon-juice",
+            "amount": 0.75,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "islay-whisky",
+            "amount": 0.25,
+            "unit": "oz",
+            "note": {
+              "en": "Laphroaig 10YO is preferred, not required.",
+              "zh": "Laphroaig 10YO 为推荐而非必需。",
+              "fr": "Laphroaig 10 ans est conseillé, non obligatoire.",
+              "de": "Laphroaig 10YO wird empfohlen, ist aber nicht vorgeschrieben.",
+              "es": "Se prefiere Laphroaig 10YO, pero no es obligatorio.",
+              "ko": "Laphroaig 10YO를 권하지만 필수는 아닙니다.",
+              "ja": "Laphroaig 10YOを推奨していますが必須ではありません。",
+              "it": "Laphroaig 10YO è preferito, non obbligatorio."
+            }
+          }
+        ],
+        "originalSteps": [
+          "Add the blended Scotch, honey-ginger syrup, and lemon juice to a shaker three-quarters filled with ice.",
+          "Shake until cold, strain over one large cube in a rocks glass, then float the Islay Scotch and add the garnish."
+        ],
+        "flavours": [
+          "spice",
+          "citrus"
+        ],
+        "tastes": [
+          "sour",
+          "sweet"
+        ],
+        "strength": "strong",
+        "glass": {
+          "en": "Rocks glass with one large ice cube",
+          "zh": "放一块大冰的岩石杯",
+          "fr": "Verre rocks avec un gros glaçon",
+          "de": "Rocks-Glas mit einem großen Eiswürfel",
+          "es": "Vaso rocks con un cubo grande",
+          "ko": "큰 얼음 한 개를 담은 록스 글라스",
+          "ja": "大きな氷1個を入れたロックグラス",
+          "it": "Bicchiere rocks con un cubo grande"
+        }
+      }
+    },
+    {
+      "versionId": "alexander-iba",
+      "sourceId": "iba-alexander",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/alexander/",
+      "note": "可可利口酒、奶油与干邑；绵密风格来自公开材料。",
+      "recipeDigest": "4389e1bd1eef6828177e9d21424ad9429d0336ba7151be25b755867730fc29ae",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-alexander",
+        "ingredients": [
+          {
+            "ingredientId": "cognac",
+            "amount": 30,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "creme-de-cacao",
+            "amount": 30,
+            "unit": "ml",
+            "note": {
+              "en": "Brown crème de cacao.",
+              "zh": "棕色可可利口酒。",
+              "fr": "Crème de cacao brune.",
+              "de": "Braune Crème de Cacao.",
+              "es": "Crème de cacao oscura.",
+              "ko": "브라운 크렘 드 카카오.",
+              "ja": "ブラウン・クレーム・ド・カカオ。",
+              "it": "Crème de cacao scura."
+            }
+          },
+          {
+            "ingredientId": "cream",
+            "amount": 30,
+            "unit": "ml"
+          }
+        ],
+        "originalSteps": [
+          "The three ingredients are shaken with ice and strained into a chilled cocktail glass."
+        ],
+        "flavours": [
+          "spice"
+        ],
+        "tastes": [
+          "sweet",
+          "creamy"
+        ],
+        "strength": "medium",
+        "glass": {
+          "en": "Chilled cocktail glass",
+          "zh": "冰镇鸡尾酒杯",
+          "fr": "Verre à cocktail refroidi",
+          "de": "Gekühltes Cocktailglas",
+          "es": "Copa de cóctel fría",
+          "ko": "차가운 칵테일 글라스",
+          "ja": "冷やしたカクテルグラス",
+          "it": "Coppetta da cocktail fredda"
+        }
+      }
+    },
+    {
+      "versionId": "moscow-mule-iba",
+      "sourceId": "iba-moscow-mule",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/moscow-mule/",
+      "note": "姜汁啤酒、青柠与伏特加杯中混合，姜香支持秋季风格建议。",
+      "recipeDigest": "bab367753b7cd39d7af6c600ba8a66817593c4224ca5ecf93cfe61df2b3a6e2b",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-moscow-mule",
+        "ingredients": [
+          {
+            "ingredientId": "vodka",
+            "amount": 45,
+            "unit": "ml",
+            "brandId": "brand-smirnoff",
+            "note": {
+              "en": "The source specifies Smirnoff.",
+              "zh": "来源指定斯米诺。",
+              "fr": "La source précise Smirnoff.",
+              "de": "Die Quelle nennt Smirnoff.",
+              "es": "La fuente especifica Smirnoff.",
+              "ko": "출처는 스미노프를 지정합니다.",
+              "ja": "出典はスミノフを指定しています。",
+              "it": "La fonte specifica Smirnoff."
+            }
+          },
+          {
+            "ingredientId": "ginger-beer",
+            "amount": 120,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "lime-juice",
+            "amount": 10,
+            "unit": "ml"
+          }
+        ],
+        "originalSteps": [
+          "Vodka and ginger beer are combined in a mule cup or rocks glass.",
+          "Lime juice is added and the drink is stirred gently."
+        ],
+        "flavours": [
+          "citrus",
+          "spice"
+        ],
+        "tastes": [
+          "sour",
+          "refreshing"
+        ],
+        "strength": "medium",
+        "glass": {
+          "en": "Mule cup or rocks glass",
+          "zh": "骡子杯或岩石杯",
+          "fr": "Mule cup ou verre rocks",
+          "de": "Mule-Becher oder Tumbler",
+          "es": "Taza mule o vaso bajo",
+          "ko": "뮬 컵 또는 록스 글라스",
+          "ja": "ミュールカップまたはロックグラス",
+          "it": "Mule cup o tumbler basso"
+        }
+      }
+    },
+    {
+      "versionId": "americano-iba",
+      "sourceId": "iba-americano",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/americano/",
+      "note": "金巴利、味美思和苏打；低强度分类保持原档案。",
+      "recipeDigest": "0edde5f74b1aad5738c5de609104c38e3437bed96baa97760023abb7e6cd1874",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-americano",
+        "ingredients": [
+          {
+            "ingredientId": "campari",
+            "amount": 30,
+            "unit": "ml",
+            "brandId": "brand-campari"
+          },
+          {
+            "ingredientId": "sweet-red-vermouth",
+            "amount": 30,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "soda-water",
+            "amount": null,
+            "unit": "top",
+            "note": {
+              "en": "A splash.",
+              "zh": "少量。",
+              "fr": "Un trait.",
+              "de": "Ein Spritzer.",
+              "es": "Un toque.",
+              "ko": "한 번 가볍게.",
+              "ja": "少量。",
+              "it": "Uno spruzzo."
+            }
+          }
+        ],
+        "originalSteps": [
+          "The ingredients are built over ice in an old fashioned glass.",
+          "A splash of soda is added and the drink is stirred gently."
+        ],
+        "flavours": [
+          "herbal",
+          "spice"
+        ],
+        "tastes": [
+          "bitter",
+          "sweet",
+          "refreshing"
+        ],
+        "strength": "low",
+        "glass": {
+          "en": "Old fashioned glass",
+          "zh": "古典杯",
+          "fr": "Verre old fashioned",
+          "de": "Old-Fashioned-Glas",
+          "es": "Vaso old fashioned",
+          "ko": "올드 패션드 글라스",
+          "ja": "オールドファッションドグラス",
+          "it": "Bicchiere old fashioned"
+        }
+      }
+    },
+    {
+      "versionId": "spritz-iba",
+      "sourceId": "iba-spritz",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/spritz/",
+      "note": "Prosecco、Aperol 与苏打，原方杯中直调；本轮另核对 IBA 和品牌官网。",
+      "recipeDigest": "7e56b15b1d9f8bfedd6fb381c54a21add8f4b670ebc35e6e3fef62422574ff84",
+      "referenceStatus": "live-primary-page-and-archived-version",
+      "recipeFacts": {
+        "sourceId": "iba-spritz",
+        "ingredients": [
+          {
+            "ingredientId": "prosecco",
+            "amount": 90,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "aperol",
+            "amount": 60,
+            "unit": "ml",
+            "brandId": "brand-aperol"
+          },
+          {
+            "ingredientId": "soda-water",
+            "amount": null,
+            "unit": "top",
+            "note": {
+              "en": "A splash.",
+              "zh": "少量。",
+              "fr": "Un trait.",
+              "de": "Ein Spritzer.",
+              "es": "Un toque.",
+              "ko": "한 번 가볍게.",
+              "ja": "少量。",
+              "it": "Uno spruzzo."
+            }
+          }
+        ],
+        "originalSteps": [
+          "All ingredients are built in an ice-filled wine glass and stirred gently."
+        ],
+        "flavours": [
+          "fruit",
+          "herbal"
+        ],
+        "tastes": [
+          "bitter",
+          "sweet",
+          "refreshing"
+        ],
+        "strength": "low",
+        "glass": {
+          "en": "Wine glass",
+          "zh": "葡萄酒杯",
+          "fr": "Verre à vin",
+          "de": "Weinglas",
+          "es": "Copa de vino",
+          "ko": "와인 글라스",
+          "ja": "ワイングラス",
+          "it": "Calice da vino"
+        }
+      }
+    },
+    {
+      "versionId": "bellini-iba",
+      "sourceId": "iba-bellini",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/bellini/",
+      "note": "白桃果泥与 Prosecco；本轮核对 IBA；春季是花果风格，非鲜桃产季断言。",
+      "recipeDigest": "a28cd818365fcea50078395327a069eb6509aba7dfdf3515b64580db7cc1ca83",
+      "referenceStatus": "live-primary-page-and-archived-version",
+      "recipeFacts": {
+        "sourceId": "iba-bellini",
+        "ingredients": [
+          {
+            "ingredientId": "prosecco",
+            "amount": 100,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "white-peach-puree",
+            "amount": 50,
+            "unit": "ml"
+          }
+        ],
+        "originalSteps": [
+          "Add peach puree to a mixing glass with ice, then add Prosecco.",
+          "Stir gently and pour into the chilled flute."
+        ],
+        "flavours": [
+          "fruit",
+          "floral"
+        ],
+        "tastes": [
+          "sweet",
+          "refreshing"
+        ],
+        "strength": "low",
+        "glass": {
+          "en": "Chilled flute",
+          "zh": "冰镇笛形杯",
+          "fr": "Flûte refroidie",
+          "de": "Gekühlte Flöte",
+          "es": "Copa flauta fría",
+          "ko": "차갑게 식힌 플루트",
+          "ja": "冷やしたフルートグラス",
+          "it": "Flute freddo"
+        }
+      }
+    },
+    {
+      "versionId": "black-russian-iba",
+      "sourceId": "iba-black-russian",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/black-russian/",
+      "note": "咖啡利口酒与伏特加，没有奶油，不将咖啡风格写成乳制品。",
+      "recipeDigest": "e409fcff672b01eb6bf13cd8e6610e0505e3cce55e31eba0d992b186fd68ebcf",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-black-russian",
+        "ingredients": [
+          {
+            "ingredientId": "vodka",
+            "amount": 50,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "coffee-liqueur",
+            "amount": 20,
+            "unit": "ml"
+          }
+        ],
+        "originalSteps": [
+          "Build the ingredients over ice cubes in the old fashioned glass.",
+          "Stir gently."
+        ],
+        "flavours": [
+          "coffee"
+        ],
+        "tastes": [
+          "bitter",
+          "sweet"
+        ],
+        "strength": "strong",
+        "glass": {
+          "en": "Old fashioned glass",
+          "zh": "古典杯",
+          "fr": "Verre old fashioned",
+          "de": "Old-Fashioned-Glas",
+          "es": "Vaso old fashioned",
+          "ko": "올드 패션드 글라스",
+          "ja": "オールドファッションドグラス",
+          "it": "Bicchiere old fashioned"
+        }
+      }
+    },
+    {
+      "versionId": "grasshopper-iba",
+      "sourceId": "iba-grasshopper",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/grasshopper/",
+      "note": "奶油、可可和薄荷利口酒，原方为冷饮。",
+      "recipeDigest": "95c1443ecd26484452afbd4a451da0b7b20d3435d1647f727f0bb8453ece64b2",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-grasshopper",
+        "ingredients": [
+          {
+            "ingredientId": "creme-de-cacao",
+            "amount": 20,
+            "unit": "ml",
+            "note": {
+              "en": "The source specifies white crème de cacao.",
+              "zh": "来源指定白可可利口酒。",
+              "fr": "La source précise la crème de cacao blanche.",
+              "de": "Die Quelle nennt weiße Crème de Cacao.",
+              "es": "La fuente especifica crema de cacao blanca.",
+              "ko": "출처는 화이트 크렘 드 카카오를 명시합니다.",
+              "ja": "出典はホワイト・クレーム・ド・カカオを指定しています。",
+              "it": "La fonte specifica crème de cacao bianca."
+            }
+          },
+          {
+            "ingredientId": "creme-de-menthe",
+            "amount": 20,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "cream",
+            "amount": 20,
+            "unit": "ml"
+          }
+        ],
+        "originalSteps": [
+          "Shake all ingredients briskly with ice for a few seconds.",
+          "Strain into the chilled cocktail glass."
+        ],
+        "flavours": [
+          "herbal"
+        ],
+        "tastes": [
+          "sweet",
+          "creamy"
+        ],
+        "strength": "medium",
+        "glass": {
+          "en": "Chilled cocktail glass",
+          "zh": "冰镇鸡尾酒杯",
+          "fr": "Verre à cocktail refroidi",
+          "de": "Gekühltes Cocktailglas",
+          "es": "Copa de cóctel fría",
+          "ko": "차갑게 식힌 칵테일 글라스",
+          "ja": "冷やしたカクテルグラス",
+          "it": "Coppetta da cocktail fredda"
+        }
+      }
+    },
+    {
+      "versionId": "irish-coffee-iba",
+      "sourceId": "iba-irish-coffee",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/irish-coffee/",
+      "note": "明确热咖啡与预热杯，奶油浮层；本轮复核 IBA，不与冰咖啡混淆。",
+      "recipeDigest": "fb82f2dfc5fb967e3c34e0168cc14274402d05a3257236bcdec5c5bbc2fe08bd",
+      "referenceStatus": "live-primary-page-and-archived-version",
+      "recipeFacts": {
+        "sourceId": "iba-irish-coffee",
+        "ingredients": [
+          {
+            "ingredientId": "irish-whiskey",
+            "amount": 50,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "hot-coffee",
+            "amount": 120,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "cream",
+            "amount": 50,
+            "unit": "ml",
+            "note": {
+              "en": "Use fresh, thick, chilled cream.",
+              "zh": "使用新鲜、浓稠且冰镇的奶油。",
+              "fr": "Employer une crème fraîche, épaisse et froide.",
+              "de": "Frische, dicke, gekühlte Sahne verwenden.",
+              "es": "Usa nata fresca, espesa y fría.",
+              "ko": "신선하고 진하며 차가운 크림을 사용합니다.",
+              "ja": "新鮮で濃く冷たいクリームを使います。",
+              "it": "Usare panna fresca, densa e fredda."
+            }
+          },
+          {
+            "ingredientId": "sugar",
+            "amount": 1,
+            "unit": "tsp",
+            "note": {
+              "en": "The method says at least one teaspoon.",
+              "zh": "做法说明至少一茶匙。",
+              "fr": "La méthode indique au moins une cuillère à café.",
+              "de": "Die Methode nennt mindestens einen Teelöffel.",
+              "es": "El método indica al menos una cucharadita.",
+              "ko": "방법에는 최소 한 티스푼이라고 적혀 있습니다.",
+              "ja": "手順では少なくとも小さじ1としています。",
+              "it": "Il metodo indica almeno un cucchiaino."
+            }
+          }
+        ],
+        "originalSteps": [
+          "Pour warm coffee into a preheated Irish coffee glass; add whiskey and sugar, then stir until dissolved.",
+          "Float thick chilled cream over the back of a spoon without mixing."
+        ],
+        "flavours": [
+          "coffee"
+        ],
+        "tastes": [
+          "bitter",
+          "sweet",
+          "creamy"
+        ],
+        "strength": "medium",
+        "glass": {
+          "en": "Preheated Irish coffee glass",
+          "zh": "预热爱尔兰咖啡杯",
+          "fr": "Verre à Irish coffee préchauffé",
+          "de": "Vorgewärmtes Irish-Coffee-Glas",
+          "es": "Vaso de café irlandés precalentado",
+          "ko": "데운 아이리시 커피 글라스",
+          "ja": "予熱したアイリッシュコーヒーグラス",
+          "it": "Bicchiere da Irish coffee preriscaldato"
+        }
+      }
+    },
+    {
+      "versionId": "mimosa-iba",
+      "sourceId": "iba-mimosa",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/mimosa/",
+      "note": "橙汁与 Prosecco；餐饮场合为编辑建议，不推断具体菜品搭配。",
+      "recipeDigest": "420a89a782cfa4c4f28952de30de89ff2c6f44c18ad51e1d369316501f5ad4ee",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-mimosa",
+        "ingredients": [
+          {
+            "ingredientId": "orange-juice",
+            "amount": 75,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "prosecco",
+            "amount": 75,
+            "unit": "ml"
+          }
+        ],
+        "originalSteps": [
+          "Pour orange juice into the flute and gently add Prosecco.",
+          "Stir gently."
+        ],
+        "flavours": [
+          "citrus",
+          "fruit"
+        ],
+        "tastes": [
+          "sweet",
+          "refreshing"
+        ],
+        "strength": "low",
+        "glass": {
+          "en": "Chilled flute",
+          "zh": "冰镇笛形杯",
+          "fr": "Flûte refroidie",
+          "de": "Gekühlte Flöte",
+          "es": "Copa flauta fría",
+          "ko": "차갑게 식힌 플루트",
+          "ja": "冷やしたフルートグラス",
+          "it": "Flute freddo"
+        }
+      }
+    },
+    {
+      "versionId": "south-side-iba",
+      "sourceId": "iba-south-side",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/south-side/",
+      "note": "柠檬、薄荷与金酒；可选蛋白仍按严格排除处理。",
+      "recipeDigest": "0094493345f1a7ecc19fb9a70f8ee7a6591ded3eee58aa0c279be4480db4115b",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-south-side",
+        "ingredients": [
+          {
+            "ingredientId": "gin",
+            "amount": 60,
+            "unit": "ml",
+            "note": {
+              "en": "London dry gin.",
+              "zh": "伦敦干金酒。",
+              "fr": "Gin London dry.",
+              "de": "London Dry Gin.",
+              "es": "Ginebra London dry.",
+              "ko": "런던 드라이 진.",
+              "ja": "ロンドンドライジン。",
+              "it": "London dry gin."
+            }
+          },
+          {
+            "ingredientId": "lemon-juice",
+            "amount": 30,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "simple-syrup",
+            "amount": 15,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "mint-leaves",
+            "amount": null,
+            "unit": "piece",
+            "note": {
+              "en": "Five to six leaves.",
+              "zh": "5 至 6 片叶。",
+              "fr": "Cinq à six feuilles.",
+              "de": "Fünf bis sechs Blätter.",
+              "es": "Cinco o seis hojas.",
+              "ko": "5~6장.",
+              "ja": "5〜6枚。",
+              "it": "Cinque-sei foglie."
+            }
+          },
+          {
+            "ingredientId": "egg-white",
+            "amount": null,
+            "unit": "drop",
+            "optional": true,
+            "note": {
+              "en": "A few drops, optional; shake vigorously if used.",
+              "zh": "几滴，可选；使用时需用力摇匀。",
+              "fr": "Quelques gouttes, facultatives ; shaker vivement si utilisé.",
+              "de": "Einige Tropfen, optional; bei Verwendung kräftig shaken.",
+              "es": "Unas gotas, opcionales; agitar con fuerza si se usa.",
+              "ko": "몇 방울, 선택 사항. 넣으면 세게 흔듭니다.",
+              "ja": "数滴、任意。使う場合は強くシェイクします。",
+              "it": "Alcune gocce, facoltative; shakerare forte se usate."
+            }
+          }
+        ],
+        "originalSteps": [
+          "Shake well with ice and double-strain into a chilled cocktail glass.",
+          "If using egg white, shake vigorously."
+        ],
+        "flavours": [
+          "citrus",
+          "herbal"
+        ],
+        "tastes": [
+          "sour",
+          "sweet",
+          "refreshing"
+        ],
+        "strength": "strong",
+        "glass": {
+          "en": "Chilled cocktail glass",
+          "zh": "冰镇鸡尾酒杯",
+          "fr": "Verre à cocktail refroidi",
+          "de": "Gekühltes Cocktailglas",
+          "es": "Copa de cóctel fría",
+          "ko": "차가운 칵테일 글라스",
+          "ja": "冷やしたカクテルグラス",
+          "it": "Coppetta da cocktail fredda"
+        }
+      }
+    },
+    {
+      "versionId": "stinger-iba",
+      "sourceId": "iba-stinger",
+      "sourceUrl": "https://iba-world.com/iba-cocktail/stinger/",
+      "note": "干邑与白薄荷利口酒搅拌；原有强度资料，不声称帮助消化。",
+      "recipeDigest": "341dec034842f1e1413c502f963a02d7e3659e8e8635f12703630bbb4ec1eb6e",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "iba-stinger",
+        "ingredients": [
+          {
+            "ingredientId": "cognac",
+            "amount": 50,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "white-creme-de-menthe",
+            "amount": 20,
+            "unit": "ml"
+          }
+        ],
+        "originalSteps": [
+          "Stir all ingredients with ice and strain into the chilled glass."
+        ],
+        "flavours": [
+          "herbal"
+        ],
+        "tastes": [
+          "sweet"
+        ],
+        "strength": "strong",
+        "glass": {
+          "en": "Chilled martini glass",
+          "zh": "冰镇马天尼杯",
+          "fr": "Verre à martini refroidi",
+          "de": "Gekühltes Martiniglas",
+          "es": "Copa martini fría",
+          "ko": "차가운 마티니 글라스",
+          "ja": "冷やしたマティーニグラス",
+          "it": "Coppa Martini fredda"
+        }
+      }
+    },
+    {
+      "versionId": "gin-and-tonic-diffords-gin-and-tonic",
+      "sourceId": "diffords-gin-and-tonic",
+      "sourceUrl": "https://www.diffordsguide.com/cocktails/recipe/835/gin-and-tonic",
+      "note": "Collins 杯，金酒与汤力加冰直调；具体瓶款差异仍由原配方与档案呈现。",
+      "recipeDigest": "ada0e28d3725166261278ca7392106b02dc886c4fa04a1ff03852002449a9a4e",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "diffords-gin-and-tonic",
+        "ingredients": [
+          {
+            "ingredientId": "gin",
+            "amount": 1.6666666666666665,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "tonic-water",
+            "amount": 4,
+            "unit": "oz"
+          }
+        ],
+        "originalSteps": [
+          "Pour the ingredients into the chilled glass.",
+          "Fill the glass with ice."
+        ],
+        "flavours": [
+          "herbal",
+          "citrus"
+        ],
+        "tastes": [
+          "bitter",
+          "refreshing",
+          "dry"
+        ],
+        "strength": "medium",
+        "glass": {
+          "en": "Collins glass",
+          "zh": "柯林杯",
+          "fr": "Verre Collins",
+          "de": "Collinsglas",
+          "es": "Vaso Collins",
+          "ko": "콜린스 글라스",
+          "ja": "コリンズグラス",
+          "it": "Bicchiere Collins"
+        }
+      }
+    },
+    {
+      "versionId": "gimlet-diffords-gimlet-savoy-excerpt",
+      "sourceId": "diffords-gimlet-savoy-excerpt",
+      "sourceUrl": "https://www.diffordsguide.com/cocktails/recipe/831/gimlet-diffords-recipe",
+      "note": "历史摘录为金酒与青柠 cordial 等份，独立于 Difford 当代版本。",
+      "recipeDigest": "8285c7753763f831f0a0d12676197bdde3daa3816edf313101d7498872ee66b2",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "diffords-gimlet-savoy-excerpt",
+        "ingredients": [
+          {
+            "ingredientId": "gin",
+            "amount": 1,
+            "unit": "part",
+            "note": {
+              "en": "The excerpt specifies Plymouth gin.",
+              "zh": "摘录指定 Plymouth 金酒。",
+              "fr": "L’extrait précise le gin Plymouth.",
+              "de": "Der Auszug nennt Plymouth Gin.",
+              "es": "El extracto especifica ginebra Plymouth.",
+              "ko": "발췌문은 플리머스 진을 지정합니다.",
+              "ja": "抜粋はプリマスジンを指定しています。",
+              "it": "L’estratto specifica gin Plymouth."
+            },
+            "brandId": "brand-plymouth"
+          },
+          {
+            "ingredientId": "lime-cordial",
+            "amount": 1,
+            "unit": "part",
+            "note": {
+              "en": "The excerpt specifies Rose’s Lime Cordial.",
+              "zh": "摘录指定 Rose’s 青柠科迪尔。",
+              "fr": "L’extrait précise le cordial Rose’s.",
+              "de": "Der Auszug nennt Rose’s Lime Cordial.",
+              "es": "El extracto especifica Rose’s Lime Cordial.",
+              "ko": "발췌문은 로즈 라임 코디얼을 지정합니다.",
+              "ja": "抜粋はローズのライムコーディアルを指定しています。",
+              "it": "L’estratto specifica Rose’s Lime Cordial."
+            },
+            "brandId": "brand-roses"
+          }
+        ],
+        "originalSteps": [
+          "Stir the equal parts together and serve in the same glass.",
+          "Ice may be added if desired."
+        ],
+        "flavours": [
+          "citrus"
+        ],
+        "tastes": [
+          "sour",
+          "sweet"
+        ],
+        "strength": "strong",
+        "glass": {
+          "en": "Serving glass; source does not specify the style",
+          "zh": "盛酒杯；来源未指定杯型",
+          "fr": "Verre de service ; style non précisé",
+          "de": "Servierglas; Stil nicht angegeben",
+          "es": "Vaso de servicio; estilo no indicado",
+          "ko": "서빙 글라스, 출처에 형태 미지정",
+          "ja": "提供用グラス（形式の指定なし）",
+          "it": "Bicchiere di servizio; stile non indicato"
+        }
+      }
+    },
+    {
+      "versionId": "gimlet-diffords-gimlet",
+      "sourceId": "diffords-gimlet",
+      "sourceUrl": "https://www.diffordsguide.com/cocktails/recipe/831/gimlet-diffords-recipe",
+      "note": "此版本含 genever、两种柑橘汁与糖浆；选择此版本时维持确切配料。",
+      "recipeDigest": "3023de76f3544e95569594af230a7202d34a9e59b7d1230e44ad763631c0fa36",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "diffords-gimlet",
+        "ingredients": [
+          {
+            "ingredientId": "gin",
+            "amount": 1.6666666666666665,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "lime-cordial",
+            "amount": 0.6666666666666666,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "oude-genever",
+            "amount": 0.3333333333333333,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "lime-juice",
+            "amount": 0.16666666666666666,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "lemon-juice",
+            "amount": 0.16666666666666666,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "rich-sugar-syrup",
+            "amount": 0.16666666666666666,
+            "unit": "oz"
+          }
+        ],
+        "originalSteps": [
+          "Shake all ingredients with ice.",
+          "Fine-strain into the chilled glass."
+        ],
+        "flavours": [
+          "citrus"
+        ],
+        "tastes": [
+          "sour",
+          "sweet"
+        ],
+        "strength": "strong",
+        "glass": {
+          "en": "Chilled coupe",
+          "zh": "冰镇碟形杯",
+          "fr": "Coupe refroidie",
+          "de": "Gekühlte Coupette",
+          "es": "Copa coupe fría",
+          "ko": "차가운 쿠페 글라스",
+          "ja": "冷やしたクープ",
+          "it": "Coppa coupe fredda"
+        }
+      }
+    },
+    {
+      "versionId": "pimms-cup-diffords-pimms-cup",
+      "sourceId": "diffords-pimms-cup",
+      "sourceUrl": "https://www.diffordsguide.com/cocktails/recipe/1523/pimms-cup-or-classic-pimms",
+      "note": "高杯含柑橘、黄瓜和草莓，配柠檬汽水及姜汁汽水；切水果是实际准备步骤。",
+      "recipeDigest": "44ec6e0678d39a528b0b7742262ad1e4e55b9effd78c3a0c771e685fd20fe0c3",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "diffords-pimms-cup",
+        "ingredients": [
+          {
+            "ingredientId": "fruit-cup-liqueur",
+            "amount": 1.5,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "fresh-orange-slice",
+            "amount": 1,
+            "unit": "piece"
+          },
+          {
+            "ingredientId": "fresh-lemon-slice",
+            "amount": 1,
+            "unit": "piece"
+          },
+          {
+            "ingredientId": "fresh-cucumber-slice",
+            "amount": 1,
+            "unit": "piece"
+          },
+          {
+            "ingredientId": "fresh-strawberry-slices",
+            "amount": 2,
+            "unit": "piece"
+          },
+          {
+            "ingredientId": "lemonade",
+            "amount": 2,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "ginger-ale",
+            "amount": 2.5,
+            "unit": "oz"
+          }
+        ],
+        "originalSteps": [
+          "Pour the fruit cup into a half-iced Collins glass and add the fruit.",
+          "Add more ice, pour in lemonade and ginger ale, and stir briefly."
+        ],
+        "flavours": [
+          "fruit",
+          "citrus",
+          "herbal"
+        ],
+        "tastes": [
+          "sweet",
+          "refreshing"
+        ],
+        "strength": "low",
+        "glass": {
+          "en": "Collins glass",
+          "zh": "柯林杯",
+          "fr": "Verre Collins",
+          "de": "Collinsglas",
+          "es": "Vaso Collins",
+          "ko": "콜린스 글라스",
+          "ja": "コリンズグラス",
+          "it": "Bicchiere Collins"
+        }
+      }
+    },
+    {
+      "versionId": "white-russian-diffords-white-russian",
+      "sourceId": "diffords-white-russian",
+      "sourceUrl": "https://www.diffordsguide.com/cocktails/recipe/2093/white-russian-cocktail",
+      "note": "咖啡利口酒与奶油，原方要略打发奶油并浮层，未贴简单直调标签。",
+      "recipeDigest": "aefbb2fc51be9361353a6a0febf0314685c677b43fbf0a62cda3192dbd1ddc85",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "diffords-white-russian",
+        "ingredients": [
+          {
+            "ingredientId": "vodka",
+            "amount": 2,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "coffee-liqueur",
+            "amount": 1,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "cream",
+            "amount": 1,
+            "unit": "oz",
+            "note": {
+              "en": "The source specifies whipping cream, lightly aerated before floating.",
+              "zh": "来源指定淡奶油，漂浮前轻度打发。",
+              "fr": "La source précise de la crème à fouetter, légèrement aérée.",
+              "de": "Die Quelle nennt Schlagsahne, vor dem Floaten leicht belüftet.",
+              "es": "La fuente especifica nata para montar, ligeramente aireada.",
+              "ko": "출처는 가볍게 공기를 넣은 휘핑크림을 지정합니다.",
+              "ja": "出典は軽く空気を含ませたホイップクリームを指定しています。",
+              "it": "La fonte specifica panna da montare, leggermente aerata."
+            }
+          }
+        ],
+        "originalSteps": [
+          "Stir vodka and coffee liqueur with ice and strain over fresh ice.",
+          "Lightly aerate the cream, float it on top, and grate nutmeg over it."
+        ],
+        "flavours": [
+          "coffee",
+          "spice"
+        ],
+        "tastes": [
+          "creamy",
+          "sweet"
+        ],
+        "strength": "strong",
+        "glass": {
+          "en": "Old-fashioned glass",
+          "zh": "古典杯",
+          "fr": "Verre old-fashioned",
+          "de": "Old-Fashioned-Glas",
+          "es": "Vaso old-fashioned",
+          "ko": "올드 패션드 글라스",
+          "ja": "オールドファッションドグラス",
+          "it": "Bicchiere old-fashioned"
+        }
+      }
+    },
+    {
+      "versionId": "rob-roy-batch-f",
+      "sourceId": "batch-f-rob-roy",
+      "sourceUrl": "https://www.liquor.com/recipes/rob-roy/",
+      "note": "苏格兰威士忌、味美思、苦精；已归档香料风味。",
+      "recipeDigest": "2d43e4d6f54133556bfedf219b1ff93873ba2fe5d163cadf0c27b9e227ccc745",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "batch-f-rob-roy",
+        "ingredients": [
+          {
+            "ingredientId": "scotch-whisky",
+            "amount": 2,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "sweet-red-vermouth",
+            "amount": 0.75,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "angostura-bitters",
+            "amount": 3,
+            "unit": "dash",
+            "brandId": "brand-angostura-aromatic"
+          }
+        ],
+        "originalSteps": [
+          "Stir the liquids with ice, then strain into a chilled Nick & Nora or cocktail glass."
+        ],
+        "flavours": [
+          "spice",
+          "herbal"
+        ],
+        "tastes": [
+          "sweet",
+          "bitter"
+        ],
+        "strength": "strong",
+        "glass": {
+          "en": "Chilled cocktail glass",
+          "zh": "冰镇鸡尾酒杯",
+          "fr": "Verre à cocktail refroidi",
+          "de": "Gekühltes Cocktailglas",
+          "es": "Copa de cóctel fría",
+          "ko": "차가운 칵테일 글라스",
+          "ja": "冷やしたカクテルグラス",
+          "it": "Coppetta da cocktail fredda"
+        }
+      }
+    },
+    {
+      "versionId": "hot-toddy-batch-f",
+      "sourceId": "batch-f-hot-toddy",
+      "sourceUrl": "https://www.liquor.com/recipes/hot-toddy/",
+      "note": "明确预热马克杯、沸水、丁香和柠檬；不作保健或治疗宣称。",
+      "recipeDigest": "f0dd6d168a0f595d5c2c16481a9c38b4ba82ec56cb02f3c7c5a1ddb5e768ff40",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "batch-f-hot-toddy",
+        "ingredients": [
+          {
+            "ingredientId": "cloves",
+            "amount": 4,
+            "unit": "piece"
+          },
+          {
+            "ingredientId": "sugar",
+            "amount": 2,
+            "unit": "tsp",
+            "note": {
+              "en": "Demerara or brown sugar.",
+              "zh": "德梅拉拉糖或红糖。",
+              "fr": "Sucre demerara ou cassonade.",
+              "de": "Demerara- oder brauner Zucker.",
+              "es": "Azúcar demerara o moreno.",
+              "ko": "데메라라 또는 황설탕.",
+              "ja": "デメララまたはブラウンシュガー。",
+              "it": "Zucchero demerara o bruno."
+            }
+          },
+          {
+            "ingredientId": "lemon-juice",
+            "amount": 0.25,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "whiskey",
+            "amount": 2,
+            "unit": "oz",
+            "note": {
+              "en": "The source allows bourbon, rye, Irish whiskey, or Scotch.",
+              "zh": "来源允许波本、黑麦、爱尔兰或苏格兰威士忌。",
+              "fr": "La source permet bourbon, rye, whiskey irlandais ou Scotch.",
+              "de": "Die Quelle erlaubt Bourbon, Rye, Irish Whiskey oder Scotch.",
+              "es": "La fuente permite bourbon, centeno, irlandés o Scotch.",
+              "ko": "출처는 버번, 라이, 아이리시, 스카치를 허용합니다.",
+              "ja": "出典はバーボン、ライ、アイリッシュ、スコッチを可とします。",
+              "it": "La fonte permette bourbon, rye, irlandese o Scotch."
+            }
+          },
+          {
+            "ingredientId": "plain-water",
+            "amount": null,
+            "unit": "top",
+            "note": {
+              "en": "Fresh boiling water: preheat the mug, discard that water, then refill the mug halfway.",
+              "zh": "新鲜沸水：先预热杯并倒掉，再加至杯子一半。",
+              "fr": "Eau bouillante fraîche: préchauffer la tasse, jeter cette eau, puis remplir à moitié.",
+              "de": "Frisch kochendes Wasser: Becher vorwärmen, Wasser wegschütten, dann halb füllen.",
+              "es": "Agua recién hervida: precalienta la taza, desecha esa agua y llena hasta la mitad.",
+              "ko": "갓 끓인 물로 머그를 데우고 버린 뒤 절반까지 다시 붓습니다.",
+              "ja": "沸騰したての湯でマグを温め、捨ててから半分まで注ぎます。",
+              "it": "Acqua appena bollita: preriscaldare la tazza, gettare l’acqua e riempire a metà."
+            }
+          }
+        ],
+        "originalSteps": [
+          "Preheat the mug, make a clove-studded lemon garnish, refill halfway with boiling water, dissolve the sugar, and add lemon juice and whiskey."
+        ],
+        "flavours": [
+          "citrus",
+          "spice"
+        ],
+        "tastes": [
+          "sweet",
+          "refreshing"
+        ],
+        "strength": "medium",
+        "glass": {
+          "en": "Preheated mug",
+          "zh": "预热马克杯",
+          "fr": "Tasse préchauffée",
+          "de": "Vorgewärmter Becher",
+          "es": "Taza precalentada",
+          "ko": "데운 머그",
+          "ja": "温めたマグ",
+          "it": "Tazza preriscaldata"
+        }
+      }
+    },
+    {
+      "versionId": "hugo-spritz-batch-i",
+      "sourceId": "batch-i-hugo-spritz",
+      "sourceUrl": "https://www.liquor.com/hugo-spritz-cocktail-recipe-5194222",
+      "note": "接骨木花、薄荷、Prosecco 和苏打；薄荷需浸润三分钟，不称作即时制作。",
+      "recipeDigest": "5acb70d3974c50b33159623c67a11fb5bbabe10a8bc4959497bd2ec10af9998b",
+      "referenceStatus": "archived-version-facts",
+      "recipeFacts": {
+        "sourceId": "batch-i-hugo-spritz",
+        "ingredients": [
+          {
+            "ingredientId": "elderflower-liqueur",
+            "amount": 0.5,
+            "unit": "oz",
+            "brandId": "brand-st-germain"
+          },
+          {
+            "ingredientId": "mint-sprigs",
+            "amount": 1,
+            "unit": "piece"
+          },
+          {
+            "ingredientId": "prosecco",
+            "amount": 4,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "soda-water",
+            "amount": 1,
+            "unit": "oz"
+          }
+        ],
+        "originalSteps": [
+          "Muddle mint and St-Germain, rest three minutes, add ice and sparkling ingredients, and stir gently."
+        ],
+        "flavours": [
+          "floral",
+          "herbal"
+        ],
+        "tastes": [
+          "sweet",
+          "refreshing"
+        ],
+        "strength": "low",
+        "glass": {
+          "en": "Wine glass",
+          "zh": "葡萄酒杯",
+          "fr": "Verre à vin",
+          "de": "Weinglas",
+          "es": "Copa de vino",
+          "ko": "와인 글라스",
+          "ja": "ワイングラス",
+          "it": "Bicchiere da vino"
+        }
+      }
+    },
+    {
+      "versionId": "arnold-palmer-batch-m",
+      "sourceId": "catalogue-m-arnold-palmer",
+      "sourceUrl": "https://www.thebar.com/en-gb/recipes/arnold-palmer",
+      "recipeDigest": "3383ba150667767d171a8c2de766f3fd11a482c340f150cd3fc5721275ec32cd",
+      "recipeFacts": {
+        "sourceId": "catalogue-m-arnold-palmer",
+        "ingredients": [
+          {
+            "ingredientId": "iced-black-tea",
+            "amount": 120,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "lemonade",
+            "amount": 120,
+            "unit": "ml"
+          }
+        ],
+        "originalSteps": [
+          "Pour the iced tea and lemonade over ice in a highball glass. Stir gently and add a lemon wheel and mint sprig."
+        ],
+        "flavours": [
+          "citrus",
+          "herbal"
+        ],
+        "tastes": [
+          "sweet",
+          "refreshing"
+        ],
+        "strength": "none",
+        "glass": {
+          "en": "Collins glass",
+          "zh": "柯林斯杯",
+          "fr": "Verre Collins",
+          "de": "Collins-Glas",
+          "es": "Vaso Collins",
+          "ko": "콜린스 잔",
+          "ja": "コリンズグラス",
+          "it": "Bicchiere Collins"
+        }
+      },
+      "referenceStatus": "reviewed-source-facts",
+      "reviewedAt": "2026-09-24",
+      "note": "Editorial citrus-refreshing suggestion grounded in this source version's ingredient/profile/service facts; not an author claim."
+    },
+    {
+      "versionId": "shirley-temple-batch-m",
+      "sourceId": "catalogue-m-shirley-temple",
+      "sourceUrl": "https://www.liquor.com/recipes/shirley-temple/",
+      "recipeDigest": "b7b661b27964d9f415145ee3ae93ded7c7378307adac4274bcfdcac1776ca11b",
+      "recipeFacts": {
+        "sourceId": "catalogue-m-shirley-temple",
+        "ingredients": [
+          {
+            "ingredientId": "grenadine-syrup",
+            "amount": 0.5,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "lime-juice",
+            "amount": 0.25,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "ginger-ale",
+            "amount": 5,
+            "unit": "oz"
+          }
+        ],
+        "originalSteps": [
+          "Combine the ingredients over ice in a Collins glass and stir gently. Garnish with two or three cocktail cherries."
+        ],
+        "flavours": [
+          "fruit",
+          "citrus",
+          "spice"
+        ],
+        "tastes": [
+          "sweet",
+          "refreshing"
+        ],
+        "strength": "none",
+        "glass": {
+          "en": "Collins glass",
+          "zh": "柯林斯杯",
+          "fr": "Verre Collins",
+          "de": "Collins-Glas",
+          "es": "Vaso Collins",
+          "ko": "콜린스 잔",
+          "ja": "コリンズグラス",
+          "it": "Bicchiere Collins"
+        }
+      },
+      "referenceStatus": "reviewed-source-facts",
+      "reviewedAt": "2026-09-24",
+      "note": "Editorial floral-fruit suggestion grounded in this source version's ingredient/profile/service facts; not an author claim."
+    },
+    {
+      "versionId": "virgin-mary-batch-m",
+      "sourceId": "catalogue-m-virgin-mary",
+      "sourceUrl": "https://www.thebar.com/en-in/recipes/the-virgin-mary",
+      "recipeDigest": "ee7253c73300f199f9095babb3af9d275511283030c914e8503651dc5efc1835",
+      "recipeFacts": {
+        "sourceId": "catalogue-m-virgin-mary",
+        "ingredients": [
+          {
+            "ingredientId": "tomato-juice",
+            "amount": 90,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "lemon-juice",
+            "amount": 10,
+            "unit": "ml"
+          },
+          {
+            "ingredientId": "pickle-brine",
+            "amount": 10,
+            "unit": "ml",
+            "note": {
+              "en": "Or olive brine.",
+              "zh": "也可用橄榄盐水。",
+              "fr": "Ou saumure d’olives.",
+              "de": "Oder Olivenlake.",
+              "es": "O salmuera de aceituna.",
+              "ko": "올리브 절임물로 대체 가능.",
+              "ja": "オリーブの漬け汁でも可。",
+              "it": "Oppure salamoia di olive."
+            }
+          },
+          {
+            "ingredientId": "worcestershire-sauce",
+            "amount": null,
+            "unit": "dash"
+          },
+          {
+            "ingredientId": "food-hot-sauce",
+            "amount": null,
+            "unit": "dash"
+          },
+          {
+            "ingredientId": "celery-salt",
+            "amount": 1,
+            "unit": "pinch"
+          },
+          {
+            "ingredientId": "black-pepper",
+            "amount": 1,
+            "unit": "pinch"
+          }
+        ],
+        "originalSteps": [
+          "Shake the ingredients with ice for about 10 seconds.",
+          "Strain into a chilled rocks or highball glass over fresh ice. Garnish with celery or a lemon wedge."
+        ],
+        "flavours": [
+          "spice"
+        ],
+        "tastes": [
+          "sour",
+          "refreshing"
+        ],
+        "strength": "none",
+        "glass": {
+          "en": "Rocks glass",
+          "zh": "古典杯",
+          "fr": "Verre bas",
+          "de": "Tumbler",
+          "es": "Vaso bajo",
+          "ko": "록스 잔",
+          "ja": "ロックグラス",
+          "it": "Bicchiere basso"
+        }
+      },
+      "referenceStatus": "reviewed-source-facts",
+      "reviewedAt": "2026-09-24",
+      "note": "Editorial spice-depth suggestion grounded in this source version's ingredient/profile/service facts; not an author claim."
+    },
+    {
+      "versionId": "blue-hawaiian-batch-m",
+      "sourceId": "catalogue-m-blue-hawaiian",
+      "sourceUrl": "https://www.liquor.com/recipes/blue-hawaiian/",
+      "recipeDigest": "4cb377943ff39bb4bff04b9fc6c4313d7569a5c87ad098160ebd70660c089d49",
+      "recipeFacts": {
+        "sourceId": "catalogue-m-blue-hawaiian",
+        "ingredients": [
+          {
+            "ingredientId": "light-rum",
+            "amount": 1.5,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "blue-curacao",
+            "amount": 0.75,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "pineapple-juice",
+            "amount": 2,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "cream-of-coconut",
+            "amount": 0.75,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "lemon-juice",
+            "amount": 0.5,
+            "unit": "oz"
+          }
+        ],
+        "originalSteps": [
+          "Shake the ingredients with ice until cold.",
+          "Strain into a Hurricane glass over pebble ice. Add pineapple, a cocktail cherry and an umbrella."
+        ],
+        "flavours": [
+          "fruit",
+          "citrus"
+        ],
+        "tastes": [
+          "sweet",
+          "creamy"
+        ],
+        "strength": null,
+        "glass": {
+          "en": "Hurricane glass",
+          "zh": "飓风杯",
+          "fr": "Verre Hurricane",
+          "de": "Hurricane-Glas",
+          "es": "Copa Hurricane",
+          "ko": "허리케인 잔",
+          "ja": "ハリケーングラス",
+          "it": "Bicchiere Hurricane"
+        }
+      },
+      "referenceStatus": "reviewed-source-facts",
+      "reviewedAt": "2026-09-24",
+      "note": "Editorial floral-fruit suggestion grounded in this source version's ingredient/profile/service facts; not an author claim."
+    },
+    {
+      "versionId": "appletini-batch-m",
+      "sourceId": "catalogue-m-appletini",
+      "sourceUrl": "https://www.liquor.com/recipes/appletini/",
+      "recipeDigest": "b581830f42516f9652f111e278809fca71eeb503529750f40f2b40aea002a221",
+      "recipeFacts": {
+        "sourceId": "catalogue-m-appletini",
+        "ingredients": [
+          {
+            "ingredientId": "vodka",
+            "amount": 1.25,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "calvados",
+            "amount": 1,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "food-apple-juice",
+            "amount": 1.25,
+            "unit": "oz",
+            "note": {
+              "en": "Fresh Granny Smith apple juice.",
+              "zh": "鲜榨青苹果（Granny Smith）汁。",
+              "fr": "Jus frais de pomme Granny Smith.",
+              "de": "Frischer Granny-Smith-Apfelsaft.",
+              "es": "Zumo fresco de manzana Granny Smith.",
+              "ko": "갓 짠 그래니 스미스 사과 주스.",
+              "ja": "搾りたてのグラニースミス果汁。",
+              "it": "Succo fresco di mela Granny Smith."
+            }
+          },
+          {
+            "ingredientId": "lemon-juice",
+            "amount": 0.25,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "simple-syrup",
+            "amount": 0.25,
+            "unit": "oz"
+          }
+        ],
+        "originalSteps": [
+          "Shake the ingredients with ice until cold.",
+          "Fine-strain into a chilled coupe.",
+          "Garnish with three granny smith apple slices and a brandied cherry."
+        ],
+        "flavours": [
+          "fruit",
+          "citrus"
+        ],
+        "tastes": [
+          "sour",
+          "sweet"
+        ],
+        "strength": null,
+        "glass": {
+          "en": "Coupe",
+          "zh": "碟形杯",
+          "fr": "Coupe",
+          "de": "Coupette",
+          "es": "Copa coupé",
+          "ko": "쿠페 잔",
+          "ja": "クープ",
+          "it": "Coppetta"
+        }
+      },
+      "referenceStatus": "reviewed-source-facts",
+      "reviewedAt": "2026-09-24",
+      "note": "Editorial floral-fruit suggestion grounded in this source version's ingredient/profile/service facts; not an author claim."
+    },
+    {
+      "versionId": "irish-maid-batch-m",
+      "sourceId": "catalogue-m-irish-maid",
+      "sourceUrl": "https://www.liquor.com/recipes/irish-maid/",
+      "recipeDigest": "33fd26a26e2c2a1e26f662000bc442efb8c5294d569ebcd3e7c87d84a4e50814",
+      "recipeFacts": {
+        "sourceId": "catalogue-m-irish-maid",
+        "ingredients": [
+          {
+            "ingredientId": "fresh-cucumber-slice",
+            "amount": 2,
+            "unit": "piece",
+            "note": {
+              "en": "Each slice 1/4 inch thick.",
+              "zh": "每片厚 1/4 英寸。",
+              "fr": "Tranches de 1/4 de pouce.",
+              "de": "Je 1/4 Zoll dick.",
+              "es": "Rodajas de 1/4 de pulgada.",
+              "ko": "각 1/4인치 두께.",
+              "ja": "各1/4インチ厚。",
+              "it": "Fette spesse 1/4 di pollice."
+            }
+          },
+          {
+            "ingredientId": "irish-whiskey",
+            "amount": 2,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "elderflower-liqueur",
+            "amount": 0.5,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "lemon-juice",
+            "amount": 0.75,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "simple-syrup",
+            "amount": 0.75,
+            "unit": "oz"
+          }
+        ],
+        "originalSteps": [
+          "Gently muddle the cucumber, then add the other ingredients.",
+          "Shake the ingredients with ice until cold.",
+          "Fine-strain into a rocks glass over fresh ice.",
+          "Garnish with cucumber slice."
+        ],
+        "flavours": [
+          "herbal",
+          "floral",
+          "citrus"
+        ],
+        "tastes": [
+          "sour",
+          "sweet"
+        ],
+        "strength": null,
+        "glass": {
+          "en": "Rocks glass",
+          "zh": "古典杯",
+          "fr": "Verre bas",
+          "de": "Tumbler",
+          "es": "Vaso bajo",
+          "ko": "록스 잔",
+          "ja": "ロックグラス",
+          "it": "Bicchiere basso"
+        }
+      },
+      "referenceStatus": "reviewed-source-facts",
+      "reviewedAt": "2026-09-24",
+      "note": "Editorial citrus-refreshing suggestion grounded in this source version's ingredient/profile/service facts; not an author claim."
+    },
+    {
+      "versionId": "mudslide-batch-m",
+      "sourceId": "catalogue-m-mudslide",
+      "sourceUrl": "https://www.liquor.com/recipes/mudslide/",
+      "recipeDigest": "fc672cd0a694d74f7e604287a99e9771d5a96e43d4c06782851133c7fe27548d",
+      "recipeFacts": {
+        "sourceId": "catalogue-m-mudslide",
+        "ingredients": [
+          {
+            "ingredientId": "vodka",
+            "amount": 1,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "coffee-liqueur",
+            "amount": 1,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "cream-liqueur",
+            "amount": 1,
+            "unit": "oz",
+            "note": {
+              "en": "Baileys Irish Cream.",
+              "zh": "百利爱尔兰奶油利口酒。",
+              "fr": "Baileys Irish Cream.",
+              "de": "Baileys Irish Cream.",
+              "es": "Baileys Irish Cream.",
+              "ko": "베일리스 아이리시 크림.",
+              "ja": "ベイリーズ・アイリッシュクリーム。",
+              "it": "Baileys Irish Cream."
+            }
+          },
+          {
+            "ingredientId": "food-heavy-cream",
+            "amount": 1.5,
+            "unit": "oz"
+          }
+        ],
+        "originalSteps": [
+          "Shake the ingredients with ice until cold.",
+          "Strain into a chilled coupe.",
+          "Garnish with chocolate shavings."
+        ],
+        "flavours": [
+          "coffee"
+        ],
+        "tastes": [
+          "sweet",
+          "creamy"
+        ],
+        "strength": null,
+        "glass": {
+          "en": "Coupe",
+          "zh": "碟形杯",
+          "fr": "Coupe",
+          "de": "Coupette",
+          "es": "Copa coupé",
+          "ko": "쿠페 잔",
+          "ja": "クープ",
+          "it": "Coppetta"
+        }
+      },
+      "referenceStatus": "reviewed-source-facts",
+      "reviewedAt": "2026-09-24",
+      "note": "Editorial rich-finish suggestion grounded in this source version's ingredient/profile/service facts; not an author claim."
+    },
+    {
+      "versionId": "coffee-cocktail-batch-m",
+      "sourceId": "catalogue-m-coffee-cocktail",
+      "sourceUrl": "https://www.liquor.com/recipes/coffee-cocktail/",
+      "recipeDigest": "0f2123d7e5982256352ad9be74bbd2f7fde98b15620af4b712b4bbff8b270b56",
+      "recipeFacts": {
+        "sourceId": "catalogue-m-coffee-cocktail",
+        "ingredients": [
+          {
+            "ingredientId": "cognac",
+            "amount": 1,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "ruby-port",
+            "amount": 1,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "food-egg",
+            "amount": 1,
+            "unit": "piece"
+          },
+          {
+            "ingredientId": "simple-syrup",
+            "amount": 0.75,
+            "unit": "oz"
+          }
+        ],
+        "originalSteps": [
+          "Shake without ice first.",
+          "Shake the ingredients with ice until cold.",
+          "Strain into a small port glass.",
+          "Grate a little nutmeg over the surface."
+        ],
+        "flavours": [
+          "fruit",
+          "spice"
+        ],
+        "tastes": [
+          "sweet",
+          "creamy"
+        ],
+        "strength": null,
+        "glass": {
+          "en": "Small port glass",
+          "zh": "小型波特酒杯",
+          "fr": "Petit verre à porto",
+          "de": "Kleines Portweinglas",
+          "es": "Copa pequeña de oporto",
+          "ko": "작은 포트 와인 잔",
+          "ja": "小さなポートワイングラス",
+          "it": "Bicchiere piccolo da porto"
+        }
+      },
+      "referenceStatus": "reviewed-source-facts",
+      "reviewedAt": "2026-09-24",
+      "note": "Editorial rich-finish suggestion grounded in this source version's ingredient/profile/service facts; not an author claim."
+    },
+    {
+      "versionId": "mango-margarita-batch-m",
+      "sourceId": "catalogue-m-mango-margarita",
+      "sourceUrl": "https://punchdrink.com/recipes/mango-margarita/",
+      "recipeDigest": "20948239631b04f4dd0e6f7d92d536491d47872be3e51e782db86287fac7f525",
+      "recipeFacts": {
+        "sourceId": "catalogue-m-mango-margarita",
+        "ingredients": [
+          {
+            "ingredientId": "food-mango",
+            "amount": null,
+            "unit": "piece",
+            "note": {
+              "en": "16 oz frozen mango chunks by weight; batch makes six servings.",
+              "zh": "16 重量盎司冷冻芒果块；全配方为六份。",
+              "fr": "16 oz de mangue congelée en morceaux, en poids ; six portions.",
+              "de": "16 Gewichts-Unzen gefrorene Mangostücke; sechs Portionen.",
+              "es": "16 onzas de mango congelado en trozos, por peso; seis raciones.",
+              "ko": "냉동 망고 조각 중량 16온스, 총 6인분.",
+              "ja": "冷凍マンゴー16重量オンス。全量6杯分。",
+              "it": "16 once in peso di mango congelato a pezzi; sei porzioni."
+            }
+          },
+          {
+            "ingredientId": "tequila",
+            "amount": 15,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "lime-juice",
+            "amount": 10,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "orange-liqueur",
+            "amount": 5,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "mezcal",
+            "amount": 2,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "simple-syrup",
+            "amount": 2,
+            "unit": "oz"
+          }
+        ],
+        "originalSteps": [
+          "Blend the ingredients until smooth.",
+          "Chill the batch. For a frozen texture, blend with ice added gradually. Divide into six portions and garnish with lime wedges."
+        ],
+        "flavours": [
+          "fruit",
+          "citrus"
+        ],
+        "tastes": [
+          "sweet",
+          "sour"
+        ],
+        "strength": null,
+        "glass": {
+          "en": "Rocks glass",
+          "zh": "古典杯",
+          "fr": "Verre bas",
+          "de": "Tumbler",
+          "es": "Vaso bajo",
+          "ko": "록스 잔",
+          "ja": "ロックグラス",
+          "it": "Bicchiere basso"
+        }
+      },
+      "referenceStatus": "reviewed-source-facts",
+      "reviewedAt": "2026-09-24",
+      "note": "Editorial floral-fruit suggestion grounded in this source version's ingredient/profile/service facts; not an author claim."
+    },
+    {
+      "versionId": "chartreuse-toddy-batch-m",
+      "sourceId": "catalogue-m-chartreuse-toddy",
+      "sourceUrl": "https://www.monkeybrad.com/chartreuse-toddy/",
+      "recipeDigest": "31e67a963c4fdfd777092c4817002bac7c6e7a2875e0af75f1979e7d2036fa54",
+      "recipeFacts": {
+        "sourceId": "catalogue-m-chartreuse-toddy",
+        "ingredients": [
+          {
+            "ingredientId": "cognac",
+            "amount": 1.5,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "green-chartreuse",
+            "amount": 0.75,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "lemon-juice",
+            "amount": 0.5,
+            "unit": "oz"
+          },
+          {
+            "ingredientId": "honey-syrup",
+            "amount": 0.5,
+            "unit": "oz",
+            "note": {
+              "en": "Honey and water, 1:1.",
+              "zh": "蜂蜜与水为 1∶1。",
+              "fr": "Miel et eau, 1:1.",
+              "de": "Honig und Wasser, 1:1.",
+              "es": "Miel y agua, 1:1.",
+              "ko": "꿀과 물 1:1.",
+              "ja": "蜂蜜と水を1:1。",
+              "it": "Miele e acqua, 1:1."
+            }
+          },
+          {
+            "ingredientId": "plain-water",
+            "amount": null,
+            "unit": "oz",
+            "note": {
+              "en": "4–6 oz, hot but not boiling.",
+              "zh": "4–6 盎司热水，不要沸水。",
+              "fr": "4–6 oz, chaude mais non bouillante.",
+              "de": "4–6 oz, heiß, nicht kochend.",
+              "es": "4–6 oz, caliente sin hervir.",
+              "ko": "끓지 않는 뜨거운 물 4~6온스.",
+              "ja": "沸騰していない湯4〜6 oz。",
+              "it": "4–6 oz, calda ma non bollente."
+            }
+          }
+        ],
+        "originalSteps": [
+          "Warm a heatproof mug, discard the warming water, then combine the measured ingredients and stir. Float one star anise on top."
+        ],
+        "flavours": [
+          "herbal",
+          "citrus"
+        ],
+        "tastes": [
+          "sweet"
+        ],
+        "strength": null,
+        "glass": {
+          "en": "Heatproof mug",
+          "zh": "耐热杯",
+          "fr": "Tasse résistante à la chaleur",
+          "de": "Hitzefester Becher",
+          "es": "Taza resistente al calor",
+          "ko": "내열 머그",
+          "ja": "耐熱マグ",
+          "it": "Tazza termoresistente"
+        }
+      },
+      "referenceStatus": "reviewed-source-facts",
+      "reviewedAt": "2026-09-24",
+      "note": "Editorial warm-serve suggestion grounded in this source version's ingredient/profile/service facts; not an author claim."
+    }
+  ],
+  "updatedAt": "2026-09-24"
+}

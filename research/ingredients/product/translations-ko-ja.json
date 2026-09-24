@@ -1,0 +1,2704 @@
+{
+  "food-acacia-honey": {
+    "ko": "아카시아 꿀",
+    "ja": "アカシア蜂蜜"
+  },
+  "food-acai-berry": {
+    "ko": "아사이베리",
+    "ja": "アサイーベリー"
+  },
+  "food-acai-juice": {
+    "ko": "아사이 주스",
+    "ja": "アサイージュース"
+  },
+  "food-acerola": {
+    "ko": "아세로라",
+    "ja": "アセロラ"
+  },
+  "food-acerola-juice": {
+    "ko": "아세로라 주스",
+    "ja": "アセロラジュース"
+  },
+  "food-acerola-powder": {
+    "ko": "아세로라 가루",
+    "ja": "アセロラ粉末"
+  },
+  "food-acid-whey": {
+    "ko": "산성 유청",
+    "ja": "酸性ホエイ"
+  },
+  "food-acorn": {
+    "ko": "도토리",
+    "ja": "ドングリ"
+  },
+  "food-acorn-squash": {
+    "ko": "에이콘 스쿼시",
+    "ja": "エイコーンスクワッシュ"
+  },
+  "food-advocaat": {
+    "ko": "아드보카트",
+    "ja": "アドヴォカート"
+  },
+  "food-ajvar": {
+    "ko": "아즈바르",
+    "ja": "アージュヴァル"
+  },
+  "food-ajwa-dates": {
+    "ko": "아즈와 대추야자",
+    "ja": "アジュワデーツ"
+  },
+  "food-akee-apple": {
+    "ko": "아키 열매",
+    "ja": "アキーの実"
+  },
+  "food-alfalfa-seeds": {
+    "ko": "알팔파 씨앗",
+    "ja": "アルファルファ種子"
+  },
+  "food-alkaline-noodles": {
+    "ko": "알칼리면"
+  },
+  "food-almond": {
+    "ko": "아몬드"
+  },
+  "food-almond-flour": {
+    "ko": "아몬드 가루",
+    "ja": "アーモンド粉"
+  },
+  "food-almond-milk": {
+    "ko": "아몬드 우유",
+    "ja": "アーモンドミルク"
+  },
+  "food-almond-oil": {
+    "ko": "아몬드 오일",
+    "ja": "アーモンドオイル"
+  },
+  "food-almond-pulp": {
+    "ko": "아몬드 펄프",
+    "ja": "アーモンドパルプ"
+  },
+  "food-aloe-vera": {
+    "ko": "알로에베라"
+  },
+  "food-aloe-vera-juice": {
+    "ko": "알로에베라 주스",
+    "ja": "アロエベラジュース"
+  },
+  "food-amaranth": {
+    "ko": "아마란스"
+  },
+  "food-amaranth-flour": {
+    "ko": "아마란스 가루",
+    "ja": "アマランサス粉"
+  },
+  "food-amaranth-leaves": {
+    "ko": "아마란스 잎",
+    "ja": "アマランサスの葉"
+  },
+  "food-american-cheese": {
+    "ko": "아메리칸 치즈",
+    "ja": "アメリカンチーズ"
+  },
+  "food-american-mustard": {
+    "ko": "아메리칸 머스타드",
+    "ja": "アメリカンマスタード"
+  },
+  "food-ancho-peppers": {
+    "ko": "앤초 고추",
+    "ja": "アンチョペッパー"
+  },
+  "food-angelica": {
+    "ko": "안젤리카",
+    "ja": "アンジェリカ"
+  },
+  "food-aniseseed": {
+    "ko": "아니스 씨",
+    "ja": "アニスシード"
+  },
+  "food-apple-jam": {
+    "ko": "사과잼",
+    "ja": "リンゴジャム"
+  },
+  "food-apple-puree": {
+    "ko": "사과 퓨레",
+    "ja": "リンゴピューレ"
+  },
+  "food-apple-cider-vinegar": {
+    "ko": "사과식초"
+  },
+  "food-apricot-jam": {
+    "ko": "살구잼",
+    "ja": "アプリコットジャム"
+  },
+  "food-apricot-juice": {
+    "ko": "살구 주스",
+    "ja": "アプリコットジュース"
+  },
+  "food-apricot-kernel-oil": {
+    "ko": "살구 커널 오일",
+    "ja": "アプリコットカーネルオイル"
+  },
+  "food-apricot-puree": {
+    "ko": "살구 퓌레",
+    "ja": "アプリコットピューレ"
+  },
+  "food-arbequina-olive": {
+    "ko": "아르베퀴나 올리브",
+    "ja": "アルベキーナオリーブ"
+  },
+  "food-armagnac": {
+    "ko": "아르마냐크"
+  },
+  "food-arrowhead": {
+    "ko": "쇠귀나물",
+    "ja": "クワイ"
+  },
+  "food-arrowroot": {
+    "ko": "애로루트",
+    "ja": "クズウコン"
+  },
+  "food-arrowroot-powder": {
+    "ko": "애로루트 가루",
+    "ja": "クズウコン粉"
+  },
+  "food-artichoke-heart": {
+    "ko": "아티초크 하트",
+    "ja": "アーティチョークハート"
+  },
+  "food-asian-pear": {
+    "ko": "아시아배",
+    "ja": "アジアナシ"
+  },
+  "food-atta": {
+    "ko": "아타 통밀가루",
+    "ja": "アタ粉"
+  },
+  "food-avocado": {
+    "ko": "아보카도"
+  },
+  "food-avocado-oil": {
+    "ko": "아보카도 오일",
+    "ja": "アボカドオイル"
+  },
+  "food-baby-corn": {
+    "ko": "베이비콘",
+    "ja": "ヤングコーン"
+  },
+  "food-bakers-yeast": {
+    "ko": "제빵용 효모"
+  },
+  "food-banana-pepper": {
+    "ko": "바나나 고추",
+    "ja": "バナナペッパー"
+  },
+  "food-barbecue-sauce": {
+    "ko": "바베큐 소스",
+    "ja": "バーベキューソース"
+  },
+  "food-barley-flakes": {
+    "ko": "보리 플레이크",
+    "ja": "大麦フレーク"
+  },
+  "food-barley-flour": {
+    "ko": "보리가루",
+    "ja": "大麦粉"
+  },
+  "food-barley-malt-syrup": {
+    "ko": "보리시럽",
+    "ja": "大麦シロップ"
+  },
+  "food-barley-wort": {
+    "ko": "보리맥아즙",
+    "ja": "大麦麦汁"
+  },
+  "food-barnyard-millet": {
+    "ko": "피",
+    "ja": "ヒエ"
+  },
+  "food-bay-leaf": {
+    "ja": "月桂樹の葉"
+  },
+  "food-bean-sprouts": {
+    "ko": "콩나물",
+    "ja": "もやし"
+  },
+  "food-beechnut": {
+    "ko": "너도밤나무 열매",
+    "ja": "ブナの実"
+  },
+  "food-beet-greens": {
+    "ko": "비트 잎",
+    "ja": "ビーツの葉"
+  },
+  "food-beet-sugar": {
+    "ko": "사탕무 설탕",
+    "ja": "てんさい糖"
+  },
+  "food-beetroot": {
+    "ko": "비트"
+  },
+  "food-beetroot-juice": {
+    "ko": "비트 주스",
+    "ja": "ビーツジュース"
+  },
+  "food-beetroot-powder": {
+    "ko": "비트 가루",
+    "ja": "ビーツパウダー"
+  },
+  "food-beetroot-syrup": {
+    "ko": "비트 시럽",
+    "ja": "ビーツシロップ"
+  },
+  "food-belgian-endive": {
+    "ko": "벨기에 꽃상추",
+    "ja": "ベルギーエンダイブ"
+  },
+  "food-bergamot": {
+    "ko": "베르가못",
+    "ja": "ベルガモット"
+  },
+  "food-bilberry": {
+    "ko": "빌베리",
+    "ja": "ビルベリー"
+  },
+  "food-birds-eye-chili": {
+    "ja": "プリッキーヌ"
+  },
+  "food-bitter-almond": {
+    "ko": "쓴 아몬드",
+    "ja": "ビターアーモンド"
+  },
+  "food-bitter-melon": {
+    "ko": "쓴 멜론"
+  },
+  "food-bitter-orange": {
+    "ja": "ビターオレンジ"
+  },
+  "food-black-carrot-juice": {
+    "ko": "검은 당근 주스",
+    "ja": "黒人参ジュース"
+  },
+  "food-black-cherry": {
+    "ko": "블랙 체리",
+    "ja": "ブラックチェリー"
+  },
+  "food-black-galangal": {
+    "ko": "흑생강",
+    "ja": "黒ショウガ"
+  },
+  "food-black-grape": {
+    "ko": "검은 포도",
+    "ja": "黒ブドウ"
+  },
+  "food-black-mulberry": {
+    "ko": "검은 오디",
+    "ja": "ブラックマルベリー"
+  },
+  "food-black-olive": {
+    "ko": "블랙 올리브",
+    "ja": "ブラックオリーブ"
+  },
+  "food-black-pepper-powder": {
+    "ko": "검은 후추 가루",
+    "ja": "ブラックペッパーパウダー"
+  },
+  "food-black-salt": {
+    "ko": "검은 소금",
+    "ja": "黒塩"
+  },
+  "food-blackberry-wine": {
+    "ko": "블랙베리 와인",
+    "ja": "ブラックベリーワイン"
+  },
+  "food-blackcurrant": {
+    "ko": "블랙커런트"
+  },
+  "food-blackcurrant-jam": {
+    "ko": "블랙커런트 잼",
+    "ja": "カシスジャム"
+  },
+  "food-blood-orange": {
+    "ko": "블러드 오렌지",
+    "ja": "ブラッドオレンジ"
+  },
+  "food-blood-orange-juice": {
+    "ko": "블러드 오렌지 주스",
+    "ja": "ブラッドオレンジジュース"
+  },
+  "food-blue-corn": {
+    "ko": "푸른 옥수수",
+    "ja": "ブルーコーン"
+  },
+  "food-blue-fenugreek": {
+    "ja": "ブルーフェヌグリーク"
+  },
+  "food-blueberry": {
+    "ko": "블루베리"
+  },
+  "food-blueberry-juice": {
+    "ko": "블루베리 주스",
+    "ja": "ブルーベリージュース"
+  },
+  "food-baobab": {
+    "ko": "바오밥",
+    "ja": "バオバブ"
+  },
+  "food-boletus": {
+    "ko": "그물버섯",
+    "ja": "ヤマドリタケ"
+  },
+  "food-borlotti-bean": {
+    "ko": "볼로티 콩",
+    "ja": "ボルロッティ豆"
+  },
+  "food-bosc-pear": {
+    "ko": "보스크 배",
+    "ja": "ボスクナシ"
+  },
+  "food-boysenberry-juice": {
+    "ko": "보이젠베리 주스",
+    "ja": "ボイセンベリージュース"
+  },
+  "food-bramley-apple": {
+    "ko": "브램리 사과",
+    "ja": "ブラムリーアップル"
+  },
+  "food-brazil-nut": {
+    "ko": "브라질 너트"
+  },
+  "food-brewed-oolong-tea-without-sugar": {
+    "ko": "설탕 없이 우려낸 우롱차",
+    "ja": "砂糖を使わずに淹れたウーロン茶"
+  },
+  "food-brewers-yeast": {
+    "ko": "맥주 효모",
+    "ja": "ビール酵母"
+  },
+  "food-brie": {
+    "ja": "ブリーチーズ"
+  },
+  "food-broad-bean-flour": {
+    "ko": "누에콩가루",
+    "ja": "そら豆粉"
+  },
+  "food-brown-beans": {
+    "ko": "갈색 콩",
+    "ja": "茶色の豆"
+  },
+  "food-brown-flax-seeds": {
+    "ko": "갈색 아마씨",
+    "ja": "茶色の亜麻の種子"
+  },
+  "food-brown-mushroom": {
+    "ko": "브라운 양송이버섯",
+    "ja": "ブラウンマッシュルーム"
+  },
+  "food-brown-mustard": {
+    "ko": "갈색 겨자",
+    "ja": "ブラウンマスタード"
+  },
+  "food-brown-mustard-seed": {
+    "ko": "갈색 겨자씨",
+    "ja": "茶色のマスタードシード"
+  },
+  "food-brown-rice": {
+    "ko": "현미"
+  },
+  "food-bryndza": {
+    "ko": "브린자 치즈",
+    "ja": "ブリンザチーズ"
+  },
+  "food-buckwheat-flakes": {
+    "ko": "메밀 플레이크",
+    "ja": "そばフレーク"
+  },
+  "food-buckwheat-flour": {
+    "ko": "메밀가루"
+  },
+  "food-buckwheat-honey": {
+    "ko": "메밀꿀",
+    "ja": "そば蜂蜜"
+  },
+  "food-buffalo-milk": {
+    "ko": "물소 우유",
+    "ja": "水牛乳"
+  },
+  "food-buffalo-mozzarella": {
+    "ko": "버팔로 모짜렐라",
+    "ja": "水牛モッツァレラ"
+  },
+  "food-burdock-root": {
+    "ko": "우엉뿌리",
+    "ja": "ゴボウ"
+  },
+  "food-burnet": {
+    "ko": "오이풀",
+    "ja": "ワレモコウ"
+  },
+  "food-button-mushroom": {
+    "ko": "양송이버섯",
+    "ja": "マッシュルーム"
+  },
+  "food-cabbage": {
+    "ko": "양배추"
+  },
+  "food-calamansi": {
+    "ko": "깔라만시",
+    "ja": "カラマンシー"
+  },
+  "food-camelina-oil": {
+    "ko": "카멜리나 오일",
+    "ja": "カメリナオイル"
+  },
+  "food-candied-lemon-zest": {
+    "ko": "설탕절임 레몬 제스트",
+    "ja": "レモンピールの砂糖漬け"
+  },
+  "food-candied-orange-peel": {
+    "ko": "설탕에 절인 오렌지 껍질",
+    "ja": "砂糖漬けのオレンジの皮"
+  },
+  "food-candied-papaya": {
+    "ko": "설탕에 절인 파파야",
+    "ja": "パパイヤの砂糖漬け"
+  },
+  "food-cane-sugar": {
+    "ko": "사탕수수 설탕"
+  },
+  "food-cape-gooseberry": {
+    "ko": "골든베리",
+    "ja": "ゴールデンベリー"
+  },
+  "food-capers": {
+    "ko": "케이퍼",
+    "ja": "ケーパー"
+  },
+  "food-caramel-sauce": {
+    "ko": "카라멜 소스"
+  },
+  "food-caramel-syrup": {
+    "ko": "캐러멜 시럽"
+  },
+  "food-caramelised-sugar": {
+    "ko": "캐러멜화된 설탕",
+    "ja": "カラメル砂糖"
+  },
+  "food-carob-seed-flour": {
+    "ko": "캐롭 씨 가루",
+    "ja": "キャロブ種子粉"
+  },
+  "food-casaba": {
+    "ko": "카사바 멜론",
+    "ja": "カサバメロン"
+  },
+  "food-cashew-apples": {
+    "ko": "캐슈애플",
+    "ja": "カシューアップル"
+  },
+  "food-cashew-nut-oil": {
+    "ko": "캐슈넛 오일",
+    "ja": "カシューナッツオイル"
+  },
+  "food-cashew-nuts": {
+    "ko": "캐슈넛"
+  },
+  "food-cassava-flour": {
+    "ko": "카사바 가루",
+    "ja": "キャッサバ粉"
+  },
+  "food-cassia": {
+    "ko": "카시아 계피"
+  },
+  "food-cauliflower": {
+    "ko": "콜리플라워"
+  },
+  "food-cavendish-banana": {
+    "ko": "카벤디쉬 바나나",
+    "ja": "キャベンディッシュバナナ"
+  },
+  "food-celeriac": {
+    "ko": "셀러리악"
+  },
+  "food-celery-juice": {
+    "ko": "셀러리 주스",
+    "ja": "セロリジュース"
+  },
+  "food-celery-powder": {
+    "ko": "셀러리 가루",
+    "ja": "セロリパウダー"
+  },
+  "food-celery-seed": {
+    "ko": "셀러리 씨앗"
+  },
+  "food-celtuce": {
+    "ko": "줄기상추",
+    "ja": "茎レタス"
+  },
+  "food-ceylon-black-tea": {
+    "ko": "실론홍차",
+    "ja": "セイロン紅茶"
+  },
+  "food-ceylon-cinnamon": {
+    "ja": "セイロンシナモン"
+  },
+  "food-chaource-cheese": {
+    "ko": "쇼르스 치즈",
+    "ja": "シャオルスチーズ"
+  },
+  "food-charentais-melon": {
+    "ko": "샤랑테 멜론",
+    "ja": "シャラントメロン"
+  },
+  "food-chayotte": {
+    "ko": "차요테",
+    "ja": "ハヤトウリ"
+  },
+  "food-cheese-sauce": {
+    "ko": "치즈 소스",
+    "ja": "チーズソース"
+  },
+  "food-cherry-juice": {
+    "ko": "체리 주스",
+    "ja": "チェリージュース"
+  },
+  "food-cherry-puree": {
+    "ko": "체리 퓨레",
+    "ja": "チェリーピューレ"
+  },
+  "food-cherry-tomato": {
+    "ko": "방울토마토"
+  },
+  "food-chervil": {
+    "ko": "처빌",
+    "ja": "チャービル"
+  },
+  "food-chestnut-flour": {
+    "ko": "밤가루",
+    "ja": "栗粉"
+  },
+  "food-chia-oil": {
+    "ko": "치아 오일"
+  },
+  "food-chia-seed": {
+    "ko": "치아씨드"
+  },
+  "food-chicory": {
+    "ko": "치커리"
+  },
+  "food-chili-in-vinegar": {
+    "ko": "식초에 칠리",
+    "ja": "酢の唐辛子"
+  },
+  "food-chili-paste": {
+    "ko": "칠리 페이스트",
+    "ja": "チリペースト"
+  },
+  "food-chili-powder": {
+    "ko": "고추가루",
+    "ja": "チリパウダー"
+  },
+  "food-chili-puree": {
+    "ko": "칠리 퓨레",
+    "ja": "チリピューレ"
+  },
+  "food-chinese-chestnut": {
+    "ko": "중국 밤",
+    "ja": "中国栗"
+  },
+  "food-chinotto": {
+    "ko": "키노토",
+    "ja": "キノット"
+  },
+  "food-chocolate-sauce": {
+    "ko": "초콜릿 소스",
+    "ja": "チョコレートソース"
+  },
+  "food-chokeberry-juice": {
+    "ko": "초크베리 주스",
+    "ja": "チョークベリージュース"
+  },
+  "food-chow-mein-chinese-noodles": {
+    "ko": "차오멘 중화면",
+    "ja": "炒麺用中華麺"
+  },
+  "food-cinnamon-powder": {
+    "ko": "계피가루"
+  },
+  "food-citron": {
+    "ko": "시트론",
+    "ja": "シトロン"
+  },
+  "food-clementine": {
+    "ko": "클레멘타인"
+  },
+  "food-clotted-cream": {
+    "ko": "클로티드 크림",
+    "ja": "クロテッドクリーム"
+  },
+  "food-clover-honey": {
+    "ko": "클로버 꿀",
+    "ja": "クローバーハニー"
+  },
+  "food-cocoa-nibs": {
+    "ko": "카카오 닙스"
+  },
+  "food-cocoa-paste": {
+    "ko": "코코아 페이스트"
+  },
+  "food-coconut": {
+    "ko": "코코넛"
+  },
+  "food-coconut-blossom-syrup": {
+    "ko": "코코넛 꽃 시럽",
+    "ja": "ココナッツの花のシロップ"
+  },
+  "food-coconut-butter": {
+    "ko": "코코넛 버터",
+    "ja": "ココナッツバター"
+  },
+  "food-coconut-chips": {
+    "ko": "코코넛 칩",
+    "ja": "ココナッツチップス"
+  },
+  "food-coconut-flakes": {
+    "ko": "코코넛 플레이크",
+    "ja": "ココナッツフレーク"
+  },
+  "food-coconut-flour": {
+    "ko": "코코넛 가루",
+    "ja": "ココナッツ粉"
+  },
+  "food-coconut-milk": {
+    "ko": "코코넛 밀크"
+  },
+  "food-coconut-sugar": {
+    "ko": "코코넛 설탕",
+    "ja": "ココナッツシュガー"
+  },
+  "food-coffea-robusta": {
+    "ko": "로부스타 커피"
+  },
+  "food-cola-nut": {
+    "ko": "콜라 너트",
+    "ja": "コーラナッツ"
+  },
+  "food-cold-brew-coffee": {
+    "ko": "콜드브루 커피",
+    "ja": "水出しコーヒー"
+  },
+  "food-collard-greens": {
+    "ko": "콜라드 그린",
+    "ja": "コラードグリーン"
+  },
+  "food-concentrated-tomato-puree": {
+    "ko": "농축 토마토 퓨레",
+    "ja": "濃縮トマトピューレ"
+  },
+  "food-concord-grape": {
+    "ko": "콩코드 포도",
+    "ja": "コンコードグレープ"
+  },
+  "food-concord-grape-juice": {
+    "ko": "콩코드 포도 주스",
+    "ja": "コンコードグレープジュース"
+  },
+  "food-conference-pear": {
+    "ko": "컨퍼런스 배",
+    "ja": "カンファレンスナシ"
+  },
+  "food-coriander-leaf": {
+    "ko": "고수 잎",
+    "ja": "パクチーの葉"
+  },
+  "food-coriander-paste": {
+    "ko": "고수 페이스트",
+    "ja": "コリアンダーペースト"
+  },
+  "food-coriander-seed": {
+    "ko": "고수풀 씨앗",
+    "ja": "コリアンダーシード"
+  },
+  "food-corn-flakes": {
+    "ko": "콘플레이크",
+    "ja": "コーンフレーク"
+  },
+  "food-corn-flour": {
+    "ko": "옥수수 가루"
+  },
+  "food-dark-corn-syrups": {
+    "ko": "옥수수 당밀",
+    "ja": "トウモロコシ糖蜜"
+  },
+  "food-corn-vinegar": {
+    "ko": "옥수수 식초",
+    "ja": "コーンビネガー"
+  },
+  "food-cornmeal": {
+    "ko": "옥수수 가루"
+  },
+  "food-cottage-cheese": {
+    "ko": "코티지 치즈",
+    "ja": "カッテージチーズ"
+  },
+  "food-cottonseed-oil": {
+    "ko": "면실유",
+    "ja": "綿実油"
+  },
+  "food-cows-milk": {
+    "ko": "우유"
+  },
+  "food-crabapples": {
+    "ko": "야생사과",
+    "ja": "クラブアップル"
+  },
+  "food-cranberry": {
+    "ko": "크랜베리"
+  },
+  "food-cream-cheese": {
+    "ko": "크림 치즈",
+    "ja": "クリームチーズ"
+  },
+  "food-creamy-honey": {
+    "ko": "크림드 허니",
+    "ja": "クリーム蜂蜜"
+  },
+  "food-cress": {
+    "ko": "크레스",
+    "ja": "コショウソウ"
+  },
+  "food-crottin-de-chavignol-cheese": {
+    "ko": "크로탱 드 샤비뇰 치즈"
+  },
+  "food-crunchy-peanut-butter": {
+    "ko": "바삭바삭한 땅콩 버터",
+    "ja": "カリカリピーナッツバター"
+  },
+  "food-cucumber": {
+    "ko": "오이"
+  },
+  "food-cucumber-juice": {
+    "ko": "오이 주스",
+    "ja": "キュウリジュース"
+  },
+  "food-curly-endive": {
+    "ko": "곱슬 꽃상추",
+    "ja": "カーリーエンダイブ"
+  },
+  "food-curry-paste": {
+    "ja": "カレーペースト"
+  },
+  "food-curry-sauce": {
+    "ko": "카레 소스",
+    "ja": "カレーソース"
+  },
+  "food-custard-apple": {
+    "ko": "커스터드애플",
+    "ja": "バンレイシ"
+  },
+  "food-custard-squash": {
+    "ko": "커스터드 스쿼시",
+    "ja": "カスタードスカッシュ"
+  },
+  "food-danjou-pear": {
+    "ko": "당주 배",
+    "ja": "ダンジュー梨"
+  },
+  "food-daikon": {
+    "ko": "무"
+  },
+  "food-damson": {
+    "ko": "댐슨 자두",
+    "ja": "ダムソンプラム"
+  },
+  "food-dark-soy-sauce": {
+    "ko": "진한 간장",
+    "ja": "濃口醤油"
+  },
+  "food-dark-syrup": {
+    "ko": "다크 시럽",
+    "ja": "ダークシロップ"
+  },
+  "food-date": {
+    "ko": "대추야자",
+    "ja": "デーツ"
+  },
+  "food-date-juice": {
+    "ko": "대추야자 주스",
+    "ja": "デーツジュース"
+  },
+  "food-date-paste": {
+    "ko": "대추야자 페이스트",
+    "ja": "デーツペースト"
+  },
+  "food-deglet-nour-dates": {
+    "ko": "데글렛 누르 대추야자",
+    "ja": "デグレット・ノールデーツ"
+  },
+  "food-demerara-sugar": {
+    "ko": "데메라라 설탕",
+    "ja": "デメララシュガー"
+  },
+  "food-desiccated-coconut": {
+    "ko": "건조된 코코넛",
+    "ja": "乾燥したココナッツ"
+  },
+  "food-dill-butter": {
+    "ko": "딜 버터",
+    "ja": "ディルバター"
+  },
+  "food-dill-seed": {
+    "ko": "딜 씨앗",
+    "ja": "ディルシード"
+  },
+  "food-double-cream": {
+    "ko": "더블크림",
+    "ja": "ダブルクリーム"
+  },
+  "food-double-gloucester": {
+    "ko": "더블 글로스터 치즈",
+    "ja": "ダブルグロスターチーズ"
+  },
+  "food-dried-apple": {
+    "ko": "말린 사과",
+    "ja": "乾燥リンゴ"
+  },
+  "food-dried-apricots": {
+    "ko": "말린 살구",
+    "ja": "ドライアプリコット"
+  },
+  "food-dried-goji-berries": {
+    "ko": "말린 구기자 열매",
+    "ja": "乾燥クコの実"
+  },
+  "food-dried-japanese-persimmon": {
+    "ko": "곶감",
+    "ja": "干し柿"
+  },
+  "food-dried-peach": {
+    "ko": "말린 복숭아",
+    "ja": "乾燥桃"
+  },
+  "food-drumstick-leaves": {
+    "ko": "모링가 잎",
+    "ja": "モリンガの葉"
+  },
+  "food-drumstick-pods": {
+    "ko": "모링가 꼬투리",
+    "ja": "モリンガのさや"
+  },
+  "food-dry-tapioca-pearls": {
+    "ko": "건조 타피오카 펄",
+    "ja": "ドライタピオカパール"
+  },
+  "food-dulse": {
+    "ko": "덜스 홍조류"
+  },
+  "food-durian": {
+    "ko": "두리안",
+    "ja": "ドリアン"
+  },
+  "food-eau-de-vie": {
+    "ko": "오드비",
+    "ja": "オードヴィ"
+  },
+  "food-edamame": {
+    "ko": "풋콩"
+  },
+  "food-elderberry": {
+    "ko": "엘더베리",
+    "ja": "エルダーベリー"
+  },
+  "food-elderberry-juice": {
+    "ko": "엘더베리 주스",
+    "ja": "エルダーベリージュース"
+  },
+  "food-elderberry-syrup": {
+    "ko": "엘더베리 시럽",
+    "ja": "エルダーベリーシロップ"
+  },
+  "food-emmer": {
+    "ko": "에머밀"
+  },
+  "food-emmer-flour": {
+    "ko": "에머밀가루",
+    "ja": "エンマー小麦粉"
+  },
+  "food-english-mustard": {
+    "ko": "잉글리시 머스타드",
+    "ja": "イングリッシュマスタード"
+  },
+  "food-enoki-mushrooms": {
+    "ko": "팽이버섯",
+    "ja": "エノキタケ"
+  },
+  "food-epazote": {
+    "ko": "에파소테",
+    "ja": "エパソテ"
+  },
+  "food-espagnole-sauce": {
+    "ko": "에스파뇰 소스"
+  },
+  "food-eucalyptus-honey": {
+    "ko": "유칼립투스 꿀",
+    "ja": "ユーカリの蜂蜜"
+  },
+  "food-eureka-lemon": {
+    "ko": "유레카 레몬",
+    "ja": "エウレカレモン"
+  },
+  "food-feijoa": {
+    "ko": "페이조아",
+    "ja": "フェイジョア"
+  },
+  "food-fennel-seed": {
+    "ko": "회향씨"
+  },
+  "food-fenugreek-leaf": {
+    "ko": "호로파 잎",
+    "ja": "フェヌグリークの葉"
+  },
+  "food-fenugreek-seed": {
+    "ko": "호로파 씨앗",
+    "ja": "フェヌグリークの種子"
+  },
+  "food-fiddlehead-fern": {
+    "ko": "고사리순",
+    "ja": "ワラビの若芽"
+  },
+  "food-field-mushroom": {
+    "ko": "들버섯",
+    "ja": "フィールドキノコ"
+  },
+  "food-fig": {
+    "ja": "イチジク"
+  },
+  "food-finger-millet": {
+    "ko": "라기",
+    "ja": "シコクビエ"
+  },
+  "food-flageolets": {
+    "ko": "플라졸레콩",
+    "ja": "フラジョレ豆"
+  },
+  "food-flame-grape": {
+    "ko": "플레임 포도",
+    "ja": "フレームグレープ"
+  },
+  "food-flat-bean": {
+    "ko": "납작콩",
+    "ja": "平さやインゲン"
+  },
+  "food-flat-peach": {
+    "ko": "납작복숭아"
+  },
+  "food-flax-flour": {
+    "ko": "아마 가루",
+    "ja": "亜麻の粉"
+  },
+  "food-flax-seed": {
+    "ko": "아마씨",
+    "ja": "亜麻仁"
+  },
+  "food-wildflower-honey": {
+    "ko": "야생화 꿀",
+    "ja": "百花蜜"
+  },
+  "food-forest-honey": {
+    "ko": "산림꿀",
+    "ja": "森林蜂蜜"
+  },
+  "food-foxtail-millet": {
+    "ko": "조",
+    "ja": "アワ"
+  },
+  "food-freekeh": {
+    "ko": "프리케"
+  },
+  "food-fried-onion": {
+    "ko": "튀긴 양파",
+    "ja": "揚げ玉ねぎ"
+  },
+  "food-friggitello": {
+    "ko": "프리지텔로 고추",
+    "ja": "フリッジテッロ唐辛子"
+  },
+  "food-fruit-vinegar": {
+    "ko": "과일 식초",
+    "ja": "果実酢"
+  },
+  "food-fuki": {
+    "ko": "머위",
+    "ja": "フキ"
+  },
+  "food-gala-apple": {
+    "ko": "갈라 사과",
+    "ja": "ガラアップル"
+  },
+  "food-galia-melon": {
+    "ko": "갈리아 멜론",
+    "ja": "ガリアメロン"
+  },
+  "food-garden-orache": {
+    "ko": "오라치",
+    "ja": "ヤマホウレンソウ"
+  },
+  "food-garland-chrysanthemum": {
+    "ko": "쑥갓",
+    "ja": "春菊"
+  },
+  "food-garlic-chive": {
+    "ko": "마늘부추"
+  },
+  "food-garlic-oil": {
+    "ko": "마늘 기름",
+    "ja": "ガーリックオイル"
+  },
+  "food-garlic-powder": {
+    "ko": "마늘가루",
+    "ja": "ガーリックパウダー"
+  },
+  "food-garlic-paste": {
+    "ko": "마늘 퓨레",
+    "ja": "ニンニクピューレ"
+  },
+  "food-garlic-salt": {
+    "ko": "마늘소금",
+    "ja": "ガーリックソルト"
+  },
+  "food-garlic-vinegar": {
+    "ko": "마늘 식초",
+    "ja": "にんにく酢"
+  },
+  "food-ginger-paste": {
+    "ko": "생강 페이스트",
+    "ja": "生姜ペースト"
+  },
+  "food-ginger-powder": {
+    "ko": "생강가루",
+    "ja": "ジンジャーパウダー"
+  },
+  "food-ginger-syrup": {
+    "ko": "생강 시럽",
+    "ja": "ジンジャーシロップ"
+  },
+  "food-ginkgo-nuts": {
+    "ko": "은행",
+    "ja": "銀杏"
+  },
+  "food-glace-cherry": {
+    "ko": "설탕절임 체리",
+    "ja": "ドレンチェリー"
+  },
+  "food-glasswort": {
+    "ko": "퉁퉁마디",
+    "ja": "アッケシソウ"
+  },
+  "food-goat-butter": {
+    "ko": "염소 버터",
+    "ja": "ヤギバター"
+  },
+  "food-goats-milk-yogurt": {
+    "ko": "염소 우유 요구르트",
+    "ja": "ヤギ乳ヨーグルト"
+  },
+  "food-goji": {
+    "ja": "クコの実"
+  },
+  "food-golden-delicious-apple": {
+    "ko": "골든 딜리셔스 사과",
+    "ja": "ゴールデンデリシャスアップル"
+  },
+  "food-golden-flax-seeds": {
+    "ko": "황금 아마씨",
+    "ja": "黄金の亜麻の種子"
+  },
+  "food-golden-syrup": {
+    "ko": "황금 시럽",
+    "ja": "ゴールデンシロップ"
+  },
+  "food-gooseberry-juice": {
+    "ko": "구스베리 주스",
+    "ja": "グーズベリージュース"
+  },
+  "food-gordal-olive": {
+    "ko": "고달 올리브",
+    "ja": "ゴーダルオリーブ"
+  },
+  "food-graham-flour": {
+    "ko": "그레이엄 밀가루",
+    "ja": "グラハム粉"
+  },
+  "food-grain-vinegar": {
+    "ko": "곡물식초",
+    "ja": "穀物酢"
+  },
+  "food-granny-smith-apple": {
+    "ko": "그라니 스미스 사과",
+    "ja": "グラニースミスアップル"
+  },
+  "food-grape-must": {
+    "ko": "포도 머스트",
+    "ja": "ブドウ果醪"
+  },
+  "food-grapefruit-syrup": {
+    "ko": "자몽 시럽",
+    "ja": "グレープフルーツシロップ"
+  },
+  "food-greek-yogurt": {
+    "ko": "그리스 요구르트",
+    "ja": "ギリシャヨーグルト"
+  },
+  "food-green-banana-flour": {
+    "ko": "녹색 바나나 가루",
+    "ja": "緑色のバナナ粉"
+  },
+  "food-green-bell-pepper": {
+    "ko": "녹색 피망",
+    "ja": "緑ピーマン"
+  },
+  "food-green-cardamom": {
+    "ko": "그린 카다몬",
+    "ja": "グリーンカルダモン"
+  },
+  "food-green-chili-pepper": {
+    "ko": "녹색 칠리 고추",
+    "ja": "青唐辛子"
+  },
+  "food-green-olive": {
+    "ko": "그린 올리브"
+  },
+  "food-green-pepper": {
+    "ko": "피망",
+    "ja": "ピーマン"
+  },
+  "food-greengage": {
+    "ko": "그린게이지 자두",
+    "ja": "グリーンゲージプラム"
+  },
+  "food-grey-pea": {
+    "ko": "회색완두",
+    "ja": "グレーピー"
+  },
+  "food-grunkern": {
+    "ko": "그륀케른",
+    "ja": "グリューンケルン"
+  },
+  "food-guava": {
+    "ja": "グアバ"
+  },
+  "food-gunpowder-tea": {
+    "ko": "건파우더 녹차",
+    "ja": "ガンパウダー茶"
+  },
+  "food-habanero-chili": {
+    "ko": "하바네로 칠리",
+    "ja": "ハバネロチリ"
+  },
+  "food-hayward-kiwifruit": {
+    "ko": "헤이워드 키위"
+  },
+  "food-hazelnut-oil": {
+    "ko": "헤이즐넛 오일",
+    "ja": "ヘーゼルナッツオイル"
+  },
+  "food-heart-of-palm": {
+    "ko": "야자순"
+  },
+  "food-heavy-cream": {
+    "ko": "헤비 크림",
+    "ja": "生クリーム"
+  },
+  "food-hemp-seed": {
+    "ko": "대마씨",
+    "ja": "麻の実"
+  },
+  "food-hemp-seed-flour": {
+    "ko": "대마씨 가루",
+    "ja": "麻の実粉"
+  },
+  "food-herbal-tea": {
+    "ko": "허브차",
+    "ja": "ハーブティー"
+  },
+  "food-herbes-de-provence": {
+    "ko": "허브 드 프로방스",
+    "ja": "エルブ・ド・プロヴァンス"
+  },
+  "food-hickorynut": {
+    "ko": "히코리너트",
+    "ja": "ヒッコリーナッツ"
+  },
+  "food-jasmine-rice": {
+    "ko": "홈 말리 쌀",
+    "ja": "ホンマリライス"
+  },
+  "food-honeydew-melon": {
+    "ko": "허니듀 멜론"
+  },
+  "food-hops": {
+    "ko": "홉"
+  },
+  "food-horned-melon": {
+    "ko": "키와노",
+    "ja": "キワノ"
+  },
+  "food-horseradish-paste": {
+    "ko": "양고추냉이 페이스트",
+    "ja": "ホースラディッシュペースト"
+  },
+  "food-hot-paprika": {
+    "ko": "매운 파프리카",
+    "ja": "ホットパプリカ"
+  },
+  "food-hungarian-peppers": {
+    "ko": "헝가리 고추",
+    "ja": "ハンガリアンペッパー"
+  },
+  "food-hyacinth-bean": {
+    "ko": "제비콩",
+    "ja": "フジマメ"
+  },
+  "food-iceberg-lettuce": {
+    "ko": "아이스버그 레터스",
+    "ja": "アイスバーグレタス"
+  },
+  "food-idared-apple": {
+    "ko": "아이더레드 사과",
+    "ja": "アイダレッドアップル"
+  },
+  "food-indian-gooseberry": {
+    "ko": "암라",
+    "ja": "アムラ"
+  },
+  "food-irish-moss": {
+    "ko": "아이리시 모스",
+    "ja": "アイリッシュモス"
+  },
+  "food-jackfruit": {
+    "ko": "잭프루트",
+    "ja": "パラミツ"
+  },
+  "food-jaggery": {
+    "ko": "재거리",
+    "ja": "ジャガリー"
+  },
+  "food-japanese-plum": {
+    "ko": "매실",
+    "ja": "梅"
+  },
+  "food-jarlsberg": {
+    "ko": "얄스베르그 치즈",
+    "ja": "ヤールスバーグチーズ"
+  },
+  "food-jasmine-petals": {
+    "ko": "재스민 꽃잎",
+    "ja": "ジャスミンの花びら"
+  },
+  "food-java-plum": {
+    "ko": "자문",
+    "ja": "ジャンブラン"
+  },
+  "food-jujube": {
+    "ko": "대추",
+    "ja": "ナツメ"
+  },
+  "food-kaffir-lime-leaf": {
+    "ko": "마크루트 라임 잎",
+    "ja": "コブミカンの葉"
+  },
+  "food-kaffir-lime-peel": {
+    "ko": "마크루트 라임 껍질",
+    "ja": "コブミカンの皮"
+  },
+  "food-kalamata-olive": {
+    "ko": "칼라마타 올리브",
+    "ja": "カラマタオリーブ"
+  },
+  "food-kale-juice": {
+    "ko": "케일 주스",
+    "ja": "ケールジュース"
+  },
+  "food-kanpyo": {
+    "ko": "박고지",
+    "ja": "かんぴょう"
+  },
+  "food-kanzuri": {
+    "ko": "칸주리"
+  },
+  "food-kasha": {
+    "ja": "カーシャ"
+  },
+  "food-kimchi": {
+    "ja": "キムチ"
+  },
+  "food-kodo-millet": {
+    "ko": "코도기장",
+    "ja": "コドミレット"
+  },
+  "food-kohlrabi": {
+    "ko": "콜라비",
+    "ja": "コールラビ"
+  },
+  "food-komatsuna": {
+    "ko": "고마쓰나"
+  },
+  "food-kombu": {
+    "ko": "다시마"
+  },
+  "food-kombucha": {
+    "ko": "콤부차",
+    "ja": "コンブチャ"
+  },
+  "food-konjac-flour": {
+    "ko": "곤약가루",
+    "ja": "こんにゃく粉"
+  },
+  "food-korean-chili-pepper": {
+    "ko": "한국 고추",
+    "ja": "韓国唐辛子"
+  },
+  "food-korean-chili-powder": {
+    "ko": "한국 고추가루",
+    "ja": "韓国の唐辛子粉"
+  },
+  "food-kumquat-juice": {
+    "ko": "금귤 주스"
+  },
+  "food-kvass-wort": {
+    "ko": "크바스 맥아즙",
+    "ja": "クワス麦汁"
+  },
+  "food-lancashire-cheese": {
+    "ko": "랭커셔 치즈",
+    "ja": "ランカシャーチーズ"
+  },
+  "food-land-cress": {
+    "ko": "랜드크레스",
+    "ja": "ヤマガラシ"
+  },
+  "food-langres": {
+    "ko": "랑그르 치즈",
+    "ja": "ラングルチーズ"
+  },
+  "food-lavender-honey": {
+    "ko": "라벤더 꿀",
+    "ja": "ラベンダーハニー"
+  },
+  "food-laver": {
+    "ko": "김",
+    "ja": "海苔"
+  },
+  "food-lemon-leaf": {
+    "ko": "레몬 잎",
+    "ja": "レモンの葉"
+  },
+  "food-lemon-marmalade": {
+    "ko": "레몬 마멀레이드",
+    "ja": "レモンマーマレード"
+  },
+  "food-lemon-peel": {
+    "ko": "레몬 껍질",
+    "ja": "レモンの皮"
+  },
+  "food-lemon-pepper": {
+    "ko": "레몬 후추",
+    "ja": "レモンペッパー"
+  },
+  "food-lemon-puree": {
+    "ko": "레몬 퓨레",
+    "ja": "レモンピューレ"
+  },
+  "food-lemon-verbena": {
+    "ko": "레몬 버베나",
+    "ja": "レモンバーベナ"
+  },
+  "food-lentil-flour": {
+    "ko": "렌즈콩 가루",
+    "ja": "レンズ豆の粉"
+  },
+  "food-lime-leaf": {
+    "ko": "라임잎",
+    "ja": "ライムの葉"
+  },
+  "food-linden-honey": {
+    "ko": "린든 꿀",
+    "ja": "シナノキハニー"
+  },
+  "food-lingonberry": {
+    "ko": "링곤베리",
+    "ja": "コケモモ"
+  },
+  "food-lingonberry-juice": {
+    "ko": "링곤베리 주스",
+    "ja": "コケモモジュース"
+  },
+  "food-liquorice-powder": {
+    "ko": "감초가루",
+    "ja": "甘草粉末"
+  },
+  "food-little-millet": {
+    "ko": "작은기장",
+    "ja": "リトルミレット"
+  },
+  "food-long-pepper": {
+    "ko": "긴후추",
+    "ja": "ヒハツ"
+  },
+  "food-longan": {
+    "ko": "용안",
+    "ja": "リュウガン"
+  },
+  "food-lotus-root": {
+    "ko": "연근"
+  },
+  "food-lotus-seed": {
+    "ko": "연꽃 씨앗",
+    "ja": "ハスの実"
+  },
+  "food-lovage": {
+    "ko": "러비지"
+  },
+  "food-lukuma": {
+    "ko": "루쿠마",
+    "ja": "ルクマ"
+  },
+  "food-lupin-bean": {
+    "ko": "루핀콩"
+  },
+  "food-lupin-flour": {
+    "ko": "루핀콩 가루",
+    "ja": "ルピナス豆粉"
+  },
+  "food-maasdam": {
+    "ko": "마스담 치즈",
+    "ja": "マースダムチーズ"
+  },
+  "food-macadamia-nut": {
+    "ko": "마카다미아 너트"
+  },
+  "food-macaroni": {
+    "ko": "마카로니",
+    "ja": "マカロニ"
+  },
+  "food-mace": {
+    "ja": "メース"
+  },
+  "food-maida": {
+    "ko": "마이다 밀가루",
+    "ja": "マイダ粉"
+  },
+  "food-maitake-mushroom": {
+    "ko": "잎새버섯",
+    "ja": "マイタケ"
+  },
+  "food-malt-beer": {
+    "ko": "맥아 맥주",
+    "ja": "モルトビール"
+  },
+  "food-malt-flour": {
+    "ko": "맥아 가루",
+    "ja": "麦芽粉"
+  },
+  "food-malt-vinegar": {
+    "ko": "맥아식초",
+    "ja": "麦芽酢"
+  },
+  "food-malted-rye-flour": {
+    "ko": "맥아 호밀 가루",
+    "ja": "ライ麦麦芽粉"
+  },
+  "food-malted-wheat-flour": {
+    "ko": "맥아 밀가루",
+    "ja": "麦芽小麦粉"
+  },
+  "food-mamey-sapote": {
+    "ko": "마메이 사포테",
+    "ja": "マメイサポテ"
+  },
+  "food-mandarin": {
+    "ko": "만다린 오렌지"
+  },
+  "food-mandarin-peel": {
+    "ko": "만다린 껍질",
+    "ja": "みかんの皮"
+  },
+  "food-mango": {
+    "ja": "マンゴー"
+  },
+  "food-mango-juice": {
+    "ko": "망고 주스",
+    "ja": "マンゴージュース"
+  },
+  "food-mango-puree": {
+    "ko": "망고 퓨레",
+    "ja": "マンゴーピューレ"
+  },
+  "food-manuka-honey": {
+    "ko": "마누카 꿀",
+    "ja": "マヌカハニー"
+  },
+  "food-manzanilla-olive": {
+    "ko": "만자닐라 올리브",
+    "ja": "マンサニラ・オリーブ"
+  },
+  "food-maple-sugar": {
+    "ko": "메이플 설탕"
+  },
+  "food-marcona-almond": {
+    "ko": "마르코나 아몬드",
+    "ja": "マルコナ アーモンド"
+  },
+  "food-marigold": {
+    "ko": "금잔화"
+  },
+  "food-mascarpone": {
+    "ko": "마스카포네"
+  },
+  "food-matcha": {
+    "ko": "말차"
+  },
+  "food-mazafati-dates": {
+    "ko": "마자파티 대추야자",
+    "ja": "マザファティデーツ"
+  },
+  "food-medjool-dates": {
+    "ko": "메드줄 대추야자",
+    "ja": "メジュールデーツ"
+  },
+  "food-medlar": {
+    "ko": "서양모과",
+    "ja": "セイヨウカリン"
+  },
+  "food-melon": {
+    "ko": "멜론"
+  },
+  "food-melon-seed": {
+    "ko": "멜론씨",
+    "ja": "メロンの種"
+  },
+  "food-millet-flour": {
+    "ko": "기장 가루",
+    "ja": "キビ粉"
+  },
+  "food-mirabelle-plum": {
+    "ko": "미라벨 자두",
+    "ja": "ミラベルプラム"
+  },
+  "food-moth-bean": {
+    "ko": "마트콩",
+    "ja": "モスビーン"
+  },
+  "food-mountain-honey": {
+    "ko": "산 꿀",
+    "ja": "山の蜂蜜"
+  },
+  "food-muenster-cheese": {
+    "ko": "뮌스터 치즈",
+    "ja": "ムンスターチーズ"
+  },
+  "food-mulberry": {
+    "ko": "오디",
+    "ja": "マルベリー"
+  },
+  "food-mung-dal": {
+    "ko": "녹두 달",
+    "ja": "ムングダール"
+  },
+  "food-munich-malt": {
+    "ko": "뮌헨 맥아",
+    "ja": "ミュンヘンモルト"
+  },
+  "food-muscadet": {
+    "ko": "무스카데"
+  },
+  "food-muscovado": {
+    "ko": "마스코바도"
+  },
+  "food-mushroom-powder": {
+    "ko": "버섯가루",
+    "ja": "キノコ粉末"
+  },
+  "food-mushroom-sauce": {
+    "ko": "버섯 소스",
+    "ja": "キノコソース"
+  },
+  "food-mustard-greens": {
+    "ko": "갓잎",
+    "ja": "カラシナ"
+  },
+  "food-mustard-oil": {
+    "ko": "머스타드 오일",
+    "ja": "マスタードオイル"
+  },
+  "food-mustard-sauce": {
+    "ko": "머스타드 소스",
+    "ja": "マスタードソース"
+  },
+  "food-mustard-seed": {
+    "ko": "겨자씨"
+  },
+  "food-mustard-spinach": {
+    "ko": "코마츠나",
+    "ja": "小松菜"
+  },
+  "food-naranjilla": {
+    "ko": "나란히야",
+    "ja": "ナランヒージャ"
+  },
+  "food-nectarine": {
+    "ko": "천도 복숭아"
+  },
+  "food-nib-sugar": {
+    "ko": "닙 슈거",
+    "ja": "ニブシュガー"
+  },
+  "food-nopales": {
+    "ko": "노팔 선인장",
+    "ja": "ノパル"
+  },
+  "food-oak-leaf-lettuce": {
+    "ko": "오크리프 상추",
+    "ja": "オークリーフレタス"
+  },
+  "food-oat-flour": {
+    "ko": "귀리 가루"
+  },
+  "food-oat-malt": {
+    "ko": "귀리 맥아",
+    "ja": "オーツ麦麦芽"
+  },
+  "food-oat-milk": {
+    "ko": "귀리 우유",
+    "ja": "オーツミルク"
+  },
+  "food-oat-oil": {
+    "ko": "귀리 기름",
+    "ja": "オーツ麦油"
+  },
+  "food-okra": {
+    "ko": "오크라"
+  },
+  "food-olive": {
+    "ko": "올리브"
+  },
+  "food-olive-pomace-oil": {
+    "ko": "올리브 포마스 오일",
+    "ja": "オリーブポマスオイル"
+  },
+  "food-onion": {
+    "ko": "양파"
+  },
+  "food-onion-powder": {
+    "ko": "양파가루"
+  },
+  "food-orange-blossom": {
+    "ko": "오렌지 꽃"
+  },
+  "food-orange-blossom-honey": {
+    "ko": "오렌지 꽃 꿀",
+    "ja": "オレンジの花の蜂蜜"
+  },
+  "food-orange-marmalade": {
+    "ko": "오렌지 마멀레이드",
+    "ja": "オレンジマーマレード"
+  },
+  "food-orange-zest": {
+    "ko": "오렌지 제스트",
+    "ja": "オレンジゼスト"
+  },
+  "food-oregano": {
+    "ko": "오레가노"
+  },
+  "food-oscypek": {
+    "ko": "오시펙 치즈",
+    "ja": "オスツィペックチーズ"
+  },
+  "food-palm-sugar": {
+    "ko": "야자 설탕",
+    "ja": "パームシュガー"
+  },
+  "food-paneer": {
+    "ko": "파니르",
+    "ja": "パニール"
+  },
+  "food-paprika-paste": {
+    "ko": "파프리카 페이스트",
+    "ja": "パプリカペースト"
+  },
+  "food-pasilla-peppers": {
+    "ko": "파시야 고추",
+    "ja": "パシーヤ唐辛子"
+  },
+  "food-passionfruit": {
+    "ko": "패션프루트",
+    "ja": "パッションフルーツ"
+  },
+  "food-pea-flour": {
+    "ko": "완두콩 가루",
+    "ja": "エンドウ豆の粉"
+  },
+  "food-peach": {
+    "ko": "복숭아"
+  },
+  "food-peach-juice": {
+    "ko": "복숭아 주스",
+    "ja": "桃ジュース"
+  },
+  "food-peach-puree": {
+    "ko": "복숭아 퓨레",
+    "ja": "桃のピューレ"
+  },
+  "food-peach-syrup": {
+    "ko": "복숭아 시럽",
+    "ja": "ピーチシロップ"
+  },
+  "food-peanut-butter": {
+    "ko": "땅콩버터"
+  },
+  "food-peanut-flour": {
+    "ja": "ピーナッツ粉"
+  },
+  "food-pear-juice": {
+    "ko": "배 주스",
+    "ja": "梨ジュース"
+  },
+  "food-pear-nectar": {
+    "ko": "배 넥타",
+    "ja": "洋梨ネクター"
+  },
+  "food-pear-puree": {
+    "ko": "배 퓨레",
+    "ja": "洋梨のピューレ"
+  },
+  "food-pearl-barley": {
+    "ko": "도정 보리",
+    "ja": "丸麦"
+  },
+  "food-pearl-millet": {
+    "ko": "펄 밀릿",
+    "ja": "トウジンビエ"
+  },
+  "food-pearl-onion": {
+    "ko": "펄 어니언",
+    "ja": "ペコロス"
+  },
+  "food-pearled-farro": {
+    "ko": "도정 파로",
+    "ja": "精白ファッロ"
+  },
+  "food-pecan-nut": {
+    "ko": "피칸 너트"
+  },
+  "food-pepper-jack": {
+    "ko": "페퍼잭 치즈",
+    "ja": "ペッパージャックチーズ"
+  },
+  "food-peri-peri": {
+    "ko": "페리페리",
+    "ja": "ペリペリ"
+  },
+  "food-shiso": {
+    "ko": "들깨"
+  },
+  "food-perilla-oil": {
+    "ko": "들기름",
+    "ja": "エゴマ油"
+  },
+  "food-persimmon-juice": {
+    "ko": "감즙",
+    "ja": "柿ジュース"
+  },
+  "food-petit-suisse": {
+    "ko": "프티스위스 치즈",
+    "ja": "プティ・スイスチーズ"
+  },
+  "food-pickled-gherkin": {
+    "ko": "절인 오이",
+    "ja": "キュウリのピクルス"
+  },
+  "food-picodon": {
+    "ko": "피코동 치즈",
+    "ja": "ピコドンチーズ"
+  },
+  "food-pigeon-pea": {
+    "ko": "비둘기콩",
+    "ja": "キマメ"
+  },
+  "food-pilinut": {
+    "ko": "필리너트",
+    "ja": "ピリナッツ"
+  },
+  "food-pilsner-malted-barley": {
+    "ko": "필스너 맥아보리",
+    "ja": "ピルスナー麦芽大麦"
+  },
+  "food-pineapple-puree": {
+    "ko": "파인애플 퓨레",
+    "ja": "パイナップルピューレ"
+  },
+  "food-pineapple-syrup": {
+    "ko": "파인애플 시럽",
+    "ja": "パイナップルシロップ"
+  },
+  "food-pink-grapefruit": {
+    "ko": "핑크 자몽",
+    "ja": "ピンクグレープフルーツ"
+  },
+  "food-pink-grapefruit-juice": {
+    "ko": "핑크 자몽 주스",
+    "ja": "ピンクグレープフルーツジュース"
+  },
+  "food-pink-lady-apple": {
+    "ko": "핑크레이디 사과",
+    "ja": "ピンクレディーアップル"
+  },
+  "food-pinto-beans": {
+    "ko": "핀토 콩",
+    "ja": "ピントビーンズ"
+  },
+  "food-piquillo-pepper": {
+    "ko": "피킬로 고추"
+  },
+  "food-pistachio-nuts": {
+    "ko": "피스타치오 너트"
+  },
+  "food-pisto": {
+    "ko": "피스토",
+    "ja": "ピスト"
+  },
+  "food-pitanga": {
+    "ko": "피탕가",
+    "ja": "ピタンガ"
+  },
+  "food-plain-yogurt": {
+    "ko": "플레인 요구르트",
+    "ja": "プレーンヨーグルト"
+  },
+  "food-plantain": {
+    "ko": "플랜틴",
+    "ja": "プランテン"
+  },
+  "food-pleurotus": {
+    "ko": "느타리버섯",
+    "ja": "ヒラタケ"
+  },
+  "food-poblano-chili": {
+    "ko": "포블라노 칠리",
+    "ja": "ポブラノチリ"
+  },
+  "food-pomegranate": {
+    "ko": "석류",
+    "ja": "ザクロ"
+  },
+  "food-pomegranate-juice": {
+    "ko": "석류 주스",
+    "ja": "ザクロジュース"
+  },
+  "food-pomegranate-seeds": {
+    "ko": "석류 씨앗",
+    "ja": "ザクロの種"
+  },
+  "food-pomelo": {
+    "ko": "포멜로",
+    "ja": "ザボン"
+  },
+  "food-pomelo-juice": {
+    "ko": "포멜로 주스",
+    "ja": "ザボンジュース"
+  },
+  "food-popcorn": {
+    "ko": "팝콘",
+    "ja": "ポップコーン"
+  },
+  "food-poppyseed-oil": {
+    "ko": "양귀비씨 기름",
+    "ja": "ポピーシードオイル"
+  },
+  "food-potato": {
+    "ko": "감자"
+  },
+  "food-potato-flakes": {
+    "ko": "감자 플레이크",
+    "ja": "ポテトフレーク"
+  },
+  "food-potato-flour": {
+    "ko": "감자가루",
+    "ja": "ジャガイモ粉"
+  },
+  "food-powdered-egg-white": {
+    "ko": "분말 난백",
+    "ja": "粉末卵白"
+  },
+  "food-preserved-lemon": {
+    "ko": "소금절임 레몬",
+    "ja": "塩漬けレモン"
+  },
+  "food-prickly-pear": {
+    "ko": "백년초 열매",
+    "ja": "ウチワサボテンの実"
+  },
+  "food-psyllium-seed": {
+    "ko": "차전자",
+    "ja": "オオバコ種子"
+  },
+  "food-pumpkin-flower": {
+    "ko": "호박 꽃",
+    "ja": "かぼちゃの花"
+  },
+  "food-pumpkin-juice": {
+    "ko": "호박 주스",
+    "ja": "かぼちゃジュース"
+  },
+  "food-pumpkin-seed-flour": {
+    "ko": "호박씨 가루",
+    "ja": "かぼちゃの種粉"
+  },
+  "food-purslane": {
+    "ko": "쇠비름",
+    "ja": "スベリヒユ"
+  },
+  "food-quince": {
+    "ko": "모과",
+    "ja": "マルメロ"
+  },
+  "food-quince-jelly": {
+    "ko": "모과 젤리",
+    "ja": "マルメロゼリー"
+  },
+  "food-quinoa-flour": {
+    "ko": "퀴노아 가루",
+    "ja": "キヌア粉"
+  },
+  "food-raclette": {
+    "ko": "라클렛 치즈"
+  },
+  "food-radish-sprouts": {
+    "ko": "무순",
+    "ja": "かいわれ大根"
+  },
+  "food-rakia": {
+    "ko": "라키아",
+    "ja": "ラキア"
+  },
+  "food-rambutan": {
+    "ko": "람부탄",
+    "ja": "ランブータン"
+  },
+  "food-rapini": {
+    "ko": "라피니",
+    "ja": "チーマ・ディ・ラーパ"
+  },
+  "food-raspberry-jam": {
+    "ko": "라즈베리 잼",
+    "ja": "ラズベリージャム"
+  },
+  "food-raspberry-juice": {
+    "ko": "라즈베리 주스",
+    "ja": "ラズベリージュース"
+  },
+  "food-raspberry-leaf": {
+    "ko": "라즈베리 잎",
+    "ja": "ラズベリーの葉"
+  },
+  "food-raspberry-sauce": {
+    "ko": "라즈베리 소스",
+    "ja": "ラズベリーソース"
+  },
+  "food-reblochon": {
+    "ja": "ルブロションチーズ"
+  },
+  "food-red-bell-pepper": {
+    "ko": "빨간 피망"
+  },
+  "food-red-chili-pepper": {
+    "ko": "빨간 고추",
+    "ja": "赤唐辛子"
+  },
+  "food-red-currant-juice": {
+    "ko": "레드커런트 주스",
+    "ja": "アカスグリジュース"
+  },
+  "food-red-curry-paste": {
+    "ko": "레드 카레 페이스트",
+    "ja": "レッドカレーペースト"
+  },
+  "food-red-grape": {
+    "ko": "붉은 포도",
+    "ja": "赤ぶどう"
+  },
+  "food-red-grape-juice": {
+    "ko": "붉은 포도 주스",
+    "ja": "赤ぶどうジュース"
+  },
+  "food-red-leicester": {
+    "ko": "레드 레스터 치즈",
+    "ja": "レッドレスターチーズ"
+  },
+  "food-red-miso-paste": {
+    "ko": "아카미소",
+    "ja": "赤味噌"
+  },
+  "food-red-orange-marmalade": {
+    "ko": "블러드 오렌지 마멀레이드",
+    "ja": "ブラッドオレンジマーマレード"
+  },
+  "food-red-pomelo": {
+    "ko": "빨간 포멜로",
+    "ja": "赤いザボン"
+  },
+  "food-red-rice": {
+    "ko": "적미",
+    "ja": "赤米"
+  },
+  "food-red-wine-vinegar": {
+    "ko": "레드 와인 식초",
+    "ja": "赤ワインビネガー"
+  },
+  "food-rhubarb": {
+    "ja": "ルバーブ"
+  },
+  "food-rhubarb-juice": {
+    "ko": "대황 주스",
+    "ja": "ルバーブジュース"
+  },
+  "food-rice-cream": {
+    "ko": "쌀크림",
+    "ja": "ライスクリーム"
+  },
+  "food-rice-flakes": {
+    "ko": "쌀 플레이크"
+  },
+  "food-rice-flour": {
+    "ko": "쌀가루"
+  },
+  "food-rice-milk": {
+    "ko": "쌀 우유",
+    "ja": "ライスミルク"
+  },
+  "food-rice-noodles": {
+    "ko": "쌀국수",
+    "ja": "ビーフン"
+  },
+  "food-rice-semolina": {
+    "ko": "쌀 세몰리나",
+    "ja": "米セモリナ"
+  },
+  "food-rice-wine": {
+    "ko": "라이스 와인",
+    "ja": "米酒"
+  },
+  "food-risoni": {
+    "ko": "리소니 파스타",
+    "ja": "リゾーニ"
+  },
+  "food-risotto-rice": {
+    "ko": "리소토용 쌀",
+    "ja": "リゾット米"
+  },
+  "food-rocamadour": {
+    "ko": "로카마두르 치즈",
+    "ja": "ロカマドゥールチーズ"
+  },
+  "food-rock-salt": {
+    "ko": "암염",
+    "ja": "岩塩"
+  },
+  "food-romanesco-broccoli": {
+    "ko": "로마네스크 브로콜리"
+  },
+  "food-romano-cheese": {
+    "ko": "로마노 치즈",
+    "ja": "ロマーノチーズ"
+  },
+  "food-rose-apple": {
+    "ko": "로즈애플",
+    "ja": "レンブ"
+  },
+  "food-rose-petals": {
+    "ko": "장미 꽃잎",
+    "ja": "バラの花びら"
+  },
+  "food-rosemary-honey": {
+    "ko": "로즈마리 꿀",
+    "ja": "ローズマリー蜂蜜"
+  },
+  "food-rum": {
+    "ko": "럼"
+  },
+  "food-runner-bean": {
+    "ko": "홍화채두"
+  },
+  "food-rusk": {
+    "ko": "러스크",
+    "ja": "ラスク"
+  },
+  "food-russet-potatoes": {
+    "ko": "러셋 감자",
+    "ja": "ラセットポテト"
+  },
+  "food-rutabaga": {
+    "ko": "루타바가",
+    "ja": "ルタバガ"
+  },
+  "food-rye-flakes": {
+    "ko": "호밀 플레이크"
+  },
+  "food-rye-flour": {
+    "ko": "호밀가루"
+  },
+  "food-rye-malt": {
+    "ko": "호밀 맥아",
+    "ja": "ライ麦麦芽"
+  },
+  "food-safflower-oil": {
+    "ko": "홍화유",
+    "ja": "ベニバナ油"
+  },
+  "food-saint-marcellin": {
+    "ko": "생마르슬랭 치즈",
+    "ja": "サン・マルスランチーズ"
+  },
+  "food-saint-nectaire": {
+    "ko": "생넥테르 치즈"
+  },
+  "food-sainte-maure-de-touraine": {
+    "ko": "생트모르 드 투렌 치즈",
+    "ja": "サントモール・ド・トゥーレーヌチーズ"
+  },
+  "food-sake": {
+    "ko": "사케"
+  },
+  "food-salers": {
+    "ko": "살레르 치즈"
+  },
+  "food-salsa": {
+    "ko": "살사",
+    "ja": "サルサ"
+  },
+  "food-salsify": {
+    "ko": "서양우엉"
+  },
+  "food-salted-butter": {
+    "ko": "가염 버터"
+  },
+  "food-salted-butter-caramel-sauce": {
+    "ko": "솔티드 버터 카라멜 소스",
+    "ja": "有塩バターキャラメルソース"
+  },
+  "food-sambal": {
+    "ko": "삼발",
+    "ja": "サンバル"
+  },
+  "food-sambal-oelek": {
+    "ko": "삼발 올렉",
+    "ja": "サンバルオレック"
+  },
+  "food-sapodilla": {
+    "ko": "사포딜라",
+    "ja": "サポジラ"
+  },
+  "food-sauerkraut-juice": {
+    "ko": "자우어크라우트 즙",
+    "ja": "ザワークラウトジュース"
+  },
+  "food-sea-kale": {
+    "ko": "갯배추",
+    "ja": "ハマナ"
+  },
+  "food-sea-buckthorn-juice": {
+    "ko": "산자나무 주스",
+    "ja": "シーバックソーンジュース"
+  },
+  "food-seitan": {
+    "ja": "セイタン"
+  },
+  "food-semi-sweet-chocolate": {
+    "ko": "세미스위트 초콜릿",
+    "ja": "セミスイートチョコレート"
+  },
+  "food-wheat-semolina": {
+    "ko": "세몰리나"
+  },
+  "food-sencha": {
+    "ko": "센차"
+  },
+  "food-serrano-peppers": {
+    "ko": "세라노 고추",
+    "ja": "セラーノ唐辛子"
+  },
+  "food-sesame-seed-bun": {
+    "ko": "참깨 번",
+    "ja": "ごまバンズ"
+  },
+  "food-sheeps-milk-cheese": {
+    "ja": "羊乳チーズ"
+  },
+  "food-sheeps-cream": {
+    "ko": "양유 크림",
+    "ja": "羊乳クリーム"
+  },
+  "food-sherry-vinegar": {
+    "ko": "셰리 식초",
+    "ja": "シェリービネガー"
+  },
+  "food-shiitake": {
+    "ko": "표고버섯"
+  },
+  "food-sichuan-pepper": {
+    "ko": "화자오",
+    "ja": "花椒"
+  },
+  "food-single-cream": {
+    "ko": "싱글 크림",
+    "ja": "シングルクリーム"
+  },
+  "food-skyr": {
+    "ko": "스키르",
+    "ja": "スキール"
+  },
+  "food-sloe": {
+    "ko": "슬로베리",
+    "ja": "スローベリー"
+  },
+  "food-smoked-paprika": {
+    "ko": "훈제 파프리카",
+    "ja": "スモークパプリカ"
+  },
+  "food-soba": {
+    "ko": "소바",
+    "ja": "そば"
+  },
+  "food-sorghum": {
+    "ko": "수수",
+    "ja": "モロコシ"
+  },
+  "food-sorghum-flour": {
+    "ko": "수수가루",
+    "ja": "モロコシ粉"
+  },
+  "food-sour-cherry": {
+    "ko": "사워체리",
+    "ja": "サワーチェリー"
+  },
+  "food-tart-cherry-juice": {
+    "ko": "사워체리 주스",
+    "ja": "サワーチェリージュース"
+  },
+  "food-sour-cream": {
+    "ja": "サワークリーム"
+  },
+  "food-soursop": {
+    "ko": "사워솝",
+    "ja": "サワーソップ"
+  },
+  "food-soya-flour": {
+    "ko": "콩가루",
+    "ja": "大豆粉"
+  },
+  "food-spaghetti-squash": {
+    "ko": "스파게티 스쿼시",
+    "ja": "スパゲッティスカッシュ"
+  },
+  "food-spelt-flakes": {
+    "ko": "스펠트 플레이크",
+    "ja": "スペルト小麦フレーク"
+  },
+  "food-spelt-flour": {
+    "ko": "스펠트 밀가루",
+    "ja": "スペルト小麦粉"
+  },
+  "food-spinach-puree": {
+    "ko": "시금치 퓨레",
+    "ja": "ほうれん草のピューレ"
+  },
+  "food-split-pea": {
+    "ja": "割りエンドウ"
+  },
+  "food-spring-honey": {
+    "ko": "봄 꿀",
+    "ja": "春の蜂蜜"
+  },
+  "food-stilton": {
+    "ko": "스틸턴 치즈",
+    "ja": "スティルトンチーズ"
+  },
+  "food-straw-mushroom": {
+    "ko": "풀버섯"
+  },
+  "food-strawberry-guavas": {
+    "ko": "딸기구아바",
+    "ja": "ストロベリーグアバ"
+  },
+  "food-strawberry-jam": {
+    "ko": "딸기잼",
+    "ja": "いちごジャム"
+  },
+  "food-strawberry-juice": {
+    "ko": "딸기 주스"
+  },
+  "food-sukkary-dates": {
+    "ko": "수카리 대추야자",
+    "ja": "スッカリーデーツ"
+  },
+  "food-sumac": {
+    "ko": "수맥"
+  },
+  "food-summer-savory": {
+    "ko": "서머 세이보리",
+    "ja": "サマーセイボリー"
+  },
+  "food-sunflower-honey": {
+    "ko": "해바라기 꿀",
+    "ja": "ひまわりの蜂蜜"
+  },
+  "food-sunflower-seed-flour": {
+    "ko": "해바라기씨 가루",
+    "ja": "ヒマワリの種の粉"
+  },
+  "food-sweet-onion": {
+    "ko": "달콤한 양파",
+    "ja": "甘い玉ねぎ"
+  },
+  "food-sweet-potato-leaves": {
+    "ko": "고구마 잎",
+    "ja": "サツマイモの葉"
+  },
+  "food-sweet-soy-sauce": {
+    "ko": "달콤한 간장",
+    "ja": "甘口醤油"
+  },
+  "food-sweet-valencia-orange": {
+    "ko": "달콤한 발렌시아 오렌지",
+    "ja": "甘いバレンシアオレンジ"
+  },
+  "food-sweet-whey": {
+    "ko": "스위트 유청",
+    "ja": "スイートホエイ"
+  },
+  "food-sweet-woodruff": {
+    "ko": "스위트우드러프",
+    "ja": "クルマバソウ"
+  },
+  "food-sweetcorn": {
+    "ko": "단옥수수"
+  },
+  "food-swiss-cheese": {
+    "ko": "스위스 치즈",
+    "ja": "スイスチーズ"
+  },
+  "food-tabasco-chile": {
+    "ko": "타바스코 고추",
+    "ja": "タバスコ唐辛子"
+  },
+  "food-tamari": {
+    "ko": "타마리"
+  },
+  "food-tamarillo": {
+    "ko": "타마릴로",
+    "ja": "タマリロ"
+  },
+  "food-tamarind-paste": {
+    "ko": "타마린드 페이스트",
+    "ja": "タマリンドペースト"
+  },
+  "food-tangerine": {
+    "ko": "귤",
+    "ja": "タンジェリン"
+  },
+  "food-tangerine-juice": {
+    "ko": "귤 주스",
+    "ja": "みかんジュース"
+  },
+  "food-tapioca-flour": {
+    "ko": "타피오카 가루",
+    "ja": "タピオカ粉"
+  },
+  "food-taro-leaves": {
+    "ko": "토란잎",
+    "ja": "サトイモの葉"
+  },
+  "food-tarragon-vinegar": {
+    "ko": "타라곤 식초",
+    "ja": "タラゴン酢"
+  },
+  "food-teaseed-oil": {
+    "ko": "차씨유",
+    "ja": "茶種子油"
+  },
+  "food-teff": {
+    "ko": "테프",
+    "ja": "テフ"
+  },
+  "food-teff-flour": {
+    "ko": "테프 가루",
+    "ja": "テフ粉"
+  },
+  "food-tempranillo-grape": {
+    "ko": "템프라니요 포도",
+    "ja": "テンプラニーリョブドウ"
+  },
+  "food-tencha": {
+    "ko": "텐차"
+  },
+  "food-teriyaki-sauce": {
+    "ko": "데리야끼 소스",
+    "ja": "てりやきソース"
+  },
+  "food-thongweed": {
+    "ko": "미역쇠",
+    "ja": "ヒバマタ"
+  },
+  "food-thyme-honey": {
+    "ko": "백리향 꿀",
+    "ja": "タイム蜂蜜"
+  },
+  "food-tigernut": {
+    "ko": "타이거너트",
+    "ja": "タイガーナッツ"
+  },
+  "food-tigernut-milk": {
+    "ko": "타이거너트 밀크",
+    "ja": "タイガーナッツミルク"
+  },
+  "food-toasted-sesame-oil": {
+    "ko": "볶은 참기름",
+    "ja": "焙煎ごま油"
+  },
+  "food-tomatillo": {
+    "ko": "토마티요",
+    "ja": "トマティーヨ"
+  },
+  "food-tomato": {
+    "ko": "토마토"
+  },
+  "food-tomato-cubes": {
+    "ko": "토마토 큐브",
+    "ja": "トマトキューブ"
+  },
+  "food-tomato-powder": {
+    "ko": "토마토 가루",
+    "ja": "トマトパウダー"
+  },
+  "food-tomato-pulp": {
+    "ko": "토마토 펄프",
+    "ja": "トマト果肉"
+  },
+  "food-tomato-puree": {
+    "ko": "토마토 퓨레"
+  },
+  "food-tomme": {
+    "ko": "톰 치즈"
+  },
+  "food-tonka-bean": {
+    "ko": "통카콩",
+    "ja": "トンカビーン"
+  },
+  "food-tremella-fuciformis": {
+    "ko": "흰목이버섯",
+    "ja": "シロキクラゲ"
+  },
+  "food-triticale": {
+    "ko": "라이밀",
+    "ja": "ライコムギ"
+  },
+  "food-truffle": {
+    "ja": "トリュフ"
+  },
+  "food-tulsi": {
+    "ko": "툴시",
+    "ja": "トゥルシー"
+  },
+  "food-turbinado-sugar": {
+    "ko": "터비나도 설탕",
+    "ja": "タービナードシュガー"
+  },
+  "food-turmeric-powder": {
+    "ko": "강황가루",
+    "ja": "ターメリックパウダー"
+  },
+  "food-udon": {
+    "ko": "우동",
+    "ja": "うどん"
+  },
+  "food-unsalted-butter": {
+    "ko": "무염 버터",
+    "ja": "無塩バター"
+  },
+  "food-vanilla-powder": {
+    "ko": "바닐라 파우더",
+    "ja": "バニラパウダー"
+  },
+  "food-vanilla-seeds": {
+    "ko": "바닐라 씨앗",
+    "ja": "バニラの種"
+  },
+  "food-vasterbotten-cheese": {
+    "ko": "베스테르보텐 치즈"
+  },
+  "food-vegetable-broth": {
+    "ko": "채소 육수",
+    "ja": "野菜ブロス"
+  },
+  "food-verna-lemon": {
+    "ko": "베르나 레몬",
+    "ja": "ヴァーナレモン"
+  },
+  "food-vine-leaf": {
+    "ko": "포도나무 잎",
+    "ja": "ブドウの葉"
+  },
+  "food-vine-spinach": {
+    "ko": "인도시금치",
+    "ja": "ツルムラサキ"
+  },
+  "food-violet-carrot": {
+    "ko": "보라색 당근",
+    "ja": "紫のニンジン"
+  },
+  "food-water-spinach": {
+    "ko": "공심채",
+    "ja": "空心菜"
+  },
+  "food-watermelon-seed-kernels": {
+    "ko": "수박씨 알맹이",
+    "ja": "スイカ種子仁"
+  },
+  "food-wax-bean": {
+    "ko": "왁스빈",
+    "ja": "黄さやインゲン"
+  },
+  "food-wensleydale": {
+    "ko": "웬즐리데일 치즈",
+    "ja": "ウェンズリーデールチーズ"
+  },
+  "food-wheat-flakes": {
+    "ko": "밀 플레이크"
+  },
+  "food-wheat-flour": {
+    "ko": "밀가루"
+  },
+  "food-wheat-germ": {
+    "ko": "밀 배아",
+    "ja": "小麦胚芽"
+  },
+  "food-wheat-germ-oil": {
+    "ko": "밀배아유",
+    "ja": "小麦胚芽油"
+  },
+  "food-wheat-malt": {
+    "ko": "밀 맥아",
+    "ja": "小麦麦芽"
+  },
+  "food-whipped-cream": {
+    "ko": "휘핑 크림",
+    "ja": "ホイップクリーム"
+  },
+  "food-whipping-cream": {
+    "ko": "휘핑 크림",
+    "ja": "ホイップクリーム"
+  },
+  "food-generic-whisky": {
+    "ko": "위스키",
+    "ja": "ウィスキー"
+  },
+  "food-white-balsamic-vinegar": {
+    "ko": "화이트 발사믹 식초",
+    "ja": "ホワイトバルサミコ酢"
+  },
+  "food-white-dashi": {
+    "ko": "시로다시"
+  },
+  "food-white-grape": {
+    "ko": "백포도",
+    "ja": "白ぶどう"
+  },
+  "food-white-grape-juice": {
+    "ko": "백포도 주스",
+    "ja": "白ぶどうジュース"
+  },
+  "food-white-mulberry": {
+    "ko": "흰 오디",
+    "ja": "ホワイトマルベリー"
+  },
+  "food-white-peach": {
+    "ko": "백도",
+    "ja": "白桃"
+  },
+  "food-white-pepper": {
+    "ko": "흰 후추"
+  },
+  "food-white-tea": {
+    "ko": "백차",
+    "ja": "白茶"
+  },
+  "food-white-distilled-vinegar": {
+    "ko": "백식초",
+    "ja": "白酢"
+  },
+  "food-white-wine-vinegar": {
+    "ko": "화이트 와인 식초"
+  },
+  "food-wholemeal-barley-flour": {
+    "ko": "통곡물 보리가루",
+    "ja": "全粒大麦粉"
+  },
+  "food-wholemeal-oat-flour": {
+    "ko": "통곡물 귀리가루",
+    "ja": "全粒オート麦粉"
+  },
+  "food-wholemeal-rye-flour": {
+    "ko": "통곡물 호밀가루",
+    "ja": "全粒ライ麦粉"
+  },
+  "food-wholemeal-spelt-flour": {
+    "ko": "통곡물 스펠트 밀가루",
+    "ja": "全粒スペルト小麦粉"
+  },
+  "food-wild-blueberry": {
+    "ko": "야생 블루베리",
+    "ja": "ワイルドブルーベリー"
+  },
+  "food-williams-bon-chretien-pear": {
+    "ko": "윌리엄스 본 크레티앙 배"
+  },
+  "food-wine-vinegar": {
+    "ko": "와인 식초"
+  },
+  "food-winged-beans": {
+    "ko": "날개콩",
+    "ja": "シカクマメ"
+  },
+  "food-yam": {
+    "ko": "얌",
+    "ja": "ヤムイモ"
+  },
+  "food-jicama": {
+    "ko": "히카마",
+    "ja": "ヒカマ"
+  },
+  "food-yardlong-beans": {
+    "ko": "줄콩",
+    "ja": "ジュウロクササゲ"
+  },
+  "food-yautia": {
+    "ko": "야우티아",
+    "ja": "ヤウティア"
+  },
+  "food-yellow-bell-pepper": {
+    "ko": "노란 피망"
+  },
+  "food-yellow-peach": {
+    "ko": "노란 복숭아",
+    "ja": "黄桃"
+  },
+  "food-yomogi": {
+    "ko": "쑥"
+  },
+  "food-yuzu": {
+    "ko": "유자"
+  },
+  "food-zaatar": {
+    "ko": "자타르",
+    "ja": "ザアタル"
+  }
+}

@@ -1,0 +1,1043 @@
+{
+  "food-achillea-millefolium": {
+    "zh": "欧蓍草"
+  },
+  "food-adzuki-bean": {
+    "zh": "红豆"
+  },
+  "food-allspice": {
+    "zh": "多香果"
+  },
+  "food-aloe-vera": {
+    "zh": "库拉索芦荟"
+  },
+  "food-amaranth": {
+    "zh": "苋米"
+  },
+  "food-apple": {
+    "zh": "苹果"
+  },
+  "food-apple-juice": {
+    "zh": "苹果汁"
+  },
+  "food-apricot": {
+    "zh": "杏"
+  },
+  "food-arabica-coffee": {
+    "zh": "阿拉比卡咖啡"
+  },
+  "food-arrowhead": {
+    "zh": "慈姑"
+  },
+  "food-artichoke": {
+    "zh": "朝鲜蓟"
+  },
+  "food-asiago": {
+    "zh": "艾斯阿格奶酪"
+  },
+  "food-asparagus": {
+    "zh": "芦笋"
+  },
+  "food-aubergine": {
+    "zh": "茄子"
+  },
+  "food-avocado": {
+    "zh": "鳄梨"
+  },
+  "food-baguette": {
+    "zh": "法式长棍面包"
+  },
+  "food-bakers-yeast": {
+    "zh": "烘焙酵母"
+  },
+  "food-balsamic-vinegar": {
+    "zh": "意大利香醋"
+  },
+  "food-bamboo-shoot": {
+    "zh": "竹笋"
+  },
+  "food-banana": {
+    "zh": "香蕉"
+  },
+  "food-barley": {
+    "zh": "大麦"
+  },
+  "food-basil": {
+    "zh": "罗勒"
+  },
+  "food-bay-leaf": {
+    "zh": "月桂叶"
+  },
+  "food-beaufort": {
+    "zh": "博福尔奶酪"
+  },
+  "food-bell-pepper": {
+    "zh": "甜椒"
+  },
+  "food-bitter-orange": {
+    "zh": "苦橙"
+  },
+  "food-black-cardamom": {
+    "zh": "黑豆蔻"
+  },
+  "food-black-rice": {
+    "zh": "紫米"
+  },
+  "food-black-tea": {
+    "zh": "红茶"
+  },
+  "food-blackberry": {
+    "zh": "黑莓"
+  },
+  "food-blackcurrant": {
+    "zh": "黑加仑"
+  },
+  "food-bleu-dauvergne": {
+    "zh": "奥弗涅蓝纹奶酪"
+  },
+  "food-blue-cheese": {
+    "zh": "蓝纹奶酪"
+  },
+  "food-blueberry": {
+    "zh": "蓝莓"
+  },
+  "food-borage": {
+    "zh": "琉璃苣"
+  },
+  "food-brie": {
+    "zh": "布里奶酪"
+  },
+  "food-brine": {
+    "zh": "浓盐水"
+  },
+  "food-broad-bean": {
+    "zh": "蚕豆"
+  },
+  "food-broccoli": {
+    "zh": "西兰花"
+  },
+  "food-broth": {
+    "zh": "清汤"
+  },
+  "food-brussels-sprouts": {
+    "zh": "抱子甘蓝"
+  },
+  "food-buckwheat": {
+    "zh": "荞麦"
+  },
+  "food-bulgur": {
+    "zh": "布格麦"
+  },
+  "food-buttermilk": {
+    "zh": "酪乳"
+  },
+  "food-butternut-squash": {
+    "zh": "奶油南瓜"
+  },
+  "food-camembert": {
+    "zh": "卡芒贝尔奶酪"
+  },
+  "food-chamomile": {
+    "zh": "洋甘菊"
+  },
+  "food-cantal": {
+    "zh": "康塔尔奶酪"
+  },
+  "food-cantaloupe": {
+    "zh": "哈密瓜"
+  },
+  "food-carambola": {
+    "zh": "杨桃"
+  },
+  "food-caraway": {
+    "zh": "葛缕子"
+  },
+  "food-cardoon": {
+    "zh": "刺苞菜蓟"
+  },
+  "food-carrot": {
+    "zh": "胡萝卜"
+  },
+  "food-carrot-juice": {
+    "zh": "胡萝卜汁"
+  },
+  "food-cashew-nuts": {
+    "zh": "腰果"
+  },
+  "food-cassava": {
+    "zh": "木薯"
+  },
+  "food-cassia": {
+    "zh": "肉桂"
+  },
+  "food-cauliflower": {
+    "zh": "花椰菜"
+  },
+  "food-cayenne-pepper": {
+    "zh": "牛角椒"
+  },
+  "food-celery": {
+    "zh": "芹菜"
+  },
+  "food-chard": {
+    "zh": "莙薘菜"
+  },
+  "food-cheddar": {
+    "zh": "切达奶酪"
+  },
+  "food-cherry": {
+    "zh": "樱桃"
+  },
+  "food-chia-seed": {
+    "zh": "奇亚籽"
+  },
+  "food-chickpea": {
+    "zh": "鹰嘴豆"
+  },
+  "food-chickpea-flour": {
+    "zh": "鹰嘴豆粉"
+  },
+  "food-chili-pepper": {
+    "zh": "辣椒"
+  },
+  "food-chinese-chestnut": {
+    "zh": "板栗"
+  },
+  "food-chives": {
+    "zh": "细香葱"
+  },
+  "food-chocolate": {
+    "zh": "巧克力"
+  },
+  "food-cider": {
+    "zh": "苹果酒"
+  },
+  "food-cinnamon": {
+    "zh": "桂皮"
+  },
+  "food-satsuma-mandarin": {
+    "zh": "温州蜜柑"
+  },
+  "food-ghee": {
+    "zh": "无水黄油"
+  },
+  "food-clementine": {
+    "zh": "克里曼丁红橘"
+  },
+  "food-clove": {
+    "zh": "丁香"
+  },
+  "food-cocoa": {
+    "zh": "可可粉"
+  },
+  "food-coconut": {
+    "zh": "椰子"
+  },
+  "food-coconut-milk": {
+    "zh": "椰奶"
+  },
+  "food-coconut-oil": {
+    "zh": "椰子油"
+  },
+  "food-coconut-water": {
+    "zh": "椰子水"
+  },
+  "food-coffea-robusta": {
+    "zh": "罗布斯塔咖啡"
+  },
+  "food-colby-cheese": {
+    "zh": "科尔比奶酪"
+  },
+  "food-comte": {
+    "zh": "孔泰奶酪"
+  },
+  "food-conference-pear": {
+    "zh": "康弗伦斯梨"
+  },
+  "food-corn": {
+    "zh": "玉米"
+  },
+  "food-corn-flour": {
+    "zh": "玉米粉"
+  },
+  "food-corn-oil": {
+    "zh": "玉米油"
+  },
+  "food-corn-salad": {
+    "zh": "野苣"
+  },
+  "food-cottonseed-oil": {
+    "zh": "棉籽油"
+  },
+  "food-courgette": {
+    "zh": "西葫芦"
+  },
+  "food-couscous": {
+    "zh": "古斯米"
+  },
+  "food-cows-milk": {
+    "zh": "牛奶"
+  },
+  "food-cowpea": {
+    "zh": "豇豆"
+  },
+  "food-cranberry": {
+    "zh": "蔓越莓"
+  },
+  "food-cream-sauce": {
+    "zh": "奶油酱"
+  },
+  "food-creme-fraiche": {
+    "zh": "法式酸奶油"
+  },
+  "food-crottin-de-chavignol-cheese": {
+    "zh": "沙维尼奥勒圆形山羊奶酪"
+  },
+  "food-cucumber": {
+    "zh": "黄瓜"
+  },
+  "food-cumin": {
+    "zh": "孜然"
+  },
+  "food-curry-powder": {
+    "zh": "咖喱粉"
+  },
+  "food-dandelion": {
+    "zh": "西洋蒲公英"
+  },
+  "food-dark-chocolate": {
+    "zh": "黑巧克力"
+  },
+  "food-date": {
+    "zh": "椰枣"
+  },
+  "food-dijon-mustard": {
+    "zh": "法式黄芥末酱"
+  },
+  "food-dill": {
+    "zh": "莳萝"
+  },
+  "food-distilled-water": {
+    "zh": "蒸馏水"
+  },
+  "food-dulce-de-leche": {
+    "zh": "牛奶焦糖"
+  },
+  "food-durian": {
+    "zh": "榴莲"
+  },
+  "food-eau-de-vie": {
+    "zh": "水果蒸馏酒"
+  },
+  "food-edam": {
+    "zh": "埃丹奶酪"
+  },
+  "food-egg": {
+    "zh": "鸡蛋"
+  },
+  "food-emmental": {
+    "zh": "埃曼塔尔奶酪"
+  },
+  "food-emmer": {
+    "zh": "二粒小麦"
+  },
+  "food-endive": {
+    "zh": "苦苣"
+  },
+  "food-espagnole-sauce": {
+    "zh": "棕酱"
+  },
+  "food-fennel": {
+    "zh": "茴香"
+  },
+  "food-fenugreek": {
+    "zh": "胡芦巴"
+  },
+  "food-feta": {
+    "zh": "菲达奶酪"
+  },
+  "food-flat-peach": {
+    "zh": "蟠桃"
+  },
+  "food-fontina": {
+    "zh": "芳蒂娜奶酪"
+  },
+  "food-fourme-dambert": {
+    "zh": "昂贝尔奶酪"
+  },
+  "food-freekeh": {
+    "zh": "翡麦"
+  },
+  "food-gai-lan": {
+    "zh": "芥蓝"
+  },
+  "food-galangal": {
+    "zh": "高良姜"
+  },
+  "food-garden-cress": {
+    "zh": "胡椒草"
+  },
+  "food-garlic": {
+    "zh": "大蒜"
+  },
+  "food-ginkgo-nuts": {
+    "zh": "银杏果"
+  },
+  "food-glutinous-rice": {
+    "zh": "糯米"
+  },
+  "food-goat-cheese": {
+    "zh": "山羊奶酪"
+  },
+  "food-gooseberry": {
+    "zh": "醋栗"
+  },
+  "food-gorgonzola": {
+    "zh": "戈贡佐拉奶酪"
+  },
+  "food-gouda": {
+    "zh": "豪达奶酪"
+  },
+  "food-grana-padano": {
+    "zh": "格拉娜·帕达诺奶酪"
+  },
+  "food-grape": {
+    "zh": "葡萄"
+  },
+  "food-grape-juice": {
+    "zh": "葡萄汁"
+  },
+  "food-grapefruit": {
+    "zh": "西柚"
+  },
+  "food-green-tea": {
+    "zh": "绿茶"
+  },
+  "food-guava": {
+    "zh": "番石榴果"
+  },
+  "food-halloumi": {
+    "zh": "哈罗米奶酪"
+  },
+  "food-harissa": {
+    "zh": "哈里萨辣酱"
+  },
+  "food-hass-avocado": {
+    "zh": "哈斯牛油果"
+  },
+  "food-havarti": {
+    "zh": "哈瓦蒂奶酪"
+  },
+  "food-hayward-kiwifruit": {
+    "zh": "海沃德猕猴桃"
+  },
+  "food-hazelnut": {
+    "zh": "榛子"
+  },
+  "food-horseradish": {
+    "zh": "辣根"
+  },
+  "food-hot-sauce": {
+    "zh": "辣酱"
+  },
+  "food-hummus": {
+    "zh": "鹰嘴豆泥"
+  },
+  "food-ice": {
+    "zh": "冰"
+  },
+  "food-jalapeno-pepper": {
+    "zh": "墨西哥辣椒"
+  },
+  "food-jerusalem-artichoke": {
+    "zh": "洋姜"
+  },
+  "food-juniper-berry": {
+    "zh": "杜松子"
+  },
+  "food-kaffir-lime": {
+    "zh": "卡菲尔青柠"
+  },
+  "food-kale": {
+    "zh": "羽衣甘蓝"
+  },
+  "food-kasha": {
+    "zh": "荞麦米"
+  },
+  "food-kefir": {
+    "zh": "开菲尔"
+  },
+  "food-ketchup": {
+    "zh": "番茄酱"
+  },
+  "food-kirsch": {
+    "zh": "樱桃白兰地"
+  },
+  "food-kiwifruit": {
+    "zh": "猕猴桃"
+  },
+  "food-kumquat": {
+    "zh": "金桔"
+  },
+  "food-langres": {
+    "zh": "朗格勒奶酪"
+  },
+  "food-lasagne": {
+    "zh": "千层面"
+  },
+  "food-lavender": {
+    "zh": "薰衣草"
+  },
+  "food-leek": {
+    "zh": "韭葱"
+  },
+  "food-lemon": {
+    "zh": "柠檬"
+  },
+  "food-lemon-balm": {
+    "zh": "香蜂草"
+  },
+  "food-lemongrass": {
+    "zh": "柠檬草"
+  },
+  "food-lentils": {
+    "zh": "小扁豆"
+  },
+  "food-lettuce": {
+    "zh": "生菜"
+  },
+  "food-lima-bean": {
+    "zh": "棉豆"
+  },
+  "food-lime": {
+    "zh": "青柠"
+  },
+  "food-limoncello": {
+    "zh": "柠檬利口酒"
+  },
+  "food-linseed-oil": {
+    "zh": "亚麻籽油"
+  },
+  "food-liqueur-wine": {
+    "zh": "加强葡萄酒"
+  },
+  "food-liquorice-root": {
+    "zh": "甘草根"
+  },
+  "food-livarot": {
+    "zh": "利瓦罗奶酪"
+  },
+  "food-lovage": {
+    "zh": "欧当归"
+  },
+  "food-lupin-bean": {
+    "zh": "羽扇豆"
+  },
+  "food-lychee": {
+    "zh": "荔枝"
+  },
+  "food-macadamia-nut": {
+    "zh": "夏威夷果"
+  },
+  "food-malted-barley": {
+    "zh": "麦芽"
+  },
+  "food-mango": {
+    "zh": "芒果"
+  },
+  "food-margarine": {
+    "zh": "人造黄油"
+  },
+  "food-marigold": {
+    "zh": "金盏花"
+  },
+  "food-marjoram": {
+    "zh": "墨角兰"
+  },
+  "food-maroilles": {
+    "zh": "马罗伊奶酪"
+  },
+  "food-mascarpone": {
+    "zh": "马斯卡邦尼奶酪"
+  },
+  "food-mate": {
+    "zh": "马黛茶"
+  },
+  "food-melon": {
+    "zh": "甜瓜"
+  },
+  "food-millet": {
+    "zh": "小米"
+  },
+  "food-mimolette": {
+    "zh": "米莫莱特奶酪"
+  },
+  "food-mirabelle-plum": {
+    "zh": "黄香李"
+  },
+  "food-mirepoix": {
+    "zh": "米尔普瓦"
+  },
+  "food-mirin": {
+    "zh": "味醂"
+  },
+  "food-miso": {
+    "zh": "味噌"
+  },
+  "food-molasses": {
+    "zh": "糖蜜"
+  },
+  "food-monterey-jack": {
+    "zh": "蒙特雷杰克奶酪"
+  },
+  "food-morbier": {
+    "zh": "莫比耶奶酪"
+  },
+  "food-mozzarella": {
+    "zh": "马苏里拉奶酪"
+  },
+  "food-mung-bean": {
+    "zh": "绿豆"
+  },
+  "food-mung-bean-sprout": {
+    "zh": "绿豆芽"
+  },
+  "food-munster": {
+    "zh": "芒斯特奶酪"
+  },
+  "food-mustard": {
+    "zh": "芥末酱"
+  },
+  "food-napa-cabbage": {
+    "zh": "大白菜"
+  },
+  "food-nectarine": {
+    "zh": "油桃"
+  },
+  "food-nettle": {
+    "zh": "荨麻"
+  },
+  "food-neufchatel": {
+    "zh": "纽沙泰尔奶酪"
+  },
+  "food-nutmeg": {
+    "zh": "肉豆蔻"
+  },
+  "food-oat": {
+    "zh": "燕麦"
+  },
+  "food-oat-flakes": {
+    "zh": "大燕麦片"
+  },
+  "food-oat-milk": {
+    "zh": "燕麦奶"
+  },
+  "food-okara": {
+    "zh": "豆渣"
+  },
+  "food-olive": {
+    "zh": "橄榄"
+  },
+  "food-olive-oil": {
+    "zh": "橄榄油"
+  },
+  "food-onion": {
+    "zh": "洋葱"
+  },
+  "food-orange": {
+    "zh": "橙"
+  },
+  "food-orange-blossom": {
+    "zh": "橙花"
+  },
+  "food-ossau-iraty": {
+    "zh": "奥苏-伊拉蒂奶酪"
+  },
+  "food-pak-choi": {
+    "zh": "小白菜"
+  },
+  "food-palm-oil": {
+    "zh": "棕榈油"
+  },
+  "food-papaya": {
+    "zh": "番木瓜"
+  },
+  "food-paprika": {
+    "zh": "红椒粉"
+  },
+  "food-parmigiano-reggiano": {
+    "zh": "帕尔马干酪"
+  },
+  "food-parsley": {
+    "zh": "欧芹"
+  },
+  "food-parsnip": {
+    "zh": "欧防风"
+  },
+  "food-passionfruit": {
+    "zh": "百香果"
+  },
+  "food-pea": {
+    "zh": "豌豆"
+  },
+  "food-peach": {
+    "zh": "桃子"
+  },
+  "food-peanut": {
+    "zh": "花生"
+  },
+  "food-peanut-flour": {
+    "zh": "花生粉"
+  },
+  "food-peanut-oil": {
+    "zh": "花生油"
+  },
+  "food-pear": {
+    "zh": "梨"
+  },
+  "food-pearl-barley": {
+    "zh": "大麦米"
+  },
+  "food-pecan-nut": {
+    "zh": "碧根果"
+  },
+  "food-pecorino": {
+    "zh": "佩科里诺奶酪"
+  },
+  "food-penne": {
+    "zh": "笔管面"
+  },
+  "food-peppermint": {
+    "zh": "胡椒薄荷"
+  },
+  "food-persimmon": {
+    "zh": "柿子"
+  },
+  "food-pesto": {
+    "zh": "香蒜酱"
+  },
+  "food-picodon": {
+    "zh": "皮科东奶酪"
+  },
+  "food-pine-nuts": {
+    "zh": "松子"
+  },
+  "food-pineapple-syrup": {
+    "zh": "菠萝糖浆"
+  },
+  "food-pistachio-nuts": {
+    "zh": "开心果"
+  },
+  "food-pita": {
+    "zh": "皮塔饼"
+  },
+  "food-plum": {
+    "zh": "李子"
+  },
+  "food-pont-leveque": {
+    "zh": "蓬特-莱韦克奶酪"
+  },
+  "food-poppyseed": {
+    "zh": "罂粟籽"
+  },
+  "food-port": {
+    "zh": "波特酒"
+  },
+  "food-potato": {
+    "zh": "土豆"
+  },
+  "food-provolone": {
+    "zh": "波罗伏洛奶酪"
+  },
+  "food-prune": {
+    "zh": "西梅干"
+  },
+  "food-pumpkin": {
+    "zh": "南瓜"
+  },
+  "food-pumpkin-seed": {
+    "zh": "南瓜籽"
+  },
+  "food-quark": {
+    "zh": "夸克奶酪"
+  },
+  "food-raclette": {
+    "zh": "拉克雷特奶酪"
+  },
+  "food-radish": {
+    "zh": "萝卜"
+  },
+  "food-raisin": {
+    "zh": "葡萄干"
+  },
+  "food-canola-oil": {
+    "zh": "菜籽油"
+  },
+  "food-reblochon": {
+    "zh": "雷布洛雄奶酪"
+  },
+  "food-red-leicester": {
+    "zh": "莱斯特奶酪"
+  },
+  "food-rhubarb": {
+    "zh": "大黄"
+  },
+  "food-rice": {
+    "zh": "大米"
+  },
+  "food-rice-bran-oil": {
+    "zh": "米糠油"
+  },
+  "food-rice-flour": {
+    "zh": "米粉"
+  },
+  "food-rice-vinegar": {
+    "zh": "米醋"
+  },
+  "food-ricotta": {
+    "zh": "瑞可塔奶酪"
+  },
+  "food-rocket": {
+    "zh": "芝麻菜"
+  },
+  "food-romaine-lettuce": {
+    "zh": "罗马生菜"
+  },
+  "food-romanesco-broccoli": {
+    "zh": "宝塔花菜"
+  },
+  "food-rooibos": {
+    "zh": "路易波士茶"
+  },
+  "food-roquefort": {
+    "zh": "罗克福奶酪"
+  },
+  "food-rose-hip": {
+    "zh": "蔷薇果"
+  },
+  "food-rose-water": {
+    "zh": "蔷薇水"
+  },
+  "food-rose-wine": {
+    "zh": "桃红葡萄酒"
+  },
+  "food-rosemary": {
+    "zh": "迷迭香"
+  },
+  "food-runner-bean": {
+    "zh": "荷包豆"
+  },
+  "food-rye": {
+    "zh": "黑麦"
+  },
+  "food-sage": {
+    "zh": "鼠尾草"
+  },
+  "food-sago": {
+    "zh": "西米"
+  },
+  "food-saint-marcellin": {
+    "zh": "圣马塞兰奶酪"
+  },
+  "food-saint-nectaire": {
+    "zh": "圣内克泰尔奶酪"
+  },
+  "food-salsify": {
+    "zh": "婆罗门参"
+  },
+  "food-sauerkraut": {
+    "zh": "德国酸菜"
+  },
+  "food-savoy-cabbage": {
+    "zh": "野甘蓝"
+  },
+  "food-sea-lettuce": {
+    "zh": "石莼"
+  },
+  "food-sea-salt": {
+    "zh": "海盐"
+  },
+  "food-seitan": {
+    "zh": "面筋"
+  },
+  "food-sesame-seeds": {
+    "zh": "芝麻"
+  },
+  "food-sesame-oil": {
+    "zh": "芝麻油"
+  },
+  "food-shallot": {
+    "zh": "火葱"
+  },
+  "food-sheeps-milk-cheese": {
+    "zh": "羊奶酪"
+  },
+  "food-sherry": {
+    "zh": "雪利酒"
+  },
+  "food-sichuan-pepper": {
+    "zh": "花椒"
+  },
+  "food-smetana": {
+    "zh": "斯美塔那酸奶油"
+  },
+  "food-sorrel": {
+    "zh": "酸模"
+  },
+  "food-sour-cream": {
+    "zh": "酸奶油"
+  },
+  "food-soy-milk": {
+    "zh": "豆浆"
+  },
+  "food-soy-sauce": {
+    "zh": "酱油"
+  },
+  "food-soya-bean": {
+    "zh": "黄豆"
+  },
+  "food-soya-oil": {
+    "zh": "大豆油"
+  },
+  "food-spaghetti": {
+    "zh": "意大利面"
+  },
+  "food-sparkling-wine": {
+    "zh": "气泡酒"
+  },
+  "food-spearmint": {
+    "zh": "留兰香"
+  },
+  "food-spelt": {
+    "zh": "斯佩耳特小麦"
+  },
+  "food-spinach": {
+    "zh": "菠菜"
+  },
+  "food-spring-onion": {
+    "zh": "青葱"
+  },
+  "food-star-anise": {
+    "zh": "八角"
+  },
+  "food-straw-mushroom": {
+    "zh": "草菇"
+  },
+  "food-strawberry": {
+    "zh": "草莓"
+  },
+  "food-sultana": {
+    "zh": "苏丹娜葡萄干"
+  },
+  "food-sunflower-oil": {
+    "zh": "葵花籽油"
+  },
+  "food-sunflower-seed": {
+    "zh": "葵花籽"
+  },
+  "food-sweet-cherry": {
+    "zh": "甜樱桃"
+  },
+  "food-sweet-potato": {
+    "zh": "番薯"
+  },
+  "food-tamarind": {
+    "zh": "罗望子"
+  },
+  "food-tapioca": {
+    "zh": "木薯淀粉"
+  },
+  "food-taro": {
+    "zh": "芋头"
+  },
+  "food-tarragon": {
+    "zh": "龙蒿"
+  },
+  "food-tequila": {
+    "zh": "龙舌兰酒"
+  },
+  "food-thyme": {
+    "zh": "百里香"
+  },
+  "food-tomato": {
+    "zh": "番茄"
+  },
+  "food-tomato-sauce": {
+    "zh": "番茄沙司"
+  },
+  "food-truffle": {
+    "zh": "松露"
+  },
+  "food-turmeric": {
+    "zh": "姜黄"
+  },
+  "food-turnip": {
+    "zh": "芜菁"
+  },
+  "food-vanilla": {
+    "zh": "香草"
+  },
+  "food-vegetable-oil": {
+    "zh": "植物油"
+  },
+  "food-verbena": {
+    "zh": "马鞭草"
+  },
+  "food-vermouth": {
+    "zh": "味美思"
+  },
+  "food-vinaigrette": {
+    "zh": "油醋汁"
+  },
+  "food-wakame": {
+    "zh": "裙带菜"
+  },
+  "food-walnut": {
+    "zh": "核桃"
+  },
+  "food-walnut-oil": {
+    "zh": "核桃油"
+  },
+  "food-water-chestnut": {
+    "zh": "荸荠"
+  },
+  "food-watercress": {
+    "zh": "西洋菜"
+  },
+  "food-watermelon": {
+    "zh": "西瓜"
+  },
+  "food-wax-gourd": {
+    "zh": "冬瓜"
+  },
+  "food-welsh-onion": {
+    "zh": "大葱"
+  },
+  "food-wheat": {
+    "zh": "小麦"
+  },
+  "food-wheat-flour": {
+    "zh": "小麦面粉"
+  },
+  "food-whey": {
+    "zh": "乳清"
+  },
+  "food-white-chocolate": {
+    "zh": "白巧克力"
+  },
+  "food-white-pepper": {
+    "zh": "白胡椒"
+  },
+  "food-white-rice": {
+    "zh": "白米"
+  },
+  "food-white-wine": {
+    "zh": "白葡萄酒"
+  },
+  "food-williams-bon-chretien-pear": {
+    "zh": "威廉斯梨"
+  },
+  "food-wood-ear": {
+    "zh": "黑木耳"
+  }
+}

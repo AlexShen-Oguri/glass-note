@@ -1,0 +1,600 @@
+{
+  "tanqueray-london-dry": {
+    "ja": {
+      "name": "タンカレー ロンドン ドライジン",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "日本における当社の事業 | Diageo",
+          "url": "https://www.diageo.com/en/our-business/where-we-operate/asia-pacific/jp-diageo-japan",
+          "checkedAt": "2026-09-14",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "tanqueray-no-ten-gin": {
+    "ja": {
+      "name": "タンカレー ナンバーテン",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "日本における当社の事業 | Diageo",
+          "url": "https://www.diageo.com/en/our-business/where-we-operate/asia-pacific/jp-diageo-japan",
+          "checkedAt": "2026-09-14",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "bombay-sapphire-london-dry": {
+    "ja": {
+      "name": "ボンベイ・サファイア",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "ボンベイ・サファイア ｜ボンベイ・サファイア｜バカルディ ジャパン株式会社",
+          "url": "https://www.bacardijapan.jp/products/items/bombay-sapphire/",
+          "checkedAt": "2026-09-14",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "roku-japanese-craft-gin": {
+    "ja": {
+      "name": "サントリージャパニーズクラフトジン ROKU〈六〉",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "ラインナップ｜ジャパニーズクラフトジン ROKU〈六〉 サントリー",
+          "url": "https://www.suntory.co.jp/wnb/rokugin/lineup.html",
+          "checkedAt": "2026-09-14",
+          "scope": "product"
+        }
+      ]
+    },
+    "zh": {
+      "name": "ROKU六琴酒",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "賓三得利台灣（台灣三得利）- 三得利在台灣",
+          "url": "https://www.suntory.com.tw/suntory/company-05.php",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "beefeater-london-dry": {
+    "ja": {
+      "name": "ビーフィーター ジン",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "ビーフィータージン 商品情報（カロリー・原材料） サントリー",
+          "url": "https://products.suntory.co.jp/b/0000000210/%E3%83%93%E3%83%BC%E3%83%95%E3%82%A3%E3%83%BC%E3%82%BF%E3%83%BC%E3%82%B8%E3%83%B3",
+          "checkedAt": "2026-09-14",
+          "scope": "product"
+        }
+      ]
+    },
+    "zh": {
+      "name": "必富达伦敦干金酒",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "必富达伦敦干金金酒 1L | Wecommerce by Pernod Ricard",
+          "url": "https://wecommerce.pernod-ricard.com/products/product?id=PRPECOM002222&market=zh_Hans_GTR",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "campari-bitter-liqueur": {
+    "zh": {
+      "name": "金巴利苦味利口酒",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "金巴利：标志性的意大利红色苦味酒 | 金巴利",
+          "url": "https://www.campari.com/zh-cn/",
+          "checkedAt": "2026-09-14",
+          "scope": "product"
+        }
+      ]
+    },
+    "ja": {
+      "name": "カンパリ",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "カンパリ ビター: 1860年に生まれたイタリアの赤いスピリッツ | Campari",
+          "url": "https://www.campari.com/ja-jp/our-products/campari/",
+          "checkedAt": "2026-09-14",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "aperol-aperitivo": {
+    "zh": {
+      "name": "阿佩罗",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "阿佩罗源自1919年 | Aperol",
+          "url": "https://www.aperol.com/zh-cn/",
+          "checkedAt": "2026-09-14",
+          "scope": "product"
+        }
+      ]
+    },
+    "ja": {
+      "name": "アペロール",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "アペロールは1919年より続くスプリッツのブランド。｜アペロール",
+          "url": "https://www.aperol.com/ja-jp/",
+          "checkedAt": "2026-09-14",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "cointreau-liqueur": {
+    "zh": {
+      "name": "君度L’Unique",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "君度L’Unique | Cointreau China",
+          "url": "https://www.cointreau.com/cn/zh-hans/chanpin",
+          "checkedAt": "2026-09-14",
+          "scope": "product"
+        }
+      ]
+    },
+    "ja": {
+      "name": "コアントロー",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "Rémy Cointreau Japan Product Lineup",
+          "url": "https://www.remy-cointreau.com/app/uploads/2024/08/product_lineup_catalog.pdf",
+          "checkedAt": "2026-09-14",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "bacardi-superior-carta-blanca": {
+    "ja": {
+      "name": "バカルディ スペリオール（ホワイト）",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "バカルディ スペリオール｜バカルディ｜バカルディ ジャパン株式会社",
+          "url": "https://www.bacardijapan.jp/products/items/bacardi-superior/",
+          "checkedAt": "2026-09-14",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "baileys-irish-cream": {
+    "ja": {
+      "name": "ベイリーズ オリジナル アイリッシュクリーム",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "日本における当社の事業 | Diageo",
+          "url": "https://www.diageo.com/en/our-business/where-we-operate/asia-pacific/jp-diageo-japan",
+          "checkedAt": "2026-09-14",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "absolut-vodka": {
+    "zh": {
+      "name": "原味绝对伏特加",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "原味绝对伏特加1L装 | Wecommerce by Pernod Ricard",
+          "url": "https://wecommerce.pernod-ricard.com/products/product?id=PRPECOM000075&market=zh_Hans_GTR",
+          "checkedAt": "2026-09-14",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "bacardi-carta-oro": {
+    "ja": {
+      "name": "バカルディ ゴールド（オロ）",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "バカルディ ゴールド｜バカルディ｜バカルディ ジャパン株式会社",
+          "url": "https://www.bacardijapan.jp/products/items/bacardi-gold/",
+          "checkedAt": "2026-09-14",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "bacardi-carta-negra": {
+    "ja": {
+      "name": "バカルディ ブラック",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "バカルディ ブラック｜バカルディ｜バカルディ ジャパン株式会社",
+          "url": "https://www.bacardijapan.jp/products/items/bacardi-black/",
+          "checkedAt": "2026-09-14",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "johnnie-walker-red-label": {
+    "zh": {
+      "name": "JOHNNIE WALKER 红牌",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "Johnnie Walker Red Label Scotch Whisky | Johnnie Walker TW",
+          "url": "https://www.johnniewalker.com/zh-tw/our-whisky/core-range/johnnie-walker-red-label",
+          "checkedAt": "2026-09-14",
+          "scope": "product"
+        }
+      ]
+    },
+    "ko": {
+      "name": "조니워커 레드",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "스카치 위스키 및 위스키의 종류 | Johnnie Walker KR",
+          "url": "https://www.johnniewalker.com/ko-kr/whisky-guide/types-of-whisky",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "johnnie-walker-blue-label": {
+    "zh": {
+      "name": "Johnnie Walker 蓝牌",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "Johnnie Walker 藍牌 | 蘇格蘭威士忌 | Johnnie Walker TW",
+          "url": "https://www.johnniewalker.com/zh-tw/our-whisky/core-range/johnnie-walker-blue-label",
+          "checkedAt": "2026-09-14",
+          "scope": "product"
+        }
+      ]
+    },
+    "ko": {
+      "name": "조니워커 블루",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "스카치 위스키 및 위스키의 종류 | Johnnie Walker KR",
+          "url": "https://www.johnniewalker.com/ko-kr/whisky-guide/types-of-whisky",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "martell-cordon-bleu-cognac": {
+    "zh": {
+      "name": "马爹利蓝带 Martell Cordon Bleu",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "Martell Cordon Bleu cognac | The timeless elegance of Cordon Bleu liquor",
+          "url": "https://www.martell.com/zh-hk/collections/%E7%B6%93%E5%85%B8%E5%B9%B2%E9%82%91/product/%E9%A6%AC%E7%88%B9%E5%88%A9%E8%97%8D%E5%B8%B6-martell-cordon-bleu/",
+          "checkedAt": "2026-09-14",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "johnnie-walker-black-label": {
+    "ko": {
+      "name": "조니워커 블랙 12년",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "스카치 위스키 및 위스키의 종류 | Johnnie Walker KR",
+          "url": "https://www.johnniewalker.com/ko-kr/whisky-guide/types-of-whisky",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    },
+    "zh": {
+      "name": "Johnnie Walker 黑牌12年",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "Johnnie Walker 黑牌 | 蘇格蘭威士忌 | Johnnie Walker TW",
+          "url": "https://www.johnniewalker.com/zh-tw/our-whisky/core-range/johnnie-walker-black-label",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "jameson-original": {
+    "ko": {
+      "name": "제임슨 아이리시 위스키",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "제임슨 아이리시 오리지널 | Jameson Irish Whisky",
+          "url": "https://www.jamesonwhiskey.com/ko-kr/our-whiskey/jameson-irish-whiskey/",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    },
+    "zh": {
+      "name": "尊美醇爱尔兰威士忌",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "尊美醇爱尔兰威士忌70CL | Wecommerce by Pernod Ricard",
+          "url": "https://wecommerce.pernod-ricard.com/products/product?id=PRPECOM000418&market=zh_Hans_CN",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "jameson-black-barrel-irish-whiskey": {
+    "ko": {
+      "name": "제임슨 블랙 배럴 아이리시 위스키",
+      "basis": "producer",
+      "sources": [
+        {
+          "title": "제임슨 블랙배럴 아이리시 위스키 | Jameson Irish Whisky",
+          "url": "https://www.jamesonwhiskey.com/ko-kr/our-whiskey/jameson-black-barrel/",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "chivas-regal-12": {
+    "zh": {
+      "name": "芝华士12年苏格兰威士忌",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "芝华士12年苏格兰威士忌 1L | Wecommerce by Pernod Ricard",
+          "url": "https://wecommerce.pernod-ricard.com/products/product?id=PRPECOM000588&market=zh_Hans_GTR",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "ballantines-finest": {
+    "zh": {
+      "name": "百龄坛特醇苏格兰威士忌",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "百龄坛特醇苏格兰威士忌-无盒装 70CL | Wecommerce by Pernod Ricard",
+          "url": "https://wecommerce.pernod-ricard.com/products/product?id=PRPECOM000621&market=zh_CN",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "monkey-47-schwarzwald-dry": {
+    "zh": {
+      "name": "猴王47黑森林干金酒",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "猴王47黑森林干金酒 50cl | Wecommerce by Pernod Ricard",
+          "url": "https://wecommerce.pernod-ricard.com/products/product?id=PRPECOM001882&market=zh_Hans_GTR",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "absolut-elyx-vodka": {
+    "zh": {
+      "name": "绝对亦乐伏特加",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "绝对亦乐伏特加 1L | Wecommerce by Pernod Ricard",
+          "url": "https://wecommerce.pernod-ricard.com/products/product?id=PRPECOM000861&market=zh_Hans_GTR",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "don-julio-blanco": {
+    "zh": {
+      "name": "Don Julio Blanco 龙舌兰",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "Don Julio Blanco 龍舌蘭 | Don Julio",
+          "url": "https://www.donjulio.com/zh-tw/our-tequilas/don-julio-blanco-tequila",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "don-julio-1942-tequila": {
+    "zh": {
+      "name": "Don Julio 1942 龙舌兰",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "Don Julio 1942 龍舌蘭 | Don Julio",
+          "url": "https://www.donjulio.com/zh-tw/our-tequilas/don-julio-1942-tequila",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "talisker-10-year-old-single-malt-scotch-whisky": {
+    "zh": {
+      "name": "泰斯卡 Talisker 10年",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "Talisker 10年 | Malts TW",
+          "url": "https://www.malts.com/zh-tw/products/talisker-10-year-old",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "remy-martin-vsop": {
+    "zh": {
+      "name": "人头马V.S.O.P 优质香槟区干邑",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "Rémy Martin 人头马鸡尾酒 - 金蛇耀光 - China",
+          "url": "https://www.remymartin.com/zhs-cn/cocktail-recipe/snakeys-neck/",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "hennessy-vs": {
+    "zh": {
+      "name": "轩尼诗 V.S",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "干邑雞尾酒：從過去到現在 - 軒尼詩",
+          "url": "https://www.hennessy.com/zh-asia/stories/hennessy-mixology",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "macallan-12-year-old-double-cask-single-malt-scotch-whisky": {
+    "zh": {
+      "name": "麦卡伦双雪莉桶12年",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "麥卡倫 雙雪莉桶 12 年｜單一麥芽威士忌",
+          "url": "https://www.themacallan.com/zh-hant-tw/single-malt-scotch-whisky/double-cask-12-years-old",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "macallan-12-year-old-sherry-cask-single-malt-scotch-whisky": {
+    "zh": {
+      "name": "麦卡伦12年雪莉桶",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "麥卡倫12年雪莉桶",
+          "url": "https://www.themacallan.com/zh-hant-tw/single-malt-scotch-whisky/sherry-oak-12-years-old-2018-2024",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "macallan-15-year-old-double-cask-single-malt-scotch-whisky": {
+    "zh": {
+      "name": "麦卡伦双雪莉桶15年",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "麥卡倫15年雪莉雙桶單一純麥威士忌",
+          "url": "https://www.themacallan.com/zh-hant-tw/single-malt-scotch-whisky/double-cask-15-years-old-2018-2024",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "yamazaki-12": {
+    "zh": {
+      "name": "山崎12年单一麦芽威士忌",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "三得利日本頂級威士忌",
+          "url": "https://www.suntory.com.tw/alcohol/SPW/yam_pro.asp",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "jim-beam-bourbon-whiskey": {
+    "zh": {
+      "name": "金宾波本威士忌",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "Beam Suntory",
+          "url": "https://www.suntory.com.tw/alcohol/cocktailaward/2016%20SUNTORY%20Cocktail%20Award.pdf",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "makers-mark-bourbon": {
+    "zh": {
+      "name": "美格波本威士忌",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "Beam Suntory",
+          "url": "https://www.suntory.com.tw/alcohol/cocktailaward/2016%20SUNTORY%20Cocktail%20Award.pdf",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  },
+  "midori-melon-liqueur": {
+    "zh": {
+      "name": "MIDORI 蜜多丽哈密瓜香甜酒",
+      "basis": "editorial",
+      "sources": [
+        {
+          "title": "MIDORI - 蜜多麗世界",
+          "url": "https://www.suntory.com.tw/alcohol/midori/product.asp",
+          "checkedAt": "2026-09-15",
+          "scope": "product"
+        }
+      ]
+    }
+  }
+}

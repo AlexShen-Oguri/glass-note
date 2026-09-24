@@ -1,0 +1,507 @@
+# Explicitly selected real ingredients / useful forms from the pinned taxonomy.
+# Names match source records; no generated ingredient combinations.
+vanilla sugar
+nib sugar
+beet sugar
+dark corn syrups
+beetroot syrup
+lavander honey
+sunflower honey
+pepper jack
+kaffir lime leaf
+lemon leaf
+lime leaf
+mustard greens
+mustard spinach
+yellow bell pepper
+green bell pepper
+red bell pepper
+piquillo pepper
+tabasco chile
+ancho peppers
+banana pepper
+hungarian peppers
+serrano peppers
+pasilla peppers
+Espelette chili pepper
+chipotle
+bird's eye chili
+pimiento
+guajillo chili
+friggitello
+peri-peri
+Korean chili pepper
+Korean chili powder
+Japanese pepper
+hot paprika
+lemon pepper
+chili powder
+red curry paste
+mace
+ceylon cinnamon
+fenugreek leaf
+blue fenugreek
+Galangal
+black galangal
+poblano chili
+goat butter
+apricot kernel oil
+argan oil
+camelina oil
+cashew nut oil
+cottonseed oil
+poppyseed oil
+coconut butter
+oat oil
+olive pomace oil
+mustard oil
+toasted sesame oil
+Rice bran oil
+chia oil
+teaseed oil
+wheat germ oil
+garlic oil
+peanut butter
+crunchy peanut butter
+dill butter
+perilla oil
+Margarine
+goat's milk yogurt
+dulce de leche
+whipped cream
+clotted cream
+sheeps cream
+smetana
+filmjölk
+Crottin de Chavignol cheese
+Picodon
+Sainte-Maure de Touraine
+rocamadour
+sheep's-milk cheese
+Swiss cheese
+Abondance
+Asiago
+Beaufort
+Bryndza
+Chaource cheese
+Colby cheese
+Comté
+Cotija cheese
+Double Gloucester
+edam
+fromage blanc
+Petit suisse
+fontina
+gorgonzola
+Grana Padano
+Havarti
+jarlsberg
+Lancashire cheese
+langres
+livarot
+maasdam
+Maroilles
+mimolette
+Monterey Jack
+morbier
+buffalo mozzarella
+Muenster cheese
+Munster
+neufchâtel
+Oscypek
+Ossau-Iraty
+pont l'evêque
+romano cheese
+provolone
+Raclette
+reblochon
+red leicester
+roquefort
+saint nectaire
+Salers
+Saint Marcellin
+taleggio
+tilsit
+tomme
+bleu d'auvergne
+fourme d'ambert
+västerbotten cheese
+Wensleydale
+oat milk
+rice cream
+rice milk
+coconut cream
+coconut milk
+tigernut milk
+powdered egg white
+soy milk
+almond milk
+cheese sauce
+corn vinegar
+red wine vinegar
+chocolate sauce
+red orange marmalade
+mushroom sauce
+ajvar
+espagnole sauce
+mirin
+dark soy sauce
+sweet soy sauce
+salted butter caramel sauce
+cream sauce
+sambal oelek
+Kanzuri
+black salt
+Garlic salt
+Celery salt
+garland chrysanthemum
+drumstick leaves
+fiddlehead fern
+radicchio
+curly endive
+romaine lettuce
+iceberg lettuce
+garden orache
+vine spinach
+land cress
+watercress
+garden cress
+sweet potato leaves
+taro leaves
+vine leaf
+dandelion
+nettle
+purslane
+romanesco broccoli
+rapini
+komatsuna
+collard greens
+savoy cabbage
+gai lan
+celery powder
+sea kale
+belgian endive
+arrowhead
+arrowroot
+Artichoke heart
+kanpyo
+bamboo shoot
+beet greens
+beetroot powder
+burdock root
+celtuce
+Napa cabbage
+fuki
+heart of palm
+Welsh onion
+sweet onion
+onion powder
+pearl onion
+fried onion
+garlic powder
+violet carrot
+russet potatoes
+potato flakes
+yambean
+yautia
+hass avocado
+cardoon
+aloe vera
+Jerusalem artichoke
+radish sprouts
+nopales
+rocket
+oak leaf lettuce
+concentrated tomato purée
+tomato powder
+rutabaga
+turnip
+winged beans
+pumpkin flower
+dulse
+glasswort
+laver
+sea lettuce
+thongweed
+kombu
+wakame
+Irish moss
+mushroom powder
+boletus
+button mushroom
+brown mushroom
+field mushroom
+Tremella fuciformis
+morel
+Enoki mushrooms
+maitake mushroom
+straw mushroom
+shiitake
+Pleurotus
+wood ear
+truffle
+arrowroot powder
+Sago
+wheat flakes
+wheat malt
+freekeh
+wheat germ
+graham flour
+seitan
+emmer
+emmer flour
+barley flakes
+pearl barley
+munich malt
+Pilsner malted barley
+buckwheat flakes
+kasha
+pearl millet
+little millet
+Kodo millet
+foxtail millet
+finger millet
+barnyard millet
+oat flakes
+wholemeal oat flour
+oat malt
+amaranth leaves
+quinoa
+rye flakes
+malted rye flour
+rye malt
+spelt flakes
+grünkern
+pearled farro
+wholemeal spelt flour
+malted wheat flour
+maida
+atta
+wholemeal barley flour
+wholemeal rye flour
+chestnut flour
+broad bean flour
+flax flour
+sunflower seed flour
+soya flour
+quinoa flour
+blue corn
+sweetcorn
+baby corn
+corn flakes
+risotto rice
+Hom Mali rice
+rice flakes
+green banana flour
+corn salad
+dry tapioca pearls
+konjac flour
+lupin flour
+almond flour
+peanut flour
+hemp seed flour
+pumpkin seed flour
+Alkaline noodles
+chow mein chinese noodles
+wheat breadcrumbs
+barley wort
+kvass wort
+sugarcane juice
+pink grapefruit juice
+acai juice
+acerola juice
+boysenberry juice
+chokeberry juice
+red currant juice
+sea-buckthorn juice
+Concord grape juice
+water spinach
+kale juice
+sauerkraut juice
+celery juice
+beetroot juice
+black carrot juice
+Aloe vera juice
+water chestnut
+cucumber juice
+carob seed flour
+Brewed oolong tea without sugar
+Ceylon black tea
+Okara
+cashew apples
+coconut chips
+pomegranate seeds
+celery seed
+tigernut
+okra
+bean sprouts
+wax bean
+flat bean
+runner bean
+yardlong beans
+hyacinth bean
+mung bean sprout
+mung dal
+brown beans
+flageolets
+lupin bean
+moth bean
+broad bean
+Adzuki bean
+cowpea
+pigeon pea
+snow pea
+split pea
+grey pea
+acorn
+Marcona almond
+almond pulp
+bitter almond
+beechnut
+brazil nut
+chinese chestnut
+cola nut
+ginkgo nuts
+hickorynut
+pilinut
+alfalfa seeds
+coriander seed
+golden flax seeds
+brown flax seeds
+lotus seed
+melon seed
+tahini
+watermelon seed kernels
+fenugreek seed
+brown mustard seed
+dill seed
+psyllium seed
+cavendish banana
+plantain
+breadfruit
+jackfruit
+durian
+mamey sapote
+medlar
+flat peach
+white peach
+yellow peach
+dried peach
+Asian pear
+Bosc pear
+d'Anjou pear
+Conference pear
+Williams' bon chrétien pear
+Japanese plum
+sloe
+greengage
+damson
+mirabelle plum
+crabapples
+Pink Lady apple
+bramley apple
+Golden Delicious apple
+Gala apple
+Granny apple
+Idared apple
+boabab
+Citrus unshiu
+pink grapefruit
+red pomelo
+kaffir lime
+kaffir lime peel
+chinotto
+candied lemon zest
+Eureka lemon
+Verna lemon
+mandarin peel
+blood orange
+calamansi
+Yuzu
+sweet Valencia orange
+acai berry
+acerola powder
+black mulberry
+white mulberry
+wild blueberry
+carambola
+black cherry
+sour cherry
+sweet cherry
+glacé cherry
+deglet nour dates
+medjool dates
+Mazafati dates
+Ajwa dates
+Sukkary dates
+feijoa
+goji
+dried goji berries
+guava
+horned melon
+java plum
+jujube
+Hayward kiwifruit
+Lukuma
+rambutan
+longan
+cantaloupe
+charentais melon
+galia melon
+honeydew melon
+casaba
+Wax gourd
+naranjilla
+candied papaya
+pitanga
+custard apple
+dried japanese persimmon
+prickly pear
+rose apple
+rose hip
+sapodilla
+soursop
+tamarillo
+white grape
+tempranillo grape
+black grape
+Concord grape
+red grape
+Flame grape
+sultana
+Corinthian raisins
+grape must
+strawberry guavas
+bitter melon
+drumstick pods
+tomatillo
+cherry tomato
+chayotte
+spaghetti squash
+custard squash
+akee apple
+kalamata olive
+arbequina olive
+gordal olive
+manzanilla olive
+Cape gooseberry
+Indian Gooseberry
+burnet
+Achillea millefolium
+raspberry leaf
+marigold
+sweet woodruff
+herbes de Provence
+Yomogi
+coriander paste
+Angelica
+rice
+white rice
+brown rice
+black rice
+red rice
+basmati rice
+glutinous rice
+strawberry
+gelatin
+maple syrup

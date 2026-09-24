@@ -1,0 +1,21 @@
+{
+  "referenceSha256": "13d2cce880a22c5e15e45bd26b9fc42d209571c926ff2b1cfa3b11a611eb692f",
+  "minimumIoU": 0.995,
+  "method": "Compare reference midtone silhouettes to SVG rasterization at original pixel dimensions; edge antialiasing may differ, so this is not a claim of pixel-identical photography.",
+  "regions": [
+    {
+      "name": "lockup",
+      "referencePixels": 12216,
+      "intersectionOverUnion": 0.9981184554973822,
+      "differingEdgePixels": 23,
+      "totalRegionPixels": 86400
+    },
+    {
+      "name": "appMark",
+      "referencePixels": 8175,
+      "intersectionOverUnion": 0.9993884540117417,
+      "differingEdgePixels": 5,
+      "totalRegionPixels": 28896
+    }
+  ]
+}

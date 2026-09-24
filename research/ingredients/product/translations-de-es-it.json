@@ -1,0 +1,1691 @@
+{
+  "food-abondance": {
+    "de": "Abondance",
+    "es": "Abondance"
+  },
+  "food-acid-whey": {
+    "de": "Saure Molke",
+    "es": "suero de leche ácido"
+  },
+  "food-acorn": {
+    "de": "Eichel",
+    "es": "bellota",
+    "it": "ghianda"
+  },
+  "food-acorn-squash": {
+    "de": "Eichelkürbis",
+    "es": "calabaza bellota"
+  },
+  "food-ajvar": {
+    "de": "Ajvar",
+    "es": "ajvar"
+  },
+  "food-ajwa-dates": {
+    "de": "Ajwa-Datteln",
+    "es": "dátiles Ajwa",
+    "it": "datteri Ajwa"
+  },
+  "food-akee-apple": {
+    "de": "Akee-Frucht",
+    "es": "fruto de ackee"
+  },
+  "food-alfalfa-seeds": {
+    "de": "Alfalfasamen",
+    "es": "semillas de alfalfa"
+  },
+  "food-alkaline-noodles": {
+    "de": "Alkalinudeln"
+  },
+  "food-almond-milk": {
+    "de": "Mandelmilch",
+    "es": "leche de almendras",
+    "it": "latte di mandorla"
+  },
+  "food-amaranth-leaves": {
+    "de": "Amaranthblätter",
+    "es": "hojas de amaranto",
+    "it": "foglie di amaranto"
+  },
+  "food-american-mustard": {
+    "de": "Amerikanischer Senf",
+    "es": "Mostaza americana",
+    "it": "Senape americana"
+  },
+  "food-ancho-peppers": {
+    "de": "Ancho-Chilis",
+    "es": "chiles anchos",
+    "it": "peperoncini ancho"
+  },
+  "food-angelica": {
+    "de": "Engelwurz",
+    "es": "angélica"
+  },
+  "food-apricot-jam": {
+    "de": "Aprikosenkonfitüre"
+  },
+  "food-apricot-juice": {
+    "de": "Aprikosensaft"
+  },
+  "food-apricot-kernel-oil": {
+    "de": "Aprikosenkernöl",
+    "es": "aceite de hueso de albaricoque",
+    "it": "olio di noccioli di albicocca"
+  },
+  "food-arrowhead": {
+    "de": "Pfeilkraut",
+    "es": "sagitaria",
+    "it": "sagittaria"
+  },
+  "food-arrowroot": {
+    "de": "Pfeilwurzel",
+    "es": "arrurruz"
+  },
+  "food-asiago": {
+    "de": "Asiago"
+  },
+  "food-atta": {
+    "de": "Atta",
+    "es": "atta",
+    "it": "atta"
+  },
+  "food-baby-corn": {
+    "de": "Babymais",
+    "es": "mazorquitas de maíz"
+  },
+  "food-banana-pepper": {
+    "de": "Bananenpaprika",
+    "es": "chile banana",
+    "it": "peperoncino banana"
+  },
+  "food-barbecue-sauce": {
+    "de": "Barbecue-Sauce",
+    "es": "salsa barbacoa"
+  },
+  "food-barley-malt-syrup": {
+    "de": "Gerstenmalzsirup",
+    "es": "jarabe de malta de cebada"
+  },
+  "food-barley-wort": {
+    "de": "Gerstenwürze",
+    "es": "mosto de cebada",
+    "it": "mosto d'orzo"
+  },
+  "food-barnyard-millet": {
+    "de": "Hühnerhirse",
+    "es": "mijo japonés"
+  },
+  "food-bean-sprouts": {
+    "de": "Bohnensprossen",
+    "es": "brotes de judía",
+    "it": "germogli di fagioli"
+  },
+  "food-beaufort": {
+    "de": "Beaufort",
+    "it": "Beaufort"
+  },
+  "food-beechnut": {
+    "de": "Buchecker",
+    "es": "hayuco",
+    "it": "faggiola"
+  },
+  "food-beet-greens": {
+    "de": "Rübengrün",
+    "es": "hojas de remolacha",
+    "it": "foglie di barbabietola"
+  },
+  "food-bergamot": {
+    "de": "Bergamotte",
+    "es": "bergamota",
+    "it": "bergamotto"
+  },
+  "food-bilberry": {
+    "de": "Heidelbeere",
+    "es": "arándano europeo"
+  },
+  "food-black-mulberry": {
+    "de": "Schwarze Maulbeere",
+    "es": "mora negra"
+  },
+  "food-black-pepper-powder": {
+    "de": "Schwarzes Pfefferpulver",
+    "es": "pimienta negra en polvo",
+    "it": "pepe nero in polvere"
+  },
+  "food-blackberry-wine": {
+    "de": "Brombeerwein",
+    "es": "vino de mora"
+  },
+  "food-bleu-dauvergne": {
+    "de": "Bleu d'auvergne",
+    "es": "bleu d 'auvergne",
+    "it": "bleu d'auvergne"
+  },
+  "food-blue-corn": {
+    "de": "Blauer Mais",
+    "es": "maíz azul"
+  },
+  "food-blueberry-juice": {
+    "de": "Heidelbeersaft",
+    "es": "zumo de arándanos"
+  },
+  "food-baobab": {
+    "de": "Baobab"
+  },
+  "food-boletus": {
+    "de": "Steinpilz",
+    "es": "boleto",
+    "it": "porcino"
+  },
+  "food-brewed-oolong-tea-without-sugar": {
+    "de": "Gebrühter Oolong-Tee ohne Zucker",
+    "es": "Té oolong preparado sin azúcar"
+  },
+  "food-bryndza": {
+    "de": "Bryndza",
+    "es": "Bryndza"
+  },
+  "food-buckwheat-honey": {
+    "de": "Buchweizenhonig",
+    "es": "miel de trigo sarraceno"
+  },
+  "food-buffalo-mozzarella": {
+    "de": "Büffelmozzarella",
+    "es": "mozzarella de búfalo"
+  },
+  "food-burdock-root": {
+    "de": "Klettenwurzel",
+    "es": "raíz de bardana",
+    "it": "radice di bardana"
+  },
+  "food-button-mushroom": {
+    "de": "Champignon",
+    "es": "champiñón blanco",
+    "it": "fungo champignon"
+  },
+  "food-camembert": {
+    "de": "Camembert",
+    "es": "camembert",
+    "it": "camembert"
+  },
+  "food-candied-lemon-zest": {
+    "de": "Kandierte Zitronenschale",
+    "es": "ralladura de limón confitada"
+  },
+  "food-cantal": {
+    "de": "Cantal",
+    "es": "cantal",
+    "it": "Cantal"
+  },
+  "food-cape-gooseberry": {
+    "de": "Kapstachelbeere"
+  },
+  "food-casaba": {
+    "de": "Casaba",
+    "it": "casaba"
+  },
+  "food-cashew-nut-oil": {
+    "de": "Cashewnussöl",
+    "es": "aceite de anacardo"
+  },
+  "food-cavendish-banana": {
+    "de": "Cavendish Banane",
+    "es": "banana cavendish"
+  },
+  "food-celtuce": {
+    "de": "Stängelsalat",
+    "es": "lechuga china",
+    "it": "lattuga asparago"
+  },
+  "food-chaource-cheese": {
+    "de": "Chaource-Käse",
+    "es": "Queso Chaource"
+  },
+  "food-chayotte": {
+    "de": "Chayote",
+    "es": "chayote"
+  },
+  "food-chili-paste": {
+    "de": "Chilipaste",
+    "es": "pasta de chile",
+    "it": "pasta di peperoncino"
+  },
+  "food-chili-powder": {
+    "de": "Chilipulver",
+    "es": "chile en polvo",
+    "it": "peperoncino in polvere"
+  },
+  "food-chinese-chestnut": {
+    "de": "Chinesische Kastanie",
+    "es": "castaña china"
+  },
+  "food-chinotto": {
+    "de": "Chinotto",
+    "es": "chinotto"
+  },
+  "food-chow-mein-chinese-noodles": {
+    "de": "Chow-Mein-Nudeln",
+    "es": "fideos chow mein",
+    "it": "spaghetti chow mein"
+  },
+  "food-citron": {
+    "de": "Zitronatzitrone",
+    "es": "cidra"
+  },
+  "food-clotted-cream": {
+    "de": "Clotted Cream",
+    "es": "nata coagulada",
+    "it": "panna rappresa"
+  },
+  "food-colby-cheese": {
+    "de": "Colby-Käse",
+    "es": "Queso Colby"
+  },
+  "food-collard-greens": {
+    "de": "Blattkohl",
+    "es": "berza",
+    "it": "cavolo da foglia"
+  },
+  "food-comte": {
+    "de": "Comté",
+    "es": "Comté",
+    "it": "Comté"
+  },
+  "food-concord-grape-juice": {
+    "de": "Concord-Traubensaft",
+    "es": "zumo de uva Concord"
+  },
+  "food-dark-corn-syrups": {
+    "de": "Maismelasse",
+    "es": "melaza de maíz"
+  },
+  "food-corn-vinegar": {
+    "de": "Maisessig",
+    "es": "vinagre de maíz"
+  },
+  "food-crabapples": {
+    "de": "Wildäpfel",
+    "es": "manzanas silvestres",
+    "it": "mele selvatiche"
+  },
+  "food-cream-cheese": {
+    "de": "Frischkäse",
+    "es": "queso crema"
+  },
+  "food-crottin-de-chavignol-cheese": {
+    "de": "Crottin de Chavignol Käse",
+    "es": "Queso Crottin de Chavignol",
+    "it": "Crottin de Chavignol"
+  },
+  "food-cucumber": {
+    "de": "Gurke"
+  },
+  "food-curry-sauce": {
+    "de": "Currysauce"
+  },
+  "food-custard-squash": {
+    "de": "Patisson-Kürbis",
+    "es": "calabaza patisson"
+  },
+  "food-danjou-pear": {
+    "de": "D'Anjou-Birne",
+    "it": "pera D'Anjou"
+  },
+  "food-damson": {
+    "de": "Zwetschge",
+    "es": "ciruela damascena"
+  },
+  "food-dark-syrup": {
+    "de": "Dunkler Sirup",
+    "es": "sirope oscuro",
+    "it": "sciroppo scuro"
+  },
+  "food-date-juice": {
+    "de": "Dattelsaft",
+    "es": "zumo de dátiles"
+  },
+  "food-dried-japanese-persimmon": {
+    "de": "Getrocknete japanische Kaki",
+    "es": "caqui japonés seco",
+    "it": "cachi giapponese essiccato"
+  },
+  "food-drumstick-leaves": {
+    "de": "Moringablätter",
+    "es": "hojas de moringa",
+    "it": "foglie di moringa"
+  },
+  "food-drumstick-pods": {
+    "de": "Moringaschoten",
+    "es": "vainas de moringa",
+    "it": "baccelli di moringa"
+  },
+  "food-dry-tapioca-pearls": {
+    "de": "Trockene Tapioka-Perlen",
+    "es": "perlas secas de tapioca",
+    "it": "perle secche di tapioca"
+  },
+  "food-dulce-de-leche": {
+    "de": "Dulce de leche",
+    "it": "dulce de leche"
+  },
+  "food-emmer-flour": {
+    "de": "Emmermehl",
+    "es": "harina de trigo almidonero"
+  },
+  "food-enoki-mushrooms": {
+    "de": "Enoki-Pilze",
+    "es": "Hongos enoki",
+    "it": "Funghi Enoki"
+  },
+  "food-epazote": {
+    "de": "Epazote",
+    "es": "epazote",
+    "it": "epazote"
+  },
+  "food-eureka-lemon": {
+    "de": "Eureka-Zitrone",
+    "es": "Limón Eureka",
+    "it": "Limone Eureka"
+  },
+  "food-feijoa": {
+    "de": "Feijoa",
+    "es": "feijoa",
+    "it": "feijoa"
+  },
+  "food-fiddlehead-fern": {
+    "de": "Farnspitzen",
+    "es": "brotes de helecho",
+    "it": "germogli di felce"
+  },
+  "food-field-mushroom": {
+    "de": "Wiesen-Champignon",
+    "es": "champiñón silvestre"
+  },
+  "food-finger-millet": {
+    "de": "Fingerhirse",
+    "es": "coracán"
+  },
+  "food-flame-grape": {
+    "de": "Flame-Traube",
+    "es": "uva Flame",
+    "it": "uva Flame"
+  },
+  "food-fourme-dambert": {
+    "de": "Fourme d 'ambert",
+    "es": "fourme d 'ambert",
+    "it": "fourme d'ambert"
+  },
+  "food-foxtail-millet": {
+    "de": "Fuchsschwanzhirse",
+    "es": "mijo cola de zorro"
+  },
+  "food-friggitello": {
+    "de": "Friggitello",
+    "es": "friggitello",
+    "it": "friggitello"
+  },
+  "food-fromage-blanc": {
+    "de": "Fromage blanc"
+  },
+  "food-fuki": {
+    "de": "Fuki",
+    "es": "fuki",
+    "it": "fuki"
+  },
+  "food-garden-orache": {
+    "de": "Gartenmelde",
+    "es": "armuelle"
+  },
+  "food-garland-chrysanthemum": {
+    "de": "Speisechrysantheme",
+    "es": "crisantemo coronario",
+    "it": "crisantemo coronario"
+  },
+  "food-garlic-chive": {
+    "de": "Knoblauchschnittlauch",
+    "es": "cebollino chino"
+  },
+  "food-garlic-vinegar": {
+    "de": "Knoblauchessig",
+    "es": "vinagre de ajo"
+  },
+  "food-ginger-syrup": {
+    "de": "Ingwersirup",
+    "es": "jarabe de jengibre"
+  },
+  "food-goat-butter": {
+    "de": "Ziegenbutter",
+    "es": "mantequilla de cabra"
+  },
+  "food-goats-milk-yogurt": {
+    "de": "Ziegenmilchjoghurt",
+    "es": "yogur de leche de cabra",
+    "it": "yogurt di latte di capra"
+  },
+  "food-grana-padano": {
+    "de": "Grana Padano"
+  },
+  "food-granny-smith-apple": {
+    "de": "Granny-Smith-Apfel"
+  },
+  "food-green-banana-flour": {
+    "de": "Grünes Bananenmehl",
+    "es": "harina de plátano verde"
+  },
+  "food-grey-pea": {
+    "de": "Graue Erbse",
+    "es": "guisante gris"
+  },
+  "food-guajillo-chili": {
+    "de": "Guajillo-Chili"
+  },
+  "food-gunpowder-tea": {
+    "de": "Gunpowder-Tee",
+    "es": "té Gunpowder"
+  },
+  "food-harissa": {
+    "de": "Harissa",
+    "es": "harissa",
+    "it": "harissa"
+  },
+  "food-hayward-kiwifruit": {
+    "de": "Hayward-Kiwi",
+    "es": "kiwi Hayward",
+    "it": "kiwi Hayward"
+  },
+  "food-heavy-cream": {
+    "de": "Schlagsahne",
+    "es": "nata para montar",
+    "it": "panna fresca"
+  },
+  "food-hickorynut": {
+    "de": "Hickorynuss",
+    "es": "nuez de nogal americano",
+    "it": "noce di hickory"
+  },
+  "food-horned-melon": {
+    "de": "Kiwano",
+    "es": "kiwano",
+    "it": "kiwano"
+  },
+  "food-hot-paprika": {
+    "de": "Scharfes Paprikapulver",
+    "es": "pimentón picante"
+  },
+  "food-hungarian-peppers": {
+    "de": "Ungarische Paprika",
+    "es": "pimientos húngaros",
+    "it": "peperoni ungheresi"
+  },
+  "food-hyacinth-bean": {
+    "de": "Hyazinthenbohne",
+    "es": "frijol jacinto",
+    "it": "fagiolo giacinto"
+  },
+  "food-idared-apple": {
+    "de": "Idared Apfel",
+    "es": "Manzana Idared"
+  },
+  "food-indian-gooseberry": {
+    "de": "Indische Stachelbeere",
+    "es": "Grosella espinosa india"
+  },
+  "food-irish-moss": {
+    "de": "Irisches Moos",
+    "es": "Musgo irlandés"
+  },
+  "food-jaggery": {
+    "de": "Jaggeryzucker",
+    "es": "azúcar jaggery"
+  },
+  "food-japanese-pepper": {
+    "de": "Sansho-Pfeffer",
+    "es": "pimienta sansho",
+    "it": "pepe sansho"
+  },
+  "food-japanese-plum": {
+    "de": "Ume",
+    "es": "ciruela ume"
+  },
+  "food-jarlsberg": {
+    "de": "Jarlsberg",
+    "es": "jarlsberg"
+  },
+  "food-jasmine-petals": {
+    "de": "Jasminblütenblätter",
+    "es": "pétalos de jazmín"
+  },
+  "food-java-plum": {
+    "de": "Jambul",
+    "es": "jambolán",
+    "it": "prugna di Giava"
+  },
+  "food-jujube": {
+    "de": "Jujube",
+    "es": "azufaifa",
+    "it": "giuggiola"
+  },
+  "food-kanpyo": {
+    "de": "Kanpyo",
+    "es": "kanpyo",
+    "it": "kanpyo"
+  },
+  "food-kanzuri": {
+    "de": "Kanzuri",
+    "es": "Kanzuri"
+  },
+  "food-kimchi": {
+    "de": "Kimchi",
+    "es": "kimchi",
+    "it": "kimchi"
+  },
+  "food-kodo-millet": {
+    "de": "Kodo-Hirse",
+    "es": "mijo kodo",
+    "it": "miglio kodo"
+  },
+  "food-komatsuna": {
+    "de": "Komatsuna",
+    "es": "komatsuna"
+  },
+  "food-konjac-flour": {
+    "de": "Konjakmehl",
+    "es": "harina de konjac"
+  },
+  "food-korean-chili-pepper": {
+    "de": "Koreanische Chilischote",
+    "es": "chile coreano"
+  },
+  "food-kvass-wort": {
+    "de": "Kwaswürze",
+    "es": "mosto de kvas"
+  },
+  "food-land-cress": {
+    "de": "Landkresse",
+    "es": "berro de tierra"
+  },
+  "food-langres": {
+    "de": "Langres",
+    "es": "langres",
+    "it": "langres"
+  },
+  "food-lemon-verbena": {
+    "de": "Zitronenverbene",
+    "es": "verbena de limón"
+  },
+  "food-little-millet": {
+    "de": "Kleine Hirse",
+    "es": "mijo pequeño",
+    "it": "miglio piccolo"
+  },
+  "food-livarot": {
+    "de": "Livarot",
+    "es": "livarot",
+    "it": "livarot"
+  },
+  "food-long-pepper": {
+    "de": "Langer Pfeffer",
+    "es": "pimienta larga"
+  },
+  "food-lotus-seed": {
+    "de": "Lotussamen",
+    "es": "semilla de loto",
+    "it": "seme di loto"
+  },
+  "food-maida": {
+    "de": "Maida",
+    "es": "maida",
+    "it": "maida"
+  },
+  "food-maitake-mushroom": {
+    "de": "Maitake-Pilz",
+    "es": "champiñón maitake",
+    "it": "fungo maitake"
+  },
+  "food-malt-beer": {
+    "de": "Malzbier",
+    "es": "cerveza de malta",
+    "it": "birra di malto"
+  },
+  "food-malted-rye-flour": {
+    "de": "Roggenmalzmehl",
+    "es": "harina de centeno malteada"
+  },
+  "food-mamey-sapote": {
+    "de": "Mamey sapote",
+    "es": "mamey sapote",
+    "it": "mamey sapote"
+  },
+  "food-marcona-almond": {
+    "de": "Marcona-Mandel",
+    "es": "almendra Marcona"
+  },
+  "food-maroilles": {
+    "de": "Maroilles",
+    "es": "Maroilles",
+    "it": "Maroilles"
+  },
+  "food-mimolette": {
+    "de": "Mimolette",
+    "it": "mimolette"
+  },
+  "food-mirepoix": {
+    "de": "Mirepoix",
+    "es": "mirepoix",
+    "it": "mirepoix"
+  },
+  "food-morbier": {
+    "de": "Morbier",
+    "es": "morbier",
+    "it": "morbier"
+  },
+  "food-moth-bean": {
+    "de": "Mottenbohne",
+    "es": "judía moth",
+    "it": "fagiolo matki"
+  },
+  "food-muenster-cheese": {
+    "de": "Muenster-Käse"
+  },
+  "food-mulberry": {
+    "de": "Maulbeere",
+    "es": "morera",
+    "it": "gelso"
+  },
+  "food-mung-dal": {
+    "de": "Mung Dal",
+    "es": "mung dal",
+    "it": "mung dal"
+  },
+  "food-mushroom-sauce": {
+    "de": "Pilzsauce",
+    "es": "salsa de champiñones"
+  },
+  "food-mustard-greens": {
+    "de": "Blattsenf",
+    "es": "hojas de mostaza",
+    "it": "foglie di senape"
+  },
+  "food-mustard-sauce": {
+    "de": "Senfsauce",
+    "es": "salsa de mostaza"
+  },
+  "food-mustard-spinach": {
+    "de": "Senfspinat",
+    "es": "espinaca mostaza",
+    "it": "spinaci alla senape"
+  },
+  "food-napa-cabbage": {
+    "de": "Chinakohl",
+    "es": "col china"
+  },
+  "food-naranjilla": {
+    "de": "Naranjilla",
+    "es": "naranjilla",
+    "it": "naranjilla"
+  },
+  "food-neufchatel": {
+    "de": "Neufchâtel",
+    "es": "neufchâtel",
+    "it": "neufchâtel"
+  },
+  "food-nopales": {
+    "de": "Nopales",
+    "es": "nopales",
+    "it": "nopales"
+  },
+  "food-oat-malt": {
+    "de": "Hafermalz",
+    "es": "malta de avena"
+  },
+  "food-oscypek": {
+    "de": "Oscypek",
+    "es": "Oscypek"
+  },
+  "food-ossau-iraty": {
+    "de": "Ossau-Iraty",
+    "es": "Ossau-Iraty",
+    "it": "Ossau-Iraty"
+  },
+  "food-paneer": {
+    "de": "Paneer",
+    "es": "paneer",
+    "it": "paneer"
+  },
+  "food-pasilla-peppers": {
+    "de": "Pasilla-Chilis",
+    "es": "chiles pasilla",
+    "it": "peperoncini pasilla"
+  },
+  "food-peach-juice": {
+    "de": "Pfirsichsaft",
+    "es": "zumo de melocotón"
+  },
+  "food-pear-nectar": {
+    "de": "Birnennektar",
+    "es": "néctar de pera",
+    "it": "nettare di pera"
+  },
+  "food-pearl-millet": {
+    "de": "Perlhirse",
+    "es": "mijo perla",
+    "it": "miglio perlato"
+  },
+  "food-pearled-farro": {
+    "de": "Perlfarro",
+    "es": "farro perlado"
+  },
+  "food-shiso": {
+    "de": "Perilla",
+    "es": "Perilla"
+  },
+  "food-pesto": {
+    "de": "Pesto",
+    "es": "pesto",
+    "it": "pesto"
+  },
+  "food-petit-suisse": {
+    "de": "Petit suisse",
+    "es": "Petit suisse",
+    "it": "Petit suisse"
+  },
+  "food-picodon": {
+    "de": "Picodon",
+    "es": "Picodon",
+    "it": "Picodon"
+  },
+  "food-pigeon-pea": {
+    "de": "Straucherbse",
+    "es": "gandul",
+    "it": "pisello d'Angola"
+  },
+  "food-pilinut": {
+    "de": "Pilinuss",
+    "es": "nuez pili",
+    "it": "noce pili"
+  },
+  "food-pineapple-puree": {
+    "de": "Ananaspüree"
+  },
+  "food-pink-lady-apple": {
+    "de": "Pink Lady Apfel"
+  },
+  "food-pitanga": {
+    "de": "Pitanga",
+    "es": "pitanga",
+    "it": "pitanga"
+  },
+  "food-plain-yogurt": {
+    "de": "Naturjoghurt",
+    "es": "yogur natural"
+  },
+  "food-plantain": {
+    "de": "Kochbananen"
+  },
+  "food-poblano-chili": {
+    "de": "Poblano-Chili"
+  },
+  "food-pomelo-juice": {
+    "de": "Pomelosaft",
+    "es": "zumo de pomelo",
+    "it": "succo di pomelo"
+  },
+  "food-pont-leveque": {
+    "de": "Pont-l'Évêque",
+    "es": "Pont-l'Évêque",
+    "it": "Pont-l'Évêque"
+  },
+  "food-poppyseed-oil": {
+    "de": "Mohnöl",
+    "es": "aceite de semilla de amapola",
+    "it": "olio di semi di papavero"
+  },
+  "food-potato-flour": {
+    "de": "Kartoffelmehl"
+  },
+  "food-powdered-egg-white": {
+    "de": "Eiweißpulver",
+    "es": "clara de huevo en polvo",
+    "it": "albume in polvere"
+  },
+  "food-preserved-lemon": {
+    "de": "Salzzitrone",
+    "es": "limón en salmuera"
+  },
+  "food-prickly-pear": {
+    "de": "Kaktusfeige",
+    "es": "tuna",
+    "it": "fico d'India"
+  },
+  "food-psyllium-seed": {
+    "de": "Flohsamen",
+    "es": "semilla de psyllium",
+    "it": "semi di psillio"
+  },
+  "food-pumpkin-flower": {
+    "de": "Kürbisblüte",
+    "es": "flor de calabaza",
+    "it": "fiore di zucca"
+  },
+  "food-purslane": {
+    "de": "Portulak",
+    "es": "verdolaga"
+  },
+  "food-raclette": {
+    "de": "Raclette",
+    "es": "Raclette",
+    "it": "Raclette"
+  },
+  "food-rakia": {
+    "de": "Rakia",
+    "es": "rakia"
+  },
+  "food-raspberry-leaf": {
+    "de": "Himbeerblatt",
+    "es": "hoja de frambuesa"
+  },
+  "food-reblochon": {
+    "de": "Reblochon",
+    "es": "reblochon",
+    "it": "reblochon"
+  },
+  "food-red-orange-marmalade": {
+    "de": "Blutorangenmarmelade",
+    "es": "mermelada de naranja roja"
+  },
+  "food-rice-milk": {
+    "de": "Reismilch",
+    "es": "leche de arroz"
+  },
+  "food-rice-wine": {
+    "de": "Reiswein"
+  },
+  "food-risoni": {
+    "de": "Risoni",
+    "es": "risoni"
+  },
+  "food-rocamadour": {
+    "de": "Rocamadour",
+    "es": "rocamadour",
+    "it": "rocamadour"
+  },
+  "food-roquefort": {
+    "de": "Roquefort",
+    "it": "roquefort"
+  },
+  "food-rose-apple": {
+    "de": "Rosenapfel",
+    "es": "pomarrosa",
+    "it": "melarosa"
+  },
+  "food-saint-marcellin": {
+    "de": "Saint Marcellin",
+    "es": "Saint Marcellin",
+    "it": "Saint Marcellin"
+  },
+  "food-saint-nectaire": {
+    "de": "Saint nectaire",
+    "es": "saint nectaire",
+    "it": "saint nectaire"
+  },
+  "food-sainte-maure-de-touraine": {
+    "de": "Sainte-Maure de Touraine",
+    "es": "Sainte-Maure de Touraine",
+    "it": "Sainte-Maure de Touraine"
+  },
+  "food-salsa": {
+    "de": "Salsa",
+    "es": "salsa"
+  },
+  "food-sapodilla": {
+    "de": "Sapodilla",
+    "es": "chicozapote",
+    "it": "sapodilla"
+  },
+  "food-sea-kale": {
+    "de": "Seekohl"
+  },
+  "food-semi-sweet-chocolate": {
+    "de": "Halbsüße Schokolade",
+    "es": "chocolate semidulce",
+    "it": "cioccolato semidolce"
+  },
+  "food-serrano-peppers": {
+    "de": "Serrano-Chilis",
+    "es": "chiles serranos",
+    "it": "peperoncini serrano"
+  },
+  "food-sheeps-cream": {
+    "de": "Schafsrahm",
+    "es": "nata de oveja",
+    "it": "panna di pecora"
+  },
+  "food-sichuan-pepper": {
+    "de": "Sichuan-Pfeffer",
+    "es": "Pimienta de Sichuan"
+  },
+  "food-skyr": {
+    "de": "Skyr",
+    "es": "skyr",
+    "it": "skyr"
+  },
+  "food-sloe": {
+    "de": "Schlehe",
+    "es": "endrina"
+  },
+  "food-smoked-paprika": {
+    "de": "Geräuchertes Paprikapulver",
+    "es": "pimentón ahumado"
+  },
+  "food-soba": {
+    "de": "Soba",
+    "es": "soba"
+  },
+  "food-soursop": {
+    "de": "Stachelannone",
+    "es": "guanábana",
+    "it": "graviola"
+  },
+  "food-spaghetti-squash": {
+    "de": "Spaghettikürbis",
+    "es": "calabaza espagueti"
+  },
+  "food-spelt-flakes": {
+    "de": "Dinkelflocken",
+    "es": "hojuelas de espelta",
+    "it": "fiocchi di farro"
+  },
+  "food-spinach-puree": {
+    "de": "Spinatpüree",
+    "es": "puré de espinacas"
+  },
+  "food-strawberry-guavas": {
+    "de": "Erdbeerguaven",
+    "es": "guayabas fresa",
+    "it": "guaiave fragola"
+  },
+  "food-sweet-onion": {
+    "de": "Süße Zwiebel",
+    "es": "cebolla dulce",
+    "it": "cipolla dolce"
+  },
+  "food-sweet-potato-leaves": {
+    "de": "Süßkartoffelblätter",
+    "es": "hojas de batata",
+    "it": "foglie di patata dolce"
+  },
+  "food-sweet-soy-sauce": {
+    "de": "Süße Sojasauce",
+    "es": "salsa de soja dulce"
+  },
+  "food-sweet-valencia-orange": {
+    "de": "Valencia-Orange",
+    "es": "naranja Valencia dulce"
+  },
+  "food-tangerine": {
+    "de": "Mandarine",
+    "es": "mandarina",
+    "it": "mandarino"
+  },
+  "food-taro-leaves": {
+    "de": "Taroblätter",
+    "es": "hojas de taro",
+    "it": "foglie di taro"
+  },
+  "food-teaseed-oil": {
+    "de": "Teesamenöl",
+    "es": "aceite de semilla de té",
+    "it": "olio di semi di tè"
+  },
+  "food-toasted-sesame-oil": {
+    "de": "Geröstetes Sesamöl",
+    "es": "aceite de sésamo tostado",
+    "it": "olio di sesamo tostato"
+  },
+  "food-tomatillo": {
+    "de": "Tomatillo",
+    "es": "tomatillo",
+    "it": "tomatillo"
+  },
+  "food-tomato-powder": {
+    "de": "Tomatenpulver",
+    "es": "tomate en polvo",
+    "it": "pomodoro in polvere"
+  },
+  "food-tomme": {
+    "de": "Tomme",
+    "es": "tomme",
+    "it": "tomme"
+  },
+  "food-tremella-fuciformis": {
+    "de": "Tremella fuciformis",
+    "es": "Tremella fuciformis"
+  },
+  "food-turbinado-sugar": {
+    "de": "Turbinadozucker",
+    "es": "azúcar turbinado",
+    "it": "zucchero turbinado"
+  },
+  "food-verna-lemon": {
+    "de": "Verna Zitrone",
+    "es": "Limón verna",
+    "it": "Limone Verna"
+  },
+  "food-vine-spinach": {
+    "de": "Malabarspinat",
+    "es": "espinaca de Malabar",
+    "it": "spinacio di Malabar"
+  },
+  "food-water-spinach": {
+    "de": "Wasserspinat",
+    "es": "espinacas de agua",
+    "it": "spinaci d'acqua"
+  },
+  "food-watermelon-seed-kernels": {
+    "de": "Wassermelonenkerne",
+    "es": "semillas de sandía peladas",
+    "it": "semi di anguria sgusciati"
+  },
+  "food-wheat-germ-oil": {
+    "de": "Weizenkeimöl",
+    "es": "aceite de germen de trigo",
+    "it": "olio di germe di grano"
+  },
+  "food-whipping-cream": {
+    "de": "Schlagsahne"
+  },
+  "food-generic-whisky": {
+    "de": "Whisky",
+    "es": "whisky",
+    "it": "whisky"
+  },
+  "food-white-dashi": {
+    "de": "Weißes Dashi",
+    "es": "dashi blanco"
+  },
+  "food-white-mulberry": {
+    "de": "Weiße Maulbeere",
+    "es": "mora blanca"
+  },
+  "food-wild-blueberry": {
+    "de": "Wilde Heidelbeere",
+    "es": "arándano silvestre",
+    "it": "mirtillo selvatico"
+  },
+  "food-winged-beans": {
+    "de": "Geflügelte Bohnen",
+    "es": "frijoles alados",
+    "it": "fagioli alati"
+  },
+  "food-jicama": {
+    "de": "Yambohne (Jícama)",
+    "es": "jícama",
+    "it": "jícama"
+  },
+  "food-yardlong-beans": {
+    "de": "Spargelbohnen",
+    "es": "judías de metro",
+    "it": "fagioli metro"
+  },
+  "food-yautia": {
+    "de": "Yautia",
+    "es": "yautia",
+    "it": "yautia"
+  },
+  "food-yellow-peach": {
+    "de": "Gelber Pfirsich",
+    "es": "melocotón amarillo",
+    "it": "pesca gialla"
+  },
+  "food-yomogi": {
+    "de": "Yomogi",
+    "es": "Yomogi"
+  },
+  "food-yuzu": {
+    "de": "Yuzu",
+    "es": "Yuzu"
+  },
+  "food-zaatar": {
+    "de": "Za'atar",
+    "es": "za'atar",
+    "it": "za'atar"
+  },
+  "food-acerola-powder": {
+    "es": "acerola en polvo"
+  },
+  "food-advocaat": {
+    "es": "advocaat",
+    "it": "advocaat"
+  },
+  "food-adzuki-bean": {
+    "es": "Judías adzuki"
+  },
+  "food-almond-oil": {
+    "es": "aceite de almendras"
+  },
+  "food-aloe-vera": {
+    "es": "aloe vera",
+    "it": "aloe vera"
+  },
+  "food-armagnac": {
+    "es": "armagnac",
+    "it": "armagnac"
+  },
+  "food-arrowroot-powder": {
+    "es": "polvo de arrurruz",
+    "it": "polvere di maranta"
+  },
+  "food-asian-pear": {
+    "es": "pera asiática",
+    "it": "pera asiatica"
+  },
+  "food-beetroot-powder": {
+    "es": "remolacha en polvo"
+  },
+  "food-black-cardamom": {
+    "es": "cardamomo negro"
+  },
+  "food-black-galangal": {
+    "es": "galangal negro"
+  },
+  "food-black-grape": {
+    "es": "uva negra"
+  },
+  "food-black-salt": {
+    "es": "sal negra"
+  },
+  "food-blackcurrant-jam": {
+    "es": "mermelada de grosella negra"
+  },
+  "food-blood-orange-juice": {
+    "es": "zumo de naranja sanguina"
+  },
+  "food-borlotti-bean": {
+    "es": "judía borlotti"
+  },
+  "food-bosc-pear": {
+    "es": "pera Bosc",
+    "it": "pera Bosc"
+  },
+  "food-boysenberry-juice": {
+    "es": "zumo de mora de Boysen"
+  },
+  "food-bramley-apple": {
+    "es": "manzana bramley"
+  },
+  "food-brown-mushroom": {
+    "es": "champiñón marrón",
+    "it": "fungo champignon bruno"
+  },
+  "food-brown-mustard": {
+    "es": "mostaza marrón"
+  },
+  "food-brown-mustard-seed": {
+    "es": "semilla de mostaza marrón"
+  },
+  "food-bulgur": {
+    "es": "bulgur"
+  },
+  "food-burnet": {
+    "es": "pimpinela"
+  },
+  "food-calamansi": {
+    "es": "calamansi"
+  },
+  "food-camelina-oil": {
+    "es": "aceite de camelina"
+  },
+  "food-cassava-flour": {
+    "es": "harina de yuca"
+  },
+  "food-cassia": {
+    "es": "casia",
+    "it": "cassia"
+  },
+  "food-celery-powder": {
+    "es": "apio en polvo"
+  },
+  "food-ceylon-black-tea": {
+    "es": "Té negro de Ceilán"
+  },
+  "food-ceylon-cinnamon": {
+    "es": "canela de ceilán"
+  },
+  "food-charentais-melon": {
+    "es": "melón charentais"
+  },
+  "food-chili-puree": {
+    "es": "puré de chile"
+  },
+  "food-chocolate-sauce": {
+    "es": "salsa de chocolate"
+  },
+  "food-chokeberry-juice": {
+    "es": "zumo de aronia"
+  },
+  "food-clover-honey": {
+    "es": "miel de trébol"
+  },
+  "food-coconut-blossom-syrup": {
+    "es": "sirope de flor de coco"
+  },
+  "food-cold-brew-coffee": {
+    "es": "café de preparación en frío"
+  },
+  "food-coriander-paste": {
+    "es": "pasta de cilantro"
+  },
+  "food-creamy-honey": {
+    "es": "miel cremosa"
+  },
+  "food-creme-fraiche": {
+    "es": "crème fraîche",
+    "it": "crème fraîche"
+  },
+  "food-cress": {
+    "es": "berro"
+  },
+  "food-dark-soy-sauce": {
+    "es": "salsa de soja oscura"
+  },
+  "food-date-paste": {
+    "es": "pasta de dátiles"
+  },
+  "food-demerara-sugar": {
+    "es": "azúcar demerara"
+  },
+  "food-dill-butter": {
+    "es": "mantequilla de eneldo"
+  },
+  "food-double-gloucester": {
+    "es": "Double Gloucester"
+  },
+  "food-dried-goji-berries": {
+    "es": "bayas de goji secas"
+  },
+  "food-edamame": {
+    "es": "edamame"
+  },
+  "food-eucalyptus-honey": {
+    "es": "miel de eucalipto"
+  },
+  "food-filmjolk": {
+    "es": "filmjölk",
+    "it": "filmjölk"
+  },
+  "food-forest-honey": {
+    "es": "miel de bosque"
+  },
+  "food-freekeh": {
+    "es": "freekeh",
+    "it": "freekeh"
+  },
+  "food-fried-onion": {
+    "es": "cebolla frita"
+  },
+  "food-fruit-vinegar": {
+    "es": "vinagre de frutas"
+  },
+  "food-ginger-paste": {
+    "es": "pasta de jengibre"
+  },
+  "food-ginkgo-nuts": {
+    "es": "nueces de ginkgo"
+  },
+  "food-glace-cherry": {
+    "es": "cereza glacé"
+  },
+  "food-golden-syrup": {
+    "es": "sirope dorado"
+  },
+  "food-gooseberry-juice": {
+    "es": "zumo de grosella espinosa",
+    "it": "succo di uva spina"
+  },
+  "food-grain-vinegar": {
+    "es": "vinagre de grano"
+  },
+  "food-grapefruit": {
+    "es": "pomelo"
+  },
+  "food-grapefruit-syrup": {
+    "es": "jarabe de pomelo"
+  },
+  "food-green-cardamom": {
+    "es": "cardamomo verde"
+  },
+  "food-greengage": {
+    "es": "ciruela claudia"
+  },
+  "food-grunkern": {
+    "es": "grünkern"
+  },
+  "food-habanero-chili": {
+    "es": "chile habanero"
+  },
+  "food-herbal-tea": {
+    "es": "té de hierbas",
+    "it": "tisana"
+  },
+  "food-jasmine-rice": {
+    "es": "arroz jazmín Hom Mali"
+  },
+  "food-horseradish-paste": {
+    "es": "pasta de rábano picante"
+  },
+  "food-hummus": {
+    "es": "hummus",
+    "it": "hummus"
+  },
+  "food-jackfruit": {
+    "es": "yaca"
+  },
+  "food-kaffir-lime-leaf": {
+    "es": "hoja de lima makrut"
+  },
+  "food-kirsch": {
+    "es": "kirsch",
+    "it": "kirsch"
+  },
+  "food-kombucha": {
+    "es": "kombucha",
+    "it": "kombucha"
+  },
+  "food-lancashire-cheese": {
+    "es": "Queso Lancashire"
+  },
+  "food-laver": {
+    "es": "alga nori",
+    "it": "alga nori"
+  },
+  "food-lime-leaf": {
+    "es": "hoja de lima"
+  },
+  "food-limoncello": {
+    "es": "limoncello",
+    "it": "limoncello"
+  },
+  "food-linden-honey": {
+    "es": "miel de tilo"
+  },
+  "food-lingonberry-juice": {
+    "es": "zumo de arándano rojo nórdico"
+  },
+  "food-linguine": {
+    "es": "linguine",
+    "it": "linguine"
+  },
+  "food-liquorice-powder": {
+    "es": "regaliz en polvo"
+  },
+  "food-longan": {
+    "es": "longán"
+  },
+  "food-lukuma": {
+    "es": "lúcuma"
+  },
+  "food-macaroni": {
+    "es": "macarrones"
+  },
+  "food-manuka-honey": {
+    "es": "Miel de manuka"
+  },
+  "food-mazafati-dates": {
+    "es": "dátiles Mazafati",
+    "it": "datteri Mazafati"
+  },
+  "food-melon-seed": {
+    "es": "semilla de melón"
+  },
+  "food-mirabelle-plum": {
+    "es": "ciruela mirabelle"
+  },
+  "food-morel": {
+    "es": "colmenilla"
+  },
+  "food-mountain-honey": {
+    "es": "miel de montaña"
+  },
+  "food-munich-malt": {
+    "es": "malta munich"
+  },
+  "food-muscadet": {
+    "es": "muscadet",
+    "it": "muscadet"
+  },
+  "food-mustard-oil": {
+    "es": "aceite de mostaza"
+  },
+  "food-nib-sugar": {
+    "es": "azúcar perlado"
+  },
+  "food-oak-leaf-lettuce": {
+    "es": "lechuga de hoja de roble"
+  },
+  "food-orange-blossom-honey": {
+    "es": "miel de azahar"
+  },
+  "food-paprika-paste": {
+    "es": "pasta de pimentón"
+  },
+  "food-peach-syrup": {
+    "es": "jarabe de melocotón"
+  },
+  "food-pearl-onion": {
+    "es": "cebolla perla"
+  },
+  "food-pecorino": {
+    "es": "Pecorino"
+  },
+  "food-pepper-jack": {
+    "es": "queso Pepper Jack"
+  },
+  "food-peri-peri": {
+    "es": "peri-peri",
+    "it": "peri-peri"
+  },
+  "food-pilsner-malted-barley": {
+    "es": "Cebada malteada Pilsner"
+  },
+  "food-pimiento": {
+    "es": "pimiento"
+  },
+  "food-pleurotus": {
+    "es": "seta de ostra"
+  },
+  "food-pomegranate-seeds": {
+    "es": "semillas de granada"
+  },
+  "food-pomelo": {
+    "es": "pomelo"
+  },
+  "food-popcorn": {
+    "es": "palomitas de maíz"
+  },
+  "food-radish-sprouts": {
+    "es": "brotes de rábano"
+  },
+  "food-raspberry-jam": {
+    "es": "mermelada de frambuesa"
+  },
+  "food-raspberry-sauce": {
+    "es": "salsa de frambuesa"
+  },
+  "food-red-currant-juice": {
+    "es": "zumo de grosella roja"
+  },
+  "food-red-curry-paste": {
+    "es": "pasta de curry rojo"
+  },
+  "food-red-miso-paste": {
+    "es": "pasta de miso rojo"
+  },
+  "food-rhubarb-juice": {
+    "es": "zumo de ruibarbo"
+  },
+  "food-rusk": {
+    "es": "biscote"
+  },
+  "food-russet-potatoes": {
+    "es": "patatas Russet"
+  },
+  "food-rye-malt": {
+    "es": "malta de centeno"
+  },
+  "food-salers": {
+    "es": "Salers",
+    "it": "Salers"
+  },
+  "food-salsify": {
+    "es": "salsifí"
+  },
+  "food-salted-butter-caramel-sauce": {
+    "es": "salsa de caramelo de mantequilla salada"
+  },
+  "food-sambal": {
+    "es": "sambal",
+    "it": "sambal"
+  },
+  "food-sambal-oelek": {
+    "es": "sambal oelek",
+    "it": "sambal oelek"
+  },
+  "food-sea-buckthorn-juice": {
+    "es": "zumo de espino amarillo",
+    "it": "succo di olivello spinoso"
+  },
+  "food-sencha": {
+    "es": "sencha"
+  },
+  "food-sesame-seed-bun": {
+    "es": "bollo de semillas de sésamo"
+  },
+  "food-single-cream": {
+    "es": "nata ligera"
+  },
+  "food-tart-cherry-juice": {
+    "es": "zumo de guinda"
+  },
+  "food-split-pea": {
+    "es": "guisante partido"
+  },
+  "food-spring-honey": {
+    "es": "miel de primavera"
+  },
+  "food-stilton": {
+    "es": "Stilton"
+  },
+  "food-straw-mushroom": {
+    "es": "seta de paja"
+  },
+  "food-sukkary-dates": {
+    "es": "dátiles Sukkary",
+    "it": "datteri Sukkary"
+  },
+  "food-sunflower-honey": {
+    "es": "miel de girasol"
+  },
+  "food-sweet-cherry": {
+    "es": "cereza dulce"
+  },
+  "food-sweet-woodruff": {
+    "es": "aspérula olorosa"
+  },
+  "food-tamarillo": {
+    "es": "tamarillo"
+  },
+  "food-tangerine-juice": {
+    "es": "zumo de mandarina"
+  },
+  "food-tarragon-vinegar": {
+    "es": "vinagre de estragón"
+  },
+  "food-teff": {
+    "es": "teff",
+    "it": "teff"
+  },
+  "food-tencha": {
+    "es": "tencha"
+  },
+  "food-teriyaki-sauce": {
+    "es": "salsa teriyaki"
+  },
+  "food-thongweed": {
+    "es": "espagueti de mar"
+  },
+  "food-triticale": {
+    "es": "triticale",
+    "it": "triticale"
+  },
+  "food-tulsi": {
+    "es": "tulsi"
+  },
+  "food-turmeric-powder": {
+    "es": "cúrcuma en polvo"
+  },
+  "food-udon": {
+    "es": "udon"
+  },
+  "food-wax-bean": {
+    "es": "judía amarilla"
+  },
+  "food-wensleydale": {
+    "es": "Wensleydale"
+  },
+  "food-white-balsamic-vinegar": {
+    "es": "vinagre balsámico blanco"
+  },
+  "food-white-peach": {
+    "es": "melocotón blanco"
+  },
+  "food-white-tea": {
+    "es": "té blanco"
+  },
+  "food-yam": {
+    "es": "ñame"
+  },
+  "food-acerola": {
+    "it": "acerola"
+  },
+  "food-bakers-yeast": {
+    "it": "lievito di birra"
+  },
+  "food-brie": {
+    "it": "Brie"
+  },
+  "food-elderberry": {
+    "it": "sambuco"
+  },
+  "food-flat-bean": {
+    "it": "fagiolo piatto"
+  },
+  "food-gouda": {
+    "it": "gouda"
+  },
+  "food-korean-chili-powder": {
+    "it": "Peperoncino coreano in polvere"
+  },
+  "food-maasdam": {
+    "it": "maasdam"
+  },
+  "food-munster": {
+    "it": "Munster"
+  },
+  "food-perilla-oil": {
+    "it": "olio di perilla"
+  },
+  "food-rambutan": {
+    "it": "rambutan"
+  },
+  "food-rum": {
+    "it": "rum"
+  },
+  "food-tagliatelle": {
+    "it": "tagliatelle"
+  },
+  "food-taleggio": {
+    "it": "taleggio"
+  },
+  "food-wakame": {
+    "it": "wakame"
+  }
+}

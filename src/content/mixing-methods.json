@@ -1,0 +1,3741 @@
+{
+  "daiquiri-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-daiquiri",
+      "stepIndexes": [
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "dry-martini-iba": [
+    {
+      "method": "stir",
+      "sourceId": "iba-dry-martini",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "dry-martini-ideal-gin": [
+    {
+      "method": "stir",
+      "sourceId": "imbibe-ideal-martini",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "whiskey-sour-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-whiskey-sour",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "margarita-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-margarita",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "mojito-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-mojito",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "negroni-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-negroni",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "old-fashioned-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-old-fashioned",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "paloma-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-paloma",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "tom-collins-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-john-collins",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "espresso-martini-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-espresso-martini",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "mojito-mocktail-good-food": [
+    {
+      "method": "build",
+      "sourceId": "good-food-mojito-mocktail",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "amaretto-sour-alcohol-free-good-food": [
+    {
+      "method": "blend",
+      "sourceId": "good-food-alcohol-free-amaretto-sour",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "aviation-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-aviation",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "clover-club-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-clover-club",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "bees-knees-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-bees-knees",
+      "stepIndexes": [
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "bramble-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-bramble",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "last-word-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-last-word",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "french-75-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-french-75",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "manhattan-iba": [
+    {
+      "method": "stir",
+      "sourceId": "iba-manhattan",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "boulevardier-iba": [
+    {
+      "method": "stir",
+      "sourceId": "iba-boulevardier",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "sazerac-iba": [
+    {
+      "method": "stir",
+      "sourceId": "iba-sazerac",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "mint-julep-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-mint-julep",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "penicillin-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-penicillin",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "paper-plane-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-paper-plane",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "penicillin-punch-proper-drink": [
+    {
+      "method": "shake",
+      "sourceId": "punch-penicillin",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "sidecar-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-sidecar",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "alexander-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-alexander",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "pisco-sour-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-pisco-sour",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "cosmopolitan-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-cosmopolitan",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "moscow-mule-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-moscow-mule",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "bloody-mary-iba": [],
+  "pina-colada-iba": [
+    {
+      "method": "blend",
+      "sourceId": "iba-pina-colada",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "mai-tai-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-mai-tai",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "cuba-libre-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-cuba-libre",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "dark-n-stormy-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-dark-n-stormy",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "americano-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-americano",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "spritz-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-spritz",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "angel-face-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-angel-face",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "bellini-iba": [
+    {
+      "method": "stir",
+      "sourceId": "iba-bellini",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "between-the-sheets-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-between-the-sheets",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "black-russian-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-black-russian",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "brandy-crusta-iba": [
+    {
+      "method": "stir",
+      "sourceId": "iba-brandy-crusta",
+      "stepIndexes": [
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "caipirinha-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-caipirinha",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "canchanchara-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-canchanchara",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "cardinale-iba": [
+    {
+      "method": "stir",
+      "sourceId": "iba-cardinale",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "casino-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-casino",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "champagne-cocktail-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-champagne-cocktail",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "chartreuse-swizzle-iba": [],
+  "corpse-reviver-2-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-corpse-reviver-2",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "dons-special-daiquiri-iba": [
+    {
+      "method": "blend",
+      "sourceId": "iba-dons-special-daiquiri",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "fernandito-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-fernandito",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "french-connection-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-french-connection",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "french-martini-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-french-martini",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "garibaldi-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-garibaldi",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "gin-basil-smash-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-gin-basil-smash",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "gin-fizz-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-gin-fizz",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "grand-margarita-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-grand-margarita",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "grasshopper-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-grasshopper",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "hanky-panky-iba": [
+    {
+      "method": "stir",
+      "sourceId": "iba-hanky-panky",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "hemingway-special-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-hemingway-special",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "horses-neck-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-horses-neck",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "iba-tiki-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-iba-tiki",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "illegal-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-illegal",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "irish-coffee-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-irish-coffee",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    },
+    {
+      "method": "hot",
+      "sourceId": "iba-irish-coffee",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "jungle-bird-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-jungle-bird",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "kir-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-kir",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "lemon-drop-martini-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-lemon-drop-martini",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "long-island-iced-tea-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-long-island-iced-tea",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "martinez-iba": [
+    {
+      "method": "stir",
+      "sourceId": "iba-martinez",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "mary-pickford-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-mary-pickford",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "mimosa-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-mimosa",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "missionarys-downfall-iba": [
+    {
+      "method": "blend",
+      "sourceId": "iba-missionarys-downfall",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "monkey-gland-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-monkey-gland",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "naked-and-famous-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-naked-and-famous",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "new-york-sour-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-new-york-sour",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "old-cuban-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-old-cuban",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "paradise-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-paradise",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "pisco-punch-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-pisco-punch",
+      "stepIndexes": [
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "planters-punch-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-planters-punch",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "porn-star-martini-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-porn-star-martini",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "porto-flip-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-porto-flip",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "rabo-de-galo-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-rabo-de-galo",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "ramos-fizz-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-ramos-fizz",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "remember-the-maine-iba": [
+    {
+      "method": "stir",
+      "sourceId": "iba-remember-the-maine",
+      "stepIndexes": [
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "russian-spring-punch-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-russian-spring-punch",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "rusty-nail-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-rusty-nail",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "sea-breeze-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-sea-breeze",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "sex-on-the-beach-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-sex-on-the-beach",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "sherry-cobbler-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-sherry-cobbler",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "singapore-sling-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-singapore-sling",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "south-side-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-south-side",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "spicy-fifty-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-spicy-fifty",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "stinger-iba": [
+    {
+      "method": "stir",
+      "sourceId": "iba-stinger",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "suffering-bastard-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-suffering-bastard",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "tequila-sunrise-iba": [
+    {
+      "method": "build",
+      "sourceId": "iba-tequila-sunrise",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "three-dots-and-a-dash-iba": [
+    {
+      "method": "blend",
+      "sourceId": "iba-three-dots-and-a-dash",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "tipperary-iba": [
+    {
+      "method": "stir",
+      "sourceId": "iba-tipperary",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "tommys-margarita-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-tommys-margarita",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "trinidad-sour-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-trinidad-sour",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "tuxedo-iba": [
+    {
+      "method": "stir",
+      "sourceId": "iba-tuxedo",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "ve-n-to-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-ve-n-to",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "vesper-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-vesper",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "vieux-carre-iba": [
+    {
+      "method": "stir",
+      "sourceId": "iba-vieux-carre",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "white-lady-iba": [
+    {
+      "method": "shake",
+      "sourceId": "iba-white-lady",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "zombie-iba": [
+    {
+      "method": "blend",
+      "sourceId": "iba-zombie",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "gin-and-tonic-diffords-gin-and-tonic": [
+    {
+      "method": "build",
+      "sourceId": "diffords-gin-and-tonic",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "gimlet-diffords-gimlet-savoy-excerpt": [
+    {
+      "method": "build",
+      "sourceId": "diffords-gimlet-savoy-excerpt",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "gimlet-diffords-gimlet": [
+    {
+      "method": "shake",
+      "sourceId": "diffords-gimlet",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "gibson-diffords-gibson": [
+    {
+      "method": "stir",
+      "sourceId": "diffords-gibson",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "dirty-martini-diffords-dirty-martini": [
+    {
+      "method": "stir",
+      "sourceId": "diffords-dirty-martini",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "gin-rickey-diffords-gin-rickey": [
+    {
+      "method": "shake",
+      "sourceId": "diffords-gin-rickey",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "gin-buck-diffords-gin-buck": [
+    {
+      "method": "build",
+      "sourceId": "diffords-gin-buck",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "gin-sour-diffords-gin-sour": [
+    {
+      "method": "shake",
+      "sourceId": "diffords-gin-sour",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "gin-fix-diffords-gin-fix": [
+    {
+      "method": "shake",
+      "sourceId": "diffords-gin-fix",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "bijou-diffords-bijou": [
+    {
+      "method": "stir",
+      "sourceId": "diffords-bijou",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "alaska-diffords-alaska-savoy-adaptation": [
+    {
+      "method": "stir",
+      "sourceId": "diffords-alaska-savoy-adaptation",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "white-negroni-diffords-white-negroni": [
+    {
+      "method": "build",
+      "sourceId": "diffords-white-negroni",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "negroni-sbagliato-diffords-negroni-sbagliato": [
+    {
+      "method": "build",
+      "sourceId": "diffords-negroni-sbagliato",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "lucien-gaudin-diffords-lucien-gaudin": [
+    {
+      "method": "stir",
+      "sourceId": "diffords-lucien-gaudin",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "pimms-cup-diffords-pimms-cup": [
+    {
+      "method": "build",
+      "sourceId": "diffords-pimms-cup",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "white-russian-diffords-white-russian": [
+    {
+      "method": "stir",
+      "sourceId": "diffords-white-russian",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "screwdriver-diffords-screwdriver": [
+    {
+      "method": "stir",
+      "sourceId": "diffords-screwdriver",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "greyhound-diffords-greyhound": [
+    {
+      "method": "shake",
+      "sourceId": "diffords-greyhound",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "salty-dog-diffords-salty-dog": [
+    {
+      "method": "shake",
+      "sourceId": "diffords-salty-dog",
+      "stepIndexes": [
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "cape-codder-diffords-cape-codder": [
+    {
+      "method": "build",
+      "sourceId": "diffords-cape-codder",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "bay-breeze-diffords-bay-breeze": [
+    {
+      "method": "shake",
+      "sourceId": "diffords-bay-breeze",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "madras-diffords-madras": [
+    {
+      "method": "shake",
+      "sourceId": "diffords-madras",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "harvey-wallbanger-diffords-harvey-wallbanger": [
+    {
+      "method": "stir",
+      "sourceId": "diffords-harvey-wallbanger",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "kamikaze-diffords-kamikaze": [
+    {
+      "method": "shake",
+      "sourceId": "diffords-kamikaze",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "blue-lagoon-diffords-blue-lagoon": [
+    {
+      "method": "build",
+      "sourceId": "diffords-blue-lagoon",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "japanese-slipper-diffords-japanese-slipper": [
+    {
+      "method": "shake",
+      "sourceId": "diffords-japanese-slipper",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "melon-ball-diffords-melon-ball": [
+    {
+      "method": "build",
+      "sourceId": "diffords-melon-ball",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "black-velvet-diffords-black-velvet": [
+    {
+      "method": "build",
+      "sourceId": "diffords-black-velvet",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "porto-tonico-taylors-port-tonic": [
+    {
+      "method": "build",
+      "sourceId": "taylors-port-tonic",
+      "stepIndexes": [
+        0,
+        1
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "rob-roy-batch-f": [
+    {
+      "method": "stir",
+      "sourceId": "batch-f-rob-roy",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "bobby-burns-batch-f": [
+    {
+      "method": "stir",
+      "sourceId": "batch-f-bobby-burns",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "blood-and-sand-batch-f": [
+    {
+      "method": "shake",
+      "sourceId": "batch-f-blood-and-sand",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "godfather-batch-f": [
+    {
+      "method": "stir",
+      "sourceId": "batch-f-godfather",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "godmother-batch-f": [
+    {
+      "method": "build",
+      "sourceId": "batch-f-godmother",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "amaretto-sour-batch-f": [
+    {
+      "method": "shake",
+      "sourceId": "batch-f-amaretto-sour",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "whiskey-highball-batch-f": [
+    {
+      "method": "build",
+      "sourceId": "batch-f-whiskey-highball",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "scotch-and-soda-batch-f": [
+    {
+      "method": "build",
+      "sourceId": "batch-f-scotch-and-soda",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "whiskey-smash-batch-f": [
+    {
+      "method": "shake",
+      "sourceId": "batch-f-whiskey-smash",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "gold-rush-batch-f": [
+    {
+      "method": "shake",
+      "sourceId": "batch-f-gold-rush",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "brown-derby-batch-f": [
+    {
+      "method": "shake",
+      "sourceId": "batch-f-brown-derby",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "toronto-batch-f": [
+    {
+      "method": "stir",
+      "sourceId": "batch-f-toronto",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "old-pal-batch-f": [
+    {
+      "method": "stir",
+      "sourceId": "batch-f-old-pal",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "brooklyn-batch-f": [
+    {
+      "method": "stir",
+      "sourceId": "batch-f-brooklyn",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "red-hook-batch-f": [
+    {
+      "method": "stir",
+      "sourceId": "batch-f-red-hook",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "bamboo-batch-f": [
+    {
+      "method": "stir",
+      "sourceId": "batch-f-bamboo",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "adonis-batch-f": [
+    {
+      "method": "stir",
+      "sourceId": "batch-f-adonis",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "brandy-milk-punch-batch-f": [
+    {
+      "method": "blend",
+      "sourceId": "batch-f-brandy-milk-punch",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "hot-toddy-batch-f": [
+    {
+      "method": "build",
+      "sourceId": "batch-f-hot-toddy",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    },
+    {
+      "method": "hot",
+      "sourceId": "batch-f-hot-toddy",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "hurricane-batch-f": [
+    {
+      "method": "shake",
+      "sourceId": "batch-f-hurricane",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "painkiller-batch-f": [
+    {
+      "method": "shake",
+      "sourceId": "batch-f-painkiller",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "navy-grog-batch-f": [
+    {
+      "method": "shake",
+      "sourceId": "batch-f-navy-grog",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "jet-pilot-batch-f": [
+    {
+      "method": "blend",
+      "sourceId": "batch-f-jet-pilot",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "test-pilot-batch-f": [
+    {
+      "method": "blend",
+      "sourceId": "batch-f-test-pilot",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "pearl-diver-batch-f": [
+    {
+      "method": "blend",
+      "sourceId": "batch-f-pearl-diver",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "scorpion-batch-f": [
+    {
+      "method": "blend",
+      "sourceId": "batch-f-scorpion",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "rum-runner-batch-f": [
+    {
+      "method": "shake",
+      "sourceId": "batch-f-rum-runner",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "blue-hawaii-batch-f": [
+    {
+      "method": "shake",
+      "sourceId": "batch-f-blue-hawaii",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "pink-lady-batch-g": [
+    {
+      "method": "shake",
+      "sourceId": "batch-g-pink-lady",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "army-and-navy-batch-g": [
+    {
+      "method": "shake",
+      "sourceId": "batch-g-army-and-navy",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "final-ward-batch-g": [
+    {
+      "method": "shake",
+      "sourceId": "batch-g-final-ward",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "revolver-batch-g": [
+    {
+      "method": "stir",
+      "sourceId": "batch-g-revolver",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "presbyterian-batch-g": [
+    {
+      "method": "build",
+      "sourceId": "batch-g-presbyterian",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "mamie-taylor-batch-g": [
+    {
+      "method": "build",
+      "sourceId": "batch-g-mamie-taylor",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "monte-carlo-batch-g": [
+    {
+      "method": "stir",
+      "sourceId": "batch-g-monte-carlo",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "black-manhattan-batch-g": [
+    {
+      "method": "stir",
+      "sourceId": "batch-g-black-manhattan",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "scofflaw-batch-g": [
+    {
+      "method": "shake",
+      "sourceId": "batch-g-scofflaw",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "ward-eight-batch-g": [
+    {
+      "method": "shake",
+      "sourceId": "batch-g-ward-eight",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "lions-tail-batch-g": [
+    {
+      "method": "shake",
+      "sourceId": "batch-g-lions-tail",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "pegu-club-batch-g": [
+    {
+      "method": "shake",
+      "sourceId": "batch-g-pegu-club",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "saturn-batch-g": [
+    {
+      "method": "blend",
+      "sourceId": "batch-g-saturn",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "fog-cutter-batch-g": [
+    {
+      "method": "shake",
+      "sourceId": "batch-g-fog-cutter",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "queens-park-swizzle-batch-g": [],
+  "el-presidente-batch-g": [
+    {
+      "method": "stir",
+      "sourceId": "batch-g-el-presidente",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "ti-punch-batch-g": [
+    {
+      "method": "build",
+      "sourceId": "batch-g-ti-punch",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "death-in-the-afternoon-batch-g": [
+    {
+      "method": "build",
+      "sourceId": "batch-g-death-in-the-afternoon",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "cable-car-batch-g": [
+    {
+      "method": "shake",
+      "sourceId": "batch-g-cable-car",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "corn-n-oil-batch-g": [
+    {
+      "method": "build",
+      "sourceId": "batch-g-corn-n-oil",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "houmei-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-houmei",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "uchimizu-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-uchimizu",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "shiki-batch-h": [],
+  "inherited-fizz-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-inherited-fizz",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "toku-no-shizuku-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-toku-no-shizuku",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "musubi-batch-h": [],
+  "silent-note-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-silent-note",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "tokiwa-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-tokiwa",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    },
+    {
+      "method": "blend",
+      "sourceId": "batch-h-tokiwa",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "tefutefu-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-tefutefu",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "classic-rose-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-classic-rose",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "yukishiro-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-yukishiro",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "tomarigi-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-tomarigi",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "momochidori-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-momochidori",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "atarayo-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-atarayo",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "yuzuriha-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-yuzuriha",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "hatsuzakura-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-hatsuzakura",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "umemiyabi-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-umemiyabi",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "suehiro-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-suehiro",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "braver-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-braver",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "fuga-batch-h": [],
+  "seifu-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-seifu",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "konoka-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-konoka",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "brave-symphony-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-brave-symphony",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "tsukishiro-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-tsukishiro",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "calla-lily-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-calla-lily",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "hatsune-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-hatsune",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "new-old-days-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-new-old-days",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "enishi-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "batch-h-enishi",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "roku-momiji-fizz-batch-h": [
+    {
+      "method": "build",
+      "sourceId": "hos-momiji-fizz",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "roku-orchard-martinez-batch-h": [
+    {
+      "method": "stir",
+      "sourceId": "hos-orchard-martinez",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "roku-sakura-aperitif-batch-h": [
+    {
+      "method": "build",
+      "sourceId": "hos-sakura-aperitif",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "roku-hanami-fizz-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "hos-hanami-fizz",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "kasane-aviator-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "hos-kasane-aviator",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "noryo-nori-collins-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "hos-noryo-nori-collins",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "million-dollar-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "suntory-million-dollar",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "mount-fuji-batch-h": [
+    {
+      "method": "shake",
+      "sourceId": "longbar-mount-fuji",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "caipiroska-batch-i": [],
+  "london-mule-batch-i": [
+    {
+      "method": "build",
+      "sourceId": "batch-i-london-mule",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "mezcal-mule-batch-i": [
+    {
+      "method": "shake",
+      "sourceId": "batch-i-mezcal-mule",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "lady-in-blue-batch-i": [
+    {
+      "method": "shake",
+      "sourceId": "batch-i-lady-in-blue",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "irish-old-fashioned-batch-i": [
+    {
+      "method": "stir",
+      "sourceId": "batch-i-irish-old-fashioned",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "applejack-rabbit-batch-i": [
+    {
+      "method": "shake",
+      "sourceId": "batch-i-applejack-rabbit",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "brown-butter-old-fashioned-batch-i": [],
+  "picon-punch-batch-i": [
+    {
+      "method": "build",
+      "sourceId": "batch-i-picon-punch",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "tequila-mockingbird-batch-i": [
+    {
+      "method": "shake",
+      "sourceId": "batch-i-tequila-mockingbird",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "bourbon-renewal-batch-i": [
+    {
+      "method": "shake",
+      "sourceId": "batch-i-bourbon-renewal",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "turf-club-batch-i": [
+    {
+      "method": "stir",
+      "sourceId": "batch-i-turf-club",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "bourbon-rickey-batch-i": [
+    {
+      "method": "build",
+      "sourceId": "batch-i-bourbon-rickey",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "rum-old-fashioned-batch-i": [
+    {
+      "method": "stir",
+      "sourceId": "batch-i-rum-old-fashioned",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "bacardi-cocktail-batch-i": [
+    {
+      "method": "shake",
+      "sourceId": "batch-i-bacardi-cocktail",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "gin-gin-mule-batch-i": [
+    {
+      "method": "shake",
+      "sourceId": "batch-i-gin-gin-mule",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "floradora-batch-i": [
+    {
+      "method": "shake",
+      "sourceId": "batch-i-floradora",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "champs-elysees-batch-i": [
+    {
+      "method": "shake",
+      "sourceId": "batch-i-champs-elysees",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "man-o-war-batch-i": [
+    {
+      "method": "shake",
+      "sourceId": "batch-i-man-o-war",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "jack-rose-batch-i": [
+    {
+      "method": "shake",
+      "sourceId": "batch-i-jack-rose",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "seelbach-batch-i": [
+    {
+      "method": "stir",
+      "sourceId": "batch-i-seelbach",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "golden-dream-batch-i": [
+    {
+      "method": "shake",
+      "sourceId": "batch-i-golden-dream",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "st-germain-cocktail-batch-i": [
+    {
+      "method": "build",
+      "sourceId": "batch-i-st-germain-cocktail",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "hugo-spritz-batch-i": [],
+  "kir-royal-batch-i": [
+    {
+      "method": "build",
+      "sourceId": "batch-i-kir-royal",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "air-mail-batch-i": [
+    {
+      "method": "shake",
+      "sourceId": "batch-i-air-mail",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "la-louisiane-batch-i": [
+    {
+      "method": "stir",
+      "sourceId": "batch-i-la-louisiane",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "algonquin-batch-i": [
+    {
+      "method": "shake",
+      "sourceId": "batch-i-algonquin",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "bicicletta-batch-i": [
+    {
+      "method": "build",
+      "sourceId": "batch-i-bicicletta",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "breakfast-martini-batch-i": [
+    {
+      "method": "shake",
+      "sourceId": "batch-i-breakfast-martini",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "chrysanthemum-batch-i": [
+    {
+      "method": "stir",
+      "sourceId": "batch-i-chrysanthemum",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "division-bell-batch-i": [
+    {
+      "method": "shake",
+      "sourceId": "batch-i-division-bell",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "el-diablo-batch-i": [
+    {
+      "method": "shake",
+      "sourceId": "batch-i-el-diablo",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "mexican-firing-squad-batch-i": [
+    {
+      "method": "shake",
+      "sourceId": "batch-i-mexican-firing-squad",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "oaxaca-old-fashioned-batch-i": [
+    {
+      "method": "stir",
+      "sourceId": "batch-i-oaxaca-old-fashioned",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "hotel-nacional-batch-i": [
+    {
+      "method": "shake",
+      "sourceId": "batch-i-hotel-nacional",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "rosita-batch-i": [
+    {
+      "method": "stir",
+      "sourceId": "batch-i-rosita",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-15"
+    }
+  ],
+  "maid-in-cuba-batch-j": [
+    {
+      "method": "shake",
+      "sourceId": "batch-j-maid-in-cuba",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-16"
+    }
+  ],
+  "le-latin-batch-j": [
+    {
+      "method": "shake",
+      "sourceId": "batch-j-le-latin",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-16"
+    }
+  ],
+  "venceremos-batch-j": [
+    {
+      "method": "shake",
+      "sourceId": "batch-j-venceremos-recipe",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-16"
+    }
+  ],
+  "clarita-batch-j": [
+    {
+      "method": "stir",
+      "sourceId": "batch-j-clarita-recipe",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-16"
+    }
+  ],
+  "carino-batch-j": [
+    {
+      "method": "shake",
+      "sourceId": "batch-j-carino-recipe",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-16"
+    }
+  ],
+  "pink-me-up-batch-j": [
+    {
+      "method": "shake",
+      "sourceId": "batch-j-pink-me-up-recipe",
+      "stepIndexes": [
+        1
+      ],
+      "reviewedAt": "2026-09-16"
+    }
+  ],
+  "connaught-martini-bar-k": [
+    {
+      "method": "stir",
+      "stepIndexes": [
+        1
+      ],
+      "sourceId": "bar-k-connaught-martini",
+      "reviewedAt": "2026-09-16"
+    }
+  ],
+  "champagne-pina-colada-bar-k": [
+    {
+      "method": "blend",
+      "stepIndexes": [
+        0
+      ],
+      "sourceId": "bar-k-champagne-pina-colada",
+      "reviewedAt": "2026-09-16"
+    },
+    {
+      "method": "build",
+      "stepIndexes": [
+        1
+      ],
+      "sourceId": "bar-k-champagne-pina-colada",
+      "reviewedAt": "2026-09-16"
+    }
+  ],
+  "vicuna-bar-k": [
+    {
+      "method": "shake",
+      "stepIndexes": [
+        0
+      ],
+      "sourceId": "bar-k-vicuna",
+      "reviewedAt": "2026-09-16"
+    }
+  ],
+  "singapore-sling-jigger-pony-bar-k": [
+    {
+      "method": "shake",
+      "stepIndexes": [
+        0
+      ],
+      "sourceId": "bar-k-singapore-sling-jigger-pony",
+      "reviewedAt": "2026-09-16"
+    },
+    {
+      "method": "build",
+      "stepIndexes": [
+        1
+      ],
+      "sourceId": "bar-k-singapore-sling-jigger-pony",
+      "reviewedAt": "2026-09-16"
+    }
+  ],
+  "left-hand-bar-k": [
+    {
+      "method": "stir",
+      "stepIndexes": [
+        0
+      ],
+      "sourceId": "bar-k-left-hand",
+      "reviewedAt": "2026-09-16"
+    }
+  ],
+  "maggie-smith-bar-k": [
+    {
+      "method": "shake",
+      "stepIndexes": [
+        0
+      ],
+      "sourceId": "bar-k-maggie-smith",
+      "reviewedAt": "2026-09-16"
+    }
+  ],
+  "trasatlantico-fizz-bar-k": [
+    {
+      "method": "shake",
+      "stepIndexes": [
+        0
+      ],
+      "sourceId": "bar-k-trasatlantico-fizz",
+      "reviewedAt": "2026-09-16"
+    },
+    {
+      "method": "build",
+      "stepIndexes": [
+        1
+      ],
+      "sourceId": "bar-k-trasatlantico-fizz",
+      "reviewedAt": "2026-09-16"
+    }
+  ],
+  "belafonte-spritz-bar-k": [
+    {
+      "method": "build",
+      "stepIndexes": [
+        0
+      ],
+      "sourceId": "bar-k-belafonte-spritz",
+      "reviewedAt": "2026-09-16"
+    }
+  ],
+  "dauntless-dessert-batch-l": [
+    {
+      "method": "shake",
+      "sourceId": "batch-l-dauntless-dessert",
+      "stepIndexes": [
+        1
+      ],
+      "reviewedAt": "2026-09-16"
+    }
+  ],
+  "godfathers-affinity-batch-l": [
+    {
+      "method": "shake",
+      "sourceId": "batch-l-godfathers-affinity",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-16"
+    }
+  ],
+  "absinthe-frappe-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-absinthe-frappe",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "absinthe-suissesse-punch-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-absinthe-suissesse-punch",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "american-trilogy-batch-m": [
+    {
+      "method": "build",
+      "sourceId": "catalogue-m-american-trilogy",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "ancient-mariner-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-ancient-mariner",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "angelo-azzurro-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-angelo-azzurro",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "appletini-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-appletini",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "archangel-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-archangel",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "arnold-palmer-batch-m": [
+    {
+      "method": "build",
+      "sourceId": "catalogue-m-arnold-palmer",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "artichoke-hold-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-artichoke-hold",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "b-52-batch-m": [
+    {
+      "method": "build",
+      "sourceId": "catalogue-m-b-52",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "baby-guinness-batch-m": [
+    {
+      "method": "build",
+      "sourceId": "catalogue-m-baby-guinness",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "bahama-mama-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-bahama-mama",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "banana-bliss-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-banana-bliss",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "banana-daiquiri-batch-m": [
+    {
+      "method": "blend",
+      "sourceId": "catalogue-m-banana-daiquiri",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "bennett-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-bennett",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "bensonhurst-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-bensonhurst",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "bitter-giuseppe-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-bitter-giuseppe",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "bitter-mai-tai-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-bitter-mai-tai",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "blackthorn-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-blackthorn",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "blinker-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-blinker",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "blue-angel-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-blue-angel",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "blue-hawaiian-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-blue-hawaiian",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "brandy-fix-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-brandy-fix",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "bronx-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-bronx",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "bushwick-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-bushwick",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "campari-soda-batch-m": [
+    {
+      "method": "build",
+      "sourceId": "catalogue-m-campari-soda",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "capitan-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-capitan",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "carroll-gardens-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-carroll-gardens",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "celery-gimlet-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-celery-gimlet",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "champagne-cobbler-batch-m": [
+    {
+      "method": "build",
+      "sourceId": "catalogue-m-champagne-cobbler",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "chartreuse-toddy-batch-m": [
+    {
+      "method": "hot",
+      "sourceId": "catalogue-m-chartreuse-toddy",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "chocolate-martini-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-chocolate-martini",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "cobble-hill-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-cobble-hill",
+      "stepIndexes": [
+        1
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "coffee-cocktail-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-coffee-cocktail",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "corpse-reviver-one-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-corpse-reviver-one",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "diamondback-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-diamondback",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "dirty-shirley-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-dirty-shirley",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "donn-day-afternoon-batch-m": [
+    {
+      "method": "build",
+      "sourceId": "catalogue-m-donn-day-afternoon",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "dr-strangelove-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-dr-strangelove",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "earl-grey-marteani-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-earl-grey-marteani",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "east-india-negroni-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-east-india-negroni",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "enzoni-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-enzoni",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "fancy-free-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-fancy-free",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "ferrari-batch-m": [
+    {
+      "method": "build",
+      "sourceId": "catalogue-m-ferrari",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "golden-ananas-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-golden-ananas",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "golden-cadillac-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-golden-cadillac",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "golden-glove-batch-m": [
+    {
+      "method": "blend",
+      "sourceId": "catalogue-m-golden-glove",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "grapefruit-cooler-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-grapefruit-cooler",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "greenpoint-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-greenpoint",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "harvard-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-harvard",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "honey-berry-lemonade-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-honey-berry-lemonade",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "horsefeather-batch-m": [
+    {
+      "method": "build",
+      "sourceId": "catalogue-m-horsefeather",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "hummingbird-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-hummingbird",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "improved-whiskey-cocktail-batch-m": [
+    {
+      "method": "build",
+      "sourceId": "catalogue-m-improved-whiskey-cocktail",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "irish-maid-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-irish-maid",
+      "stepIndexes": [
+        1
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "japanese-cocktail-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-japanese-cocktail",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "kalimotxo-punch-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-kalimotxo-punch",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "kingston-negroni-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-kingston-negroni",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "little-italy-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-little-italy",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "mango-margarita-batch-m": [
+    {
+      "method": "blend",
+      "sourceId": "catalogue-m-mango-margarita",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "melon-lime-soda-batch-m": [
+    {
+      "method": "build",
+      "sourceId": "catalogue-m-melon-lime-soda",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "michelada-batch-m": [
+    {
+      "method": "build",
+      "sourceId": "catalogue-m-michelada",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "millionaire-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-millionaire",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "morning-glory-fizz-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-morning-glory-fizz",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "mudslide-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-mudslide",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "nuclear-daiquiri-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-nuclear-daiquiri",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "nui-nui-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-nui-nui",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "obituary-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-obituary",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "orange-blossom-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-orange-blossom",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "passionfruit-sgroppino-batch-m": [
+    {
+      "method": "build",
+      "sourceId": "catalogue-m-passionfruit-sgroppino",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "pink-gin-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-pink-gin",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "pink-squirrel-batch-m": [
+    {
+      "method": "blend",
+      "sourceId": "catalogue-m-pink-squirrel",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "pisco-chilcano-batch-m": [
+    {
+      "method": "build",
+      "sourceId": "catalogue-m-pisco-chilcano",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "poets-dream-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-poets-dream",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "queens-road-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-queens-road",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "rapscallion-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-rapscallion",
+      "stepIndexes": [
+        1
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "rattlesnake-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-rattlesnake",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "red-sangria-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-red-sangria",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "remember-the-alimony-batch-m": [
+    {
+      "method": "build",
+      "sourceId": "catalogue-m-remember-the-alimony",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "royal-bermuda-yacht-club-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-royal-bermuda-yacht-club",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "satans-whiskers-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-satans-whiskers",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "sawyer-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-sawyer",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "sherry-colada-highball-batch-m": [
+    {
+      "method": "build",
+      "sourceId": "catalogue-m-sherry-colada-highball",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "sherry-flip-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-sherry-flip",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "shirley-temple-batch-m": [
+    {
+      "method": "build",
+      "sourceId": "catalogue-m-shirley-temple",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "siesta-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-siesta",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "silver-stallion-fizz-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-silver-stallion-fizz",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "sloe-gin-fizz-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-sloe-gin-fizz",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "star-daisy-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-star-daisy",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "strawberry-daiquiri-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-strawberry-daiquiri",
+      "stepIndexes": [
+        1
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "tinto-de-verano-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-tinto-de-verano",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "tokyo-iced-tea-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-tokyo-iced-tea",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "trident-batch-m": [
+    {
+      "method": "stir",
+      "sourceId": "catalogue-m-trident",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "tropical-itch-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-tropical-itch",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "twentieth-century-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-twentieth-century",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "vermouth-tonic-batch-m": [
+    {
+      "method": "build",
+      "sourceId": "catalogue-m-vermouth-tonic",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "virgin-mary-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-virgin-mary",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "watermelon-cucumber-cooler-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-watermelon-cucumber-cooler",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "watermelon-sgroppino-batch-m": [
+    {
+      "method": "build",
+      "sourceId": "catalogue-m-watermelon-sgroppino",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ],
+  "yellow-bird-batch-m": [
+    {
+      "method": "shake",
+      "sourceId": "catalogue-m-yellow-bird",
+      "stepIndexes": [
+        0
+      ],
+      "reviewedAt": "2026-09-24"
+    }
+  ]
+}

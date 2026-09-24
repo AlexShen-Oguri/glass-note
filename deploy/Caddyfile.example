@@ -1,0 +1,19 @@
+# Set GLASS_NOTES_DOMAIN to your own domain and GLASS_NOTES_WEB_ROOT to the
+# absolute path of the exported site directory. No application API is required.
+{$GLASS_NOTES_DOMAIN} {
+    root * {$GLASS_NOTES_WEB_ROOT}
+    encode zstd gzip
+    header {
+        X-Content-Type-Options nosniff
+        Referrer-Policy strict-origin-when-cross-origin
+        X-Frame-Options DENY
+        Permissions-Policy "camera=(), microphone=(), geolocation=()"
+        Cache-Control "no-cache"
+    }
+    @writes not method GET HEAD
+    respond @writes 405
+    @private path /.git/* /.env* /node_modules/* /src/* /research/*
+    respond @private 404
+    try_files {path} {path}.html {path}/index.html =404
+    file_server
+}

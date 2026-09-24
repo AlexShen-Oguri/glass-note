@@ -1,0 +1,918 @@
+{
+  "absinthe-frappe": {
+    "zh": "苦艾冰霜",
+    "fr": "Absinthe frappée",
+    "de": "Absinth-Frappé",
+    "es": "Frappé de absenta",
+    "ko": "압생트 프라페",
+    "ja": "アブサン・フラッペ",
+    "it": "Frappé all’assenzio"
+  },
+  "absinthe-suissesse-punch": {
+    "en": "Absinthe Suissesse",
+    "zh": "苦艾瑞士女郎",
+    "fr": "Absinthe Suissesse",
+    "de": "Absinth-Suissesse",
+    "es": "Suissesse de absenta",
+    "ko": "압생트 스위세스",
+    "ja": "アブサン・スイセス",
+    "it": "Suissesse all’assenzio"
+  },
+  "american-trilogy": {
+    "zh": "美国三部曲",
+    "fr": "Trilogie américaine",
+    "de": "Amerikanische Trilogie",
+    "es": "Trilogía americana",
+    "ko": "아메리칸 트릴로지",
+    "ja": "アメリカン・トリロジー",
+    "it": "Trilogia americana"
+  },
+  "ancient-mariner": {
+    "zh": "古老水手",
+    "fr": "Vieux marin",
+    "de": "Alter Seefahrer",
+    "es": "Viejo marinero",
+    "ko": "고대의 뱃사람",
+    "ja": "エンシェント・マリナー",
+    "it": "Vecchio marinaio"
+  },
+  "angelo-azzurro": {
+    "en": "Italian Blue Angel",
+    "zh": "意式蓝天使",
+    "fr": "Ange bleu",
+    "de": "Blauer Engel",
+    "es": "Ángel azul",
+    "ko": "푸른 천사",
+    "ja": "アンジェロ・アズーロ",
+    "it": "Angelo azzurro"
+  },
+  "appletini": {
+    "zh": "苹果马天尼",
+    "fr": "Martini à la pomme",
+    "de": "Apfel-Martini",
+    "es": "Martini de manzana",
+    "ko": "애플 마티니",
+    "ja": "アップル・マティーニ",
+    "it": "Martini alla mela"
+  },
+  "archangel": {
+    "zh": "大天使",
+    "fr": "Archange",
+    "de": "Erzengel",
+    "es": "Arcángel",
+    "ko": "대천사",
+    "ja": "アークエンジェル",
+    "it": "Arcangelo"
+  },
+  "arnold-palmer": {
+    "zh": "阿诺德·帕尔默",
+    "fr": "Arnold Palmer",
+    "de": "Arnold Palmer",
+    "es": "Arnold Palmer",
+    "ko": "아널드 파머",
+    "ja": "アーノルド・パーマー",
+    "it": "Arnold Palmer"
+  },
+  "artichoke-hold": {
+    "zh": "洋蓟之握",
+    "fr": "Prise d’artichaut",
+    "de": "Artischockengriff",
+    "es": "Abrazo de alcachofa",
+    "ko": "아티초크 홀드",
+    "ja": "アーティチョーク・ホールド",
+    "it": "Presa di carciofo"
+  },
+  "b-52": {
+    "zh": "B-52 轰炸机",
+    "fr": "B-52",
+    "de": "B-52",
+    "es": "B-52",
+    "ko": "B-52 샷",
+    "ja": "B-52 ショット",
+    "it": "B-52"
+  },
+  "baby-guinness": {
+    "zh": "迷你吉尼斯",
+    "fr": "Mini Guinness",
+    "de": "Mini-Guinness",
+    "es": "Mini Guinness",
+    "ko": "베이비 기네스",
+    "ja": "ベビー・ギネス",
+    "it": "Mini Guinness"
+  },
+  "bahama-mama": {
+    "zh": "巴哈马妈妈",
+    "fr": "Mama des Bahamas",
+    "de": "Bahama Mama",
+    "es": "Mamá de Bahamas",
+    "ko": "바하마 마마",
+    "ja": "バハマ・ママ",
+    "it": "Mamma delle Bahamas"
+  },
+  "banana-bliss": {
+    "zh": "香蕉之悦",
+    "fr": "Délice de banane",
+    "de": "Bananenglück",
+    "es": "Delicia de plátano",
+    "ko": "바나나 블리스",
+    "ja": "バナナ・ブリス",
+    "it": "Delizia alla banana"
+  },
+  "banana-daiquiri": {
+    "zh": "香蕉代基里",
+    "fr": "Daiquiri à la banane",
+    "de": "Bananen-Daiquiri",
+    "es": "Daiquiri de plátano",
+    "ko": "바나나 다이키리",
+    "ja": "バナナ・ダイキリ",
+    "it": "Daiquiri alla banana"
+  },
+  "bennett": {
+    "en": "Bennett",
+    "zh": "贝内特",
+    "fr": "Bennett",
+    "de": "Bennett",
+    "es": "Bennett",
+    "ko": "베넷",
+    "ja": "ベネット",
+    "it": "Bennett"
+  },
+  "bensonhurst": {
+    "zh": "本森赫斯特",
+    "fr": "Bensonhurst",
+    "de": "Bensonhurst",
+    "es": "Bensonhurst",
+    "ko": "벤슨허스트",
+    "ja": "ベンソンハースト",
+    "it": "Bensonhurst"
+  },
+  "bitter-giuseppe": {
+    "zh": "苦味朱塞佩",
+    "fr": "Giuseppe amer",
+    "de": "Bitterer Giuseppe",
+    "es": "Giuseppe amargo",
+    "ko": "비터 주세페",
+    "ja": "ビター・ジュゼッペ",
+    "it": "Giuseppe amaro"
+  },
+  "bitter-mai-tai": {
+    "zh": "苦味迈泰",
+    "fr": "Mai Tai amer",
+    "de": "Bitterer Mai Tai",
+    "es": "Mai Tai amargo",
+    "ko": "비터 마이타이",
+    "ja": "ビター・マイタイ",
+    "it": "Mai Tai amaro"
+  },
+  "blackthorn": {
+    "en": "Blackthorn",
+    "zh": "黑刺李",
+    "fr": "Prunellier",
+    "de": "Schlehdorn",
+    "es": "Endrino",
+    "ko": "블랙손",
+    "ja": "ブラックソーン",
+    "it": "Prugnolo"
+  },
+  "blinker": {
+    "zh": "闪光灯",
+    "fr": "Clignotant",
+    "de": "Blinklicht",
+    "es": "Intermitente",
+    "ko": "블링커",
+    "ja": "ブリンカー",
+    "it": "Lampeggiante"
+  },
+  "blue-angel": {
+    "zh": "蓝天使",
+    "fr": "Ange bleu",
+    "de": "Blauer Engel",
+    "es": "Ángel azul",
+    "ko": "블루 엔젤",
+    "ja": "ブルー・エンジェル",
+    "it": "Angelo blu"
+  },
+  "blue-hawaiian": {
+    "zh": "蓝色夏威夷人",
+    "fr": "Hawaïen bleu",
+    "de": "Blauer Hawaiianer",
+    "es": "Hawaiano azul",
+    "ko": "블루 하와이안",
+    "ja": "ブルー・ハワイアン",
+    "it": "Hawaiano blu"
+  },
+  "brandy-fix": {
+    "zh": "白兰地菲克斯",
+    "fr": "Fix au brandy",
+    "de": "Brandy-Fix",
+    "es": "Fix de brandy",
+    "ko": "브랜디 픽스",
+    "ja": "ブランデー・フィックス",
+    "it": "Fix al brandy"
+  },
+  "bronx": {
+    "zh": "布朗克斯",
+    "fr": "Bronx",
+    "de": "Bronx",
+    "es": "Bronx",
+    "ko": "브롱크스",
+    "ja": "ブロンクス",
+    "it": "Bronx"
+  },
+  "bushwick": {
+    "zh": "布什维克",
+    "fr": "Bushwick",
+    "de": "Bushwick",
+    "es": "Bushwick",
+    "ko": "부시윅",
+    "ja": "ブッシュウィック",
+    "it": "Bushwick"
+  },
+  "campari-soda": {
+    "zh": "金巴利苏打",
+    "fr": "Campari soda",
+    "de": "Campari-Soda",
+    "es": "Campari con soda",
+    "ko": "캄파리 소다",
+    "ja": "カンパリ・ソーダ",
+    "it": "Campari e soda"
+  },
+  "capitan": {
+    "en": "Captain",
+    "zh": "船长",
+    "fr": "Capitaine",
+    "de": "Kapitän",
+    "es": "Capitán",
+    "ko": "선장",
+    "ja": "カピタン",
+    "it": "Capitano"
+  },
+  "carroll-gardens": {
+    "zh": "卡罗尔花园",
+    "fr": "Carroll Gardens",
+    "de": "Carroll Gardens",
+    "es": "Carroll Gardens",
+    "ko": "캐럴 가든스",
+    "ja": "キャロル・ガーデンズ",
+    "it": "Carroll Gardens"
+  },
+  "celery-gimlet": {
+    "zh": "芹菜琴蕾",
+    "fr": "Gimlet au céleri",
+    "de": "Sellerie-Gimlet",
+    "es": "Gimlet de apio",
+    "ko": "셀러리 김렛",
+    "ja": "セロリ・ギムレット",
+    "it": "Gimlet al sedano"
+  },
+  "champagne-cobbler": {
+    "zh": "香槟科布勒",
+    "fr": "Cobbler au champagne",
+    "de": "Champagner-Cobbler",
+    "es": "Cobbler de champán",
+    "ko": "샴페인 코블러",
+    "ja": "シャンパン・コブラー",
+    "it": "Cobbler allo champagne"
+  },
+  "chartreuse-toddy": {
+    "zh": "查特酒热托迪",
+    "fr": "Toddy à la Chartreuse",
+    "de": "Chartreuse-Toddy",
+    "es": "Toddy de Chartreuse",
+    "ko": "샤르트뢰즈 토디",
+    "ja": "シャルトリューズ・トディ",
+    "it": "Toddy alla Chartreuse"
+  },
+  "chocolate-martini": {
+    "zh": "巧克力马天尼",
+    "fr": "Martini au chocolat",
+    "de": "Schokoladen-Martini",
+    "es": "Martini de chocolate",
+    "ko": "초콜릿 마티니",
+    "ja": "チョコレート・マティーニ",
+    "it": "Martini al cioccolato"
+  },
+  "cobble-hill": {
+    "en": "Cobble Hill",
+    "zh": "鹅卵石山",
+    "fr": "Cobble Hill",
+    "de": "Cobble Hill",
+    "es": "Cobble Hill",
+    "ko": "코블 힐",
+    "ja": "コブル・ヒル",
+    "it": "Cobble Hill"
+  },
+  "coffee-cocktail": {
+    "zh": "咖啡鸡尾酒",
+    "fr": "Cocktail café",
+    "de": "Kaffee-Cocktail",
+    "es": "Cóctel café",
+    "ko": "커피 칵테일",
+    "ja": "コーヒー・カクテル",
+    "it": "Cocktail caffè"
+  },
+  "corpse-reviver-one": {
+    "en": "Corpse Reviver No. 1",
+    "zh": "亡者复苏一号",
+    "fr": "Réveille-mort nº 1",
+    "de": "Leichenerwecker Nr. 1",
+    "es": "Resucitador n.º 1",
+    "ko": "콥스 리바이버 1번",
+    "ja": "コープス・リバイバー No.1",
+    "it": "Resuscita-morti n. 1"
+  },
+  "diamondback": {
+    "zh": "菱背龟",
+    "fr": "Tortue diamant",
+    "de": "Diamantschildkröte",
+    "es": "Tortuga diamante",
+    "ko": "다이아몬드백",
+    "ja": "ダイヤモンドバック",
+    "it": "Tartaruga diamante"
+  },
+  "dirty-shirley": {
+    "zh": "微醺秀兰",
+    "fr": "Shirley alcoolisé",
+    "de": "Beschwipste Shirley",
+    "es": "Shirley con vodka",
+    "ko": "더티 셜리",
+    "ja": "ダーティー・シャーリー",
+    "it": "Shirley alcolica"
+  },
+  "donn-day-afternoon": {
+    "zh": "唐恩的午后",
+    "fr": "Après-midi de Donn",
+    "de": "Donns Nachmittag",
+    "es": "La tarde de Donn",
+    "ko": "돈의 오후",
+    "ja": "ドン・デイ・アフタヌーン",
+    "it": "Pomeriggio di Donn"
+  },
+  "dr-strangelove": {
+    "zh": "奇爱博士",
+    "fr": "Docteur Folamour",
+    "de": "Dr. Seltsam",
+    "es": "Doctor Insólito",
+    "ko": "닥터 스트레인지러브",
+    "ja": "ドクター・ストレンジラブ",
+    "it": "Dottor Stranamore"
+  },
+  "earl-grey-marteani": {
+    "zh": "伯爵茶马天尼",
+    "fr": "MarTEAni au thé Earl Grey",
+    "de": "Earl-Grey-MarTEAni",
+    "es": "MarTEAni de té Earl Grey",
+    "ko": "얼그레이 마티니",
+    "ja": "アールグレイ・マーティーニ",
+    "it": "MarTEAni al tè Earl Grey"
+  },
+  "east-india-negroni": {
+    "zh": "东印度尼格罗尼",
+    "fr": "Negroni des Indes orientales",
+    "de": "Ostindien-Negroni",
+    "es": "Negroni de las Indias Orientales",
+    "ko": "이스트 인디아 네그로니",
+    "ja": "イースト・インディア・ネグローニ",
+    "it": "Negroni delle Indie orientali"
+  },
+  "enzoni": {
+    "zh": "恩佐尼",
+    "fr": "Enzoni",
+    "de": "Enzoni",
+    "es": "Enzoni",
+    "ko": "엔조니",
+    "ja": "エンゾーニ",
+    "it": "Enzoni"
+  },
+  "fancy-free": {
+    "zh": "无拘无束",
+    "fr": "Sans attaches",
+    "de": "Ungebunden",
+    "es": "Sin ataduras",
+    "ko": "자유로운 마음",
+    "ja": "ファンシー・フリー",
+    "it": "Senza pensieri"
+  },
+  "ferrari": {
+    "zh": "法拉利",
+    "fr": "Ferrari",
+    "de": "Ferrari",
+    "es": "Ferrari",
+    "ko": "페라리",
+    "ja": "フェラーリ",
+    "it": "Ferrari"
+  },
+  "golden-ananas": {
+    "en": "Golden Ananas",
+    "zh": "金色菠萝",
+    "fr": "Ananas doré",
+    "de": "Goldene Ananas",
+    "es": "Piña dorada",
+    "ko": "골든 아나나스",
+    "ja": "ゴールデン・アナナス",
+    "it": "Ananas dorato"
+  },
+  "golden-cadillac": {
+    "zh": "金色凯迪拉克",
+    "fr": "Cadillac dorée",
+    "de": "Goldener Cadillac",
+    "es": "Cadillac dorado",
+    "ko": "골든 캐딜락",
+    "ja": "ゴールデン・キャデラック",
+    "it": "Cadillac dorata"
+  },
+  "golden-glove": {
+    "zh": "金手套",
+    "fr": "Gant d’or",
+    "de": "Goldener Handschuh",
+    "es": "Guante de oro",
+    "ko": "골든 글러브",
+    "ja": "ゴールデン・グローブ",
+    "it": "Guanto d’oro"
+  },
+  "grapefruit-cooler": {
+    "zh": "葡萄柚酷乐",
+    "fr": "Rafraîchissement au pamplemousse",
+    "de": "Grapefruit-Cooler",
+    "es": "Refresco de pomelo",
+    "ko": "자몽 쿨러",
+    "ja": "グレープフルーツ・クーラー",
+    "it": "Fresco al pompelmo"
+  },
+  "greenpoint": {
+    "en": "Greenpoint",
+    "zh": "绿点",
+    "fr": "Greenpoint",
+    "de": "Greenpoint",
+    "es": "Greenpoint",
+    "ko": "그린포인트",
+    "ja": "グリーンポイント",
+    "it": "Greenpoint"
+  },
+  "harvard": {
+    "zh": "哈佛",
+    "fr": "Harvard",
+    "de": "Harvard",
+    "es": "Harvard",
+    "ko": "하버드",
+    "ja": "ハーバード",
+    "it": "Harvard"
+  },
+  "honey-berry-lemonade": {
+    "en": "Honey Berry Lemonade",
+    "zh": "蜂蜜莓果柠檬水",
+    "fr": "Limonade miel et fruits rouges",
+    "de": "Honig-Beeren-Limonade",
+    "es": "Limonada de miel y frutos rojos",
+    "ko": "허니 베리 레모네이드",
+    "ja": "ハニー・ベリー・レモネード",
+    "it": "Limonata al miele e frutti di bosco"
+  },
+  "horsefeather": {
+    "zh": "马羽",
+    "fr": "Plume de cheval",
+    "de": "Pferdefeder",
+    "es": "Pluma de caballo",
+    "ko": "호스페더",
+    "ja": "ホースフェザー",
+    "it": "Piuma di cavallo"
+  },
+  "hummingbird": {
+    "zh": "蜂鸟",
+    "fr": "Colibri",
+    "de": "Kolibri",
+    "es": "Colibrí",
+    "ko": "벌새",
+    "ja": "ハミングバード",
+    "it": "Colibrì"
+  },
+  "improved-whiskey-cocktail": {
+    "zh": "改良威士忌鸡尾酒",
+    "fr": "Cocktail au whiskey amélioré",
+    "de": "Verbesserter Whiskey-Cocktail",
+    "es": "Cóctel de whiskey mejorado",
+    "ko": "임프루브드 위스키 칵테일",
+    "ja": "インプルーブド・ウイスキー・カクテル",
+    "it": "Cocktail al whiskey migliorato"
+  },
+  "irish-maid": {
+    "zh": "爱尔兰少女",
+    "fr": "Jeune Irlandaise",
+    "de": "Irisches Mädchen",
+    "es": "Doncella irlandesa",
+    "ko": "아이리시 메이드",
+    "ja": "アイリッシュ・メイド",
+    "it": "Fanciulla irlandese"
+  },
+  "japanese-cocktail": {
+    "zh": "日本鸡尾酒",
+    "fr": "Cocktail japonais",
+    "de": "Japanischer Cocktail",
+    "es": "Cóctel japonés",
+    "ko": "재패니즈 칵테일",
+    "ja": "ジャパニーズ・カクテル",
+    "it": "Cocktail giapponese"
+  },
+  "kalimotxo-punch": {
+    "en": "Kalimotxo",
+    "zh": "卡利莫乔",
+    "fr": "Kalimotxo",
+    "de": "Kalimotxo",
+    "es": "Kalimotxo",
+    "ko": "칼리모초",
+    "ja": "カリモーチョ",
+    "it": "Kalimotxo"
+  },
+  "kingston-negroni": {
+    "zh": "金斯敦尼格罗尼",
+    "fr": "Negroni de Kingston",
+    "de": "Kingston-Negroni",
+    "es": "Negroni de Kingston",
+    "ko": "킹스턴 네그로니",
+    "ja": "キングストン・ネグローニ",
+    "it": "Negroni di Kingston"
+  },
+  "little-italy": {
+    "zh": "小意大利",
+    "fr": "Petite Italie",
+    "de": "Klein-Italien",
+    "es": "Pequeña Italia",
+    "ko": "리틀 이탈리아",
+    "ja": "リトル・イタリー",
+    "it": "Piccola Italia"
+  },
+  "mango-margarita": {
+    "zh": "芒果玛格丽特",
+    "fr": "Margarita à la mangue",
+    "de": "Mango-Margarita",
+    "es": "Margarita de mango",
+    "ko": "망고 마르가리타",
+    "ja": "マンゴー・マルガリータ",
+    "it": "Margarita al mango"
+  },
+  "melon-lime-soda": {
+    "zh": "蜜瓜青柠苏打",
+    "fr": "Soda melon-citron vert",
+    "de": "Melonen-Limetten-Soda",
+    "es": "Soda de melón y lima",
+    "ko": "멜론 라임 소다",
+    "ja": "メロン・ライム・ソーダ",
+    "it": "Soda melone e lime"
+  },
+  "michelada": {
+    "en": "Michelada",
+    "zh": "米切拉达",
+    "fr": "Michelada",
+    "de": "Michelada",
+    "es": "Michelada",
+    "ko": "미첼라다",
+    "ja": "ミチェラーダ",
+    "it": "Michelada"
+  },
+  "millionaire": {
+    "en": "Millionaire",
+    "zh": "百万富翁",
+    "fr": "Millionnaire",
+    "de": "Millionär",
+    "es": "Millonario",
+    "ko": "밀리어네어",
+    "ja": "ミリオネア",
+    "it": "Milionario"
+  },
+  "morning-glory-fizz": {
+    "zh": "晨光菲士",
+    "fr": "Fizz de la gloire du matin",
+    "de": "Morgenglanz-Fizz",
+    "es": "Fizz de gloria matinal",
+    "ko": "모닝 글로리 피즈",
+    "ja": "モーニング・グローリー・フィズ",
+    "it": "Fizz del mattino"
+  },
+  "mudslide": {
+    "zh": "泥石流",
+    "fr": "Coulée de boue",
+    "de": "Schlammlawine",
+    "es": "Avalancha de lodo",
+    "ko": "머드슬라이드",
+    "ja": "マッドスライド",
+    "it": "Frana di fango"
+  },
+  "nuclear-daiquiri": {
+    "zh": "核能代基里",
+    "fr": "Daiquiri nucléaire",
+    "de": "Nuklearer Daiquiri",
+    "es": "Daiquiri nuclear",
+    "ko": "뉴클리어 다이키리",
+    "ja": "ニュークリア・ダイキリ",
+    "it": "Daiquiri nucleare"
+  },
+  "nui-nui": {
+    "zh": "努伊努伊",
+    "fr": "Nui Nui",
+    "de": "Nui Nui",
+    "es": "Nui Nui",
+    "ko": "누이 누이",
+    "ja": "ヌイ・ヌイ",
+    "it": "Nui Nui"
+  },
+  "obituary": {
+    "zh": "讣告",
+    "fr": "Avis de décès",
+    "de": "Nachruf",
+    "es": "Obituario",
+    "ko": "부고",
+    "ja": "オビチュアリー",
+    "it": "Necrologio"
+  },
+  "orange-blossom": {
+    "zh": "橙花",
+    "fr": "Fleur d’oranger",
+    "de": "Orangenblüte",
+    "es": "Flor de azahar",
+    "ko": "오렌지 블로섬",
+    "ja": "オレンジ・ブロッサム",
+    "it": "Fiore d’arancio"
+  },
+  "passionfruit-sgroppino": {
+    "en": "Passion Fruit Sgroppino",
+    "zh": "百香果冰沙酒",
+    "fr": "Sgroppino au fruit de la passion",
+    "de": "Passionsfrucht-Sgroppino",
+    "es": "Sgroppino de maracuyá",
+    "ko": "패션프루트 스그로피노",
+    "ja": "パッションフルーツ・スグロッピーノ",
+    "it": "Sgroppino al frutto della passione"
+  },
+  "pink-gin": {
+    "zh": "粉红金酒",
+    "fr": "Gin rose",
+    "de": "Rosa Gin",
+    "es": "Ginebra rosa",
+    "ko": "핑크 진",
+    "ja": "ピンク・ジン",
+    "it": "Gin rosa"
+  },
+  "pink-squirrel": {
+    "zh": "粉红松鼠",
+    "fr": "Écureuil rose",
+    "de": "Rosa Eichhörnchen",
+    "es": "Ardilla rosa",
+    "ko": "핑크 스쿼럴",
+    "ja": "ピンク・スクワレル",
+    "it": "Scoiattolo rosa"
+  },
+  "pisco-chilcano": {
+    "zh": "皮斯科奇尔卡诺",
+    "fr": "Chilcano au pisco",
+    "de": "Pisco-Chilcano",
+    "es": "Chilcano de pisco",
+    "ko": "피스코 칠카노",
+    "ja": "ピスコ・チルカノ",
+    "it": "Chilcano al pisco"
+  },
+  "poets-dream": {
+    "zh": "诗人之梦",
+    "fr": "Rêve du poète",
+    "de": "Traum des Dichters",
+    "es": "Sueño del poeta",
+    "ko": "시인의 꿈",
+    "ja": "詩人の夢",
+    "it": "Sogno del poeta"
+  },
+  "queens-road": {
+    "zh": "皇后大道",
+    "fr": "Route de la reine",
+    "de": "Straße der Königin",
+    "es": "Camino de la reina",
+    "ko": "퀸스 로드",
+    "ja": "クイーンズ・ロード",
+    "it": "Strada della regina"
+  },
+  "rapscallion": {
+    "zh": "淘气鬼",
+    "fr": "Fripon",
+    "de": "Schlingel",
+    "es": "Pícaro",
+    "ko": "개구쟁이",
+    "ja": "ラプスキャリオン",
+    "it": "Birbante"
+  },
+  "rattlesnake": {
+    "zh": "响尾蛇",
+    "fr": "Serpent à sonnette",
+    "de": "Klapperschlange",
+    "es": "Serpiente de cascabel",
+    "ko": "방울뱀",
+    "ja": "ラトルスネーク",
+    "it": "Serpente a sonagli"
+  },
+  "red-sangria": {
+    "zh": "红桑格利亚",
+    "fr": "Sangria rouge",
+    "de": "Rote Sangria",
+    "es": "Sangría tinta",
+    "ko": "레드 상그리아",
+    "ja": "レッド・サングリア",
+    "it": "Sangria rossa"
+  },
+  "remember-the-alimony": {
+    "zh": "别忘了赡养费",
+    "fr": "N’oubliez pas la pension",
+    "de": "Vergiss den Unterhalt nicht",
+    "es": "Recuerda la pensión",
+    "ko": "위자료를 잊지 마",
+    "ja": "リメンバー・ジ・アリモニー",
+    "it": "Ricorda gli alimenti"
+  },
+  "royal-bermuda-yacht-club": {
+    "zh": "皇家百慕大游艇俱乐部",
+    "fr": "Royal Bermuda Yacht Club",
+    "de": "Königlicher Bermuda-Yachtclub",
+    "es": "Club náutico real de Bermudas",
+    "ko": "로열 버뮤다 요트 클럽",
+    "ja": "ロイヤル・バミューダ・ヨットクラブ",
+    "it": "Royal Bermuda Yacht Club"
+  },
+  "satans-whiskers": {
+    "zh": "撒旦的胡须",
+    "fr": "Moustaches de Satan",
+    "de": "Satans Schnurrhaare",
+    "es": "Bigotes de Satán",
+    "ko": "사탄의 수염",
+    "ja": "サタンのひげ",
+    "it": "Baffi di Satana"
+  },
+  "sawyer": {
+    "zh": "索耶",
+    "fr": "Sawyer",
+    "de": "Sawyer",
+    "es": "Sawyer",
+    "ko": "소여",
+    "ja": "ソーヤー",
+    "it": "Sawyer"
+  },
+  "sherry-colada-highball": {
+    "zh": "雪莉可乐达高球",
+    "fr": "Highball colada au xérès",
+    "de": "Sherry-Colada-Highball",
+    "es": "Highball de colada de jerez",
+    "ko": "셰리 콜라다 하이볼",
+    "ja": "シェリー・コラーダ・ハイボール",
+    "it": "Highball colada allo sherry"
+  },
+  "sherry-flip": {
+    "zh": "雪莉翻转",
+    "fr": "Flip au xérès",
+    "de": "Sherry-Flip",
+    "es": "Flip de jerez",
+    "ko": "셰리 플립",
+    "ja": "シェリー・フリップ",
+    "it": "Flip allo sherry"
+  },
+  "shirley-temple": {
+    "zh": "秀兰·邓波儿",
+    "fr": "Shirley Temple",
+    "de": "Shirley Temple",
+    "es": "Shirley Temple",
+    "ko": "셜리 템플",
+    "ja": "シャーリー・テンプル",
+    "it": "Shirley Temple"
+  },
+  "siesta": {
+    "zh": "午后小憩",
+    "fr": "Sieste",
+    "de": "Mittagsschlaf",
+    "es": "Siesta",
+    "ko": "낮잠",
+    "ja": "シエスタ",
+    "it": "Siesta"
+  },
+  "silver-stallion-fizz": {
+    "zh": "银色骏马菲士",
+    "fr": "Fizz de l’étalon argenté",
+    "de": "Silberhengst-Fizz",
+    "es": "Fizz del semental plateado",
+    "ko": "실버 스탤리언 피즈",
+    "ja": "シルバー・スタリオン・フィズ",
+    "it": "Fizz dello stallone d’argento"
+  },
+  "sloe-gin-fizz": {
+    "zh": "黑刺李金菲士",
+    "fr": "Fizz au gin de prunelle",
+    "de": "Schlehen-Gin-Fizz",
+    "es": "Fizz de ginebra de endrinas",
+    "ko": "슬로 진 피즈",
+    "ja": "スロー・ジン・フィズ",
+    "it": "Fizz al gin di prugnole"
+  },
+  "star-daisy": {
+    "zh": "星辰雏菊",
+    "fr": "Marguerite étoilée",
+    "de": "Sternengänseblümchen",
+    "es": "Margarita estelar",
+    "ko": "별 데이지",
+    "ja": "スター・デイジー",
+    "it": "Margherita stellata"
+  },
+  "strawberry-daiquiri": {
+    "zh": "草莓代基里",
+    "fr": "Daiquiri à la fraise",
+    "de": "Erdbeer-Daiquiri",
+    "es": "Daiquiri de fresa",
+    "ko": "스트로베리 다이키리",
+    "ja": "ストロベリー・ダイキリ",
+    "it": "Daiquiri alla fragola"
+  },
+  "tinto-de-verano": {
+    "zh": "夏日红酒",
+    "fr": "Rouge d’été",
+    "de": "Sommerrotwein",
+    "es": "Tinto de verano",
+    "ko": "틴토 데 베라노",
+    "ja": "ティント・デ・ベラーノ",
+    "it": "Rosso d’estate"
+  },
+  "tokyo-iced-tea": {
+    "zh": "东京冰茶",
+    "fr": "Thé glacé de Tokyo",
+    "de": "Tokio-Eistee",
+    "es": "Té helado de Tokio",
+    "ko": "도쿄 아이스티",
+    "ja": "東京アイスティー",
+    "it": "Tè freddo di Tokyo"
+  },
+  "trident": {
+    "zh": "三叉戟",
+    "fr": "Trident",
+    "de": "Dreizack",
+    "es": "Tridente",
+    "ko": "삼지창",
+    "ja": "トライデント",
+    "it": "Tridente"
+  },
+  "tropical-itch": {
+    "zh": "热带之痒",
+    "fr": "Démangeaison tropicale",
+    "de": "Tropisches Jucken",
+    "es": "Picor tropical",
+    "ko": "트로피컬 이치",
+    "ja": "トロピカル・イッチ",
+    "it": "Prurito tropicale"
+  },
+  "twentieth-century": {
+    "zh": "二十世纪",
+    "fr": "Vingtième siècle",
+    "de": "Zwanzigstes Jahrhundert",
+    "es": "Siglo veinte",
+    "ko": "20세기",
+    "ja": "トゥエンティース・センチュリー",
+    "it": "Ventesimo secolo"
+  },
+  "vermouth-tonic": {
+    "en": "Vermouth & Tonic",
+    "zh": "味美思汤力",
+    "fr": "Vermouth tonic",
+    "de": "Wermut Tonic",
+    "es": "Vermut con tónica",
+    "ko": "베르무트 토닉",
+    "ja": "ベルモット・トニック",
+    "it": "Vermouth e tonica"
+  },
+  "virgin-mary": {
+    "zh": "无酒精玛丽",
+    "fr": "Virgin Mary sans alcool",
+    "de": "Alkoholfreie Mary",
+    "es": "Mary sin alcohol",
+    "ko": "버진 메리",
+    "ja": "ヴァージン・メアリー",
+    "it": "Mary analcolica"
+  },
+  "watermelon-cucumber-cooler": {
+    "en": "Watermelon-Cucumber Cooler",
+    "zh": "西瓜黄瓜酷乐",
+    "fr": "Rafraîchissement pastèque-concombre",
+    "de": "Wassermelonen-Gurken-Cooler",
+    "es": "Refresco de sandía y pepino",
+    "ko": "수박 오이 쿨러",
+    "ja": "スイカ・キュウリ・クーラー",
+    "it": "Fresco anguria e cetriolo"
+  },
+  "watermelon-sgroppino": {
+    "zh": "西瓜冰沙酒",
+    "fr": "Sgroppino à la pastèque",
+    "de": "Wassermelonen-Sgroppino",
+    "es": "Sgroppino de sandía",
+    "ko": "수박 스그로피노",
+    "ja": "スイカ・スグロッピーノ",
+    "it": "Sgroppino all’anguria"
+  },
+  "yellow-bird": {
+    "zh": "黄鸟",
+    "fr": "Oiseau jaune",
+    "de": "Gelber Vogel",
+    "es": "Pájaro amarillo",
+    "ko": "옐로 버드",
+    "ja": "イエロー・バード",
+    "it": "Uccello giallo"
+  }
+}

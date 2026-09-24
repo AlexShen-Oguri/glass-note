@@ -1,0 +1,35 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Glass Notes",
+  "version": "0.1.8",
+  "identifier": "com.glassnotes.desktop",
+  "build": {
+    "beforeBuildCommand": "npm run desktop:prepare",
+    "frontendDist": "../.cache/desktop/frontend"
+  },
+  "app": {
+    "windows": [{
+      "label": "main", "create": false, "title": "Glass Notes",
+      "width": 1180, "height": 820, "minWidth": 360, "minHeight": 560,
+      "theme": "Dark", "backgroundColor": "#101714"
+    }],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' asset: http://asset.localhost data: blob:; font-src 'self' data:; connect-src 'self' ipc: http://ipc.localhost; object-src 'none'; base-uri 'self'; frame-src 'none'",
+      "capabilities": ["main-local"]
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis"],
+    "shortDescription": "Cocktail recipes and your private laboratory",
+    "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.ico"],
+    "windows": {
+      "webviewInstallMode": {"type": "downloadBootstrapper", "silent": true},
+      "nsis": {
+        "installMode": "currentUser",
+        "languages": ["English", "SimpChinese", "French", "German", "Spanish", "Korean", "Japanese", "Italian"],
+        "displayLanguageSelector": true
+      }
+    }
+  }
+}

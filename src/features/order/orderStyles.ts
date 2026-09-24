@@ -1,0 +1,38 @@
+import {StyleSheet} from 'react-native';
+import {colors,radii} from '../../theme/tokens';
+import {serif} from '../discovery/components';
+
+export const orderStyles=StyleSheet.create({
+  previewWrap:{width:'100%',alignItems:'center'},
+  visualCard:{width:'100%',maxWidth:640,alignSelf:'center',gap:18,padding:22,borderWidth:1,borderColor:colors.accentDark,borderRadius:radii.medium,backgroundColor:colors.raised},
+  visualTitle:{fontFamily:serif,fontSize:30,lineHeight:38,color:colors.text},
+  visualOriginalTitle:{color:colors.muted,fontSize:13,lineHeight:20,marginTop:-12},
+  visualSection:{gap:9},
+  visualSectionLabel:{fontSize:10,lineHeight:15,fontWeight:'800',letterSpacing:1.3,textTransform:'uppercase',color:colors.accent},
+  ingredientList:{gap:7},
+  ingredientRow:{flexDirection:'row',alignItems:'flex-start',gap:9},
+  ingredientBullet:{width:6,height:6,marginTop:9,borderRadius:3,backgroundColor:colors.accent},
+  ingredientText:{flex:1,minWidth:0,color:colors.text,fontSize:15,lineHeight:23},
+  requestList:{gap:8},
+  requestText:{flex:1,minWidth:0,color:colors.secondary,fontSize:14,lineHeight:22},
+  sourceLink:{gap:3,paddingTop:7,borderTopWidth:1,borderTopColor:colors.border},
+  sourceTitle:{color:colors.secondary,fontSize:12,lineHeight:18},
+  sourceVersion:{color:colors.muted,fontSize:12,lineHeight:18},
+  sourceUrl:{color:colors.accent,fontSize:11,lineHeight:17,textDecorationLine:'underline',textDecorationColor:colors.accent},
+  previewActions:{width:'100%',maxWidth:640,flexDirection:'row',alignItems:'center',flexWrap:'wrap',gap:9,marginTop:14},
+  viewRecipe:{width:'100%',maxWidth:640,minHeight:44,justifyContent:'center',alignItems:'center',paddingHorizontal:12},
+  viewRecipeText:{color:colors.accent,fontSize:13,lineHeight:19,fontWeight:'700',textAlign:'center'},
+  detailsWrap:{width:'100%',maxWidth:640,marginTop:4,padding:16,borderTopWidth:1,borderTopColor:colors.border,backgroundColor:colors.background},
+  detailsText:{color:colors.secondary,fontSize:13,lineHeight:21},
+  modalBackdrop:{flex:1,backgroundColor:'rgba(4,8,6,0.78)',alignItems:'center',justifyContent:'center',padding:24},
+  modalBackdropCompact:{padding:14},
+  modalSurface:{width:'100%',maxWidth:680,maxHeight:'94%',borderWidth:1,borderColor:colors.border,borderRadius:radii.large,backgroundColor:colors.panel,overflow:'hidden'},
+  modalHeader:{minHeight:64,flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:12,paddingHorizontal:18,borderBottomWidth:1,borderBottomColor:colors.border},
+  modalHeading:{flex:1,minWidth:0,fontFamily:serif,fontSize:23,lineHeight:30,color:colors.text},
+  closeButton:{width:44,height:44,alignItems:'center',justifyContent:'center'},
+  closeText:{color:colors.secondary,fontSize:28,fontWeight:'300'},
+  modalContent:{padding:16,paddingBottom:22,alignItems:'center'},
+  modalFooter:{padding:14,borderTopWidth:1,borderTopColor:colors.border,gap:8},
+  modalFooterButton:{minHeight:46,borderRadius:radii.small,borderWidth:1,borderColor:colors.border,justifyContent:'center',alignItems:'center',paddingHorizontal:14},
+  modalFooterButtonText:{color:colors.accent,fontSize:13,lineHeight:19,fontWeight:'700',textAlign:'center'},
+});

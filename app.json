@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "Glass Notes",
+    "icon": "./assets/brand/app-icon.png",
+    "slug": "glass-notes",
+    "scheme": "glassnotes",
+    "version": "0.1.8",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "name": "Glass Notes"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-sharing",
+      ["expo-image-picker", {"photosPermission": "Choose a photo to save with your private cocktail recipe.", "cameraPermission": false, "microphonePermission": false}]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
