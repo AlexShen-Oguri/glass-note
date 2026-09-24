@@ -1,39 +1,159 @@
 # Glass Notes
 
-Glass Notes helps you find a cocktail, choose a source recipe and keep your own recipes, lists and flavour experiences.
+中文 · [English](README.en.md)
 
-The catalogue contains 367 cocktails, 371 source versions and 1,042 bottles. Search by name, ingredients or flavour, or use your cupboard to find recipes with fewer missing ingredients. The interface supports Chinese, English, French, German, Spanish, Korean, Japanese and Italian.
+从今天想喝什么，到记住自己喜欢什么。Glass Notes 是一款专注个人体验的鸡尾酒工具：按口味选酒，用手边材料调酒，保存自己的配方、酒单和风味笔记。
 
-Personal records stay on your device. There are no accounts or automatic cloud sync. JSON backup and restore can move records between installations and browser origins. Backups are not encrypted.
+**367 款鸡尾酒 · 371 个来源版本 · 1,042 款瓶装酒 · 8 种界面语言**
 
-## Run locally
+![Glass Notes 中文首页，左侧是选酒入口，右侧是流动的鸡尾酒图片](docs/images/home-zh.png)
 
-Use Node.js 24 and npm:
+[功能介绍](#功能介绍) · [开始使用](#开始使用) · [本地数据](#本地数据与备份) · [开发与构建](#开发与构建) · [来源与许可](#来源与许可)
+
+当前公开的是 0.1.8 源码。Windows x64 桌面版可以自行构建，正式安装包尚未发布；独立网站尚未上线。iOS 共用代码保留，App Store 发布暂缓。这里不会把构建成功写成真机或安全验收通过。
+
+下文均为当前应用的真实浏览器截图，包含桌面与手机宽度。私人记录中的“演示”内容是在独立浏览器中创建的样例，不是用户数据。配方选图示例使用应用已有插画，未冒充实拍照片。
+
+## 功能介绍
+
+### 按心情选一杯，或用已有材料自己调
+
+从首页进入“为我定制”，先选一种模式，再回答香气、口感、酒感和第一口的偏好。可以多选或跳过，也可以加入场合、季节条件，以及自己保存的口味记忆。
+
+| 喝一杯 | 自己调 |
+| --- | --- |
+| 从口味出发寻找合适的酒，不要求已经拥有材料。 | 优先使用酒柜材料和已拥有瓶款对应的材料。 |
+| 查看推荐理由，再进入具体配方。 | **先基酒齐全，同组再按缺料数量排序**；排除缺少 3 种及以上材料的配方，并列出缺项。 |
+
+酒柜为空时会先询问：添加材料，或先按口味选酒。后者会明确提醒尚未按酒柜筛选。材料齐全不代表指定瓶款、器具、特殊预制或剩余数量都已确认，制作前仍需查看配方。
+
+<p>
+  <img src="docs/images/customize-zh.png" width="32%" alt="喝一杯与自己调双模式入口">
+  <img src="docs/images/flavours-zh.png" width="32%" alt="手机端香气选择，支持多选和跳过">
+  <img src="docs/images/taste-zh.png" width="32%" alt="内格罗尼的风味体验，包含显式评价和私人笔记">
+</p>
+
+### 看着图片逛酒单，找到确切配方
+
+“随便逛逛”支持名称、别名和材料检索，以及基酒、材料包含与排除、风味、手法和无酒精条件。也可以按经典鸡尾酒、竞赛作品、知名酒吧配方浏览，结合场合与季节缩小选择。
+
+同一杯酒只占一张卡片，不会用多个来源版本充当多款酒。所有筛选条件必须在**同一个配方版本**内满足，进入详情时保留命中的版本。
+
+![桌面酒单，包含搜索、分类、筛选与图片卡片](docs/images/discover-zh.png)
+
+配方详情提供材料与用量、制作步骤、杯型、装饰、预制说明和风味提示。可切换来源版本、查看来源语言步骤，并阅读原始出处。来源版本、编辑翻译、风味推断和图片来源分别记录。
+
+![内格罗尼详情，包含确切来源版本与调制、点单、收藏、口味入口](docs/images/recipe-zh.png)
+
+### 酒柜、材料库与瓶款档案
+
+酒柜记录“有哪些材料”和“拥有哪些瓶款”，供自调推荐使用。当前不要求填写余量，也不会在完成调制后自动扣减库存。
+
+材料库帮助查看材料及相关配方；瓶款档案支持名称、品牌、别名和风味描述搜索，以及品类筛选。可查看瓶图、酒精度与产品说明，标记拥有，或选择瓶款进行比较。
+
+拥有一个品牌不等于拥有它的所有产品；瓶款与材料的对应关系用于推荐，不把不确定的替代关系当作已齐全。
+
+![瓶款档案，展示常见金酒、原名与产品说明](docs/images/bottles-zh.png)
+
+### 跟着配方调制，或出示一张点单卡
+
+“开始调制”直接进入材料、步骤、制作提示和酒精度估算。调制进度保存在本地，完成后通过缓慢转场显示“已完成”，可以再调一杯或返回酒单。
+
+酒精度由可用的材料用量与瓶款资料估算，不要求用户填写。数值表示**融冰前的配方酒液范围**；资料或计量不足时不编造数字，也不能用来判断驾驶或饮酒安全。
+
+点单卡把酒名、材料和明确的个人要求放在简洁卡片中，可选择应用语言或来源语言、出示卡片、复制文字，或在平台支持时分享文字。私人风味笔记不会混入点单内容。
+
+<p>
+  <img src="docs/images/making-zh.png" width="44%" alt="手机端调制页面，按顺序呈现材料、步骤和制作提示">
+  <img src="docs/images/order-zh.png" width="44%" alt="手机端出示点单卡，仅保留酒名、材料和要求">
+</p>
+
+### 我的收藏、私人酒单与口味记忆
+
+喜欢一个配方可以直接收藏；想为周末、聚会或试饮整理一组酒，可以创建私人酒单。“添加酒款”进入同一套图片酒库，选好具体版本后加入。
+
+酒单保留添加时的确切配方快照，可以分别查看保存的配方和酒库中的当前配方。卡片显示酒图，同款酒的不同来源版本归在一起。
+
+![私人酒单示例，通过图片选酒并保留确切配方版本](docs/images/lists-zh.png)
+
+在配方中选择“记录口味”，直接打开“酒名的风味体验”。可以记录喝过或调过、喜欢或不喜欢、是否太甜或太烈、喜欢的香气，以及私人笔记。
+
+推荐只使用主动保存的结构化评价，并且可以关闭口味记忆。浏览行为和笔记正文不会被解读为偏好；仅标记喝过或调过也不等于喜欢。
+
+### 我的配方：写下来，也留下自己的照片
+
+可以从空白创建配方，也可以从酒库的确切版本或实验室复制一份再调整。材料、用量、步骤、杯型、装饰和笔记由自己编辑，保存修改会保留历史版本。
+
+支持从设备选择照片。照片在本地压缩保存，并随配方备份导出；没有上传到公共社区。用户自己写的配方名称与笔记不会自动翻译或改写。
+
+![私人配方编辑器，展示配方照片的本地选择与保存](docs/images/private-recipe-zh.png)
+
+### 专业区：专题研究与我的实验室
+
+| 工具 | 可以做什么 |
+| --- | --- |
+| 专题研究 | 按国家、赛事与酒吧探索整理过的作品，打开已纳入酒库的确切版本。 |
+| 瓶款比较 | 并排比较产品资料，从空白或已有配方建立不同瓶款的对照项目。 |
+| 配方版本 | 建立项目、编辑用量与手法、复制为下一版，并比较版本差异。 |
+| 试调批次 | 保留当次配方快照，记录时间、温度、香气、口感、外观、结果和下一步。 |
+| 结果对照 | 比较实际批次，从选定快照继续建立命名版本，或存为“我的配方”。 |
+
+实验室记录自动保存到本地。专题资料和编辑风味描述不等同于自己的实测结果。
+
+![实验室演示项目，包含配方版本、试调批次与结果对照入口](docs/images/lab-zh.png)
+
+### 八种语言与跨屏体验
+
+支持中文、English、Français、Deutsch、Español、한국어、日本語、Italiano。首次使用参考设备语言，也可在工具栏切换。酒款和瓶款名称随所选语言显示；与原名不同时，下方保留原名。部分名称是编辑译名或译写，不冒充官方译名，八语仍需持续母语审校。
+
+电脑与手机网页共用功能和数据规则；支持 ml / fl oz 显示切换，不会把重量或“滴”等单位强行换算成体积。页面转场、酒图瀑布和背景流光可暂停，并尊重系统减少动态效果设置。
+
+## 本地数据与备份
+
+不需要账号，没有社区发布或自动云同步。收藏、酒单、酒柜、私人配方、实验、调制记录、口味记忆及偏好保存在当前浏览器或应用中。
+
+在“我的 → 备份与恢复”导出 JSON；到另一设备或安装中导入，先检查分类与冲突，再选择合并或替换。应用会校验文件并处理恢复中断，不把读取失败当成空数据。
+
+请注意：
+
+- 不同浏览器、配置、应用安装，以及不同协议、域名或端口的网页，拥有各自的数据。
+- 清除站点数据、无痕会话结束或卸载可能丢失记录。迁移前先导出备份。
+- 备份包含私人笔记和照片，**没有加密**。不要提交到 GitHub 或上传到网站根目录。
+- “替换”可能移除所选分类中的现有记录；先查看恢复预览并保存旧备份。
+- 当前没有承诺浏览器完整离线缓存；本地保存不等于网页首次加载不需要网络。
+
+## 开始使用
+
+需要 Node.js 24 和 npm：
 
 ```sh
+git clone https://github.com/AlexShen-Oguri/glass-note.git
+cd glass-note
 npm ci
 npm run web
 ```
 
-For the exported website:
+若要运行与静态部署相同的导出：
 
 ```sh
 npm run build:web
 npm run preview
 ```
 
-Open http://127.0.0.1:4173. Rebuild after source changes. The preview server is for local testing.
+打开 http://127.0.0.1:4173。源码变化后重新构建；预览服务仅用于本地测试。
 
-## Build and test
+## 开发与构建
+
+项目使用 Expo / React Native / TypeScript，共享业务规则与界面；Windows 使用 Tauri 2 加载静态 Web 导出。运行时不需要应用后端、数据库或模型 API 密钥。
 
 ```sh
 npm run validate
 npm run brand:check
 ```
 
-Validation runs TypeScript checks, behaviour and content tests, Web export, and iOS JavaScript/resource export. An iOS resource export is not a signed app or a device test.
+`validate` 包含类型检查、行为与内容测试、Web 导出和 iOS JavaScript / 资源导出。iOS 资源导出不是已签名应用，也不能代替真机测试。
 
-Windows builds use the existing Tauri wrapper:
+Windows x64 构建：
 
 ```sh
 npm run desktop:prepare
@@ -41,16 +161,37 @@ npm run desktop:test
 npm run desktop:build
 ```
 
-They require Rust with the MSVC toolchain, Visual Studio C++ build tools and the Windows SDK. The installer targets Windows x64 and installs for the current user. Installed use requires WebView2, not Node.js or Expo.
+需要 Rust MSVC 工具链、Visual Studio C++ 构建工具和 Windows SDK。安装包面向当前用户；安装后运行依赖 WebView2，不要求使用者安装 Node.js 或 Expo。macOS / Linux 安装包不在当前交付范围。
 
-The Web application is a static website suitable for an independent domain. Hosting, DNS and HTTPS are configured separately; no particular hosting provider is required. See [hosting](docs/HOSTING.md), [architecture](docs/ARCHITECTURE.md) and [contributing](CONTRIBUTING.md).
+独立网站打包：
 
-## Data and images
+```sh
+npm run release:web
+```
 
-Each search result represents one cocktail. All selected filters must match the same source version. Sources remain visible in the catalogue and recipe details.
+在 `release/` 生成静态网站归档、文件校验信息及 Caddy 配置示例。该命令不会购买域名、修改 DNS 或自动部署。部署只上传 `site/` 内容，不要公开整个仓库目录。
 
-Some names are editorial translations or transliterations; original names are shown when different. Flavour descriptions and alcohol estimates are guidance, not measured tasting results. Cocktail pictures include AI-created images reviewed against source references and do not represent source photographs.
+| 目录 | 内容 |
+| --- | --- |
+| `src/app`、`src/features` | 路由与界面 |
+| `src/domain` | 搜索、推荐、快照、计算与校验 |
+| `src/content`、`src/media`、`assets` | 酒库、瓶款、材料、多语言资料与图片 |
+| `src/platform` | 本地存储、文件选择、恢复和平台适配 |
+| `src-tauri` | Windows 宿主与受限文件桥接 |
+| `scripts`、`deploy` | 测试、构建、打包与自托管示例 |
 
-Original application code is licensed under the [MIT licence](LICENSE), copyright 2026 AlexShen-Oguri. Third-party dependencies, images, datasets and trademarks retain their own terms; the code licence does not grant rights to them. Source attribution and third-party notices remain in the content and asset records.
+详见[架构说明](docs/ARCHITECTURE.md)、[自托管指南](docs/HOSTING.md)和[贡献指南](CONTRIBUTING.md)。
 
-The catalogue includes third-party product photographs whose redistribution permissions have not been independently confirmed. They are excluded from the MIT licence. See [third-party notices](THIRD_PARTY_NOTICES.md) and the asset records before reusing those files; inclusion in this repository does not grant permission from their rights holders.
+## 发布与安全状态
+
+源码已开源；正式桌面 Release 与独立网站仍在准备。安全审查继续进行，测试或秘密扫描通过不代表全面安全认证。依赖告警、干净 Windows 安装、签名和实体手机验收分别处理，不以静态导出结果替代。
+
+报告普通问题时，请提供复现步骤、平台和版本，不要上传私人备份、凭据或个人资料。
+
+## 来源与许可
+
+自有应用代码采用 [MIT](LICENSE)，版权署名为 2026 AlexShen-Oguri。第三方依赖、照片、数据集、参考资料和商标保留各自条款，不自动适用 MIT。
+
+鸡尾酒配图包含对照来源参考创作的 AI 图像，并非来源网站的实拍照片。来源与生成方式保留在配方和图片清单中；风味提示和酒精度估算也不等同于实测品饮记录。
+
+仓库保留了第三方产品照片，其再分发许可尚未独立确认。公开可访问、标注来源或项目不收费，都不能代替权利人的许可。复用前请阅读[第三方说明](THIRD_PARTY_NOTICES.md)、[照片署名](assets/photos/ATTRIBUTION.md)和相应素材清单。README 截图中的素材同样遵循这些边界。
