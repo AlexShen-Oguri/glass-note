@@ -12,9 +12,7 @@ Find a drink for tonight, make it with what you have, and remember what you enjo
 
 [Open the website](https://glass-notes.pages.dev/) · [Download the Windows 0.1.8 preview](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.8)
 
-The website is live, and the Windows x64 installer is available as a prerelease. Extract the ZIP and run the included installer. It is unsigned; clean-machine installation, upgrade and uninstall acceptance remain incomplete. Export a backup before upgrading. Shared iOS code is retained, while App Store delivery is deferred.
-
-The images below are real browser captures at desktop and phone widths. Detailed examples use the Chinese interface; the app also has an English interface. Personal entries marked as demos were created in an isolated browser, not taken from a user's records. The photo-picker example uses an existing app illustration, not a claimed photograph of a homemade drink.
+Use it in a desktop or phone browser, or download the Windows app. No account is needed, and personal records stay on your device.
 
 ## Features
 
@@ -24,44 +22,42 @@ Start with **Find my glass** on the home screen. Choose a mode, then explore aro
 
 | Have a drink | Mix it myself |
 | --- | --- |
-| Find something that suits your taste, without needing the ingredients at home. | Use cupboard ingredients and the supported ingredient mappings of bottles you own. |
+| Find something that suits your taste. | Find recipes using the ingredients and bottles in your cupboard. |
 | Read the reasons for a suggestion and open its recipe. | **Ready base spirits come first**, then fewer missing ingredients within each group. Recipes missing 3 or more ingredients are excluded; missing items are listed. |
 
-An empty cupboard prompts you to add ingredients or choose by taste first. The latter clearly states that cupboard filtering has not been applied. Ingredient presence does not confirm quantities, specified bottles, equipment or special preparations; check the recipe before making it.
+If your cupboard is empty, you can add ingredients or choose by taste first. Before making a drink, check the recipe for quantities, equipment and ingredients that need advance preparation.
 
 <p>
   <img src="docs/images/customize-zh.png" width="32%" alt="Phone view of the two discovery modes">
   <img src="docs/images/flavours-zh.png" width="32%" alt="Guided aroma selection with multiple choices and a skip option">
-  <img src="docs/images/taste-zh.png" width="32%" alt="An explicit flavour experience with a demo private note">
+  <img src="docs/images/taste-zh.png" width="32%" alt="A drink's flavour experience with ratings and a private note">
 </p>
 
 ### Browse a visual catalogue and keep the right version
 
 Search names, aliases and ingredients; filter by base spirit, included or excluded ingredients, flavour, technique or alcohol-free recipes. Browse classics, competition entries and published bar recipes, with optional occasion and season suggestions.
 
-Each cocktail has one card. Different source recipes do not inflate the drink count. All selected filters must match **the same recipe version**, and that version follows you into the details.
+Each cocktail has one card, with its source versions available in the details. Filters find a version that matches all your choices; open the card to read that recipe.
 
 ![English catalogue with search, categories, filters and cocktail photographs and illustrations](docs/images/discover-en.png)
 
-Recipe details include ingredients, measures, steps, glassware, garnish, preparation notes and flavour guidance. Switch source versions, read steps in the source language and open the original reference. Source facts, editorial translations, flavour inference and image provenance are recorded separately.
+Recipe details include ingredients, measures, steps, glassware, garnish, preparation notes and flavour guidance. Compare translated steps with the original text, or open the recipe and image sources.
 
 ![Negroni details with its exact source version and making, order-card, favourite and taste actions](docs/images/recipe-zh.png)
 
 ### Your cupboard, ingredient library and bottle archive
 
-Record which ingredients and bottles you own to inform the mixing recommendations. The active interface does not require remaining-volume tracking or deduct stock when you finish a drink.
+Mark the ingredients and bottles you own so **Mix it myself** can suggest recipes using them.
 
 Use the ingredient library to explore ingredients and related recipes. Search the bottle archive by product, brand, alias or flavour description; filter by category, inspect images and available strength information, mark ownership or select bottles for comparison.
-
-Owning one brand does not mean owning all its products. Bottle-to-ingredient mappings help recommendations without assuming every possible substitute is available.
 
 ![Bottle archive with familiar gins, translated and original names, and product descriptions](docs/images/bottles-zh.png)
 
 ### Follow a recipe or show an order card
 
-**Start making** opens ingredients, steps, practical tips and a read-only alcohol estimate. Progress is saved locally. Finishing shows a gradual completion transition, then offers another drink or a return to the catalogue.
+Choose **Start making** to follow the ingredients, steps and practical tips. Progress saves automatically. When you finish, you can make another drink or return to the catalogue.
 
-Alcohol estimates use available measures and documented ingredient or bottle strengths. They describe a **before-ice range**, not a measured finished drink. Missing evidence or unsupported measures produce no invented percentage. Do not use an estimate to judge driving or drinking safety.
+Recipes estimate alcohol content from ingredient measures and bottle information, leaving it blank when there is not enough information. The range is an estimate before ice dilution. Do not use it to judge driving or drinking safety.
 
 An order card presents the drink name, ingredients and explicit requests. Use the app language or source language, show the card, copy its text or share text where the platform supports it. Your private tasting notes are not included.
 
@@ -80,13 +76,13 @@ Lists retain a snapshot of the recipe at the time it was added. Read that saved 
 
 **Record taste** opens a drink-specific flavour experience. Record whether you drank or made it, liked or disliked the version, found it too sweet or strong, and which aromas you enjoyed. A private note is optional.
 
-Recommendations use deliberately saved structured feedback, and taste memory can be turned off. Browsing and note text are not interpreted as preferences. Marking a drink as tried or made does not imply that you liked it.
+Your saved taste ratings can inform future recommendations. Choose whether to use taste memory each time you look for a drink.
 
 ### Your recipes, including your own photos
 
 Start from scratch, copy an exact catalogue recipe or take a version from the lab. Edit ingredients, quantities, steps, glassware, garnish and notes. Saving changes retains revision history.
 
-Choose a photo from your device. It is compressed and stored locally, travels with recipe backups and is not published to a community. User-written names and notes are not automatically translated or rewritten.
+Choose a photo for your recipe and save it with the ingredients, steps and notes. Recipe backups include the photo.
 
 ![Private recipe editor with a locally selected image and editable recipe fields](docs/images/private-recipe-zh.png)
 
@@ -100,29 +96,33 @@ Choose a photo from your device. It is compressed and stored locally, travels wi
 | Trial batches | Preserve the recipe used for a batch; record time, temperature, aroma, palate, appearance, results and next steps. |
 | Result comparison | Compare actual batches, continue from a chosen snapshot as a named version or save it to your recipe book. |
 
-Lab entries autosave locally. Research summaries and editorial flavour descriptions are not measurements from your own trials.
+Lab entries autosave locally, ready for your next trial.
 
 ![Demo lab project with recipe versions, trial batches and result comparison](docs/images/lab-zh.png)
 
 ### Eight languages and responsive layouts
 
-Chinese, English, French, German, Spanish, Korean, Japanese and Italian are available. The initial choice follows supported device languages; use the toolbar to change it. Public drink and bottle names follow the selected language, with smaller original names where they differ. Some names are editorial translations or transliterations, not official local names. Native-language review remains ongoing.
+Chinese, English, French, German, Spanish, Korean, Japanese and Italian are available. The initial choice follows supported device languages; use the toolbar to change it. Drink and bottle names follow your chosen language, with the original name below when it differs.
 
-Desktop and phone browsers share features and data rules. Switch between ml and fl oz where volume conversion applies; mass, dashes and other measures are not silently converted to volume. Page transitions, the cocktail waterfall and background motion can be paused and respect the system's reduced-motion preference.
+All features are available in desktop and phone browsers. Switch liquid measures between ml and fl oz; other measures keep their original units. Page transitions, the cocktail waterfall and background motion can be paused and respect the system's reduced-motion preference.
 
 ## Local data and backups
 
-No account is required. There is no community publishing or automatic cloud sync. Favourites, lists, cupboard records, recipes, experiments, making sessions, taste feedback and preferences stay in the current browser or app.
+Favourites, lists, cupboard records, recipes, experiments, making sessions, taste feedback and preferences stay in the current browser or app. They do not sync automatically to other devices.
 
-Open **My → Backup & restore** to export JSON. Import it on another device or installation, review sections and conflicts, then merge or replace. File validation and interrupted-restore handling keep read failures distinct from empty records.
+When moving to another device, open **My → Backup & restore** to export a JSON file, then import it on the new device. Review the sections and conflicts in the preview before choosing merge or replace.
 
 - Browser profiles, app installations and website origins (protocol, domain or port) have separate storage.
 - Clearing site data, ending private browsing or uninstalling can remove records. Export before migrating.
-- Backups include private notes and photos and **are not encrypted**. Never commit them or upload them with the website.
+- Backups include private notes and photos and **are not encrypted**. Keep them somewhere safe and avoid sharing them publicly.
 - Replace can remove existing records in selected sections. Review the preview and keep an earlier backup.
-- A complete browser offline cache is not promised. Local storage does not make the first website load network-free.
+- The website needs a network connection to load its pages and resources.
 
 ## Get started
+
+The website needs no installation. On Windows, download the ZIP linked above, extract it and run the installer. Export a backup of your personal data before upgrading.
+
+### Run from source
 
 Use Node.js 24 and npm:
 
@@ -151,7 +151,7 @@ npm run validate
 npm run brand:check
 ```
 
-Validation runs type checks, behaviour and content tests, Web export and iOS JavaScript/resource export. An iOS export is not a signed application or a physical-device test.
+Validation runs type checks, behaviour and content tests, Web export and iOS JavaScript/resource export. Native iOS builds and signing are separate steps.
 
 For Windows x64:
 
@@ -169,7 +169,7 @@ For an independently hosted website:
 npm run release:web
 ```
 
-This produces a static archive, file hashes and a Caddy configuration example under `release/`. It does not buy a domain, change DNS or deploy. Upload only `site/`, never the whole repository directory.
+This produces a static archive, file hashes and a Caddy configuration example under `release/`. Deploy the contents of `site/` to a static hosting service.
 
 | Directory | Responsibility |
 | --- | --- |
@@ -182,9 +182,9 @@ This produces a static archive, file hashes and a Caddy configuration example un
 
 See [architecture](docs/ARCHITECTURE.md), [hosting](docs/HOSTING.md) and [contributing](CONTRIBUTING.md).
 
-## Release and security status
+## Releases and feedback
 
-The source, website and Windows 0.1.8 preview are public. A stable desktop release has not been published. Security review is ongoing; passing tests or a secret scan is not comprehensive security certification. Clean Windows installation, signing and physical-phone acceptance remain incomplete. See the [release notes and checksums](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.8) for the tested scope.
+The current Windows version is the 0.1.8 public preview, and its installer is unsigned. See the [release notes and checksums](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.8) for version details, tested scope and download verification.
 
 For ordinary bug reports, include reproduction steps, platform and version. Do not attach personal backups, credentials or private information.
 
@@ -192,6 +192,6 @@ For ordinary bug reports, include reproduction steps, platform and version. Do n
 
 Original application code is licensed under [MIT](LICENSE), copyright 2026 AlexShen-Oguri. Third-party dependencies, photographs, datasets, reference material and trademarks retain their own terms.
 
-Cocktail imagery includes AI-created illustrations reviewed against source references; these are not photographs from the source websites. Recipes and image manifests retain source and generation records. Flavour guidance and alcohol estimates are not measured tasting results.
+Cocktail imagery includes AI-created illustrations, with sources and generation records in recipe details and image manifests. Some drink names use editorial translations. Flavour descriptions and alcohol estimates are for reference.
 
-Third-party product photographs remain in the repository with redistribution permission not independently confirmed. Public access, attribution and noncommercial use do not establish permission. Consult [third-party notices](THIRD_PARTY_NOTICES.md), [photo attribution](assets/photos/ATTRIBUTION.md) and the relevant asset records before reuse. Images visible in README screenshots retain those same boundaries.
+Redistribution permission for some third-party product photographs remains unconfirmed. Assets shown in README screenshots also retain their own licences. Before reuse, consult [third-party notices](THIRD_PARTY_NOTICES.md), [photo attribution](assets/photos/ATTRIBUTION.md) and the relevant asset records.
