@@ -173,7 +173,7 @@ function sectionCount(section:BackupSection,value:BackupSections[BackupSection])
   if(section==='lab')return (value as BackupSections['lab']).projects.length;return (value as BackupSections['privateRecipes']).recipes.length;
 }
 
-function usedReferences(sections:BackupSections,references:BackupReference[]):Set<string>{
+export function usedReferences(sections:BackupSections,references:BackupReference[]):Set<string>{
   const used=new Set<string>();const add=(kind:ReferenceKind,id:string|undefined)=>{if(id)used.add(`${kind}\0${id}`);};
   sections.favorites.versionIds.forEach(value=>add('recipeVersion',value));
   if(sections.favorites.schemaVersion===2)for(const list of sections.favorites.lists)for(const item of list.items){
@@ -193,8 +193,12 @@ function usedReferences(sections:BackupSections,references:BackupReference[]):Se
   for(const recipe of sections.privateRecipes.recipes){recipe.revisions.forEach(revision=>revision.content.ingredients.forEach(ingredient));
     if(recipe.origin.kind==='catalogue-version'){add('recipeVersion',recipe.origin.versionId);add('source',recipe.origin.sourceId);}
     if(recipe.origin.kind==='lab-version'&&recipe.origin.source){add('recipeVersion',recipe.origin.source.versionId);recipe.origin.source.ingredients.forEach(ingredient);}}
-  let changed=true;while(changed){changed=false;for(const ref of references){if(!used.has(`${ref.kind}\0${ref.id}`))continue;
-      const before=used.size;add('ingredient',ref.ingredientId);add('source',ref.sourceId);if(used.size!==before)changed=true;}}
+  // Index every variant once; reversed chains and cycles must not rescan the whole backup.
+  const byId=new Map<string,BackupReference[]>();
+  for(const ref of references){const key=`${ref.kind}\0${ref.id}`,variants=byId.get(key);
+    if(variants)variants.push(ref);else byId.set(key,[ref]);}
+  // Set iteration includes newly added IDs and visits each ID only once.
+  for(const key of used)for(const ref of byId.get(key)??[]){add('ingredient',ref.ingredientId);add('source',ref.sourceId);}
   return used;
 }
 
@@ -202,10 +206,10 @@ function mergeReferences(current:BackupReference[],incoming:BackupReference[],se
   const allowedIncoming=usedReferences(incomingSections,incoming);const relevantIncoming=incoming.filter(ref=>allowedIncoming.has(`${ref.kind}\0${ref.id}`));
   const all:BackupReference[]=[];const exact=new Set<string>();for(const ref of [...current,...relevantIncoming]){const key=canonicalJson(ref);if(!exact.has(key)){exact.add(key);all.push(ref);}}
   const used=usedReferences(sections,all);const references=all.filter(ref=>used.has(`${ref.kind}\0${ref.id}`));
-  const conflicts:BackupConflict[]=[];const currentGroups=new Map<string,BackupReference[]>();
-  current.forEach(ref=>{const key=`${ref.kind}\0${ref.id}`;currentGroups.set(key,[...(currentGroups.get(key)??[]),ref]);});
-  const seen=new Set<string>();for(const ref of relevantIncoming){const key=`${ref.kind}\0${ref.id}`;const variants=currentGroups.get(key);if(!variants||!used.has(key)||variants.some(item=>canonicalJson(item)===canonicalJson(ref))||seen.has(key))continue;
-    conflicts.push({section:'references',id:`${ref.kind}:${ref.id}`,currentTitle:variants[0]!.name,incomingTitle:ref.name,action:'keep-both'});seen.add(key);}
+  const conflicts:BackupConflict[]=[];const firstCurrent=new Map<string,BackupReference>(),currentExact=new Set<string>();
+  for(const ref of current){const key=`${ref.kind}\0${ref.id}`;if(!firstCurrent.has(key))firstCurrent.set(key,ref);currentExact.add(canonicalJson(ref));}
+  const seen=new Set<string>();for(const ref of relevantIncoming){const key=`${ref.kind}\0${ref.id}`,previous=firstCurrent.get(key);if(!previous||!used.has(key)||seen.has(key)||currentExact.has(canonicalJson(ref)))continue;
+    conflicts.push({section:'references',id:`${ref.kind}:${ref.id}`,currentTitle:previous.name,incomingTitle:ref.name,action:'keep-both'});seen.add(key);}
   return{references,conflicts};
 }
 

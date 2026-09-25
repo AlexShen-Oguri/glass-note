@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import test from 'node:test';
+import {usedReferences} from './plan';
 import type {LabProject} from '../lab/types';
 import type {PrivateRecipe,PrivateRecipeContent} from '../private-recipes/types';
 import {
@@ -14,6 +15,7 @@ import {
   type KnownReferences,
   type PersonalData,
   type RestoreChoice,
+  type BackupReference,
 } from '.';
 
 const at='2026-09-10T12:00:00.000Z';
@@ -168,4 +170,54 @@ test('parser rejects unsafe, unknown, malformed, oversized, and broken nested da
   const badPrivate=backup();badPrivate.sections.privateRecipes.recipes[0]!.activeRevisionId='missing';cases.push([JSON.stringify(badPrivate),/does not reference/]);
   for(const [raw,message] of cases)assert.throws(()=>parseFullBackup(raw),(error:unknown)=>error instanceof BackupError&&message.test(error.message));
   assert.throws(()=>parseFullBackup(' '.repeat(BACKUP_LIMIT+1)),/exceeds 5000000/);
+});
+
+test('reference traversal visits a reversed chain once instead of repeatedly scanning it',()=>{
+  const current=personal(),count=2_000;let reads=0;
+  current.sections.pantry={schemaVersion:1,ingredientIds:['chain-0'],brandsByIngredient:{}};
+  const references:BackupReference[]=Array.from({length:count},(_,index)=>({
+    get kind(){assert(++reads<=count*2,'reference traversal exceeded its linear work budget');return 'ingredient' as const;},
+    id:`chain-${index}`,name:`Ingredient ${index}`,ingredientId:`chain-${index+1}`,
+  })).reverse();
+  const used=usedReferences(current.sections,references);
+  for(let index=0;index<=count;index++)assert(used.has(`ingredient\0chain-${index}`));
+  assert.equal(reads,count);
+});
+
+test('reference closure keeps every variant and handles cycles, separate kinds and dangling links',()=>{
+  const current=personal();current.sections.pantry={schemaVersion:1,ingredientIds:['root'],brandsByIngredient:{}};
+  const references:BackupReference[]=[
+    {kind:'ingredient',id:'next',name:'Next',ingredientId:'root'},
+    {kind:'source',id:'root',name:'Source root',sourceId:'missing-source'},
+    {kind:'ingredient',id:'root',name:'First variant',ingredientId:'next'},
+    {kind:'ingredient',id:'root',name:'Second variant',sourceId:'root'},
+    {kind:'brand',id:'root',name:'Unrelated kind',ingredientId:'unreachable'},
+    {kind:'ingredient',id:'unused',name:'Unused',ingredientId:'unused'},
+  ];
+  const used=usedReferences(current.sections,references);
+  for(const key of ['ingredient\0root','ingredient\0next','source\0root','source\0missing-source'])assert(used.has(key));
+  for(const key of ['brand\0root','ingredient\0unreachable','ingredient\0unused'])assert(!used.has(key));
+  const incoming=backup(current);incoming.references=references;
+  for(const mode of ['merge','replace'] as const){
+    const plan=planRestore(personal(),incoming,{mode,sections:['pantry'],preferenceFields:[]});
+    assert.deepEqual(plan.next.references.filter(ref=>ref.id==='root').map(ref=>ref.name),['Source root','First variant','Second variant']);
+    assert(!plan.next.references.some(ref=>ref.id==='unused'||ref.kind==='brand'&&ref.id==='root'));
+  }
+});
+
+test('many same-ID variants keep original order and only report the first new conflict',()=>{
+  const current=personal();
+  current.references=Array.from({length:1_000},(_,index)=>({kind:'ingredient',id:'unknown-ingredient',name:`Variant ${index}`}));
+  const incoming=backup(personal());incoming.references=[...current.references].reverse();
+  incoming.references.push({kind:'ingredient',id:'unknown-ingredient',name:'New variant'}, {kind:'ingredient',id:'unknown-ingredient',name:'Another variant'});
+  const before=JSON.stringify({current,incoming});
+  const plan=planRestore(current,incoming,{mode:'merge',sections:['pantry'],preferenceFields:[]});
+  assert.deepEqual(plan.next.references,[...current.references,...incoming.references.slice(-2)]);
+  assert.deepEqual(plan.conflicts.filter(ref=>ref.section==='references'),[
+    {section:'references',id:'ingredient:unknown-ingredient',currentTitle:'Variant 0',incomingTitle:'New variant',action:'keep-both'},
+  ]);
+  assert.equal(JSON.stringify({current,incoming}),before);
+  const again=planRestore(plan.next,incoming,{mode:'merge',sections:['pantry'],preferenceFields:[]});
+  assert.deepEqual(again.next.references,plan.next.references);
+  assert.equal(again.conflicts.filter(ref=>ref.section==='references').length,0);
 });
