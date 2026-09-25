@@ -4,7 +4,7 @@
     "icon": "./assets/brand/app-icon.png",
     "slug": "glass-notes",
     "scheme": "glassnotes",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
     "web": {
