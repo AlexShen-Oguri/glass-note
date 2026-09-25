@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Update vulnerable decoder, UUID and Sharp dependency chains, preserving Expo Router's decoder interface with a source-verified one-line installation patch.
 - Bound backup reference traversal and conflict lookup so long chains or many historical variants cannot stall import preview through repeated full scans.
 - Add complete Chinese and English README guides with real desktop and phone-width screenshots, feature explanations, data boundaries and build instructions.
 - Keep recipe ingredients and instructions at their natural height when stacked on phone screens. Desktop keeps the two-column layout.
