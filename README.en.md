@@ -10,7 +10,9 @@ Find a drink for tonight, make it with what you have, and remember what you enjo
 
 [Features](#features) · [Get started](#get-started) · [Local data](#local-data-and-backups) · [Development](#development-and-builds) · [Sources and licence](#sources-and-licence)
 
-This repository publishes the 0.1.8 source. You can build the Windows x64 app yourself; a formal installer Release and the standalone website are still in preparation. Shared iOS code is retained, while App Store delivery is deferred. A successful build is not a device test or security clearance.
+[Open the website](https://glass-notes.pages.dev/) · [Download the Windows 0.1.8 preview](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.8)
+
+The website is live, and the Windows x64 installer is available as a prerelease. Extract the ZIP and run the included installer. It is unsigned; clean-machine installation, upgrade and uninstall acceptance remain incomplete. Export a backup before upgrading. Shared iOS code is retained, while App Store delivery is deferred.
 
 The images below are real browser captures at desktop and phone widths. Detailed examples use the Chinese interface; the app also has an English interface. Personal entries marked as demos were created in an isolated browser, not taken from a user's records. The photo-picker example uses an existing app illustration, not a claimed photograph of a homemade drink.
 
@@ -182,7 +184,7 @@ See [architecture](docs/ARCHITECTURE.md), [hosting](docs/HOSTING.md) and [contri
 
 ## Release and security status
 
-The source is public. A formal desktop Release and the standalone website remain in preparation. Security review is ongoing; passing tests or a secret scan is not comprehensive security certification. Dependency advisories, clean Windows installation, signing and physical-phone acceptance require separate checks.
+The source, website and Windows 0.1.8 preview are public. A stable desktop release has not been published. Security review is ongoing; passing tests or a secret scan is not comprehensive security certification. Clean Windows installation, signing and physical-phone acceptance remain incomplete. See the [release notes and checksums](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.8) for the tested scope.
 
 For ordinary bug reports, include reproduction steps, platform and version. Do not attach personal backups, credentials or private information.
 
