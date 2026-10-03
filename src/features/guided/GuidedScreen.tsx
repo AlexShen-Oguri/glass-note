@@ -1,7 +1,6 @@
 import {CocktailOriginalName} from '../names/OriginalName';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
-  Animated,
   Platform,
   Pressable,
   ScrollView,
@@ -52,6 +51,8 @@ import {Heading} from '../navigation/Heading';
 import {ContextReasons, ContextSelector} from '../context';
 import Waterfall from './Waterfall';
 import {GuidedReveal} from './GuidedReveal';
+import type {Animated} from 'react-native';
+import {MotionPhoto} from '../motion/primitives';
 
 type GuidedAppState = ReturnType<typeof useApp> & {
   guided: GuidedSession;
@@ -247,6 +248,7 @@ function OptionCard({label, note, selected, compact, selectedText, onPress}: {la
     <Pressable
       accessibilityRole="button"
       accessibilityState={{selected}}
+      aria-pressed={selected}
       onPress={onPress}
       style={({pressed}) => [styles.option, compact && styles.optionCompact, selected && styles.optionSelected, pressed && styles.pressed]}
     >
@@ -323,9 +325,9 @@ function ResultCard({result, locale, query, contextActive, onHide, cardWidth,onP
           style={StyleSheet.flatten([styles.resultCard])}
         >
           <View ref={node=>onPhotoRef?.(cocktail.id,node)} collapsable={false}>
-            <Animated.View style={photoOpacity?{opacity:photoOpacity}:undefined}>
+            <MotionPhoto opacity={photoOpacity}>
               <PhotoFrame asset={asset} accent={cocktail.accent} locale={locale} height={240} preserveAspect borderRadius={radii.medium} />
-            </Animated.View>
+            </MotionPhoto>
           </View>
           <View style={styles.resultCopy}>
             <Text style={styles.resultMeta}>{t(locale, cocktail.category as UiKey)} · {t(locale, 'guidedMatchReason')}</Text>

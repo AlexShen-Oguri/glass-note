@@ -1,5 +1,7 @@
+import {motionData} from '../motion/attributes';
+import {MotionModal} from '../motion/primitives';
 import React, {useMemo, useState} from 'react';
-import {KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
+import {KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 import type {Locale} from '../../domain/contracts';
 import {catalogue} from '../../content/catalogue';
 import {favoriteCopy} from '../../i18n/favorites';
@@ -15,14 +17,14 @@ function localize(value: Record<Locale, string> | undefined, locale: Locale): st
 }
 
 function ModalFrame({visible, motionEnabled, onClose, children}: {visible: boolean; motionEnabled: boolean; onClose: () => void; children: React.ReactNode}) {
-  return <Modal visible={visible} transparent animationType={motionEnabled ? 'fade' : 'none'} onRequestClose={onClose}>
+  return <MotionModal visible={visible} transparent animationType={motionEnabled ? 'fade' : 'none'} onRequestClose={onClose}>
     <View style={styles.modalBackdrop}>
       <KeyboardAvoidingView pointerEvents="box-none" style={frameStyles.center} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <View accessibilityViewIsModal style={[styles.modalPanel, {zIndex: 1}]}>{children}</View>
+        <View {...motionData({motionSurface: ''})} accessibilityViewIsModal style={[styles.modalPanel, {zIndex: 1}]}>{children}</View>
       </KeyboardAvoidingView>
       <Pressable accessible={false} focusable={false} accessibilityElementsHidden importantForAccessibility="no" tabIndex={-1} onPress={onClose} style={[StyleSheet.absoluteFill, {zIndex: 0}]} />
     </View>
-  </Modal>;
+  </MotionModal>;
 }
 
 export function AddToListButton({versionId, locale}: {versionId: string; locale: Locale}) {

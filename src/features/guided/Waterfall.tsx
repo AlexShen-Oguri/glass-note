@@ -1,7 +1,7 @@
 import {CocktailOriginalName} from '../names/OriginalName';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {Link, useIsFocused} from 'expo-router';
-import {Animated, Easing, Platform, Pressable, StyleSheet, Text, View} from 'react-native';
+import {Platform, Pressable, StyleSheet, Text, View} from 'react-native';
 
 import {catalogue} from '../../content/catalogue';
 import type {Cocktail, Locale} from '../../domain/contracts';
@@ -10,8 +10,9 @@ import type {UiKey} from '../../i18n/keys';
 import {t} from '../../i18n/ui';
 import {media} from '../../media';
 import {colors, radii} from '../../theme/tokens';
-import {isAiMedia, nativeDriver, PhotoFrame, serif, useViewport} from '../discovery/components';
+import {isAiMedia, PhotoFrame, serif, useViewport} from '../discovery/components';
 import {WaterfallTrack} from './WaterfallTrack';
+import {MotionFade} from '../motion/primitives';
 
 export interface WaterfallProps {
   locale: Locale;
@@ -43,32 +44,7 @@ function WaterfallTile({
   paused: boolean;
   onPress?: (cocktail: Cocktail) => void;
 }) {
-  // New reveal trees must paint the full collection once before non-matches leave.
-  const opacity = useRef(new Animated.Value(1)).current;
   const [pressed, setPressed] = useState(false);
-  const previousVisibility = useRef(true);
-  useEffect(() => {
-    opacity.stopAnimation();
-    const changed = previousVisibility.current !== visible;
-    previousVisibility.current = visible;
-    if (paused) {
-      opacity.setValue(visible ? 1 : 0);
-      return;
-    }
-    // Ordinary browsing starts at opacity 1: don't schedule 48 no-op JS fades.
-    if (!changed) {
-      opacity.setValue(visible ? 1 : 0);
-      return;
-    }
-    Animated.timing(opacity, {
-      toValue: visible ? 1 : 0,
-      duration: 1550,
-      easing: Easing.out(Easing.cubic),
-      useNativeDriver: nativeDriver,
-    }).start();
-    return () => opacity.stopAnimation();
-  }, [opacity, paused, visible]);
-
   const hidden = decorative || !visible;
   const inaccessible = hidden || clone;
   const interactive = Boolean(onPress) && !hidden;
@@ -107,12 +83,12 @@ function WaterfallTile({
     </Pressable>
   );
   return (
-    <Animated.View
+    <MotionFade visible={visible} disabled={paused}
       aria-hidden={inaccessible}
       accessibilityElementsHidden={inaccessible}
       importantForAccessibility={inaccessible ? 'no-hide-descendants' : 'auto'}
       pointerEvents={interactive ? 'auto' : 'none'}
-      style={[styles.tileWrap, {opacity}]}
+      style={styles.tileWrap}
     >
       {accessible && Platform.OS === 'web' ? (
         <Link
@@ -125,7 +101,7 @@ function WaterfallTile({
           {pressable}
         </Link>
       ) : pressable}
-    </Animated.View>
+    </MotionFade>
   );
 }
 

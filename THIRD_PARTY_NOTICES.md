@@ -6,6 +6,8 @@ The MIT licence in `LICENSE` applies to original application code owned by AlexS
 
 JavaScript dependencies are pinned in `package-lock.json`; Rust dependencies are pinned in `src-tauri/Cargo.lock`. They retain their upstream licences. Installed package licences and notices must accompany any distribution where those terms require them.
 
+Web motion uses [GSAP](https://gsap.com/) and [@gsap/react](https://github.com/greensock/react), under the [GSAP Standard License](https://gsap.com/standard-license/). The GSAP skills used for this implementation are maintained at [greensock/gsap-skills](https://github.com/greensock/gsap-skills) under MIT.
+
 ## Ingredient database
 
 The derived Open Food Facts ingredient dataset and its editorial overlays retain the database terms described in [ingredient notes](src/content/ingredients/README.md): ODbL 1.0 and the Database Contents License. Source revision and source record identifiers remain in the data. The upstream server-code licence retained in `research/ingredients/round-six/openfoodfacts-server-LICENSE.txt` is not a substitute for the database licence.

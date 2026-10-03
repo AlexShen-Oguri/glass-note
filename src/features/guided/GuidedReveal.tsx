@@ -12,7 +12,7 @@ export interface GuidedRevealCandidate extends Pick<Cocktail,'id'|'name'|'accent
   asset?:MediaAsset;
 }
 
-interface GuidedRevealProps {
+export interface GuidedRevealProps {
   revealing:boolean;
   motionAllowed:boolean;
   activeWindow:boolean;
@@ -20,7 +20,7 @@ interface GuidedRevealProps {
   candidates:GuidedRevealCandidate[];
   resultPhotoRefs:React.MutableRefObject<Map<string,View>>;
   onFinish:()=>void;
-  children:(resultPhotoOpacity:Animated.Value)=>React.ReactNode;
+  children:(resultPhotoOpacity?:Animated.Value)=>React.ReactNode;
 }
 
 const SCATTER_MS=250;

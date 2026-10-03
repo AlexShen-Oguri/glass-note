@@ -1,13 +1,14 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {Animated, Easing, Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
+import React, {useCallback, useState} from 'react';
+import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Link, router, useFocusEffect} from 'expo-router';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useApp} from '../../platform/AppProvider';
 import type {Cocktail} from '../../domain/contracts';
 import {t} from '../../i18n/ui';
 import {colors, radii} from '../../theme/tokens';
-import {BrandToolbar, nativeDriver, serif, useViewport} from '../discovery/components';
+import {BrandToolbar, serif, useReduceMotion, useViewport} from '../discovery/components';
 import {useMotionEnabled} from '../motion';
+import {MotionEntrance} from '../motion/primitives';
 import Waterfall from '../guided/Waterfall';
 import {Heading} from '../navigation/Heading';
 import {appNavigationText} from '../../i18n/app-navigation';
@@ -18,8 +19,8 @@ export default function WelcomeScreen() {
   const app = useApp();
   const {locale, motionPaused, dispatchGuided} = app;
   const {width, height} = useViewport();
-  const reduceMotion = !useMotionEnabled();
-  const entrance = useRef(new Animated.Value(0)).current;
+  const canAnimate = useMotionEnabled();
+  const reduceMotion = useReduceMotion();
   const [focused, setFocused] = useState(false);
   const compact = width < 820;
 
@@ -27,20 +28,6 @@ export default function WelcomeScreen() {
     setFocused(true);
     return () => setFocused(false);
   }, []));
-
-  useEffect(() => {
-    if (!focused) return;
-    if (reduceMotion || motionPaused) {
-      entrance.stopAnimation();
-      entrance.setValue(1);
-      return;
-    }
-    const animation = Animated.timing(entrance, {
-      toValue: 1, duration: 1100, easing: Easing.out(Easing.cubic), useNativeDriver: nativeDriver,
-    });
-    animation.start();
-    return () => animation.stop();
-  }, [entrance, focused, motionPaused, reduceMotion]);
 
   const customize = () => {
     dispatchGuided({type: 'restart'});
@@ -60,10 +47,7 @@ export default function WelcomeScreen() {
         <View style={styles.shell}>
           <BrandToolbar {...app} showUnits={false} />
           <View style={[styles.hero, compact && styles.heroCompact, !compact && {minHeight: Math.max(520, height - 155)}]}>
-            <Animated.View style={[styles.copy, compact && styles.copyCompact, {
-              opacity: entrance,
-              transform: [{translateY: entrance.interpolate({inputRange: [0, 1], outputRange: [12, 0]})}],
-            }]}>
+            <MotionEntrance active={focused} style={[styles.copy, compact && styles.copyCompact]}>
               <Heading style={[styles.title, compact && styles.titleCompact, locale === 'zh' && !compact && {fontSize: Math.min(53, Math.floor((Math.min(width - 40, 1280) * 0.54 - 80) / 8))}]}>{t(locale, 'welcomeTitle')}</Heading>
               <View style={styles.choices}>
                 <Pressable accessibilityRole="button" accessibilityLabel={t(locale, 'customizeMode')} onPress={customize} style={({pressed}) => [styles.choice, styles.primary, pressed && styles.pressed]}>
@@ -85,9 +69,9 @@ export default function WelcomeScreen() {
                   <Text style={styles.secondaryArrow}>→</Text>
                 </Pressable></Link>
               </View>
-            </Animated.View>
+            </MotionEntrance>
             <View style={[styles.visual, compact && styles.visualCompact]}>
-              <Waterfall locale={locale} paused={motionPaused || !focused} reduceMotion={reduceMotion} onCocktailPress={openCocktail} height={compact ? 260 : Math.min(640, Math.max(490, height - 150))} />
+              <Waterfall locale={locale} paused={!canAnimate || motionPaused || !focused} reduceMotion={reduceMotion} onCocktailPress={openCocktail} height={compact ? 260 : Math.min(640, Math.max(490, height - 150))} />
               <View style={styles.visualCaption}><Text style={styles.caption}>{t(locale, 'guidedCollection')}</Text><View style={styles.captionMark}><BrandMark size={18} decorative /></View></View>
             </View>
           </View>

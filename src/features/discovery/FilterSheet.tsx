@@ -1,5 +1,7 @@
+import {motionData} from '../motion/attributes';
+import {MotionModal} from '../motion/primitives';
 import React, {useEffect, useRef, useState} from 'react';
-import {Modal, Platform, Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Platform, Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 
 import {catalogue} from '../../content/catalogue';
 import {MIXING_METHODS, type Approachability, type Base, type Exclusion, type Flavour, type Locale, type MixingMethod, type SearchQuery, type Strength, type Taste} from '../../domain/contracts';
@@ -193,10 +195,10 @@ export default function FilterSheet({
   const ingredientSummary = selectedIngredientSummary(draft, locale);
   const methodSummary = (draft.methods ?? []).map((method) => findText(locale, `method_${method}`));
   return (
-    <Modal transparent={!compact} visible={visible} animationType={pauseMotion ? 'none' : compact ? 'slide' : 'fade'} onRequestClose={onClose} onShow={focusClose}>
+    <MotionModal motionDisabled={pauseMotion} transparent={!compact} visible={visible} animationType={pauseMotion ? 'none' : compact ? 'slide' : 'fade'} onRequestClose={onClose} onShow={focusClose}>
       <View style={[styles.backdrop, compact && styles.compactBackdrop]}>
         <Pressable accessibilityRole="button" style={StyleSheet.absoluteFill} onPress={onClose} accessibilityLabel={t(locale, 'close')} />
-        <View accessibilityViewIsModal style={[styles.sheet, compact && styles.sheetCompact]}>
+        <View {...motionData({motionSurface: ''})} accessibilityViewIsModal style={[styles.sheet, compact && styles.sheetCompact]}>
           <View style={styles.handle} />
           <View style={styles.header}>
             <View style={styles.headerCopy}>
@@ -241,7 +243,7 @@ export default function FilterSheet({
           </View>
         </View>
       </View>
-    </Modal>
+    </MotionModal>
   );
 }
 

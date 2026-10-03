@@ -1,10 +1,10 @@
-import React, {useEffect, useRef, useState, useSyncExternalStore} from 'react';
+import {motionData} from '../motion/attributes';
+import {MotionModal, MotionFloat} from '../motion/primitives';
+import React, {useEffect, useState, useSyncExternalStore} from 'react';
 import {Link} from 'expo-router';
 import {
   AccessibilityInfo,
-  Animated,
   Image,
-  Modal,
   Platform,
   Pressable,
   ScrollView,
@@ -108,9 +108,9 @@ export function BrandToolbar({
           {!compact ? <Text style={styles.toolButtonText}>{t(locale, motionPaused ? 'resume' : 'pause')}</Text> : null}
         </Pressable>
       </View>
-      <Modal transparent visible={languageOpen} animationType={motionPaused || reduceMotion ? 'none' : 'fade'} onRequestClose={() => setLanguageOpen(false)}>
+      <MotionModal transparent visible={languageOpen} animationType={motionPaused || reduceMotion ? 'none' : 'fade'} onRequestClose={() => setLanguageOpen(false)}>
         <Pressable style={styles.modalBackdrop} onPress={() => setLanguageOpen(false)}>
-          <Pressable style={styles.languagePanel} onPress={(event) => event.stopPropagation()}>
+          <Pressable {...motionData({motionSurface: ''})} style={styles.languagePanel} onPress={(event) => event.stopPropagation()}>
             <View style={styles.modalHeadingRow}>
               <Text style={styles.modalHeading}>{t(locale, 'language')}</Text>
               <Pressable accessibilityRole="button" accessibilityLabel={t(locale, 'close')} onPress={() => setLanguageOpen(false)} style={styles.closeButton}>
@@ -136,7 +136,7 @@ export function BrandToolbar({
             </ScrollView>
           </Pressable>
         </Pressable>
-      </Modal>
+      </MotionModal>
     </View>
   );
 }
@@ -194,23 +194,7 @@ export function FloatingColumn({
   paused: boolean;
   reduceMotion: boolean;
 }) {
-  const translateY = useRef(new Animated.Value(0)).current;
-  useEffect(() => {
-    translateY.stopAnimation();
-    if (paused || reduceMotion) {
-      Animated.timing(translateY, {toValue: 0, duration: 180, useNativeDriver: nativeDriver}).start();
-      return;
-    }
-    const distance = index % 2 ? 24 : -30;
-    const duration = 10500 + index * 1100;
-    const animation = Animated.loop(Animated.sequence([
-      Animated.timing(translateY, {toValue: distance, duration, useNativeDriver: nativeDriver}),
-      Animated.timing(translateY, {toValue: 0, duration, useNativeDriver: nativeDriver}),
-    ]));
-    animation.start();
-    return () => animation.stop();
-  }, [index, paused, reduceMotion, translateY]);
-  return <Animated.View style={[styles.ambientColumn, {transform: [{translateY}]}]}>{children}</Animated.View>;
+  return <MotionFloat {...{index, paused, reduceMotion}} style={styles.ambientColumn}>{children}</MotionFloat>;
 }
 
 export function SelectionChip({label, selected, onPress}: {label: string; selected: boolean; onPress: () => void}) {
@@ -218,6 +202,7 @@ export function SelectionChip({label, selected, onPress}: {label: string; select
     <Pressable
       accessibilityRole="button"
       accessibilityState={{selected}}
+      aria-pressed={selected}
       onPress={onPress}
       style={({pressed}) => [styles.chip, selected && styles.chipSelected, pressed && styles.pressed]}
     >

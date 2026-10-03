@@ -1,8 +1,10 @@
+import {motionData} from '../motion/attributes';
+import {MotionModal} from '../motion/primitives';
 import {recipeDisplayName} from '../../content/localization/display';
 import {CocktailOriginalName} from '../names/OriginalName';
 import {plainVersionLabel} from '../recipe/versionLabel';
 import React, {useMemo, useState} from 'react';
-import {KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
+import {KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 import {router} from 'expo-router';
 import type {FavoriteList, FavoriteListMutationResult} from '../../domain/favorites';
 import type {Locale, UnitPreference} from '../../domain/contracts';
@@ -55,10 +57,10 @@ function ManageListModal({list, locale, visible, onClose, onDeleted}: {list: Fav
     setBusy(false);
   };
 
-  return <Modal visible={visible} transparent animationType={motionEnabled ? 'fade' : 'none'} onRequestClose={onClose}>
+  return <MotionModal visible={visible} transparent animationType={motionEnabled ? 'fade' : 'none'} onRequestClose={onClose}>
     <View style={styles.modalBackdrop}>
       <KeyboardAvoidingView pointerEvents="box-none" style={modalFrame.center} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <View accessibilityViewIsModal style={[styles.modalPanel, {zIndex: 1}]}>
+      <View {...motionData({motionSurface: ''})} accessibilityViewIsModal style={[styles.modalPanel, {zIndex: 1}]}>
         <View style={styles.modalHeadingRow}>
           <Text style={styles.modalHeading}>{favoriteListText(locale, 'manage')}</Text>
           <Pressable accessibilityRole="button" accessibilityLabel={favoriteListText(locale, 'close')} onPress={onClose} style={styles.closeButton}><Text style={styles.closeText}>×</Text></Pressable>
@@ -106,7 +108,7 @@ function ManageListModal({list, locale, visible, onClose, onDeleted}: {list: Fav
       </KeyboardAvoidingView>
       <Pressable accessible={false} focusable={false} accessibilityElementsHidden importantForAccessibility="no" tabIndex={-1} onPress={onClose} style={[StyleSheet.absoluteFill, {zIndex: 0}]} />
     </View>
-  </Modal>;
+  </MotionModal>;
 }
 
 export function FavoriteListDetail({list, locale, unit, onBack, onDeleted}: {list: FavoriteList; locale: Locale; unit: UnitPreference; onBack: () => void; onDeleted: () => void}) {

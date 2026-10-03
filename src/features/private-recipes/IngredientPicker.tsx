@@ -1,5 +1,7 @@
+import {motionData} from '../motion/attributes';
+import {MotionModal} from '../motion/primitives';
 import React, {useMemo, useState} from 'react';
-import {Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
+import {Pressable, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 
 import {catalogue} from '../../content/catalogue';
 import type {Ingredient, Locale} from '../../domain/contracts';
@@ -21,9 +23,9 @@ export function IngredientPicker({locale, visible, onSelect, onClose}: {
     || left.ingredient.name[locale].localeCompare(right.ingredient.name[locale])).slice(0, 80), [locale, query]);
   const close = () => { setQuery(''); onClose(); };
   return (
-    <Modal transparent visible={visible} animationType="fade" onRequestClose={close}>
+    <MotionModal transparent visible={visible} animationType="fade" onRequestClose={close}>
       <Pressable style={styles.backdrop} onPress={close}>
-        <Pressable style={styles.panel} onPress={event => event.stopPropagation()}>
+        <Pressable {...motionData({motionSurface: ''})} style={styles.panel} onPress={event => event.stopPropagation()}>
           <View style={styles.headingRow}>
             <Text accessibilityRole="header" style={styles.heading}>{privateRecipeText(locale, 'selectIngredient')}</Text>
             <Pressable accessibilityRole="button" accessibilityLabel={privateRecipeText(locale, 'close')} onPress={close} style={styles.close}><Text style={styles.closeText}>×</Text></Pressable>
@@ -47,7 +49,7 @@ export function IngredientPicker({locale, visible, onSelect, onClose}: {
           </ScrollView>
         </Pressable>
       </Pressable>
-    </Modal>
+    </MotionModal>
   );
 }
 

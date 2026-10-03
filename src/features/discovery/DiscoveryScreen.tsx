@@ -1,7 +1,7 @@
+import {motionData} from '../motion/attributes';
 import {CocktailOriginalName} from '../names/OriginalName';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {
-  Animated,
   Linking,
   Pressable,
   ScrollView,
@@ -32,8 +32,9 @@ import type {UiKey} from '../../i18n/keys';
 import {media} from '../../media';
 import {useApp} from '../../platform/AppProvider';
 import {colors, radii} from '../../theme/tokens';
-import {BrandToolbar, PhotoFrame, nativeDriver, serif, useReduceMotion, useViewport} from './components';
+import {BrandToolbar, PhotoFrame, serif, useReduceMotion, useViewport} from './components';
 import FilterSheet from './FilterSheet';
+import {MotionTransition} from '../motion';
 import {FavoriteButton} from '../favorites/FavoriteButton';
 import {favoriteCopy} from '../../i18n/favorites';
 import {SelectionChip} from './components';
@@ -55,21 +56,17 @@ function CocktailCard({
   cocktail,
   result,
   locale,
-  leaving,
-  exitOpacity,
   listId,
 }: {
   cocktail: Cocktail;
   result: SearchResult;
   locale: Locale;
-  leaving: boolean;
-  exitOpacity: Animated.Value;
   listId?: string;
 }) {
   const asset = media[cocktail.id];
   const origin = catalogue.versions.find(version => version.id === result.selectedVersionId)?.origin;
   return (
-    <Animated.View style={[styles.cardCellContent, {opacity: leaving ? exitOpacity : 1}]}>
+    <View {...motionData({motionItem: cocktail.id})} style={styles.cardCellContent}>
       <Link
         asChild
         href={{
@@ -94,7 +91,7 @@ function CocktailCard({
         <FavoriteButton versionId={result.selectedVersionId} locale={locale} compact />
       </View>
       {asset?.origin === 'ai-generated' || asset?.origin === 'ai-styled' ? null : asset ? <Text style={styles.credit}>{asset.author}{asset.license ? ` · ${asset.license}` : ''}</Text> : null}
-    </Animated.View>
+    </View>
   );
 }
 
@@ -105,11 +102,7 @@ export default function DiscoveryScreen() {
   const {width} = useViewport();
   const reduceMotion = useReduceMotion();
   const scrollRef = useRef<ScrollView>(null);
-  const resultsOpacity = useRef(new Animated.Value(1)).current;
-  const exitOpacity = useRef(new Animated.Value(1)).current;
   const filterTriggerRef = useRef<{focus?: () => void} | null>(null);
-  const transitionToken = useRef(0);
-  const mounted = useRef(true);
   const [filterOpen, setFilterOpen] = useState(false);
   const [draft, setDraft] = useState<SearchQuery>(query);
   const [searchFocused, setSearchFocused] = useState(false);
@@ -120,8 +113,6 @@ export default function DiscoveryScreen() {
     discoveryPagination = initial;
     return initial;
   });
-  const [departingIds, setDepartingIds] = useState<Set<string>>(() => new Set());
-  const [committing, setCommitting] = useState(false);
 
   const results = useMemo(() => searchCocktails(catalogue, {...query, locale}), [locale, query]);
   const filtered = hasDiscoveryFilters(query);
@@ -146,16 +137,6 @@ export default function DiscoveryScreen() {
     return () => clearTimeout(timer);
   }, [fingerprint, locale, query]));
 
-  useEffect(() => {
-    mounted.current = true;
-    return () => {
-      mounted.current = false;
-      transitionToken.current += 1;
-      exitOpacity.stopAnimation();
-      resultsOpacity.stopAnimation();
-    };
-  }, [exitOpacity, resultsOpacity]);
-
   const openFilters = () => {
     setDraft(query);
     setFilterOpen(true);
@@ -165,47 +146,11 @@ export default function DiscoveryScreen() {
     setTimeout(() => filterTriggerRef.current?.focus?.(), 0);
   };
   const applyFilters = () => {
-    const nextQuery = {...draft, text: query.text};
-    if (reduceMotion || motionPaused) {
-      setQuery(nextQuery);
-      closeFilters();
-      return;
-    }
-    const token = ++transitionToken.current;
-    const nextIds = new Set(searchCocktails(catalogue, {...nextQuery, locale}).map((result) => result.cocktailId));
-    const leavingIds = results.filter((result) => !nextIds.has(result.cocktailId)).map((result) => result.cocktailId);
-    setCommitting(true);
+    setQuery({...draft, text: query.text});
     closeFilters();
-    if (!leavingIds.length) {
-      resultsOpacity.setValue(0.58);
-      setQuery(nextQuery);
-      Animated.timing(resultsOpacity, {toValue: 1, duration: 460, useNativeDriver: nativeDriver}).start(() => {
-        if (mounted.current && transitionToken.current === token) setCommitting(false);
-      });
-      return;
-    }
-    setDepartingIds(new Set(leavingIds));
-    exitOpacity.setValue(1);
-    Animated.timing(exitOpacity, {toValue: 0, duration: 360, useNativeDriver: nativeDriver}).start(() => {
-      if (!mounted.current || transitionToken.current !== token) return;
-      resultsOpacity.setValue(0.58);
-      setQuery(nextQuery);
-      setDepartingIds(new Set());
-      exitOpacity.setValue(1);
-      Animated.timing(resultsOpacity, {toValue: 1, duration: 460, useNativeDriver: nativeDriver}).start(() => {
-        if (mounted.current && transitionToken.current === token) setCommitting(false);
-      });
-    });
   };
   const resetFilters = () => setDraft({text: query.text});
   const clearFilters = () => {
-    transitionToken.current += 1;
-    exitOpacity.stopAnimation();
-    resultsOpacity.stopAnimation();
-    exitOpacity.setValue(1);
-    resultsOpacity.setValue(1);
-    setCommitting(false);
-    setDepartingIds(new Set());
     setDraft({});
     setQuery({});
   };
@@ -232,7 +177,7 @@ export default function DiscoveryScreen() {
           };
         }}
       >
-        <View style={styles.shell} pointerEvents={committing ? 'none' : 'auto'}>
+        <View style={styles.shell}>
           <BrandToolbar {...{locale, setLocale, unit, setUnit, motionPaused, setMotionPaused}} showUnits={false} />
           {listId ? <ListBrowseSelection listId={listId} locale={locale} /> : <Heading level={1} style={[styles.pageTitle, width < 520 && styles.pageTitleCompact]}>{p02DiscoveryText(locale, 'collectionTitle')}</Heading>}
           <View style={styles.collectionFilters}>
@@ -305,13 +250,13 @@ export default function DiscoveryScreen() {
             <View style={styles.notice}><Text style={styles.noticeText}>{t(locale, 'noClassics')}</Text></View>
           ) : null}
 
-          {results.length ? (
-            <Animated.View style={[styles.grid, {opacity: resultsOpacity}]}>
+          <MotionTransition changeKey={`${fingerprint}:${activePagination.limit}`} kind="card" disabled={Boolean(query.text)}>{results.length ? (
+            <View style={styles.grid}>
               {resultRows.map((items, rowIndex) => (
                 <View key={items[0]?.cocktail.id ?? `row-${rowIndex}`} style={styles.gridRow}>
                   {items.map(({cocktail, result}) => (
                     <View key={cocktail.id} style={styles.gridCell}>
-                      <CocktailCard {...{cocktail, result, locale, exitOpacity, listId}} leaving={departingIds.has(cocktail.id)} />
+                      <CocktailCard {...{cocktail, result, locale, listId}} />
                     </View>
                   ))}
                   {Array.from({length: columns - items.length}, (_, spacerIndex) => (
@@ -319,7 +264,7 @@ export default function DiscoveryScreen() {
                   ))}
                 </View>
               ))}
-            </Animated.View>
+            </View>
           ) : (
             <View style={styles.emptyState}>
               <Text style={styles.emptyOrnament}>◇</Text>
@@ -336,6 +281,7 @@ export default function DiscoveryScreen() {
             </View>
           )}
 
+          </MotionTransition>
           {visibleResults.length < results.length ? (
             <Pressable accessibilityRole="button" onPress={loadMore} style={({pressed}) => [styles.loadMoreButton, pressed && styles.pressed]}>
               <Text style={styles.loadMoreText}>{p02DiscoveryText(locale, 'loadMore')}</Text>

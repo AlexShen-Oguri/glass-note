@@ -40,4 +40,6 @@ Five host commands expose whitelisted local storage and bounded import/export di
 
 Mobile and desktop browsers share routes and rules. Responsive styles adjust layout without changing stored data. Motion respects pause, reduced motion and background state. The Liquid G assets and `src/theme/tokens.ts` define the existing identity.
 
+Web and the Tauri webview use GSAP with `@gsap/react` in `.web` motion adapters; native views retain native-driver animations. Scoped `useGSAP` contexts clean up route/step transitions and event callbacks. Animate transforms and opacity, release temporary layer promotion, and avoid outgoing DOM clones or per-frame layout measurements. Result filters commit immediately and stagger at most eight visible cards; recommendation photos use one batched destination measurement and a skippable handoff timeline. Loop playheads pause when offscreen, backgrounded or user-paused. Modal portals stay mounted through exit, with keyboard focus assigned after entrance. Browser motion regression checks are in `scripts/check-transitions.playwright.js`.
+
 Web export produces `dist`; desktop preparation copies that export into a separate build directory. Native iOS export creates JavaScript and resources, not an IPA. Community, accounts and cloud synchronisation are not required for this architecture.

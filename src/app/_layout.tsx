@@ -20,6 +20,7 @@ import {privateRecipeText} from '../features/private-recipes/copy';
 import {TasteProvider} from '../platform/TasteProvider';
 import {MakingProvider} from '../platform/MakingProvider';
 import {MotionTransition,useMotionEnabled} from '../features/motion';
+import {MotionInteractions} from '../features/motion/Interactions';
 
 // Use the navigator's own render state: the global pathname can update after its screen DOM.
 const sceneLayout: NonNullable<React.ComponentProps<typeof Stack>['layout']> = ({state, children}) => (
@@ -37,7 +38,7 @@ function AppScene() {
   const reduceMotion = useReduceMotion();
   const canAnimate = useMotionEnabled();
   const desktop = useViewport().width >= 760;
-  return <View style={{flex: 1, backgroundColor: colors.background}}>
+  return <MotionInteractions changeKey={pathname} style={{flex: 1, backgroundColor: colors.background}}>
     {desktop && <AppNavigation />}
     {!dismissed && pathname !== '/backup' && (notice === 'restored' || notice === 'rolled-back' || notice === 'stale') && <View style={{padding:16,gap:10,backgroundColor:colors.panel}}>
       <Text accessibilityLiveRegion="polite" style={{color:colors.accent,fontSize:14,lineHeight:22}}>{backupText(locale,notice==='restored'?'restored':notice==='rolled-back'?'rolledBack':'stale')}</Text>
@@ -49,7 +50,7 @@ function AppScene() {
     <View {...(Platform.OS === 'web' ? {role:'main' as const} : {})} style={{flex:1,minHeight:0}}><Stack layout={sceneLayout} screenOptions={{title:'Glass Notes', headerShown:false, contentStyle:{backgroundColor:colors.background}, animation:Platform.OS==='web'||!canAnimate?'none':'fade',animationDuration:700}} /></View>
     {!desktop && <AppNavigation />}
     <AmbientLight paused={motionPaused||!canAnimate} reduceMotion={reduceMotion} />
-  </View>;
+  </MotionInteractions>;
 }
 
 export default function RootLayout() {

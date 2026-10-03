@@ -1,8 +1,10 @@
+import {motionData} from '../motion/attributes';
+import {MotionModal} from '../motion/primitives';
 import {recipeDisplayName} from '../../content/localization/display';
 import {CocktailOriginalName} from '../names/OriginalName';
 import {plainVersionLabel} from '../recipe/versionLabel';
 import React, {useEffect, useMemo, useState} from 'react';
-import {Image, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
+import {Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 import {router, useLocalSearchParams} from 'expo-router';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import type {FavoriteList, FavoriteListMutationResult} from '../../domain/favorites';
@@ -79,10 +81,10 @@ function CreateListModal({locale, visible, favorites, onClose, onCreated}: {loca
     } else setFeedback({kind: 'error', text: favoriteListText(locale, 'saveFailed')});
     setBusy(false);
   };
-  return <Modal visible={visible} transparent animationType={motionEnabled ? 'fade' : 'none'} onRequestClose={close}>
+  return <MotionModal visible={visible} transparent animationType={motionEnabled ? 'fade' : 'none'} onRequestClose={close}>
     <View style={styles.modalBackdrop}>
       <KeyboardAvoidingView pointerEvents="box-none" style={modalFrame.center} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <View accessibilityViewIsModal style={[styles.modalPanel, {zIndex: 1}]}>
+        <View {...motionData({motionSurface: ''})} accessibilityViewIsModal style={[styles.modalPanel, {zIndex: 1}]}>
           <View style={styles.modalHeadingRow}>
             <Text style={styles.modalHeading}>{favoriteListText(locale, 'newList')}</Text>
             <Pressable accessibilityRole="button" accessibilityLabel={favoriteListText(locale, 'close')} onPress={close} style={styles.closeButton}><Text style={styles.closeText}>×</Text></Pressable>
@@ -101,7 +103,7 @@ function CreateListModal({locale, visible, favorites, onClose, onCreated}: {loca
       </KeyboardAvoidingView>
       <Pressable accessible={false} focusable={false} accessibilityElementsHidden importantForAccessibility="no" tabIndex={-1} onPress={close} style={[StyleSheet.absoluteFill, {zIndex: 0}]} />
     </View>
-  </Modal>;
+  </MotionModal>;
 }
 
 export default function FavoritesScreen() {
