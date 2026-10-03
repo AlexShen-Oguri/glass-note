@@ -26,6 +26,24 @@ Upload only the contents of `site/` as the web root. Never expose the repository
 
 The default HTML currently requests no search-engine indexing while this candidate is under review. Remove that restriction only when the public release is approved.
 
+## Cloudflare Pages
+
+Wrangler skips directories named `node_modules`, including the public icons exported by Expo under `assets/node_modules/`. Prepare a separate upload directory before deploying:
+
+```sh
+node scripts/prepare-cloudflare-pages.mjs
+```
+
+The command prints a new `site` path under `release/`. It validates the static export, moves those public assets to `assets/vendor-dependencies/`, and adds an internal `_redirects` proxy rule so the existing JavaScript keeps requesting the same URLs. It preserves the source export, HTML, bundle bytes, cache headers and existing redirects. You can pass an already validated release's `site/` directory as the single argument instead of using `dist/`.
+
+With the official Wrangler CLI installed and logged into the account containing the existing project, upload that prepared path:
+
+```sh
+wrangler pages deploy <prepared-site-path> --project-name glass-notes --branch main
+```
+
+Use the existing project's production branch and domain. Verify public HTML and bundle hashes, recipe routes, dependency icons and missing-file 404 responses after deployment. Publishing the website does not update desktop installations or move personal browser data.
+
 ## Optional self-hosting with Caddy
 
 `deploy/Caddyfile.example` uses the [documented static file resolution](https://caddyserver.com/docs/caddyfile/directives/try_files). Install Caddy separately, then set `GLASS_NOTES_DOMAIN` to the domain you own and `GLASS_NOTES_WEB_ROOT` to the absolute `site/` directory. Validate before starting:
