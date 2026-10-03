@@ -2,6 +2,12 @@ name: Desktop release builds
 
 on:
   workflow_dispatch:
+    inputs:
+      platform:
+        description: Platform to build
+        type: choice
+        options: [all, windows, macos]
+        default: all
   push:
     tags: ['v*']
 
@@ -13,17 +19,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - os: windows-latest
-            platform: windows-x64
-            target: x86_64-pc-windows-msvc
-            test-target: x86_64-pc-windows-msvc
-          - os: macos-15
-            platform: macos-universal
-            target: universal-apple-darwin
-            test-target: aarch64-apple-darwin
+        os: ${{ fromJSON(inputs.platform == 'macos' && '["macos-15"]' || inputs.platform == 'windows' && '["windows-latest"]' || '["windows-latest","macos-15"]') }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
+    env:
+      DESKTOP_TARGET: ${{ matrix.os == 'macos-15' && 'universal-apple-darwin' || 'x86_64-pc-windows-msvc' }}
+      DESKTOP_TEST_TARGET: ${{ matrix.os == 'macos-15' && 'aarch64-apple-darwin' || 'x86_64-pc-windows-msvc' }}
+      DESKTOP_PLATFORM: ${{ matrix.os == 'macos-15' && 'macos-universal' || 'windows-x64' }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
@@ -37,8 +39,9 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run desktop:prepare
-      - run: npm run desktop:test -- --release --target ${{ matrix.test-target }} --locked
-      - run: npm run desktop:build -- --target ${{ matrix.target }} -- --locked
+      - run: npm run desktop:test -- --release --target ${{ env.DESKTOP_TEST_TARGET }} --locked
+      - id: desktop-build
+        run: npm run desktop:build -- --target ${{ env.DESKTOP_TARGET }} -- --locked
       - name: Verify Windows installation and upgrade
         if: runner.os == 'Windows'
         shell: pwsh
@@ -51,15 +54,16 @@ jobs:
         run: |
           app='.cache/desktop/target/universal-apple-darwin/release/bundle/macos/Glass Notes.app'
           codesign --verify --deep --strict --verbose=2 "$app"
-          lipo -verify_arch arm64 x86_64 "$app/Contents/MacOS/glass-notes-desktop"
+          lipo "$app/Contents/MacOS/glass-notes-desktop" -verify_arch arm64 x86_64
           test "$(/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' "$app/Contents/Info.plist")" = 'com.glassnotes.desktop'
           hdiutil verify .cache/desktop/target/universal-apple-darwin/release/bundle/dmg/*.dmg
           open "$app"
           sleep 8
           pgrep -f "$PWD/$app/Contents/MacOS/glass-notes-desktop"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: ${{ always() && steps.desktop-build.outcome == 'success' }}
         with:
-          name: glass-notes-${{ matrix.platform }}
+          name: glass-notes-${{ env.DESKTOP_PLATFORM }}
           if-no-files-found: error
           retention-days: 14
           include-hidden-files: true
