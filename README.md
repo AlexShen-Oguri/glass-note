@@ -10,9 +10,9 @@
 
 [功能介绍](#功能介绍) · [开始使用](#开始使用) · [本地数据](#本地数据与备份) · [开发与构建](#开发与构建) · [来源与许可](#来源与许可)
 
-[打开网页版](https://glass-notes.pages.dev/) · [下载 Windows 0.1.8 测试版](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.8)
+[打开网页版](https://glass-notes.pages.dev/) · [下载 Windows / macOS 0.1.9 测试版](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.9)
 
-在电脑或手机浏览器中直接使用，也可以下载 Windows 桌面版。无需注册，个人记录保存在自己的设备上。
+在电脑或手机浏览器中直接使用，也可以下载 Windows 或 macOS 桌面版。无需注册，个人记录保存在自己的设备上。
 
 ## 功能介绍
 
@@ -122,7 +122,9 @@
 
 ## 开始使用
 
-网页版无需安装。Windows 用户可下载上方的 ZIP，解压后运行安装程序；升级前请先导出个人数据备份。
+网页版无需安装。Windows 用户下载 `windows-x64-setup.exe` 后运行安装程序；macOS 12 及以上用户下载 `macos-universal.dmg`，打开后将 Glass Notes 拖入 Applications，同时支持 Apple Silicon 和 Intel。升级前请先导出个人数据备份，并退出旧版本。
+
+当前 macOS 测试版使用 ad-hoc 签名，尚未通过 Apple 公证；首次打开可能需要在系统设置的「隐私与安全性」中选择「仍要打开」。Windows 安装包也尚未签名。请核对 Release 的 SHA256 校验信息。应用内暂不提供自动更新，后续版本需下载新的安装包覆盖安装。
 
 ### 从源码运行
 
@@ -146,7 +148,7 @@ npm run preview
 
 ## 开发与构建
 
-项目使用 Expo / React Native / TypeScript，共享业务规则与界面；Windows 使用 Tauri 2 加载静态 Web 导出。运行时不需要应用后端、数据库或模型 API 密钥。
+项目使用 Expo / React Native / TypeScript，共享业务规则与界面；Windows 和 macOS 使用 Tauri 2 加载静态 Web 导出。运行时不需要应用后端、数据库或模型 API 密钥。
 
 ```sh
 npm run validate
@@ -163,7 +165,17 @@ npm run desktop:test
 npm run desktop:build
 ```
 
-需要 Rust MSVC 工具链、Visual Studio C++ 构建工具和 Windows SDK。安装包面向当前用户；安装后运行依赖 WebView2，不要求使用者安装 Node.js 或 Expo。macOS / Linux 安装包不在当前交付范围。
+需要 Rust MSVC 工具链、Visual Studio C++ 构建工具和 Windows SDK。安装包面向当前用户；安装后运行依赖 WebView2，不要求使用者安装 Node.js 或 Expo。
+
+macOS 通用安装包构建（需要 Rust 和 Xcode Command Line Tools）：
+
+```sh
+rustup target add aarch64-apple-darwin x86_64-apple-darwin
+npm run desktop:test
+npm run desktop:build -- --target universal-apple-darwin
+```
+
+`.github/workflows/desktop-release.yml` 在版本标签推送或手动触发时分别使用 Windows、macOS runner 构建，检查 Windows 0.1.8 升级的数据保留，以及 macOS 双架构和签名。构建产物通过检查后再发布到 GitHub Release；Linux 尚未打包。
 
 独立网站打包：
 
@@ -179,14 +191,14 @@ npm run release:web
 | `src/domain` | 搜索、推荐、快照、计算与校验 |
 | `src/content`、`src/media`、`assets` | 酒库、瓶款、材料、多语言资料与图片 |
 | `src/platform` | 本地存储、文件选择、恢复和平台适配 |
-| `src-tauri` | Windows 宿主与受限文件桥接 |
+| `src-tauri` | Windows / macOS 宿主与受限文件桥接 |
 | `scripts`、`deploy` | 测试、构建、打包与自托管示例 |
 
 详见[架构说明](docs/ARCHITECTURE.md)、[自托管指南](docs/HOSTING.md)和[贡献指南](CONTRIBUTING.md)。
 
 ## 版本与反馈
 
-当前 Windows 版本为 0.1.8 公开测试版，安装包尚未签名。版本详情、测试范围及下载校验信息见[发布说明](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.8)。
+当前桌面版本为 0.1.9 公开测试版。版本详情、测试范围及下载校验信息见[发布说明](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.9)。
 
 报告普通问题时，请提供复现步骤、平台和版本，不要上传私人备份、凭据或个人资料。
 

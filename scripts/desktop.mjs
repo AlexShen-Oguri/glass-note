@@ -5,14 +5,16 @@ import {fileURLToPath} from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const mode = process.argv[2] || 'build';
-if (process.platform !== 'win32') throw Error('The current desktop trial targets Windows.');
+if (!['win32', 'darwin'].includes(process.platform)) throw Error('Desktop builds currently support Windows and macOS.');
 const env = {...process.env, CARGO_TARGET_DIR:path.join(root,'.cache/desktop/target')};
 // Windows environment names are case-insensitive; Node may retain `Path`.
 const inheritedPath = Object.entries(process.env).find(([key]) => key.toLowerCase()==='path')?.[1] ?? '';
 for(const key of Object.keys(env))if(key.toLowerCase()==='path')delete env[key];
 env.PATH=path.dirname(process.execPath)+path.delimiter+inheritedPath;
 const localCargo = path.join(root,'.cache/desktop/cargo');
-if(existsSync(path.join(localCargo,'bin/cargo.exe'))){
+const cargoName = process.platform === 'win32' ? 'cargo.exe' : 'cargo';
+const bundledCargo = path.join(localCargo, 'bin', cargoName);
+if(existsSync(bundledCargo)){
   env.CARGO_HOME=localCargo;
   env.RUSTUP_HOME=path.join(root,'.cache/desktop/rustup');
   env.PATH=path.join(localCargo,'bin')+path.delimiter+env.PATH;
@@ -20,10 +22,10 @@ if(existsSync(path.join(localCargo,'bin/cargo.exe'))){
 let executable=process.execPath;
 let args=[path.join(root,'node_modules/@tauri-apps/cli/tauri.js'),'build',...process.argv.slice(3)];
 if(mode==='test'){
-  executable=existsSync(path.join(localCargo,'bin/cargo.exe'))?path.join(localCargo,'bin/cargo.exe'):'cargo';
+  executable=existsSync(bundledCargo)?bundledCargo:'cargo';
   args=['test','--manifest-path',path.join(root,'src-tauri/Cargo.toml'),...process.argv.slice(3)];
 }else if(mode==='check'){
-  executable=existsSync(path.join(localCargo,'bin/cargo.exe'))?path.join(localCargo,'bin/cargo.exe'):'cargo';
+  executable=existsSync(bundledCargo)?bundledCargo:'cargo';
   args=['check','--manifest-path',path.join(root,'src-tauri/Cargo.toml'),...process.argv.slice(3)];
 }else if(mode!=='build')throw Error('Use desktop.mjs build, test or check.');
 const child=spawn(executable,args,{cwd:root,env,stdio:'inherit',windowsHide:true});

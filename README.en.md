@@ -10,9 +10,9 @@ Find a drink for tonight, make it with what you have, and remember what you enjo
 
 [Features](#features) · [Get started](#get-started) · [Local data](#local-data-and-backups) · [Development](#development-and-builds) · [Sources and licence](#sources-and-licence)
 
-[Open the website](https://glass-notes.pages.dev/) · [Download the Windows 0.1.8 preview](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.8)
+[Open the website](https://glass-notes.pages.dev/) · [Download the Windows / macOS 0.1.9 preview](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.9)
 
-Use it in a desktop or phone browser, or download the Windows app. No account is needed, and personal records stay on your device.
+Use it in a desktop or phone browser, or download the Windows or macOS app. No account is needed, and personal records stay on your device.
 
 ## Features
 
@@ -120,7 +120,9 @@ When moving to another device, open **My → Backup & restore** to export a JSON
 
 ## Get started
 
-The website needs no installation. On Windows, download the ZIP linked above, extract it and run the installer. Export a backup of your personal data before upgrading.
+The website needs no installation. On Windows, download and run `windows-x64-setup.exe`. On macOS 12+, open `macos-universal.dmg` and drag Glass Notes to Applications; the same app supports Apple Silicon and Intel. Export a backup and quit the old app before upgrading.
+
+The macOS preview is ad-hoc signed and is not Apple-notarized; first launch may require **Open Anyway** in System Settings → Privacy & Security. The Windows installer is also unsigned. Verify the Release's SHA256 checksums. There is no in-app automatic updater yet; download each new installer to upgrade.
 
 ### Run from source
 
@@ -144,7 +146,7 @@ Open http://127.0.0.1:4173. Rebuild after source changes. The preview server is 
 
 ## Development and builds
 
-Expo, React Native and TypeScript share interface and domain code. The Windows app uses Tauri 2 to load a static Web export. Runtime use requires no application backend, database or model API key.
+Expo, React Native and TypeScript share interface and domain code. The Windows and macOS apps use Tauri 2 to load a static Web export. Runtime use requires no application backend, database or model API key.
 
 ```sh
 npm run validate
@@ -161,7 +163,17 @@ npm run desktop:test
 npm run desktop:build
 ```
 
-Use Rust with the MSVC toolchain, Visual Studio C++ build tools and the Windows SDK. The installer targets the current user. Installed use requires WebView2, not Node.js or Expo. macOS and Linux installers are outside the current delivery scope.
+Use Rust with the MSVC toolchain, Visual Studio C++ build tools and the Windows SDK. The installer targets the current user. Installed use requires WebView2, not Node.js or Expo.
+
+For a universal macOS installer, use Rust and Xcode Command Line Tools:
+
+```sh
+rustup target add aarch64-apple-darwin x86_64-apple-darwin
+npm run desktop:test
+npm run desktop:build -- --target universal-apple-darwin
+```
+
+`.github/workflows/desktop-release.yml` builds on Windows and macOS runners when a version tag is pushed or the workflow is dispatched manually. Checks cover Windows installation and preservation of data from 0.1.8, and macOS architectures and signing. Publish the artifacts to GitHub Release after verification. Linux packaging is not configured.
 
 For an independently hosted website:
 
@@ -177,14 +189,14 @@ This produces a static archive, file hashes and a Caddy configuration example un
 | `src/domain` | Search, recommendations, snapshots, calculations and validation |
 | `src/content`, `src/media`, `assets` | Recipes, bottles, ingredients, localised content and images |
 | `src/platform` | Storage, file selection, recovery and platform adapters |
-| `src-tauri` | Windows host and bounded file bridge |
+| `src-tauri` | Windows/macOS host and bounded file bridge |
 | `scripts`, `deploy` | Tests, builds, packaging and self-hosting examples |
 
 See [architecture](docs/ARCHITECTURE.md), [hosting](docs/HOSTING.md) and [contributing](CONTRIBUTING.md).
 
 ## Releases and feedback
 
-The current Windows version is the 0.1.8 public preview, and its installer is unsigned. See the [release notes and checksums](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.8) for version details, tested scope and download verification.
+The current desktop version is the 0.1.9 public preview. See the [release notes and checksums](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.9) for version details, tested scope and download verification.
 
 For ordinary bug reports, include reproduction steps, platform and version. Do not attach personal backups, credentials or private information.
 

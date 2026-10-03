@@ -1,0 +1,66 @@
+name: Desktop release builds
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            platform: windows-x64
+            target: x86_64-pc-windows-msvc
+          - os: macos-15
+            platform: macos-universal
+            target: universal-apple-darwin
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+          cache: npm
+      - uses: dtolnay/rust-toolchain@89b12181fb390509a0842a86cc55eeb8eb928c1d # stable
+        with:
+          targets: ${{ runner.os == 'macOS' && 'aarch64-apple-darwin,x86_64-apple-darwin' || 'x86_64-pc-windows-msvc' }}
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run desktop:test -- --locked
+      - run: npm run desktop:build -- --target ${{ matrix.target }} -- --locked
+      - name: Verify Windows installation and upgrade
+        if: runner.os == 'Windows'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: ./scripts/check-windows-install.ps1
+      - name: Verify universal macOS bundle and disk image
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          app='.cache/desktop/target/universal-apple-darwin/release/bundle/macos/Glass Notes.app'
+          codesign --verify --deep --strict --verbose=2 "$app"
+          lipo -verify_arch arm64 x86_64 "$app/Contents/MacOS/glass-notes-desktop"
+          test "$(/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' "$app/Contents/Info.plist")" = 'com.glassnotes.desktop'
+          hdiutil verify .cache/desktop/target/universal-apple-darwin/release/bundle/dmg/*.dmg
+          open "$app"
+          sleep 8
+          pgrep -x glass-notes-desktop
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: glass-notes-${{ matrix.platform }}
+          if-no-files-found: error
+          retention-days: 14
+          include-hidden-files: true
+          path: |
+            .cache/desktop/target/**/bundle/nsis/*.exe
+            .cache/desktop/target/**/bundle/dmg/*.dmg
+            artifacts/windows-install-check.json

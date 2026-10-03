@@ -1,6 +1,6 @@
 # Architecture
 
-Glass Notes uses one Expo / React Native / TypeScript application for Web and native iOS development. The Windows Tauri host loads a static Web export. There is no application backend, account service or runtime model API.
+Glass Notes uses one Expo / React Native / TypeScript application for Web and native iOS development. The Windows and macOS Tauri hosts load a static Web export. There is no application backend, account service or runtime model API.
 
 ## Code layout
 
@@ -13,7 +13,7 @@ Glass Notes uses one Expo / React Native / TypeScript application for Web and na
 | `src/platform` | Local storage, file access, restore coordination and platform adapters |
 | `src/i18n`, `src/theme` | Eight-language interface text and visual tokens |
 | `src/media`, `assets`, `public` | Bundled images, thumbnails and brand assets |
-| `src-tauri` | Windows host, storage bridge, capabilities and installer configuration |
+| `src-tauri` | Windows/macOS host, storage bridge, capabilities and installer configuration |
 | `scripts` | Development, verification, content authoring and packaging commands |
 
 ## Content boundaries
@@ -30,11 +30,13 @@ Saved recipes and making sessions keep exact snapshots. Private recipes append r
 
 Full backup export uses schema 3 and reads schemas 1, 2 and 3. Individual sections are independently versioned. Restore previews changes, checks fingerprints, keeps before-images, journals writes, verifies readback and invalidates stale writers. Missing sections in an older backup must not erase newer data. Backups are not encrypted.
 
-Browser storage belongs to its origin. A domain or protocol change does not move that data; export and restore explicitly. Windows host storage belongs to the stable application identifier `com.glassnotes.desktop`.
+Browser storage belongs to its origin. A domain or protocol change does not move that data; export and restore explicitly. Desktop host storage belongs to the stable application identifier `com.glassnotes.desktop`, in each operating system's application-data directory.
 
-## Windows boundary
+## Desktop boundary
 
 Five host commands expose whitelisted local storage and bounded import/export dialogs. Host code owns filesystem paths and the 5,000,000-byte file limit. The 21 permitted keys must stay aligned between TypeScript and Rust. Preserve the local-origin checks, capabilities, CSP and single-instance behaviour; do not add arbitrary filesystem access.
+
+Windows uses a current-user NSIS installer. macOS merges `tauri.macos.conf.json` to produce an app and DMG for macOS 12+, with ad-hoc signing; release builds combine arm64 and x86_64. Both platforms share the same host and local-file contract. Desktop release CI checks Rust storage behaviour, Windows installation/upgrade and macOS bundle integrity before uploading build artifacts. Publishing remains separate from building, and no automatic updater is configured.
 
 ## Presentation
 
