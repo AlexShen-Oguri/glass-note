@@ -10,7 +10,7 @@ export function MotionInteractions({changeKey, ...props}: ViewProps & {changeKey
   useGSAP((_context, contextSafe) => {
     const root = element(host);
     if (!root || !enabled || !contextSafe) return;
-    const controls = new WeakMap<HTMLElement, {y: (value: number) => void; scale: (value: number) => void; baseY: number; baseScale: number}>();
+    const controls = new WeakMap<HTMLElement, {y: (value: number) => void; scaleX: (value: number) => void; scaleY: (value: number) => void; baseY: number; baseScaleX: number; baseScaleY: number}>();
     const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
     const find = (target: EventTarget | null) => {
       const node = target instanceof Element ? target.closest<HTMLElement>('button,a,[role="button"],[role="link"]') : null;
@@ -20,15 +20,18 @@ export function MotionInteractions({changeKey, ...props}: ViewProps & {changeKey
       let control = controls.get(node);
       if (!control) {
         const baseY = Number(gsap.getProperty(node, 'y')) || 0;
-        const baseScale = Number(gsap.getProperty(node, 'scaleX')) || 1;
-        control = {baseY, baseScale,
+        const baseScaleX = Number(gsap.getProperty(node, 'scaleX')) || 1;
+        const baseScaleY = Number(gsap.getProperty(node, 'scaleY')) || 1;
+        control = {baseY, baseScaleX, baseScaleY,
           y: gsap.quickTo(node, 'y', {duration: 0.22, ease: 'power2.out'}),
-          scale: gsap.quickTo(node, 'scale', {duration: 0.22, ease: 'power2.out'}),
+          scaleX: gsap.quickTo(node, 'scaleX', {duration: 0.22, ease: 'power2.out'}),
+          scaleY: gsap.quickTo(node, 'scaleY', {duration: 0.22, ease: 'power2.out'}),
         };
         controls.set(node, control);
       }
       control.y(control.baseY + (lifted && !pressed ? -2 : 0));
-      control.scale(control.baseScale * (pressed ? 0.98 : 1));
+      control.scaleX(control.baseScaleX * (pressed ? 0.98 : 1));
+      control.scaleY(control.baseScaleY * (pressed ? 0.98 : 1));
     });
     const over = (event: PointerEvent) => {
       if (!fine.matches || event.pointerType !== 'mouse') return;

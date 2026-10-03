@@ -1,6 +1,6 @@
 [package]
 name = "glass-notes-desktop"
-version = "0.1.9"
+version = "0.1.10"
 description = "Glass Notes personal cocktail library"
 license = "MIT"
 edition = "2021"
