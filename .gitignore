@@ -16,6 +16,14 @@ output/playwright/
 artifacts/workflow/
 .expo/
 .cache/
+# Development process records belong in the conversation, not the repository.
+/planning/
+/.impeccable/
+/AI-WORKFLOW.md
+/DEVELOPMENT-LOG.md
+/PROJECT-PLAN.md
+/docs/HANDOFF.md
+/docs/DOCUMENT-STATUS.md
 src-tauri/target/
 src-tauri/gen/
 dist/

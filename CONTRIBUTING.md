@@ -10,6 +10,8 @@ Run `npm run validate` before proposing a release candidate. Run `npm run brand:
 
 Generated exports, validation logs, dependencies, editor state and personal backups stay out of Git. Never put credentials in application configuration; the exported website can be read by anyone who downloads it.
 
+Describe task progress and verification in the conversation and use Git commits for change history. Do not create task plans, iteration reports, agent handoffs, prompt dumps or development diaries unless explicitly requested. Update existing documentation for lasting behaviour or architecture changes; preserve source evidence, licence records and test fixtures.
+
 ## Compatibility
 
 - Keep cocktail, source-version, ingredient and bottle IDs stable.
