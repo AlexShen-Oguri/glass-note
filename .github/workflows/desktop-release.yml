@@ -17,9 +17,11 @@ jobs:
           - os: windows-latest
             platform: windows-x64
             target: x86_64-pc-windows-msvc
+            test-target: x86_64-pc-windows-msvc
           - os: macos-15
             platform: macos-universal
             target: universal-apple-darwin
+            test-target: aarch64-apple-darwin
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
     steps:
@@ -34,7 +36,8 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
-      - run: npm run desktop:test -- --locked
+      - run: npm run desktop:prepare
+      - run: npm run desktop:test -- --release --target ${{ matrix.test-target }} --locked
       - run: npm run desktop:build -- --target ${{ matrix.target }} -- --locked
       - name: Verify Windows installation and upgrade
         if: runner.os == 'Windows'
@@ -53,7 +56,7 @@ jobs:
           hdiutil verify .cache/desktop/target/universal-apple-darwin/release/bundle/dmg/*.dmg
           open "$app"
           sleep 8
-          pgrep -x glass-notes-desktop
+          pgrep -f "$PWD/$app/Contents/MacOS/glass-notes-desktop"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: glass-notes-${{ matrix.platform }}
