@@ -396,6 +396,25 @@ async page => {
   checks.push({name: 'reduced-motion-reveal'});
   await page.emulateMedia({reducedMotion: 'no-preference'});
 
+  for(const [width,height] of [[1470,840],[1280,800],[1024,700],[900,560]]){
+    await page.setViewportSize({width,height});await page.goto(base);
+    await page.getByRole('link',{name:'专题研究',exact:true}).waitFor();await settle();
+    const layout=await page.evaluate(()=>{
+      const live=node=>!node.closest('[aria-hidden="true"]')&&node.getBoundingClientRect().width>0;
+      const entry=[...document.querySelectorAll('[data-night-home] [data-night-entry="03"]')].find(live);
+      const navigation=[...document.querySelectorAll('[data-night-home] [role="navigation"]')].find(live);
+      if(!entry||!navigation)return null;
+      const rect=node=>{const {left,top,right,bottom,width,height}=node.getBoundingClientRect();return {left,top,right,bottom,width,height};};
+      return {gap:navigation.getBoundingClientRect().top-entry.getBoundingClientRect().bottom,
+        links:[...navigation.querySelectorAll('a[href]')].filter(live).map(rect)};
+    });
+    if(!layout||layout.gap<24)throw Error('home footer overlaps the third entry at '+width+'x'+height);
+    if(layout.links.length!==4||layout.links.some(link=>link.width<44||link.height<44))throw Error('home footer lost its four 44px click targets at '+width+'x'+height);
+    if(layout.links.some((link,index)=>layout.links.slice(index+1).some(other=>Math.min(link.right,other.right)>Math.max(link.left,other.left)
+      &&Math.min(link.bottom,other.bottom)>Math.max(link.top,other.top))))throw Error('home footer click targets intersect at '+width+'x'+height);
+    checks.push({name:'home-footer-spacing-'+width+'x'+height,gap:layout.gap});
+  }
+
   const archiveRows=async()=>{
     await page.waitForFunction(()=>[...document.querySelectorAll('[data-night-home] [data-motion-part="archive"] a[href*="/cocktails/"]')]
       .filter(node=>!node.closest('[aria-hidden="true"]')&&node.getBoundingClientRect().width>0).length===3);

@@ -58,11 +58,14 @@ export default function WelcomeScreen() {
     {number: '02', title: t(locale, 'browseMode'), description: t(locale, 'browseDescription'), href: '/discover' as const},
     {number: '03', title: recipeCategoryText(locale, 'topics'), description: recipeCategoryText(locale, 'topicsHint'), href: '/topics' as const},
   ];
+  const navigation = <SafeAreaView edges={compact ? ['bottom'] : []} {...(Platform.OS === 'web' ? {role: 'navigation' as const} : {})} accessibilityLabel={appNavigationText(locale, 'primaryNavigation')} style={[styles.homeNav, compact ? styles.homeNavCompact : {marginHorizontal: scenePadding, marginTop: 32}]}>
+    {([['/', 'home'], ['/pantry', 'cabinet'], ['/professional', 'professional'], ['/my', 'my']] as const).map(([href, label]) => <Link key={href} href={href} asChild><Pressable accessibilityRole="link" accessibilityLabel={appNavigationText(locale, label)} {...(Platform.OS === 'web' && href === '/' ? {'aria-current': 'page' as const} : {})} style={StyleSheet.flatten([styles.destination, compact && styles.destinationCompact])}><Text style={[styles.destinationText, href === '/' && styles.destinationActive]}>{appNavigationText(locale, label)}</Text></Pressable></Link>)}
+  </SafeAreaView>;
 
   return <SafeAreaView {...motionData({nightHome: ''})} style={styles.screen} edges={['top']}>
-    <ScrollView contentContainerStyle={styles.page}>
+    <ScrollView contentContainerStyle={[styles.page, !compact && styles.pageDesktop]}>
       <BrandToolbar {...app} showUnits={false} variant="home"/>
-      <View {...motionData({sceneContent:''})} testID="night-home-copy" style={[styles.scene, {paddingHorizontal: scenePadding, minHeight: compact ? 0 : height - 220, paddingTop: compact ? 23 : short ? 20 : large ? 75 : 51}]}>
+      <View {...motionData({sceneContent:''})} testID="night-home-copy" style={[styles.scene, !compact && styles.sceneDesktop, {paddingHorizontal: scenePadding, minHeight: compact ? 0 : height - 220, paddingTop: compact ? 23 : short ? 20 : large ? 75 : 51}]}>
         <View {...motionData({motionPart: 'kicker'})} style={[styles.kicker, compact && styles.kickerCompact]}><View style={[styles.kickerRule, compact && styles.kickerRuleCompact]}/><Text style={[styles.kickerText, compact && styles.kickerTextCompact]}>GLASS NOTES / EVERY TASTE TELLS A STORY</Text></View>
         <View {...motionData({motionHeading: 'home'})} testID="night-home-title" accessibilityRole="header" accessibilityLabel={t(locale, 'welcomeTitle')} {...(Platform.OS === 'web' ? {'aria-level': 1} : {})} pointerEvents="none" style={[styles.heading, {width: compact ? '100%' : narrow ? '70%' : '66%', marginTop: compact ? 26 : short ? 20 : large ? 40 : 27}]}>
           {locale === 'zh' ? <>
@@ -91,17 +94,18 @@ export default function WelcomeScreen() {
         </View>
         {!compact && <View style={[styles.collection, {right: width * .07}]}><View style={styles.collectionRule}/><Text style={styles.collectionText}>THE COLLECTION</Text><Text style={styles.collectionText}>{catalogue.cocktails.length} RECIPES</Text></View>}
       </View>
+      {!compact && navigation}
     </ScrollView>
-    <SafeAreaView edges={compact ? ['bottom'] : []} {...(Platform.OS === 'web' ? {role: 'navigation' as const} : {})} accessibilityLabel={appNavigationText(locale, 'primaryNavigation')} style={[styles.homeNav, {left: compact ? 0 : width * .061}, compact && styles.homeNavCompact]}>
-      {([['/', 'home'], ['/pantry', 'cabinet'], ['/professional', 'professional'], ['/my', 'my']] as const).map(([href, label]) => <Link key={href} href={href} asChild><Pressable accessibilityRole="link" accessibilityLabel={appNavigationText(locale, label)} {...(Platform.OS === 'web' && href === '/' ? {'aria-current': 'page' as const} : {})} style={StyleSheet.flatten([styles.destination, compact && styles.destinationCompact])}><Text style={[styles.destinationText, href === '/' && styles.destinationActive]}>{appNavigationText(locale, label)}</Text></Pressable></Link>)}
-    </SafeAreaView>
+    {compact && navigation}
   </SafeAreaView>;
 }
 
 const styles = StyleSheet.create({
   screen: {flex: 1, backgroundColor: 'transparent'},
   page: {flexGrow: 1, paddingBottom: 120},
+  pageDesktop: {paddingBottom: 33},
   scene: {position: 'relative', width: '100%'},
+  sceneDesktop: {flexGrow: 1},
   kicker: {flexDirection: 'row', alignItems: 'center', gap: 15},
   kickerCompact: {gap: 10},
   kickerRule: {width: 32, height: 1, backgroundColor: colors.accent},
@@ -146,9 +150,9 @@ const styles = StyleSheet.create({
   collection: {position: 'absolute', bottom: 35, flexDirection: 'row', alignItems: 'center', gap: 16},
   collectionRule: {width: 47, height: 1, backgroundColor: cover.line},
   collectionText: {color: cover.muted, fontSize: 10, lineHeight: 16, letterSpacing: 1.5},
-  homeNav: {position: 'absolute', bottom: 33, flexDirection: 'row', alignItems: 'center', gap: 35, zIndex: 10},
-  homeNavCompact: {right: 0, bottom: 0, gap: 0, justifyContent: 'space-around', backgroundColor: '#142019', borderTopWidth: 1, borderColor: cover.line, paddingTop: 5, paddingHorizontal: 9, paddingBottom: 8},
-  destination: {minHeight: 44, justifyContent: 'center'},
+  homeNav: {flexDirection: 'row', alignItems: 'center', gap: 35, zIndex: 10},
+  homeNavCompact: {position: 'absolute', left: 0, right: 0, bottom: 0, gap: 0, justifyContent: 'space-around', backgroundColor: '#142019', borderTopWidth: 1, borderColor: cover.line, paddingTop: 5, paddingHorizontal: 9, paddingBottom: 8},
+  destination: {minWidth: 44, minHeight: 44, justifyContent: 'center'},
   destinationCompact: {minWidth: 65, height: 49},
   destinationText: {fontSize: 11, lineHeight: 17.6, letterSpacing: 1.65, color: cover.muted},
   destinationActive: {color: cover.ivory},
