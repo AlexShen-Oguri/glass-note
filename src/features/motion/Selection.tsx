@@ -1,8 +1,10 @@
 import React, {useEffect, useRef} from 'react';
-import {Animated, Easing, type ViewProps} from 'react-native';
+import {Animated, Easing, View, type ViewProps} from 'react-native';
 import {useMotionEnabled} from './useMotionEnabled';
 
-export function MotionSelection({selected, ...props}: ViewProps & {selected: boolean}) {
+type SelectionProps = ViewProps & {selected: boolean; feedbackKey?: string};
+
+export function MotionSelection({selected, feedbackKey: _feedbackKey, ...props}: SelectionProps) {
   const value = useRef(new Animated.Value(1)).current;
   const previous = useRef(selected);
   const enabled = useMotionEnabled();
@@ -17,4 +19,12 @@ export function MotionSelection({selected, ...props}: ViewProps & {selected: boo
     return () => tween.stop();
   }, [selected, enabled, value]);
   return <Animated.View {...props} style={[props.style, {transform: [{scale: value}]}]} />;
+}
+
+export function MotionSelectionRule({selected, feedbackKey: _feedbackKey, ...props}: SelectionProps) {
+  return <View {...props} style={[props.style, {opacity: selected ? 1 : 0}]} />;
+}
+
+export function MotionSelectionSummary({changeKey: _changeKey, ...props}: ViewProps & {changeKey: string}) {
+  return <View {...props} />;
 }

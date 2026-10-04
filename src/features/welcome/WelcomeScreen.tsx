@@ -8,6 +8,7 @@ import {media} from '../../media';
 import {t} from '../../i18n/ui';
 import {colors} from '../../theme/tokens';
 import {BrandToolbar, isAiMedia, serif, useViewport} from '../discovery/components';
+import {useSceneTransition} from '../motion/SceneTransition';
 import {motionData} from '../motion/attributes';
 import {recipeCategoryText} from '../../i18n/recipe-categories';
 import {appNavigationText} from '../../i18n/app-navigation';
@@ -16,6 +17,7 @@ const cover = {ivory: '#f0ebdf', muted: '#a7b3a7', line: 'rgba(181,198,169,.24)'
 
 export default function WelcomeScreen() {
   const app = useApp();
+  const {run}=useSceneTransition();
   const {locale, dispatchGuided} = app;
   const {width, height} = useViewport();
   const compact = width <= 700;
@@ -32,10 +34,10 @@ export default function WelcomeScreen() {
   const mask = {paddingBottom: titleSize * .11, marginBottom: -titleSize * .11};
   const titleStyle = {fontSize: titleSize, lineHeight, letterSpacing: titleSize * -.065};
 
-  const customize = () => {
+  const customize = () => run(() => {
     dispatchGuided({type: 'restart'});
     router.push('/customize' as never);
-  };
+  },{label:'一杯'});
   const entries = [
     {number: '01', title: t(locale, 'customizeMode'), description: t(locale, 'customizeDescription'), action: customize, primary: true},
     {number: '02', title: t(locale, 'browseMode'), description: t(locale, 'browseDescription'), href: '/discover' as const},
@@ -45,7 +47,7 @@ export default function WelcomeScreen() {
   return <SafeAreaView {...motionData({nightHome: ''})} style={styles.screen} edges={['top']}>
     <ScrollView contentContainerStyle={styles.page}>
       <BrandToolbar {...app} showUnits={false} variant="home"/>
-      <View testID="night-home-copy" style={[styles.scene, {paddingHorizontal: scenePadding, minHeight: compact ? 0 : height - 220, paddingTop: compact ? 23 : short ? 20 : large ? 75 : 51}]}>
+      <View {...motionData({sceneContent:''})} testID="night-home-copy" style={[styles.scene, {paddingHorizontal: scenePadding, minHeight: compact ? 0 : height - 220, paddingTop: compact ? 23 : short ? 20 : large ? 75 : 51}]}>
         <View {...motionData({motionPart: 'kicker'})} style={[styles.kicker, compact && styles.kickerCompact]}><View style={[styles.kickerRule, compact && styles.kickerRuleCompact]}/><Text style={[styles.kickerText, compact && styles.kickerTextCompact]}>GLASS NOTES / EVERY TASTE TELLS A STORY</Text></View>
         <View {...motionData({motionHeading: 'home'})} testID="night-home-title" accessibilityRole="header" accessibilityLabel={t(locale, 'welcomeTitle')} {...(Platform.OS === 'web' ? {'aria-level': 1} : {})} pointerEvents="none" style={[styles.heading, {width: compact ? '100%' : narrow ? '70%' : '66%', marginTop: compact ? 26 : short ? 20 : large ? 40 : 27}]}>
           {locale === 'zh' ? <>

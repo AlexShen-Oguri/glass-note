@@ -1,9 +1,8 @@
 import {motionData} from '../motion/attributes';
 import {MotionModal, MotionFloat} from '../motion/primitives';
-import React, {useEffect, useState, useSyncExternalStore} from 'react';
+import React, {useState, useSyncExternalStore} from 'react';
 import {Link} from 'expo-router';
 import {
-  AccessibilityInfo,
   Image,
   Platform,
   Pressable,
@@ -20,6 +19,7 @@ import {t} from '../../i18n/ui';
 import {appNavigationText} from '../../i18n/app-navigation';
 import {colors, radii, typography} from '../../theme/tokens';
 import {BrandLockup} from '../brand/BrandIdentity';
+import {useSystemMotionPreference} from '../motion/systemPreference';
 
 export const serif = typography.display;
 export const nativeDriver = Platform.OS !== 'web';
@@ -40,17 +40,7 @@ export function useViewport() {
 }
 
 export function useReduceMotion() {
-  const [reduceMotion, setReduceMotion] = useState(true);
-  useEffect(() => {
-    let active = true;
-    AccessibilityInfo.isReduceMotionEnabled().then((value) => active && setReduceMotion(value)).catch(() => undefined);
-    const subscription = AccessibilityInfo.addEventListener('reduceMotionChanged', setReduceMotion);
-    return () => {
-      active = false;
-      subscription.remove();
-    };
-  }, []);
-  return reduceMotion;
+  return useSystemMotionPreference().reduced;
 }
 
 export function BrandToolbar({

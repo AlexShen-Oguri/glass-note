@@ -19,6 +19,8 @@ import {useApp} from '../../platform/AppProvider';
 import {useMaking} from '../../platform/MakingProvider';
 import {BrandToolbar} from '../discovery/components';
 import {MotionTransition} from '../motion';
+import {motionData} from '../motion/attributes';
+import {useSceneTransition} from '../motion/SceneTransition';
 import {RecipeAbv} from './RecipeAbv';
 import {Heading} from '../navigation/Heading';
 import {makingStyles as s} from './styles';
@@ -28,6 +30,8 @@ const first=(value:string|string[]|undefined)=>Array.isArray(value)?value[0]:val
 const newId=()=>`make-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,9)}`;
 
 export function MakingScreen(){
+  const {run}=useSceneTransition();
+  const [,setPresentation]=useState(0);
   const app=useApp(),making=useMaking(),params=useLocalSearchParams<{session?:string|string[];version?:string|string[]}>();
   const sessionId=first(params.session),versionId=first(params.version);
   const session=making.state.sessions.find(item=>item.id===sessionId);
@@ -55,17 +59,19 @@ export function MakingScreen(){
   },[sessionId,versionId,making.hydrated,focused]);
   const retry=async()=>{setBusy(true);try{const ok=await making.retry();setError(!ok);if(ok&&pending.current){const item=making.state.sessions.find(item=>item.id===pending.current!.id)??findResumableSession(making.state,recipeFingerprint(pending.current.recipe),pending.current.recipe.version.servings);if(item){pending.current=null;open(item.id);}else setError(true);}}finally{setBusy(false);}};
   const complete=async()=>{if(!session||busy||making.saving||making.error)return;setBusy(true);setError(false);try{const ok=await making.change(state=>({...state,sessions:state.sessions.map(item=>item.id===session.id?updateSession(item,{completed:true},new Date().toISOString()):item)}));setError(!ok);}catch{setError(true);}finally{setBusy(false);}};
-  const again=async()=>{if(!session||busy||making.saving||making.error)return;setBusy(true);setError(false);const id=pending.current?.id??newId();pending.current={id,recipe:session.recipe};try{const ok=await making.change(state=>state.sessions.some(item=>item.id===id)?state:{...state,sessions:[...state.sessions,createSession(session.recipe,id,new Date().toISOString())]});if(ok){pending.current=null;open(id);}else setError(true);}catch{setError(true);}finally{setBusy(false);}};
-  if(session?.completed&&!busy&&!making.saving&&!making.error&&!error)confirmed.current.add(session.id);
+  const again=async()=>{if(!session||busy||making.saving||making.error)return;setBusy(true);setError(false);const id=pending.current?.id??newId();pending.current={id,recipe:session.recipe};try{const ok=await making.change(state=>state.sessions.some(item=>item.id===id)?state:{...state,sessions:[...state.sessions,createSession(session.recipe,id,new Date().toISOString())]});if(ok){pending.current=null;run(()=>open(id),{label:'调制',automatic:true});}else setError(true);}catch{setError(true);}finally{setBusy(false);}};
+  useEffect(()=>{
+    if(session?.completed&&!busy&&!making.saving&&!making.error&&!error&&!confirmed.current.has(session.id))run(()=>{confirmed.current.add(session.id);setPresentation(value=>value+1);},{label:'完成',automatic:true});
+  },[session?.id,session?.completed,busy,making.saving,making.error,error,run]);
   const completed=Boolean(session&&confirmed.current.has(session.id));
   return <SafeAreaView style={s.screen}><View style={{paddingHorizontal:18}}><BrandToolbar {...app}/></View>
-    <MotionTransition changeKey={`${sessionId??versionId}:${completed?'completed':'making'}`} kind="completion" style={{flex:1,minHeight:0}}>
+    <MotionTransition changeKey={`${sessionId??versionId}:${completed?'completed':'making'}`} kind="completion" disabled={!focused} style={{flex:1,minHeight:0}}>
       <ScrollView contentContainerStyle={[s.scroll,{flexGrow:1}]} automaticallyAdjustKeyboardInsets>
         <View style={[s.shell,s.narrowShell,{flexGrow:1}]}>
-          {!completed?<Pressable accessibilityRole="link" onPress={()=>router.canGoBack()?router.back():router.replace('/discover' as never)} style={s.back}><Text style={s.backText}>← {copy('back')}</Text></Pressable>:null}
+          {!completed?<Pressable accessibilityRole="link" onPress={()=>run(()=>router.canGoBack()?router.back():router.replace('/discover' as never),{label:'饮谱',direction:-1,history:router.canGoBack()})} style={s.back}><Text style={s.backText}>← {copy('back')}</Text></Pressable>:null}
           {making.error||error?<PersistenceNotice kind={making.error??'write'} retrying={busy} onRetry={()=>void retry()} copy={copy}/>:null}
           {!making.hydrated&&!making.error?<Text style={s.empty}>{copy('loading')}</Text>:null}
-          {completed?<View style={{flexGrow:1,minHeight:300,justifyContent:'center',alignItems:'center',gap:36,paddingVertical:48}}><Text accessibilityRole="header" accessibilityLiveRegion="polite" style={[s.title,{fontSize:48,lineHeight:60}]}>{copy('completed')}</Text><View style={[s.row,{justifyContent:'center'}]}><Action primary label={refinementText(app.locale,'again')} disabled={busy||making.saving} onPress={()=>void again()}/><Action label={refinementText(app.locale,'backToList')} onPress={()=>router.replace('/discover' as never)}/></View></View>:recipe?<>
+          {completed?<View style={{flexGrow:1,minHeight:300,justifyContent:'center',alignItems:'center',gap:36,paddingVertical:48}}><Heading level={1} accessibilityLiveRegion="polite" style={[s.title,{fontSize:48,lineHeight:60}]}>{copy('completed')}</Heading><View style={[s.row,{justifyContent:'center'}]}><Action primary label={refinementText(app.locale,'again')} disabled={busy||making.saving} onPress={()=>void again()}/><Action label={refinementText(app.locale,'backToList')} onPress={()=>run(()=>router.replace('/discover' as never),{label:'酒单',direction:-1})}/></View></View>:recipe?<>
             <View style={s.hero}><Heading level={1} style={s.title}>{recipeDisplayName(recipe, app.locale)}</Heading><CocktailOriginalName recipe={recipe} locale={app.locale} /></View>
             <RecipeBody recipe={recipe} servings={session?.servings??recipe.version.servings} locale={app.locale} unit={app.unit}/>
             <Action primary label={copy(busy||making.saving?'saving':'complete')} disabled={!session||session.completed||busy||making.saving||Boolean(making.error)} onPress={()=>void complete()}/>
@@ -83,11 +89,11 @@ function RecipeBody({recipe,servings,locale,unit}:{recipe:MakingRecipe;servings:
   const techniques=sameSource&&recipeFingerprint(sameSource)===recipeFingerprint(recipe)?new Set(current.mixingMethods?.map(item=>item.method)):new Set<string>();
   const preparationLabels=preparationCopy(locale);
   return <>
-    <View style={{gap:12,paddingBottom:16}}><Heading level={2} style={s.sectionHeading}>{makingText(locale,'ingredients')}</Heading>{scaleRecipe(recipe,servings).map((row,index)=>{
+    <View {...motionData({motionPart:'menu'})} style={{gap:12,paddingBottom:16}}><Heading level={2} style={s.sectionHeading}>{makingText(locale,'ingredients')}</Heading>{scaleRecipe(recipe,servings).map((row,index)=>{
       const amount=formatAmount(row.amount,row.unit,unit),sourceRow=recipe.version.ingredients[index];
       return <View key={row.rowId} style={s.checklist}><Text style={[s.strong,{width:92}]}>{amount.amount} {t(locale,`unit_${amount.unit}` as UiKey)}</Text><View style={s.grow}><Text style={s.body}>{recipe.ingredientNames[row.ingredientId]?.[locale]||recipe.ingredientNames[row.ingredientId]?.en||row.ingredientId}{row.optional?` (${makingText(locale,'optional')})`:''}</Text>{sourceRow?.brandId?<Text style={s.meta}>{recipe.brandNames[sourceRow.brandId]??sourceRow.brandId}</Text>:null}{sourceRow?.note?<Text style={s.meta}>{sourceRow.note[locale]||sourceRow.note.en}</Text>:null}</View></View>;
     })}</View>
-    <View style={{gap:24,paddingVertical:16}}><Heading level={2} style={s.sectionHeading}>{makingText(locale,'steps')}</Heading>{steps.map((step,index)=><View key={index} style={s.split}><Text style={s.stepNumber}>{index+1}</Text><Text style={[s.body,{flex:1,fontSize:17,lineHeight:28}]}>{step}</Text></View>)}</View>
+    <View style={{gap:24,paddingVertical:16}}><Heading level={2} style={s.sectionHeading}>{makingText(locale,'steps')}</Heading>{steps.map((step,index)=><View {...motionData({motionPart:'menu'})} key={index} style={s.split}><Text style={s.stepNumber}>{index+1}</Text><Text style={[s.body,{flex:1,fontSize:17,lineHeight:28}]}>{step}</Text></View>)}</View>
     <View style={{gap:12,paddingVertical:16}}><Heading level={2} style={s.sectionHeading}>{refinementText(locale,'tips')}</Heading>
       {recipe.preparation?<>
         <Text style={s.body}>{recipe.preparation.summary[locale]||recipe.preparation.summary.en}</Text>

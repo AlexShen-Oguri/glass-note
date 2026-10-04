@@ -56,9 +56,8 @@ export function MotionFloat({index, paused, reduceMotion, ...props}: FloatProps)
   return <View {...props} ref={host} />;
 }
 
-/** Keep the actual portal mounted through exit; RN Web still owns its focus trap. */
-export function MotionModal({visible = false, motionDisabled = false, children, onShow, ...props}: MotionModalProps) {
-  const enabled = useMotionEnabled() && !motionDisabled;
+/** The reference opens dialogs directly; RN Web retains its real focus trap. */
+export function MotionModal({visible = false, motionDisabled: _motionDisabled = false, children, onShow, ...props}: MotionModalProps) {
   const [present, setPresent] = useState(visible);
   const [node, setNode] = useState<HTMLElement | null>(null);
   const latestVisible = useRef(visible);
@@ -69,30 +68,22 @@ export function MotionModal({visible = false, motionDisabled = false, children, 
   const shown = useRef(false);
   const lastOpen = useRef(false);
   useEffect(() => {if (visible) setPresent(true);}, [visible]);
-  useGSAP(() => {
+  useEffect(() => {
     if (visible && !lastOpen.current) shown.current = false;
     lastOpen.current = visible;
     if (!node) {if (!visible) setPresent(false); return;}
     const panel = node.querySelector<HTMLElement>('[data-motion-surface]') ?? node.firstElementChild?.firstElementChild;
-    const timeline = gsap.timeline({defaults: {ease: 'power3.out'}, onComplete: () => {
-      if (!latestVisible.current) setPresent(false);
-      else if (!shown.current) {
-        shown.current = true;
-        // Focus only after autoAlpha has made the actual portal visible.
-        if (panel && !panel.contains(document.activeElement)) {
-          panel.querySelector<HTMLElement>('button,input,textarea,select,a[href],[role="button"],[tabindex="0"]')?.focus({preventScroll: true});
-        }
-        show.current?.(showEvent.current as never);
+    if (!visible) {setPresent(false); return;}
+    const frame = requestAnimationFrame(() => {
+      if (!latestVisible.current || shown.current) return;
+      shown.current = true;
+      if (panel && !panel.contains(document.activeElement)) {
+        panel.querySelector<HTMLElement>('button,input,textarea,select,a[href],[role="button"],[tabindex="0"]')?.focus({preventScroll: true});
       }
-    }});
-    if (visible) {
-      timeline.fromTo(node, {autoAlpha: enabled ? 0 : 1}, {autoAlpha: 1, duration: enabled ? 0.28 : 0, clearProps: 'opacity,visibility'}, 0);
-      if (panel) timeline.fromTo(panel, {y: enabled ? 20 : 0, scale: enabled ? 0.985 : 1}, {y: 0, scale: 1, duration: enabled ? 0.4 : 0, clearProps: 'transform'}, 0);
-    } else {
-      timeline.to(node, {autoAlpha: 0, duration: enabled ? 0.18 : 0}, 0);
-      if (panel) timeline.to(panel, {y: 10, duration: enabled ? 0.18 : 0}, 0);
-    }
-  }, {scope: node ?? undefined, dependencies: [node, visible, enabled], revertOnUpdate: true});
+      show.current?.(showEvent.current as never);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [node, visible]);
   return <Modal {...props} visible={present} animationType="none" onShow={event => {showEvent.current = event;}}>
     <View ref={setNode as never} style={{flex: 1}} {...motionData({motionModal: ''})}>{children}</View>
   </Modal>;

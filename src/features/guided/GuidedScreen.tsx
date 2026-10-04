@@ -8,7 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import {Link, router, useFocusEffect} from 'expo-router';
+import {Link, router, useIsFocused} from 'expo-router';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {catalogue} from '../../content/catalogue';
@@ -23,7 +23,9 @@ import {g175} from '../../i18n/round17-5-guided';
 import {MotionTransition,useMotionEnabled} from '../motion';
 import {motionData} from '../motion/attributes';
 import {ProgressOrbit} from '../motion/ProgressOrbit';
-import {MotionSelection} from '../motion/Selection';
+import {useSceneTransition} from '../motion/SceneTransition';
+import {MotionResults} from '../motion/Results';
+import {MotionSelection,MotionSelectionRule,MotionSelectionSummary} from '../motion/Selection';
 import type {
   Approachability,
   Exclusion,
@@ -60,6 +62,8 @@ type GuidedAppState = ReturnType<typeof useApp> & {
   guided: GuidedSession;
   dispatchGuided: React.Dispatch<GuidedAction>;
 };
+
+const emptySubmittedQuery: SearchQuery = {};
 
 const stableWebScrollGutter=Platform.OS==='web'
   ? ({scrollbarGutter:'stable'} as unknown as React.ComponentProps<typeof ScrollView>['style'])
@@ -163,13 +167,13 @@ function SelectionSummary({query, context, locale, compact = false, inline=false
   return (
     <View {...motionData({motionSummary: ''})} style={[styles.summary, compact && styles.summaryCompact,inline&&styles.summaryInline]}>
       <Text style={styles.summaryLabel}>{gr(locale, 'preferenceProfile')}</Text>
-      {groups.length ? <View style={[styles.summaryGroups,inline&&styles.summaryGroupsInline]}>{groups.map((group, index) => (
+      {groups.length ? <MotionSelectionSummary changeKey={JSON.stringify(groups.map(group=>[group.key,group.labels]))} style={[styles.summaryGroups,inline&&styles.summaryGroupsInline]}>{groups.map((group, index) => (
         <View key={group.key} style={styles.summaryGroup}>
           <Text style={styles.summaryGroupName}>{String(index + 1).padStart(2, '0')} / {group.name}</Text>
           <View style={styles.summaryItems}>{group.labels.map((label) => <Text key={`${group.key}-${label}`} style={styles.summaryItem}>{label}</Text>)}</View>
           {group.key === 'context' && onEditContext ? <Pressable accessibilityRole="button" onPress={onEditContext} style={({pressed}) => [styles.summaryEdit, pressed && styles.pressed]}><Text style={styles.summaryEditText}>{contextText(locale, 'change')}</Text></Pressable> : null}
         </View>
-      ))}</View> : <Text style={styles.summaryOpen}>{t(locale, 'guidedOpen')}</Text>}
+      ))}</MotionSelectionSummary> : <Text style={styles.summaryOpen}>{t(locale, 'guidedOpen')}</Text>}
     </View>
   );
 }
@@ -245,24 +249,28 @@ function TasteStorageNotice({taste, locale}: {taste: ReturnType<typeof useTaste>
   );
 }
 
-function OptionCard({label, note, selected, compact, short=false, selectedText, onPress}: {label: string; note?: string; selected: boolean; compact: boolean;short?:boolean; selectedText: string; onPress: () => void}) {
+function OptionCard({label, note, selected, compact, short=false, selectedText, onPress,feedbackKey}: {feedbackKey?:string;label: string; note?: string; selected: boolean; compact: boolean;short?:boolean; selectedText: string; onPress: () => void}) {
+  const [hovered,setHovered]=useState(false);
   return (
-    <Pressable
+    <Pressable {...motionData({motionPart:'option'})}
       accessibilityRole="button"
       accessibilityState={{selected}}
       aria-pressed={selected}
       onPress={onPress}
+      onHoverIn={()=>setHovered(true)}
+      onHoverOut={()=>setHovered(false)}
       style={({pressed}) => [styles.option, compact && styles.optionCompact, short&&styles.optionShort, selected && styles.optionSelected, pressed && styles.pressed]}
     >
-      {selected ? <View pointerEvents="none" style={styles.optionSelectedRule} /> : null}
+      <MotionSelectionRule selected={selected} feedbackKey={feedbackKey} pointerEvents="none" style={styles.optionSelectedRule}/>
+      {selected?<View pointerEvents="none" style={[styles.optionAccentRule,compact&&styles.optionAccentRuleCompact]}/>:null}
       <View style={styles.optionCopy}>
         <View style={styles.optionTitleLine}>
-          <Text style={[styles.optionLabel,(compact||short)&&styles.optionLabelSmall, selected && styles.optionLabelSelected]}>{label}</Text>
+          <Text style={[styles.optionLabel,(compact||short)&&styles.optionLabelSmall, hovered&&!selected&&{color:colors.accent}, selected && styles.optionLabelSelected]}>{label}</Text>
           {selected ? <Text style={styles.selectedBadge}>{selectedText}</Text> : null}
         </View>
         {note ? <Text style={[styles.optionNote,(compact||short)&&styles.optionNoteSmall, selected && styles.optionNoteSelected]}>{note}</Text> : null}
       </View>
-      <MotionSelection selected={selected} style={[styles.optionIndicator, compact && styles.optionIndicatorCompact, selected && styles.optionIndicatorSelected]}><Text style={[styles.optionCheck, selected && styles.optionCheckSelected]}>{selected ? '✓' : ''}</Text></MotionSelection>
+      <MotionSelection selected={selected} feedbackKey={feedbackKey} style={[styles.optionIndicator, compact && styles.optionIndicatorCompact, selected && styles.optionIndicatorSelected]}><Text style={[styles.optionCheck, selected && styles.optionCheckSelected]}>{selected ? '✓' : ''}</Text></MotionSelection>
     </Pressable>
   );
 }
@@ -272,7 +280,7 @@ function Progress({guided, locale, dispatch}: {guided: GuidedSession; locale: Lo
     dispatch({type: 'review', step: target});
   };
   return (
-    <View style={styles.progressLine}>
+    <View {...motionData({motionPart:'progress'})} style={styles.progressLine}>
       <Text style={styles.stepNumber}>{String(guided.step + 1).padStart(2, '0')}<Text style={styles.stepTotal}> / 04</Text></Text>
     <View style={styles.progress}>
       <ProgressOrbit step={guided.step} />
@@ -384,17 +392,19 @@ function StepActions({guided, dispatch, locale, compact = false,short=false}: {g
 
 function ModeChoice({locale,dispatch,compact}:{locale:Locale;dispatch:React.Dispatch<GuidedAction>;compact:boolean}) {
   const {width}=useViewport();
+  const {run}=useSceneTransition();
   return <View style={[styles.modeIntro,compact&&styles.modeIntroCompact]}>
-    <Text style={styles.sceneKicker}>YOUR WAY / YOUR GLASS</Text>
+    <Text {...motionData({motionPart:'kicker'})} style={styles.sceneKicker}>YOUR WAY / YOUR GLASS</Text>
     <View {...motionData({motionPart: 'title'})}><Heading level={1} style={[styles.modeTitle,{fontSize:compact?53:Math.min(98,Math.max(65,width*.062)),lineHeight:compact?61:Math.min(112,Math.max(75,width*.071))}]}>{g175(locale,'modeTitle')}</Heading></View>
     <View {...motionData({motionPart: 'copy'})}><Text style={styles.questionHint}>{g175(locale,'modeHint')}</Text></View>
     <View {...motionData({motionPart: 'options'})} style={[styles.modeChoices,compact&&styles.modeChoicesCompact]}>
-      {(['drink','make'] as const).map(mode=><Pressable key={mode} accessibilityRole="button" onPress={()=>dispatch({type:'set-mode',mode})} style={({pressed})=>[styles.modeChoice,pressed&&styles.pressed]}>
-        <View style={styles.modeEntryLine}><Text style={styles.modeIndex}>{mode==='drink'?'01':'02'}</Text><Text style={styles.modeName}>{g175(locale,mode)}</Text><Text style={styles.modeArrow}>↗</Text></View>
+      {(['drink','make'] as const).map(mode=><Pressable {...motionData({motionPart:'entry'})} key={mode} accessibilityRole="button" onPress={()=>dispatch({type:'set-mode',mode})} style={({pressed})=>[styles.modeChoice,pressed&&styles.pressed]}>
+        <View {...motionData({nightRule:''})} pointerEvents="none" style={styles.modeRule}/>
+        <View style={styles.modeEntryLine}><Text style={styles.modeIndex}>{mode==='drink'?'01':'02'}</Text><Text style={styles.modeName}>{g175(locale,mode)}</Text><View {...motionData({nightArrow:''})} style={styles.modeArrowTrack}><Text style={styles.modeArrow}>↗</Text></View></View>
         <Text style={styles.modeHint}>{g175(locale,mode==='drink'?'drinkHint':'makeHint')}</Text>
       </Pressable>)}
     </View>
-    <Pressable accessibilityRole="button" onPress={()=>router.replace('/')} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{t(locale,'back')}</Text></Pressable>
+    <Pressable accessibilityRole="button" onPress={()=>run(()=>router.replace('/'),{label:'此刻',direction:-1})} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{t(locale,'back')}</Text></Pressable>
   </View>;
 }
 
@@ -449,6 +459,7 @@ function ChoosingView({
               label={t(locale, option.labelKey)}
               note={option.exampleKey ? gr(locale, option.exampleKey) : option.noteKey ? t(locale, option.noteKey) : undefined}
               selected={selected.includes(option.value)}
+              feedbackKey={selected.join('|')}
               compact={compact}
               short={short}
               selectedText={gr(locale, 'selected')}
@@ -502,8 +513,9 @@ function ChoosingView({
   );
 }
 
-function ResultsView({guided, locale, results, baseResultCount, allResultsHidden, compact, dispatch, onHide, onRestore, memorySettings,pantryFiltered,onPhotoRef,photoOpacity}: {guided: GuidedSession; locale: Locale; results: GuidedResult[]; baseResultCount: number; allResultsHidden: boolean; compact: boolean; dispatch: React.Dispatch<GuidedAction>; onHide: (cocktailId: string) => void; onRestore: () => void; memorySettings?: React.ReactNode;pantryFiltered:boolean;onPhotoRef?:(cocktailId:string,node:View|null)=>void;photoOpacity?:Animated.Value}) {
+function ResultsView({guided, locale, results, baseResultCount, allResultsHidden, compact, dispatch, onHide, onRestore, memorySettings,pantryFiltered,onPhotoRef,photoOpacity,skipAction}: {skipAction?:React.ReactNode;guided: GuidedSession; locale: Locale; results: GuidedResult[]; baseResultCount: number; allResultsHidden: boolean; compact: boolean; dispatch: React.Dispatch<GuidedAction>; onHide: (cocktailId: string) => void; onRestore: () => void; memorySettings?: React.ReactNode;pantryFiltered:boolean;onPhotoRef?:(cocktailId:string,node:View|null)=>void;photoOpacity?:Animated.Value}) {
   const [showAll, setShowAll] = useState(false);
+  const [replayKey,setReplayKey]=useState(0);
   const viewport = useViewport();
   const [containerWidth, setContainerWidth] = useState<number | null>(null);
   const shown = showAll ? results : results.slice(0, 6);
@@ -511,16 +523,17 @@ function ResultsView({guided, locale, results, baseResultCount, allResultsHidden
   const contextActive = Boolean(guided.contextSubmitted?.occasion || guided.contextSubmitted?.season);
   useEffect(() => setShowAll(false), [guided.submitted,guided.mode,pantryFiltered]);
   return (
-    <View style={styles.resultsView} onLayout={event=>setContainerWidth(event.nativeEvent.layout.width)}>
+    <MotionResults replayKey={replayKey} changeKey={shown.map(item=>item.cocktailId).join('|')} style={styles.resultsView} onLayout={event=>{const next=event.nativeEvent.layout.width;if(next>0)setContainerWidth(next);}}>
       <View {...motionData({motionResultsLead: ''})} style={styles.resultsLead}>
-        <Text style={styles.sceneKicker}>YOUR TASTE / IN {shown.length} {shown.length===1?'GLASS':'GLASSES'}</Text>
+        <Text {...motionData({motionPart:'kicker'})} style={styles.sceneKicker}>YOUR TASTE / IN {shown.length} {shown.length===1?'GLASS':'GLASSES'}</Text>
         <Heading level={1} style={[styles.resultsTitle,{fontSize:layout.mobile?51:Math.min(97,Math.max(58,viewport.width*.061)),lineHeight:layout.mobile?63:Math.min(116,Math.max(70,viewport.width*.073))}]}>{t(locale, 'guidedResultsTitle')}</Heading>
-        <Text style={styles.resultsHint}>{pantryFiltered?g175(locale,'makeResultHint'):t(locale, 'guidedResultsHint')}</Text>
+        <Text {...motionData({motionPart:'detail'})} style={styles.resultsHint}>{pantryFiltered?g175(locale,'makeResultHint'):t(locale, 'guidedResultsHint')}</Text>
         <Text style={styles.resultsVersionNote}>{gr(locale, 'resultIntro')}</Text>
         <SelectionSummary inline query={guided.submitted ?? {}} context={guided.contextSubmitted ?? {}} locale={locale} onEditContext={() => dispatch({type: 'edit', step: 0})} />
         {memorySettings}
         <View style={styles.resultControls}>
           <Text accessibilityLiveRegion="polite" style={styles.resultCount}>{contextActive&&!pantryFiltered ? `${contextText(locale, 'baseResultCount')} · ${baseResultCount}. ${contextText(locale, 'contextPriorityNote')}` : `${t(locale, 'results')} · ${results.length}`}</Text>
+          {skipAction}
           <Pressable accessibilityRole="button" onPress={() => dispatch({type: 'edit'})} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{t(locale, 'guidedEdit')}</Text></Pressable>
         </View>
       </View>
@@ -533,7 +546,7 @@ function ResultsView({guided, locale, results, baseResultCount, allResultsHidden
             })}</View>)}
           </View>
           {results.length > 6 ? (
-            <Pressable accessibilityRole="button" onPress={() => setShowAll(!showAll)} style={styles.showAll}>
+            <Pressable accessibilityRole="button" onPress={() => {setReplayKey(value=>value+1);setShowAll(!showAll);}} style={styles.showAll}>
               <Text style={styles.showAllText}>{t(locale, showAll ? 'less' : 'allResults')}</Text>
             </Pressable>
           ) : null}
@@ -546,7 +559,7 @@ function ResultsView({guided, locale, results, baseResultCount, allResultsHidden
             <Pressable accessibilityRole="link" onPress={()=>router.push('/pantry')} style={styles.primaryAction}><Text style={styles.primaryActionText}>{g175(locale,'openPantry')}</Text></Pressable>
             <Pressable accessibilityRole="button" onPress={()=>dispatch({type:'set-mode',mode:'drink'})} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{g175(locale,'switchDrink')}</Text></Pressable>
           </View>:null}
-          {allResultsHidden ? <Pressable accessibilityRole="button" onPress={onRestore} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{contextText(locale, 'restoreHidden')}</Text></Pressable> : null}
+          {allResultsHidden ? <Pressable accessibilityRole="button" onPress={()=>{setReplayKey(value=>value+1);onRestore();}} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{contextText(locale, 'restoreHidden')}</Text></Pressable> : null}
         </View>
       )}
       <View style={styles.resultActions}>
@@ -558,12 +571,13 @@ function ResultsView({guided, locale, results, baseResultCount, allResultsHidden
           <Pressable accessibilityRole="link" style={styles.primaryAction}><Text style={styles.primaryActionText}>{t(locale, 'browseMode')}</Text><Text style={styles.primaryArrow}>→</Text></Pressable>
         </Link>
       </View>
-    </View>
+    </MotionResults>
   );
 }
 
 export default function GuidedScreen() {
   const app = useApp() as GuidedAppState;
+  const {run}=useSceneTransition();
   const taste=useTaste();
   const pantry=usePantry();
   const owned=useBottles();
@@ -572,7 +586,26 @@ export default function GuidedScreen() {
   const [hiddenResults, setHiddenResults] = useState<string[]>([]);
   const scrollRef = useRef<ScrollView>(null);
   const resultPhotoRefs=useRef(new Map<string,View>());
-  const {locale, setLocale, unit, setUnit, motionPaused, setMotionPaused, guided, dispatchGuided} = app;
+  const {locale, setLocale, unit, setUnit, motionPaused, setMotionPaused, guided, dispatchGuided:commitGuided} = app;
+  const dispatchGuided=useCallback<React.Dispatch<GuidedAction>>((action)=>{
+    const names=['香气','口感','酒感','第一口'];
+    let label:string|undefined,direction:1|-1=1;
+    switch(action.type){
+      case 'next':case 'skip':label=guided.step===3?'遇见':names[guided.step+1];break;
+      case 'begin':label='遇见';break;
+      case 'back':label=names[Math.max(0,guided.step-1)];direction=-1;break;
+      case 'review':label=names[action.step];direction=-1;break;
+      case 'edit':label=names[action.step??guided.step];direction=-1;break;
+      case 'restart':label='一杯';direction=-1;break;
+      case 'set-mode':label=action.mode===null?'一杯':'香气';direction=action.mode===null?-1:1;break;
+      case 'allow-pantry-fallback':label='香气';break;
+    }
+    if(label){
+      const inQuestion=guided.phase==='choosing'&&guided.mode!==null;
+      const kind=label==='遇见'?'results':inQuestion&&['next','skip','back','review'].includes(action.type)?'step':direction<0?'back':'page';
+      run(()=>commitGuided(action),{label,direction,kind});
+    }else commitGuided(action);
+  },[commitGuided,guided.step,guided.phase,guided.mode,run]);
   const previousPhaseRef=useRef(guided.phase);
   const registerResultPhoto=useCallback((cocktailId:string,node:View|null)=>{
     if(node)resultPhotoRefs.current.set(cocktailId,node);
@@ -580,7 +613,7 @@ export default function GuidedScreen() {
   },[]);
   const {width} = useViewport();
   const reduceMotion = useReduceMotion();
-  const [focused, setFocused] = useState(true);
+  const focused = useIsFocused();
   const compact = width <= 700;
   const screenPaused = !canAnimate || !focused;
   const mode=guided.mode===undefined?'drink':guided.mode;
@@ -589,14 +622,18 @@ export default function GuidedScreen() {
   const gate=mode==='make'&&needsPantryPrompt(access,Boolean(guided.pantryFallback));
   const pantryFiltered=mode==='make'&&access==='ready';
   const fallbackActive=mode==='make'&&access==='empty'&&guided.pantryFallback;
-  const submitted = guided.submitted ?? {};
+  const submitted = guided.submitted ?? emptySubmittedQuery;
+  const resultsReady = guided.phase !== 'choosing';
   const contextActive = Boolean(guided.contextSubmitted?.occasion || guided.contextSubmitted?.season);
   const rankedResults:GuidedResult[] = useMemo(() => {
+    // Draft choices never need a catalogue search. Compute the real submitted
+    // recipe versions once, and retain that result through revealing/results.
+    if (!resultsReady) return [];
     const tasteState=useMemory&&taste.hydrated?taste.savedState:emptyTasteState();
     return pantryFiltered
       ? rankForPantry(catalogue,{...submitted,locale},tasteState,guided.contextSubmitted??{},contextEvidence,ownedPantry)
       : rankForContext(catalogue,{...submitted,locale},tasteState,guided.contextSubmitted??{},contextEvidence);
-  }, [guided.contextSubmitted, locale, submitted, taste.hydrated, taste.savedState, useMemory,pantryFiltered,ownedPantry]);
+  }, [resultsReady,guided.contextSubmitted, locale, submitted, taste.hydrated, taste.savedState, useMemory,pantryFiltered,ownedPantry]);
   const orderedResults = useMemo(
     () => pantryFiltered ? diversifyPantryResults(catalogue,rankedResults as ReturnType<typeof rankForPantry>,6) : contextActive ? diversifyContextResults(catalogue, rankedResults, 6) : rankedResults,
     [contextActive, rankedResults,pantryFiltered],
@@ -638,29 +675,24 @@ export default function GuidedScreen() {
     if (guided.phase === 'choosing') setHiddenResults([]);
   }, [guided.phase,mode]);
 
-  useFocusEffect(useCallback(() => {
-    setFocused(true);
-    return () => setFocused(false);
-  }, []));
-
   return (
     <SafeAreaView style={styles.screen} edges={['top', 'bottom']}>
       <ScrollView ref={scrollRef} style={stableWebScrollGutter} contentContainerStyle={[styles.page,{paddingHorizontal:width*(compact ? 0.07 : 0.065)}]} keyboardShouldPersistTaps="handled">
         <View style={styles.shell}>
           <BrandToolbar {...{locale, setLocale, unit, setUnit, motionPaused, setMotionPaused}} showUnits={false} />
-          {mode!==null?<View style={styles.modeBar}>
+          <MotionTransition changeKey={`${mode}:${gate}:${guided.phase==='choosing'?`choosing:${guided.step}`:'reveal-results'}`} kind="step" disabled={!focused}>
+          {mode!==null?<View {...motionData({motionPart:'detail'})} style={styles.modeBar}>
             <Text style={styles.modeBarName}>{g175(locale,mode)}</Text>
             <Pressable accessibilityRole="button" onPress={()=>dispatchGuided({type:'set-mode',mode:null})} style={styles.modeChange}><Text style={styles.secondaryActionText}>{g175(locale,'changeMode')}</Text></Pressable>
           </View>:null}
           {fallbackActive?<Text accessibilityLiveRegion="polite" style={styles.fallbackNote}>{g175(locale,'fallbackNote')}</Text>:null}
-          <MotionTransition changeKey={`${mode}:${gate}:${guided.phase==='choosing'?`choosing:${guided.step}`:'reveal-results'}`} kind="step">
           {mode===null?<ModeChoice locale={locale} dispatch={dispatchGuided} compact={compact}/>:gate?
             <PantryGate locale={locale} access={access} onContinue={()=>dispatchGuided({type:'allow-pantry-fallback'})} onDrink={()=>dispatchGuided({type:'set-mode',mode:'drink'})} onRetry={()=>{void pantry.retry();void (owned.error==='write'?owned.retrySave():owned.load());}}/>:
           guided.phase === 'choosing' ? (
             <ChoosingView guided={guided} dispatch={dispatchGuided} locale={locale} compact={compact} motionPaused={screenPaused} reduceMotion={reduceMotion} memorySettings={memorySettings} />
           ) : (
             <GuidedReveal revealing={guided.phase==='revealing'} motionAllowed={revealMotionAllowed} activeWindow={focused} locale={locale} candidates={revealCandidates} resultPhotoRefs={resultPhotoRefs} onFinish={()=>dispatchGuided({type:'finish'})}>
-              {photoOpacity=><ResultsView guided={guided} locale={locale} results={results} baseResultCount={rankedResults.length} allResultsHidden={rankedResults.length > 0 && results.length === 0} compact={compact} dispatch={dispatchGuided} onHide={(cocktailId) => setHiddenResults((current) => current.includes(cocktailId) ? current : [...current, cocktailId])} onRestore={() => setHiddenResults([])} memorySettings={memorySettings} pantryFiltered={pantryFiltered} onPhotoRef={registerResultPhoto} photoOpacity={photoOpacity}/>}
+              {(photoOpacity,skipAction)=><ResultsView skipAction={skipAction} guided={guided} locale={locale} results={results} baseResultCount={rankedResults.length} allResultsHidden={rankedResults.length > 0 && results.length === 0} compact={compact} dispatch={dispatchGuided} onHide={(cocktailId) => setHiddenResults((current) => current.includes(cocktailId) ? current : [...current, cocktailId])} onRestore={() => setHiddenResults([])} memorySettings={memorySettings} pantryFiltered={pantryFiltered} onPhotoRef={registerResultPhoto} photoOpacity={photoOpacity}/>}
             </GuidedReveal>
           )}
           </MotionTransition>
@@ -678,10 +710,12 @@ const styles = StyleSheet.create({
   modeTitle:{color:colors.text,fontFamily:serif,fontWeight:'400',maxWidth:810,marginTop:28,marginBottom:16,letterSpacing:-2},
   modeChoices:{width:'100%',maxWidth:560,marginTop:48,marginBottom:24},
   modeChoicesCompact:{marginTop:40},
-  modeChoice:{paddingVertical:20,minHeight:100,borderBottomWidth:1,borderBottomColor:colors.border},
+  modeChoice:{position:'relative',paddingVertical:20,minHeight:100,borderBottomWidth:1,borderBottomColor:colors.border},
   modeEntryLine:{flexDirection:'row',alignItems:'center',gap:18},
   modeIndex:{color:colors.amber,fontSize:12,fontFamily:serif,width:28},
-  modeArrow:{color:colors.accent,fontSize:26,marginLeft:'auto'},
+  modeArrow:{color:colors.accent,fontSize:23},
+  modeArrowTrack:{width:38,height:38,marginLeft:'auto',borderRadius:19,borderWidth:1,borderColor:colors.border,alignItems:'center',justifyContent:'center'},
+  modeRule:{position:'absolute',left:0,right:0,bottom:-1,height:1,backgroundColor:colors.accent,transform:[{scaleX:0}],transformOrigin:'left center'} as never,
   modeHint:{color:colors.muted,fontSize:12,lineHeight:19,marginTop:9,marginLeft:46},
   modeName:{fontFamily:serif,fontSize:31,lineHeight:40,color:colors.text},
   modeBar:{flexDirection:'row',alignItems:'center',gap:25,marginTop:4,minHeight:28},
@@ -755,7 +789,9 @@ const styles = StyleSheet.create({
   optionShort:{minHeight:76,paddingVertical:10},
   optionCompact: {minHeight: 80, gap: 5, paddingVertical: 14, paddingHorizontal: 0},
   optionSelected: {backgroundColor: 'transparent',borderBottomColor:colors.accent},
-  optionSelectedRule: {position:'absolute',left:-11,top:26,height:24,width:2,backgroundColor:colors.accent},
+  optionAccentRule:{position:'absolute',left:-11,top:29,width:2,height:24,backgroundColor:colors.accent},
+  optionAccentRuleCompact:{left:-7,top:24,height:22},
+  optionSelectedRule: {position:'absolute',bottom:-1,left:0,right:0,height:2,backgroundColor:colors.accent},
   optionIndicator: {width: 25, height: 25,flexShrink:0, borderRadius: 13, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center'},
   optionIndicatorCompact:{width:20,height:20,borderRadius:10},
   optionIndicatorSelected: {borderColor: colors.accent,backgroundColor:colors.accent},

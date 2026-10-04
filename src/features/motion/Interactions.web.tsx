@@ -3,58 +3,51 @@ import {View, type ViewProps} from 'react-native';
 import {element, gsap, useGSAP} from './gsap.web';
 import {useMotionEnabled} from './useMotionEnabled';
 import {colors} from '../../theme/tokens';
+import {CustomEase} from 'gsap/CustomEase';
 
-/** Delegate interactions to the current route; quickTo reuses each control's tween. */
+gsap.registerPlugin(CustomEase);
+
+/** Match the reference's ruled entries and photographs on the actual controls. */
 export function MotionInteractions({changeKey, ...props}: ViewProps & {changeKey: string}) {
   const host = useRef<View>(null);
   const enabled = useMotionEnabled();
   useGSAP((_context, contextSafe) => {
     const root = element(host);
     if (!root || !enabled || !contextSafe) return;
-    const controls = new WeakMap<HTMLElement, {y: (value: number) => void; scaleX: (value: number) => void; scaleY: (value: number) => void; baseY: number; baseScaleX: number; baseScaleY: number}>();
-    const editorial = new WeakMap<HTMLElement, gsap.core.Timeline>();
+    const editorial = new WeakMap<HTMLElement, {rule:HTMLElement|null;arrow:HTMLElement|null;glyph:Element|null;photo:HTMLElement|null;background:string;color:string;photoScale:number}>();
+    const editorialEase = CustomEase.create('nightEditorialHover', '0.22,1,0.36,1');
+    const arrowEase = CustomEase.create('nightEditorialArrow', '0.25,0.1,0.25,1');
     const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
     const find = (target: EventTarget | null) => {
-      const node = target instanceof Element ? target.closest<HTMLElement>('button,a,[role="button"],[role="link"]') : null;
-      return node && root.contains(node) && !node.closest('[data-motion-loop]') && !node.style.willChange.includes('transform') && node.getAttribute('aria-disabled') !== 'true' && !node.hasAttribute('disabled') ? node : null;
+      if(!(target instanceof Element))return null;
+      const node=target.closest<HTMLElement>('button,a,[role="button"],[role="link"]');
+      if(!node||!root.contains(node)||node.closest('[data-motion-loop],[data-motion-favorite]')||node.style.willChange.includes('transform')||node.getAttribute('aria-disabled')==='true'||node.hasAttribute('disabled'))return null;
+      if(node.querySelector('[data-night-arrow]'))return node;
+      // The reference zooms a gallery photograph, not its entire caption link.
+      const photo=target.closest<HTMLElement>('[data-motion-photo]');
+      return photo&&node.contains(photo)&&!photo.querySelector('[data-motion-photo-hover="owned"]')?photo:null;
     };
-    const move = contextSafe((node: HTMLElement, lifted: boolean, pressed = false) => {
-      const arrow=node.querySelector<HTMLElement>('[data-night-arrow]');
-      const photo=node.querySelector<HTMLElement>('[data-motion-photo] img');
-      if(photo?.closest('[data-motion-photo-hover="owned"]'))return;
-      if(arrow||photo){
-        let timeline=editorial.get(node);
-        if(!timeline){
-          timeline=gsap.timeline({paused:true,defaults:{ease:'power3.out'}});
-          if(arrow){
-            const rule=node.querySelector<HTMLElement>('[data-night-rule]');
-            if(rule)timeline.to(rule,{scaleX:1,duration:.55},0);
-            timeline.to(arrow,{rotation:-40,backgroundColor:colors.accent,duration:.55},0);
-            const glyph=arrow.firstElementChild;
-            if(glyph)timeline.to(glyph,{color:colors.background,duration:.45},0);
-          }else if(photo)timeline.to(photo,{scale:1.1,duration:1.2},0);
-          editorial.set(node,timeline);
-        }
-        if(lifted&&!pressed)timeline.play();else timeline.reverse();
-        return;
+    const move = contextSafe((node: HTMLElement, lifted: boolean) => {
+      let visual=editorial.get(node);
+      if(!visual){
+        const arrow=node.querySelector<HTMLElement>('[data-night-arrow]');
+        const photo=node.matches('[data-motion-photo]')?node.querySelector<HTMLElement>('img'):node.querySelector<HTMLElement>('[data-motion-photo] img');
+        if(photo?.closest('[data-motion-photo-hover="owned"]'))return;
+        if(!arrow&&!photo)return;
+        const glyph=arrow?.firstElementChild??null;
+        visual={arrow,photo,glyph,rule:node.querySelector<HTMLElement>('[data-night-rule]'),background:arrow?getComputedStyle(arrow).backgroundColor:'',color:glyph?getComputedStyle(glyph).color:'',photoScale:node.closest('[data-motion-item]')?1.07:1.1};
+        editorial.set(node,visual);
       }
-      let control = controls.get(node);
-      if (!control) {
-        // Foreground entrances temporarily own a control's transform. Their
-        // intermediate pose must never become the permanent interaction base.
-        const baseY = 0;
-        const baseScaleX = 1;
-        const baseScaleY = 1;
-        control = {baseY, baseScaleX, baseScaleY,
-          y: gsap.quickTo(node, 'y', {duration: 0.22, ease: 'power2.out'}),
-          scaleX: gsap.quickTo(node, 'scaleX', {duration: 0.22, ease: 'power2.out'}),
-          scaleY: gsap.quickTo(node, 'scaleY', {duration: 0.22, ease: 'power2.out'}),
-        };
-        controls.set(node, control);
-      }
-      control.y(control.baseY + (lifted && !pressed ? -2 : 0));
-      control.scaleX(control.baseScaleX * (pressed ? 0.98 : 1));
-      control.scaleY(control.baseScaleY * (pressed ? 0.98 : 1));
+      const {arrow,photo,glyph,rule}=visual;
+      // Separate property tweens mirror independent CSS transitions: reversing
+      // a .55s arrow must not delay the .45s colour feedback by another .1s.
+      if(arrow){
+        const ruleActive=lifted||node.matches(':focus-visible');
+        if(rule)gsap.to(rule,{scaleX:ruleActive?1:0,duration:.55,ease:editorialEase,overwrite:'auto',clearProps:ruleActive?undefined:'transform'});
+        gsap.to(arrow,{rotation:lifted?-40:0,duration:.55,ease:arrowEase,overwrite:'auto',clearProps:lifted?undefined:'transform'});
+        gsap.to(arrow,{backgroundColor:lifted?colors.accent:visual.background,duration:.45,ease:arrowEase,overwrite:'auto',clearProps:lifted?undefined:'backgroundColor'});
+        if(glyph)gsap.to(glyph,{color:lifted?colors.background:visual.color,duration:.45,ease:arrowEase,overwrite:'auto',clearProps:lifted?undefined:'color'});
+      }else if(photo)gsap.to(photo,{scale:lifted?visual.photoScale:1,duration:1.2,ease:editorialEase,overwrite:'auto',clearProps:lifted?undefined:'transform'});
     });
     const over = (event: PointerEvent) => {
       if (!fine.matches || event.pointerType !== 'mouse') return;
@@ -65,16 +58,12 @@ export function MotionInteractions({changeKey, ...props}: ViewProps & {changeKey
       const node = find(event.target);
       if (node && !(event.relatedTarget instanceof Node && node.contains(event.relatedTarget))) move(node, false);
     };
-    const down = (event: PointerEvent) => {const node = find(event.target); if (node) move(node, false, true);};
-    const up = (event: PointerEvent) => {const node = find(event.target); if (node) move(node, fine.matches && event.pointerType === 'mouse');};
-    const focus = (event: FocusEvent) => {const node = find(event.target); if (node) move(node, true);};
-    const blur = (event: FocusEvent) => {const node = find(event.target); if (node) move(node, false);};
+    const focus = (event: FocusEvent) => {const node = find(event.target); if (node) move(node, node.matches(':hover'));};
+    const blur = (event: FocusEvent) => {const node = find(event.target); if (node) move(node, node.matches(':hover'));};
     root.addEventListener('pointerover', over); root.addEventListener('pointerout', out);
-    root.addEventListener('pointerdown', down); root.addEventListener('pointerup', up);
     root.addEventListener('pointercancel', out); root.addEventListener('focusin', focus); root.addEventListener('focusout', blur);
     return () => {
       root.removeEventListener('pointerover', over); root.removeEventListener('pointerout', out);
-      root.removeEventListener('pointerdown', down); root.removeEventListener('pointerup', up);
       root.removeEventListener('pointercancel', out); root.removeEventListener('focusin', focus); root.removeEventListener('focusout', blur);
     };
   }, {scope: host, dependencies: [enabled, changeKey], revertOnUpdate: true});

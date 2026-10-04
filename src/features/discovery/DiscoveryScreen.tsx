@@ -11,7 +11,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import {Link, useFocusEffect, useLocalSearchParams} from 'expo-router';
+import {Link, useFocusEffect, useIsFocused, useLocalSearchParams} from 'expo-router';
 import {ListBrowseAddButton, ListBrowseSelection} from '../favorites/ListBrowseSelection';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
@@ -112,6 +112,7 @@ function CocktailCard({
 }
 
 export default function DiscoveryScreen() {
+  const focused=useIsFocused();
   const params = useLocalSearchParams<{listId?: string | string[]}>();
   const listId = (Array.isArray(params.listId) ? params.listId[0] : params.listId) || undefined;
   const {locale, setLocale, unit, setUnit, query, setQuery, motionPaused, setMotionPaused} = useApp();
@@ -200,12 +201,13 @@ export default function DiscoveryScreen() {
       >
         <View style={styles.shell}>
           <BrandToolbar {...{locale, setLocale, unit, setUnit, motionPaused, setMotionPaused}} showUnits={false} />
+          <View {...motionData({sceneContent:''})}>
           <View {...motionData({motionPart: 'title'})} style={styles.collectionHeading}>
-            <View style={styles.editionLine}><View style={styles.editionRule} /><Text style={[styles.editionText, compact && styles.editionTextCompact]}>THE COLLECTION / OPEN TO DISCOVERY</Text></View>
+            <View {...motionData({motionPart:'kicker'})} style={styles.editionLine}><View style={styles.editionRule} /><Text style={[styles.editionText, compact && styles.editionTextCompact]}>THE COLLECTION / OPEN TO DISCOVERY</Text></View>
             {listId ? <ListBrowseSelection listId={listId} locale={locale} /> : <Heading level={1} style={[styles.pageTitle, {fontSize: titleSize, lineHeight: titleSize * (compact ? 1.22 : 1.13), letterSpacing: titleSize * -0.065}, compact && styles.pageTitleCompact]}>{locale === 'zh' ? '随便逛逛，慢慢遇见。' : t(locale, 'browseMode')}</Heading>}
-            <Text style={[styles.collectionLead, compact && styles.collectionLeadCompact]}>{locale === 'zh' ? '酒单　·　每一杯，都有自己的故事。' : p02DiscoveryText(locale, 'collectionTitle')}</Text>
+            <Text {...motionData({motionPart:'detail'})} style={[styles.collectionLead, compact && styles.collectionLeadCompact]}>{locale === 'zh' ? '酒单　·　每一杯，都有自己的故事。' : p02DiscoveryText(locale, 'collectionTitle')}</Text>
           </View>
-          <View {...motionData({motionPart: 'copy'})} style={styles.searchPanel}>
+          <View {...motionData({motionSearch: ''})} style={styles.searchPanel}>
               <View style={[styles.searchField, searchFocused && styles.searchFieldFocused]}>
                 <Text aria-hidden style={styles.searchGlyph}>⌕</Text>
                 <TextInput
@@ -280,7 +282,7 @@ export default function DiscoveryScreen() {
             <View style={styles.notice}><Text style={styles.noticeText}>{t(locale, 'noClassics')}</Text></View>
           ) : null}
 
-          <MotionTransition changeKey={`${fingerprint}:${activePagination.limit}`} kind="card" disabled={Boolean(query.text)}>{results.length ? (
+          <MotionTransition changeKey={`${fingerprint}:${activePagination.limit}`} kind="card" disabled={!focused||Boolean(query.text)}>{results.length ? (
             <View style={styles.grid}>
               {resultRows.map((items, rowIndex) => (
                 <View key={items[0]?.cocktail.id ?? `row-${rowIndex}`} style={[styles.gridRow, {gap: columnGap}]}>
@@ -319,6 +321,7 @@ export default function DiscoveryScreen() {
           ) : null}
           <View style={styles.endMark}><View style={styles.endRule} /><View style={styles.endLogo}><BrandMark size={20} decorative /></View><View style={styles.endRule} /></View>
           <Fold title={t(locale,'credits')}><Pressable accessibilityRole="link" onPress={()=>void Linking.openURL(ingredientTaxonomy.url)} style={styles.secondaryLink}><Text style={styles.secondaryLinkText}>{ingredientTaxonomy.title} ↗</Text></Pressable><Pressable accessibilityRole="link" onPress={()=>void Linking.openURL(ingredientTaxonomy.licenseUrl)} style={styles.secondaryLink}><Text style={styles.secondaryLinkText}>{ingredientTaxonomy.license} ↗</Text></Pressable></Fold>
+          </View>
         </View>
       </ScrollView>
       <FilterSheet visible={filterOpen} locale={locale} draft={draft} onChange={setDraft} onApply={applyFilters} onReset={resetFilters} onClose={closeFilters} pauseMotion={motionPaused || reduceMotion} />

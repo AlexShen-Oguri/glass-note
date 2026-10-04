@@ -1,3 +1,5 @@
+import {MotionDisclosure} from '../motion/Disclosure';
+import {useSceneTransition} from '../motion/SceneTransition';
 import {motionData} from '../motion/attributes';
 import {CocktailOriginalName} from '../names/OriginalName';
 import React, {useEffect, useMemo, useState} from 'react';
@@ -54,7 +56,7 @@ function unitLabel(locale: Locale, unit: MeasureUnit) {
 
 function DetailSection({title, aside, compact, children}: {title: string; aside?: React.ReactNode; compact: boolean; children: React.ReactNode}) {
   return (
-    <View style={[styles.section, compact && styles.sectionCompact]}>
+    <View {...motionData({motionPart:'menu'})} style={[styles.section, compact && styles.sectionCompact]}>
       <View style={styles.sectionTitleRow}>
         <Heading level={2} style={styles.sectionTitle}>{title}</Heading>
         {aside}
@@ -99,11 +101,11 @@ function MoreActions({version, locale, leading}: {version: RecipeVersion; locale
       </Pressable>
       </View>
       {open ? (
-        <View style={styles.moreActionsBody}>
+        <MotionDisclosure style={styles.moreActionsBody}>
           <AddToListButton key={version.id} versionId={version.id} locale={locale} />
           <MyRecipeAction versionId={version.id} locale={locale} />
           <RecipeLabAction version={version} locale={locale} />
-        </View>
+        </MotionDisclosure>
       ) : null}
     </View>
   );
@@ -111,6 +113,7 @@ function MoreActions({version, locale, leading}: {version: RecipeVersion; locale
 
 export default function RecipeScreen({cocktailId, versionId, from = 'discover', listId}: {cocktailId: string; versionId?: string; from?: RecipeNavigationSource; listId?: string}) {
   const {locale, setLocale, unit, setUnit, query, motionPaused, setMotionPaused, guided} = useApp();
+  const {run}=useSceneTransition();
   const {width} = useViewport();
   const cocktail = catalogue.cocktails.find((item) => item.id === cocktailId);
   const versions = useMemo(
@@ -131,7 +134,7 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
       <SafeAreaView style={styles.screen} edges={['top']}>
         <View style={styles.notFound}>
           <Text style={styles.notFoundTitle}>{t(locale, 'noResults')}</Text>
-          <Pressable accessibilityRole="button" onPress={() => goBack(from, listId)} style={styles.primaryButton}>
+          <Pressable accessibilityRole="button" onPress={() => run(()=>goBack(from, listId),{label:from==='welcome'?'此刻':from==='customize'?'遇见':'酒单',direction:-1})} style={styles.primaryButton}>
             <Text style={styles.primaryButtonText}>{t(locale, 'back')}</Text>
           </Pressable>
         </View>
@@ -157,8 +160,9 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
       <ScrollView contentContainerStyle={[styles.page, {paddingHorizontal: gutter}]}>
         <View style={styles.shell}>
           <BrandToolbar {...{locale, setLocale, unit, setUnit, motionPaused, setMotionPaused}} />
+          <View {...motionData({sceneContent:''})}>
           <View style={styles.backline}>
-          <Pressable {...motionData({motionPhotoReturn: ''})} accessibilityRole="button" accessibilityLabel={t(locale, 'back')} onPress={() => goBack(from, listId)} style={({pressed}) => [styles.backButton, pressed && styles.pressed]}>
+          <Pressable {...motionData({motionPhotoReturn: ''})} accessibilityRole="button" accessibilityLabel={t(locale, 'back')} onPress={() => run(()=>goBack(from, listId),{label:from==='welcome'?'此刻':from==='customize'?'遇见':'酒单',direction:-1,history:router.canGoBack(),kind:'photo'})} style={({pressed}) => [styles.backButton, pressed && styles.pressed]}>
             <Text style={styles.backArrow}>←</Text>
             <Text style={styles.backText}>{t(locale, 'back')}</Text>
           </Pressable>
@@ -168,7 +172,7 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
           <View {...motionData({motionPart: 'title'})} style={styles.titleBlock}>
             {listId ? <ListBrowseSelection listId={listId} locale={locale} /> : null}
             <Heading level={1} style={[styles.title, {fontSize: titleSize, lineHeight: titleSize * (compact ? 1.1 : 1.13), letterSpacing: -titleSize * 0.065}, phone && styles.titleCompact]}>{localize(cocktail.name, locale)}</Heading>
-            <View style={styles.titleSubline}>
+            <View {...motionData({motionPart:'detail'})} style={styles.titleSubline}>
               <CocktailOriginalName cocktail={cocktail} locale={locale} />
               <Text style={styles.recipeEdition}>THE COCKTAIL / {String(catalogue.cocktails.indexOf(cocktail) + 1).padStart(2, '0')}</Text>
             </View>
@@ -185,7 +189,7 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
               </View>
             </View>
 
-            <View nativeID="recipe-details" {...motionData({motionPart: 'copy'})} style={styles.leadCopy}>
+            <View nativeID="recipe-details" {...motionData({motionPart: 'menu'})} style={styles.leadCopy}>
               <Text style={[styles.description, phone && styles.descriptionCompact]}>{localize(cocktail.description, locale)}</Text>
 
               <View style={styles.divider} />
@@ -353,6 +357,7 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
             ) : null}
           </View>
           <View style={styles.endMark}><View style={styles.endRule} /><View style={styles.endLogo}><BrandMark size={20} decorative /></View><View style={styles.endRule} /></View>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

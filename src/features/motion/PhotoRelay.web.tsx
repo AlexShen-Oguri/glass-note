@@ -51,6 +51,7 @@ export function MotionPhotoRelay({changeKey}: {changeKey: string}) {
   const host = useRef<View>(null);
   const pending = useRef<PhotoFlight | null>(null);
   const launch = useRef<(() => void) | null>(null);
+  const deferLaunch=useRef<(()=>void)|null>(null);
   const enabled = useMotionEnabled();
   const settle = () => {
     const flight = pending.current;
@@ -99,22 +100,31 @@ export function MotionPhotoRelay({changeKey}: {changeKey: string}) {
       if (returned) {capture(document.querySelector<HTMLElement>('[data-motion-photo-target]')); return;}
       const link = node?.closest<HTMLAnchorElement>('a[href]');
       if (!link || link.origin !== window.location.origin) return;
+      if(pending.current)return;
       if (!link.pathname.startsWith('/cocktails/')) {settle(); return;}
       capture(link.querySelector<HTMLElement>('[data-motion-photo]') ?? link.closest<HTMLElement>('[data-motion-photo]'));
     };
-    const history = () => {capture(document.querySelector<HTMLElement>('[data-motion-photo-target]'));};
+    const history = () => {if(!pending.current)capture(document.querySelector<HTMLElement>('[data-motion-photo-target]'));};
     // Destination geometry is measured once. A moving viewport immediately
     // hands presentation back to the live photo instead of landing stale pixels.
     // Keep the pre-launch capture through the route's own scroll restoration.
-    const viewportChanged = () => {if (pending.current?.timeline) settle();};
+    const viewportChanged = () => {if (pending.current?.timeline) settle();else if(pending.current)deferLaunch.current?.();};
     launch.current = contextSafe(() => {
       const flight = pending.current;
       if (!flight) return;
       const matches = Array.from(document.querySelectorAll<HTMLElement>('[data-motion-photo]')).filter(node => node.dataset.motionPhoto === flight.id
         && !node.closest('[inert],[aria-hidden="true"]') && getComputedStyle(node).visibility !== 'hidden' && readFrame(node).width > 0);
       const target = matches.find(node => node.hasAttribute('data-motion-photo-target')) ?? matches.find(node => readFrame(node).top < window.innerHeight);
-      if (!target) {settle(); return;}
+      if (!target) return;
       const frame = readFrame(target);
+      let ancestor:HTMLElement|null=target;
+      while(ancestor){
+        if(ancestor.matches('[data-motion-item],[data-motion-part],[data-motion-transition]')){
+          const transform=getComputedStyle(ancestor).transform;
+          if(transform!=='none'){const matrix=new DOMMatrixReadOnly(transform);frame.left-=matrix.m41;frame.top-=matrix.m42;}
+        }
+        ancestor=ancestor.parentElement;
+      }
       const shape = readShape(target, frame);
       if (frame.top >= window.innerHeight || frame.top + frame.height <= 0) {settle(); return;}
       // All geometry reads precede the presentation-only conceal/write batch.
@@ -124,7 +134,7 @@ export function MotionPhotoRelay({changeKey}: {changeKey: string}) {
       target.style.setProperty('opacity', '0');
       if (flight.timeout) clearTimeout(flight.timeout);
       flight.timeline = gsap.timeline({onComplete: settle});
-      flight.timeline.to(flight.canvas, {...pose(flight, frame, shape), duration: 0.65, ease: 'power3.inOut'}, 0);
+      flight.timeline.to(flight.canvas, {...pose(flight, frame, shape), duration: .65, ease: 'power3.inOut'}, 0);
     });
     document.addEventListener('click', click, true);
     document.addEventListener('scroll', viewportChanged, {capture: true, passive: true});
@@ -147,9 +157,19 @@ export function MotionPhotoRelay({changeKey}: {changeKey: string}) {
   useEffect(() => {
     if (!enabled || !pending.current) return;
     if (pending.current.timeline) {settle(); return;}
-    let inner: number | undefined;
-    const frame = requestAnimationFrame(() => {inner = requestAnimationFrame(() => launch.current?.());});
-    return () => {cancelAnimationFrame(frame); if (inner !== undefined) cancelAnimationFrame(inner);};
+    let outer:number|undefined,inner:number|undefined;
+    const attempt=()=>{
+      if(pending.current&&!pending.current.timeline)launch.current?.();
+      if(!pending.current||pending.current.timeline)observer.disconnect();
+    };
+    const schedule=()=>{
+      if(outer!==undefined)cancelAnimationFrame(outer);if(inner!==undefined)cancelAnimationFrame(inner);
+      outer=requestAnimationFrame(()=>{inner=requestAnimationFrame(attempt);});
+    };
+    const observer=new MutationObserver(schedule);
+    observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['aria-hidden','inert']});
+    deferLaunch.current=schedule;schedule();
+    return ()=>{deferLaunch.current=null;observer.disconnect();if(outer!==undefined)cancelAnimationFrame(outer);if(inner!==undefined)cancelAnimationFrame(inner);};
   }, [changeKey, enabled]);
   return <View ref={host} pointerEvents="none" accessible={false} {...motionData({motionPhotoRelayRoot: ''})} style={{position: 'absolute', width: 0, height: 0, zIndex: 40}} />;
 }

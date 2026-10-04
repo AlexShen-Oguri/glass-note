@@ -22,6 +22,7 @@ import {MakingProvider} from '../platform/MakingProvider';
 import {MotionPhotoRelay,MotionTransition,useMotionEnabled} from '../features/motion';
 import {MotionInteractions} from '../features/motion/Interactions';
 import {RelayTrace} from '../features/motion/RelayTrace';
+import {SceneTransitionProvider} from '../features/motion/SceneTransition';
 
 const nightTheme = {...DarkTheme, colors:{...DarkTheme.colors, background:'transparent', card:colors.background, text:colors.text, border:colors.border, primary:colors.accent}};
 
@@ -63,7 +64,7 @@ export default function RootLayout() {
     <ThemeProvider value={nightTheme}>
     <Head><title>Glass Notes</title></Head>
     <StatusBar style="light" />
-    <AppScene />
+    <SceneTransitionProvider><AppScene /></SceneTransitionProvider>
     </ThemeProvider>
   </TasteProvider></MakingProvider></PrivateRecipesProvider></BottleProvider></LabProvider></FavoritesProvider></PantryProvider></AppProvider></RecoveryProvider></SafeAreaProvider>;
 }

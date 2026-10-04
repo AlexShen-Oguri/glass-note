@@ -4,6 +4,7 @@ import {usePathname} from 'expo-router';
 import {useApp} from '../../platform/AppProvider';
 import {motionData} from '../motion/attributes';
 import {element, gsap, useGSAP, useVisibleMotion} from '../motion/gsap.web';
+import {useMotionStatus} from '../motion/useMotionEnabled';
 import {useViewport} from './components';
 import type {AmbientLightProps} from './AmbientLight';
 import type {GlassScene, GlassStage} from './sculpture.web';
@@ -31,13 +32,16 @@ function composition(scene:GlassScene, width:number, height:number) {
 
 /** One continuous, non-interactive space; route changes never remount the coupe. */
 export function AmbientLight({paused, reduceMotion = false}: AmbientLightProps) {
-  const host=useRef<View>(null), portal=useRef<View>(null), glass=useRef<View>(null);
+  const host=useRef<View>(null), portal=useRef<View>(null), glassRig=useRef<View>(null), glass=useRef<View>(null);
   const stage=useRef<GlassStage|null>(null);
-  const last=useRef<ReturnType<typeof composition>|null>(null);
+  const last=useRef<{scene:GlassScene;width:number;height:number;geometry:ReturnType<typeof composition>}|null>(null);
+  const spatial=useRef<gsap.core.Timeline|null>(null);
+  const {ready,enabled}=useMotionStatus();
+  const animated=ready&&enabled&&!paused&&!reduceMotion;
   const {width,height}=useViewport();
   const pathname=usePathname();
   const {guided}=useApp();
-  const scene:GlassScene=pathname==='/'?'home':pathname.startsWith('/cocktails/')?'recipe':pathname==='/customize'?guided.mode===null?'mode':guided.phase==='choosing'?'guided':'results':'discover';
+  const scene:GlassScene=pathname==='/'?'home':pathname.startsWith('/cocktails/')?'recipe':pathname==='/make'?'guided':pathname==='/customize'?guided.mode===null?'mode':guided.phase==='choosing'?'guided':'results':'discover';
   const sculptureVisible=scene==='home'||scene==='mode'||scene==='guided';
   const running=useVisibleMotion(host,paused||reduceMotion||!sculptureVisible);
   const latest=useRef({scene,running,reduceMotion});latest.current={scene,running,reduceMotion};
@@ -55,11 +59,13 @@ export function AmbientLight({paused, reduceMotion = false}: AmbientLightProps) 
   useEffect(()=>{
     stage.current?.setReduced(reduceMotion);
     stage.current?.setPaused(!running);
-    stage.current?.setScene(scene,{duration:running?.86:0});
+    stage.current?.setScene(scene,{duration:running ? .86 : 0});
   },[scene,running,reduceMotion]);
   useGSAP(()=>{
-    const prior=last.current;last.current=geometry;
-    const nodes=[{node:element(portal),box:geometry.portal,old:prior?.portal},{node:element(glass),box:geometry.glass,old:prior?.glass}];
+    const prior=last.current;last.current={scene,width,height,geometry};
+    const changed=Boolean(prior&&prior.scene!==scene);
+    const resized=Boolean(prior&&(prior.width!==width||prior.height!==height));
+    const nodes=[{node:element(portal),box:geometry.portal,old:prior?.geometry.portal},{node:element(glassRig),box:geometry.glass,old:prior?.geometry.glass}];
     // Capture every current transform before writes. CSS commits the endpoint
     // once; only the compositor bridges the previous pose to that endpoint.
     const poses=nodes.map(({node,box,old})=>({node,box,from:node&&old?{
@@ -67,18 +73,22 @@ export function AmbientLight({paused, reduceMotion = false}: AmbientLightProps) 
       y:old.top+Number(gsap.getProperty(node,'y'))-box.top,
       scaleX:old.width*Number(gsap.getProperty(node,'scaleX'))/box.width,
       scaleY:old.height*Number(gsap.getProperty(node,'scaleY'))/box.height,
-      opacity:Number(gsap.getProperty(node,'opacity')),
+      // React has already committed the new inline opacity at this point;
+      // the previous endpoint retains the actual outgoing scene's opacity.
+      opacity:old.opacity,
     }:null}));
-    const timeline=gsap.timeline({defaults:{duration:paused||reduceMotion?0:.85,ease:'power3.inOut'}});
-    for(const {node,box,from} of poses){if(!node)continue;gsap.killTweensOf(node);if(!from){gsap.set(node,{x:0,y:0,scaleX:1,scaleY:1,opacity:box.opacity});continue;}
-      timeline.fromTo(node,{...from,willChange:'transform,opacity'},{x:0,y:0,scaleX:1,scaleY:1,opacity:box.opacity,clearProps:'willChange'},0);
+    spatial.current?.kill();
+    const timeline=gsap.timeline({defaults:{duration:.85,ease:'power3.inOut'}});
+    spatial.current=timeline;
+    for(const {node,box,from} of poses){if(!node)continue;gsap.killTweensOf(node);if(!from||!animated||!changed||resized){gsap.set(node,{x:0,y:0,scaleX:1,scaleY:1,opacity:box.opacity,clearProps:'willChange'});continue;}
+      timeline.fromTo(node,{...from,willChange:'transform,opacity'},{x:0,y:0,scaleX:1,scaleY:1,opacity:box.opacity,clearProps:'transform,willChange'},0);
     }
     return()=>{timeline.kill();};
-  },{scope:host,dependencies:[scene,width,height,paused,reduceMotion]});
+  },{scope:host,dependencies:[scene,width,height,animated]});
   return <View ref={host} {...motionData({motionLoop:'night-space',nightScene:scene})} pointerEvents="none" accessible={false} importantForAccessibility="no-hide-descendants" aria-hidden style={styles.root}>
     <View style={styles.light}/><View style={styles.grain}/>
-    <View ref={portal} style={[styles.portal,geometry.portal]}><View style={styles.inner}/><View style={styles.orbit}/><View style={styles.secondOrbit}/></View>
-    <View ref={glass} style={[styles.glass,geometry.glass]}/>
+    <View ref={portal} {...motionData({motionSpacePortal:''})} style={[styles.rig,styles.portal,geometry.portal]}><View style={styles.inner}/><View style={styles.orbit}/><View style={styles.secondOrbit}/></View>
+    <View ref={glassRig} {...motionData({motionSpaceGlass:''})} style={[styles.rig,geometry.glass]}><View ref={glass} style={styles.fill}/></View>
     {width>700&&<Text style={[styles.signature,{opacity:scene==='guided'?.5:scene==='home'?1:0}]}>A STUDY IN TASTE &amp; TIME</Text>}
   </View>;
 }
@@ -87,10 +97,11 @@ const styles=StyleSheet.create({
   root:{position:'absolute',top:0,right:0,bottom:0,left:0,overflow:'hidden',zIndex:0,backgroundImage:'radial-gradient(ellipse at 85% 35%,#1d2b23 0,transparent 60%)'} as never,
   light:{position:'absolute',right:'-10%',top:'3%',width:'75%',height:'90%',backgroundImage:'radial-gradient(ellipse,rgba(181,198,169,.14),transparent 64%)'} as never,
   grain:{position:'absolute',top:0,right:0,bottom:0,left:0,opacity:.027,backgroundImage:'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 170 170\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'.89\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Cpath fill=\'white\' filter=\'url(%23n)\' d=\'M0 0h170v170H0z\'/%3E%3C/svg%3E")'} as never,
-  portal:{position:'absolute',borderRadius:999,borderWidth:1,borderColor:'rgba(181,198,169,.32)',backgroundImage:'radial-gradient(circle at 30% 20%,rgba(174,194,159,.19),rgba(68,88,65,.16) 40%,rgba(10,17,12,.5) 75%)',boxShadow:'0 0 85px rgba(147,176,129,.05),inset 0 0 70px rgba(0,0,0,.16)',transformOrigin:'0 0'} as never,
+  rig:{position:'absolute',transformOrigin:'0 0'} as never,
+  fill:{position:'absolute',top:0,right:0,bottom:0,left:0},
+  portal:{borderRadius:999,borderWidth:1,borderColor:'rgba(181,198,169,.32)',backgroundImage:'radial-gradient(circle at 30% 20%,rgba(174,194,159,.19),rgba(68,88,65,.16) 40%,rgba(10,17,12,.5) 75%)',boxShadow:'0 0 85px rgba(147,176,129,.05),inset 0 0 70px rgba(0,0,0,.16)'} as never,
   inner:{position:'absolute',top:15,left:15,right:15,bottom:15,borderRadius:999,borderWidth:1,borderColor:'rgba(181,198,169,.08)'},
   orbit:{position:'absolute',top:-37,left:-37,right:-37,bottom:-37,borderRadius:999,borderWidth:1,borderColor:'rgba(212,173,115,.17)',transform:[{rotate:'-28deg'},{scaleY:.58}]},
   secondOrbit:{position:'absolute',top:-75,left:-75,right:-75,bottom:-75,borderRadius:999,borderWidth:1,borderColor:'rgba(181,198,169,.09)',transform:[{rotate:'32deg'},{scaleY:.7}]},
-  glass:{position:'absolute',transformOrigin:'0 0'} as never,
   signature:{position:'absolute',right:'6.1%',top:'16%',fontSize:10,letterSpacing:2.6,color:'#a7b3a7',writingMode:'vertical-rl'} as never,
 });
