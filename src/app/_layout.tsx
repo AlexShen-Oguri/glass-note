@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Platform, Pressable, Text, View} from 'react-native';
-import {router, Stack, usePathname} from 'expo-router';
+import {DarkTheme, router, Stack, ThemeProvider, usePathname} from 'expo-router';
 import Head from 'expo-router/head';
 import {StatusBar} from 'expo-status-bar';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -19,8 +19,10 @@ import {backupText} from '../i18n/backup';
 import {privateRecipeText} from '../features/private-recipes/copy';
 import {TasteProvider} from '../platform/TasteProvider';
 import {MakingProvider} from '../platform/MakingProvider';
-import {MotionTransition,useMotionEnabled} from '../features/motion';
+import {MotionPhotoRelay,MotionTransition,useMotionEnabled} from '../features/motion';
 import {MotionInteractions} from '../features/motion/Interactions';
+
+const nightTheme = {...DarkTheme, colors:{...DarkTheme.colors, background:'transparent', card:colors.background, text:colors.text, border:colors.border, primary:colors.accent}};
 
 // Use the navigator's own render state: the global pathname can update after its screen DOM.
 const sceneLayout: NonNullable<React.ComponentProps<typeof Stack>['layout']> = ({state, children}) => (
@@ -39,6 +41,8 @@ function AppScene() {
   const canAnimate = useMotionEnabled();
   const desktop = useViewport().width >= 760;
   return <MotionInteractions changeKey={pathname} style={{flex: 1, backgroundColor: colors.background}}>
+    <AmbientLight paused={motionPaused||!canAnimate} reduceMotion={reduceMotion} />
+    <MotionPhotoRelay changeKey={pathname} />
     {desktop && <AppNavigation />}
     {!dismissed && pathname !== '/backup' && (notice === 'restored' || notice === 'rolled-back' || notice === 'stale') && <View style={{padding:16,gap:10,backgroundColor:colors.panel}}>
       <Text accessibilityLiveRegion="polite" style={{color:colors.accent,fontSize:14,lineHeight:22}}>{backupText(locale,notice==='restored'?'restored':notice==='rolled-back'?'rolledBack':'stale')}</Text>
@@ -47,16 +51,17 @@ function AppScene() {
         <Pressable accessibilityRole="button" accessibilityLabel={privateRecipeText(locale,'close')} onPress={()=>setDismissed(true)} style={{minWidth:44,minHeight:44,alignItems:'center',justifyContent:'center'}}><Text style={{color:colors.text,fontSize:22}}>×</Text></Pressable>
       </View>
     </View>}
-    <View {...(Platform.OS === 'web' ? {role:'main' as const} : {})} style={{flex:1,minHeight:0}}><Stack layout={sceneLayout} screenOptions={{title:'Glass Notes', headerShown:false, contentStyle:{backgroundColor:colors.background}, animation:Platform.OS==='web'||!canAnimate?'none':'fade',animationDuration:700}} /></View>
+    <View {...(Platform.OS === 'web' ? {role:'main' as const} : {})} style={{flex:1,minHeight:0,zIndex:1}}><Stack layout={sceneLayout} screenOptions={{title:'Glass Notes', headerShown:false, contentStyle:{backgroundColor:'transparent'}, animation:Platform.OS==='web'||!canAnimate?'none':'fade',animationDuration:700}} /></View>
     {!desktop && <AppNavigation />}
-    <AmbientLight paused={motionPaused||!canAnimate} reduceMotion={reduceMotion} />
   </MotionInteractions>;
 }
 
 export default function RootLayout() {
   return <SafeAreaProvider><RecoveryProvider><AppProvider><PantryProvider><FavoritesProvider><LabProvider><BottleProvider><PrivateRecipesProvider><MakingProvider><TasteProvider>
+    <ThemeProvider value={nightTheme}>
     <Head><title>Glass Notes</title></Head>
     <StatusBar style="light" />
     <AppScene />
+    </ThemeProvider>
   </TasteProvider></MakingProvider></PrivateRecipesProvider></BottleProvider></LabProvider></FavoritesProvider></PantryProvider></AppProvider></RecoveryProvider></SafeAreaProvider>;
 }

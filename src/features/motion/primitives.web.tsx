@@ -17,9 +17,9 @@ export function MotionEntrance({active = true, ...props}: EntranceProps) {
     const targets = Array.from(node.children);
     if (!targets.length) return;
     gsap.set(targets, {willChange: 'transform, opacity'});
-    gsap.fromTo(targets, {y: 18, autoAlpha: 0}, {
-      y: 0, autoAlpha: 1, duration: 0.65, stagger: 0.09, ease: 'power3.out',
-      clearProps: 'transform,opacity,visibility,willChange',
+    gsap.fromTo(targets, {y: 24, opacity: 0.18}, {
+      y: 0, opacity: 1, duration: 0.62, stagger: 0.035, ease: 'power3.out',
+      clearProps: 'transform,opacity,willChange',
     });
   }, {scope: host, dependencies: [enabled, active], revertOnUpdate: true});
   return <View {...props} ref={host} {...motionData({motionEntrance: ''})} />;

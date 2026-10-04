@@ -1,7 +1,9 @@
+import {motionData} from '../motion/attributes';
 import {CocktailOriginalName} from '../names/OriginalName';
 import React, {useEffect, useMemo, useState} from 'react';
 import {
   Linking,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -137,29 +139,46 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
   const sourceQuery = from === 'customize' ? guided.submitted ?? {} : from === 'discover' || from === 'find' ? query : {};
   const matching = matchVersion(catalogue, version, {...sourceQuery, locale});
   const compact = width < 820;
+  const phone = width < 520;
+  const gutter = phone ? 22 : width < 1000 ? 36 : 64;
+  const photoHeight = compact ? Math.min((width - gutter * 2) * 0.8, 380) : 410;
+  const titleSize = phone ? 62 : compact ? 78 : Math.min(132, width * 0.09);
   const instructions = showOriginal && version.originalSteps ? version.originalSteps : version.steps[locale] || version.steps.en;
   const hasOriginal = Boolean(version.originalSteps?.length);
 
   return (
     <SafeAreaView style={styles.screen} edges={['top']}>
-      <ScrollView contentContainerStyle={styles.page}>
+      <ScrollView contentContainerStyle={[styles.page, {paddingHorizontal: gutter}]}>
         <View style={styles.shell}>
           <BrandToolbar {...{locale, setLocale, unit, setUnit, motionPaused, setMotionPaused}} />
-          <Pressable accessibilityRole="button" accessibilityLabel={t(locale, 'back')} onPress={() => goBack(from, listId)} style={({pressed}) => [styles.backButton, pressed && styles.pressed]}>
+          <Pressable {...motionData({motionPhotoReturn: ''})} accessibilityRole="button" accessibilityLabel={t(locale, 'back')} onPress={() => goBack(from, listId)} style={({pressed}) => [styles.backButton, pressed && styles.pressed]}>
             <Text style={styles.backArrow}>←</Text>
             <Text style={styles.backText}>{t(locale, 'back')}</Text>
           </Pressable>
 
+          <View {...motionData({motionPart: 'title'})} style={styles.titleBlock}>
+            {listId ? <ListBrowseSelection listId={listId} locale={locale} /> : null}
+            <Text style={styles.category}>{version.origin ? recipeCategoryText(locale, version.origin.kind) : t(locale, cocktail.category as UiKey)}</Text>
+            <Heading level={1} style={[styles.title, {fontSize: titleSize, lineHeight: titleSize * 1.14}, phone && styles.titleCompact]}>{localize(cocktail.name, locale)}</Heading>
+            <View style={styles.titleSubline}>
+              <CocktailOriginalName cocktail={cocktail} locale={locale} />
+              <Text style={styles.recipeEdition}>{t(locale, 'version')} / {localize(version.label, locale)}</Text>
+            </View>
+          </View>
+
           <View style={[styles.lead, compact && styles.leadCompact]}>
             <View style={[styles.photoColumn, compact && styles.photoColumnCompact]}>
-              <PhotoFrame asset={asset} accent={cocktail.accent} locale={locale} height={compact ? Math.min(width * 0.94, 520) : 590} />
+              <View nativeID="recipe-photo" {...motionData({motionPhoto: cocktail.id, motionPhotoTarget: ''})} style={[styles.recipePhoto, {height: photoHeight}, Platform.OS === 'web' ? styles.photoEllipse : {borderRadius: photoHeight / 2}]}>
+                <PhotoFrame asset={asset} accent={cocktail.accent} locale={locale} height={photoHeight} borderRadius={0} />
+              </View>
+              <View style={styles.photoCaption}>
+                <Text style={styles.photoCaptionText}>{aiAsset ? t(locale, 'aiImage' as UiKey) : t(locale, asset?.kind === 'drink-illustration' ? 'photoIllustration' : 'photograph')}</Text>
+                <Text style={styles.photoCaptionText}>GLASS NOTES</Text>
+              </View>
             </View>
 
-            <View style={styles.leadCopy}>
-              {listId ? <ListBrowseSelection listId={listId} locale={locale} /> : null}
-              <Text style={styles.category}>{version.origin ? recipeCategoryText(locale, version.origin.kind) : t(locale, cocktail.category as UiKey)}</Text>
-              <Heading level={1} style={[styles.title, compact && styles.titleCompact]}>{localize(cocktail.name, locale)}</Heading><CocktailOriginalName cocktail={cocktail} locale={locale} />
-              <Text style={styles.description}>{localize(cocktail.description, locale)}</Text>
+            <View nativeID="recipe-details" {...motionData({motionPart: 'copy'})} style={styles.leadCopy}>
+              <Text style={[styles.description, phone && styles.descriptionCompact]}>{localize(cocktail.description, locale)}</Text>
 
               <View style={styles.divider} />
               <VersionPicker versions={versions} selectedId={version.id} locale={locale} onSelect={(id) => {
@@ -180,16 +199,18 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
               </View>
               <View style={styles.primaryActions}>
                 {listId ? <ListBrowseAddButton key={`list-add-${version.id}`} listId={listId} versionId={version.id} locale={locale} /> : null}
-                <Link href={{pathname: '/make', params: {version: version.id}} as never} asChild>
-                  <Pressable accessibilityRole="link" style={StyleSheet.flatten([styles.primaryButton])}>
-                    <Text style={styles.primaryButtonText}>{makingText(locale, 'startMaking')} →</Text>
-                  </Pressable>
-                </Link>
-                <Link href={{pathname: '/order', params: {version: version.id}} as never} asChild>
-                  <Pressable accessibilityRole="link" style={StyleSheet.flatten([styles.orderButton])}>
-                    <Text style={styles.orderButtonText}>{tm(locale, 'orderCard')} ↗</Text>
-                  </Pressable>
-                </Link>
+                <View style={styles.majorActionsRow}>
+                  <Link href={{pathname: '/make', params: {version: version.id}} as never} asChild>
+                    <Pressable accessibilityRole="link" style={StyleSheet.flatten([styles.primaryButton, styles.actionHalf])}>
+                      <Text style={styles.primaryButtonText}>{makingText(locale, 'startMaking')} →</Text>
+                    </Pressable>
+                  </Link>
+                  <Link href={{pathname: '/order', params: {version: version.id}} as never} asChild>
+                    <Pressable accessibilityRole="link" style={StyleSheet.flatten([styles.orderButton, styles.actionHalf])}>
+                      <Text style={styles.orderButtonText}>{tm(locale, 'orderCard')} ↗</Text>
+                    </Pressable>
+                  </Link>
+                </View>
                 <View style={styles.favoriteRow}>
                   <FavoriteButton versionId={version.id} locale={locale} compact />
                 </View>
@@ -246,7 +267,7 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
               <View style={styles.steps}>
                 {instructions.map((instruction, index) => (
                   <View key={index} style={styles.step}>
-                    <View style={styles.stepNumber}><Text style={styles.stepNumberText}>{index + 1}</Text></View>
+                    <View style={styles.stepNumber}><Text style={styles.stepNumberText}>{String(index + 1).padStart(2, '0')}</Text></View>
                     <Text style={styles.stepText}>{instruction}</Text>
                   </View>
                 ))}
@@ -332,40 +353,50 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
 }
 
 const styles = StyleSheet.create({
-  screen: {flex: 1, backgroundColor: colors.background},
-  page: {minHeight: '100%', paddingHorizontal: 18, paddingBottom: 56},
-  shell: {width: '100%', maxWidth: 1400, alignSelf: 'center'},
-  backButton: {alignSelf: 'flex-start', minHeight: 46, marginTop: 16, marginBottom: 18, flexDirection: 'row', alignItems: 'center', gap: 9, paddingRight: 14},
+  screen: {flex: 1, backgroundColor: 'transparent'},
+  page: {minHeight: '100%', paddingBottom: 80},
+  shell: {width: '100%', maxWidth: 1260, alignSelf: 'center'},
+  backButton: {alignSelf: 'flex-start', minHeight: 46, marginTop: 12, marginBottom: 12, flexDirection: 'row', alignItems: 'center', gap: 12, paddingRight: 14},
   backArrow: {color: colors.accent, fontSize: 22},
   backText: {color: colors.secondary, fontSize: 14, fontWeight: '700'},
-  lead: {flexDirection: 'row', gap: 56, alignItems: 'flex-start'},
-  leadCompact: {flexDirection: 'column', gap: 30, alignItems: 'stretch'},
-  photoColumn: {width: '51%', maxWidth: 720},
+  lead: {flexDirection: 'row', gap: 64, alignItems: 'center', paddingVertical: 36},
+  leadCompact: {flexDirection: 'column', gap: 28, alignItems: 'stretch', paddingVertical: 28},
+  photoColumn: {width: '50%', maxWidth: 640},
   photoColumnCompact: {width: '100%', maxWidth: undefined},
+  titleBlock: {marginTop: 4},
+  titleSubline: {minHeight: 40, borderBottomWidth: 1, borderBottomColor: colors.border, paddingBottom: 16, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 12},
+  recipeEdition: {color: colors.muted, fontSize: 12, lineHeight: 19, letterSpacing: 0.8},
+  recipePhoto: {width: '100%', overflow: 'hidden'},
+  photoEllipse: {clipPath: 'ellipse(48% 49% at 50% 50%)'} as never,
+  photoCaption: {flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', gap: 28, paddingTop: 14},
+  photoCaptionText: {color: colors.muted, fontSize: 11, letterSpacing: 1.1},
+  descriptionCompact: {fontSize: 25, lineHeight: 39},
+  majorActionsRow: {flexDirection: 'row', gap: 12},
+  actionHalf: {flex: 1, minWidth: 0},
   creditLine: {minHeight: 40, paddingHorizontal: 5, paddingTop: 9, flexDirection: 'row', alignItems: 'flex-start', flexWrap: 'wrap', gap: 6},
   creditLabel: {color: colors.muted, fontSize: 12, lineHeight: 20},
   creditLink: {minHeight: 32, justifyContent: 'flex-start'},
   creditText: {color: colors.accent, fontSize: 12, lineHeight: 20},
   creditDivider: {color: colors.muted, fontSize: 12, lineHeight: 20},
   referenceLink: {minHeight: 32, justifyContent: 'center', marginTop: 4},
-  leadCopy: {flex: 1, paddingVertical: 8},
-  category: {color: colors.accent, fontSize: 12, fontWeight: '800', letterSpacing: 1.2, textTransform: 'uppercase'},
-  title: {color: colors.text, fontFamily: serif, fontSize: 56, lineHeight: 62, letterSpacing: -1.5, marginTop: 13},
-  titleCompact: {fontSize: 42, lineHeight: 48},
-  description: {color: colors.secondary, fontSize: 16, lineHeight: 25, marginTop: 16, maxWidth: 560},
-  divider: {height: 1, backgroundColor: colors.border, marginVertical: 28},
+  leadCopy: {flex: 1, minWidth: 0, paddingVertical: 8},
+  category: {color: colors.accent, fontSize: 11, letterSpacing: 1.6, textTransform: 'uppercase'},
+  title: {color: colors.text, fontFamily: serif, fontWeight: '400', letterSpacing: -4.5, marginTop: 14, paddingBottom: 14},
+  titleCompact: {letterSpacing: -2.4},
+  description: {color: colors.text, fontFamily: serif, fontSize: 27, lineHeight: 43, fontWeight: '400', maxWidth: 540},
+  divider: {height: 1, backgroundColor: colors.border, marginTop: 26, marginBottom: 18},
   versionBlock: {gap: 10},
   versionList: {gap: 8, paddingRight: 12},
-  sourceIdentity: {marginTop: 18, paddingTop: 14, borderTopWidth: 1, borderTopColor: colors.border, flexDirection: 'row', alignItems: 'center', gap: 14},
+  sourceIdentity: {marginTop: 18, paddingTop: 18, paddingBottom: 8, borderTopWidth: 1, borderTopColor: colors.border, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 14},
   sourceIdentityCopy: {flex: 1, minWidth: 0},
-  sourceIdentityLabel: {color: colors.accent, fontSize: 11, fontWeight: '800', letterSpacing: 0.8, textTransform: 'uppercase'},
+  sourceIdentityLabel: {color: colors.muted, fontSize: 11, letterSpacing: 1, textTransform: 'uppercase'},
   sourceIdentityTitle: {color: colors.text, fontFamily: serif, fontSize: 17, lineHeight: 22, marginTop: 4},
   sourceIdentityMeta: {color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 3},
   sourceIdentityLink: {minHeight: 44, justifyContent: 'center', paddingHorizontal: 6},
   sourceIdentityLinkText: {color: colors.accent, fontSize: 12, fontWeight: '700'},
-  primaryActions: {marginTop: 16, gap: 9},
-  orderButton: {minHeight: 48, paddingHorizontal: 20, borderRadius: radii.pill, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center'},
-  orderButtonText: {color: colors.accent, fontSize: 14, fontWeight: '800'},
+  primaryActions: {marginTop: 16, gap: 14},
+  orderButton: {minHeight: 54, paddingHorizontal: 14, borderRadius: radii.small, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center'},
+  orderButtonText: {color: colors.accent, fontSize: 14, textAlign: 'center'},
   favoriteRow: {alignSelf: 'flex-start'},
   moreActions: {borderTopWidth: 1, borderTopColor: colors.border, marginTop: 4},
   moreActionsToggle: {minHeight: 46, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12},
@@ -377,25 +408,25 @@ const styles = StyleSheet.create({
   mismatch: {marginTop: 14, borderRadius: radii.small, borderWidth: 1, borderColor: colors.amber, padding: 12, flexDirection: 'row', alignItems: 'center', gap: 10},
   mismatchGlyph: {width: 22, height: 22, textAlign: 'center', color: colors.background, backgroundColor: colors.amber, borderRadius: 11, overflow: 'hidden', fontWeight: '900', lineHeight: 22},
   mismatchText: {flex: 1, color: colors.text, fontSize: 14, lineHeight: 20},
-  profilePanel: {marginTop: 30, backgroundColor: colors.panel, borderRadius: radii.medium, borderWidth: 1, borderColor: colors.border, padding: 18},
-  profileTitle: {color: colors.text, fontFamily: serif, fontSize: 24, lineHeight: 30},
-  profileText: {color: colors.text, fontFamily: serif, fontSize: 19, lineHeight: 27, marginTop: 10},
+  profilePanel: {marginTop: 40, borderTopWidth: 1, borderBottomWidth: 1, borderColor: colors.border, paddingVertical: 28},
+  profileTitle: {color: colors.text, fontFamily: serif, fontSize: 32, lineHeight: 39, fontWeight: '400'},
+  profileText: {color: colors.text, fontFamily: serif, fontSize: 23, lineHeight: 34, marginTop: 14, maxWidth: 800},
   profileTags: {flexDirection: 'row', flexWrap: 'wrap', gap: 7, marginTop: 15},
-  profileTag: {borderRadius: radii.pill, backgroundColor: colors.accentDark, paddingHorizontal: 10, paddingVertical: 7},
+  profileTag: {borderRadius: radii.small, borderWidth: 1, borderColor: colors.border, paddingHorizontal: 12, paddingVertical: 8},
   profileTagText: {color: colors.accent, fontSize: 12, fontWeight: '700'},
   editorialNote: {color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 15},
-  recipeGrid: {marginTop: 34, flexDirection: 'row', gap: 64, alignItems: 'flex-start'},
-  recipeGridCompact: {marginTop: 28, flexDirection: 'column', alignItems: 'stretch', gap: 38},
+  recipeGrid: {marginTop: 30, paddingTop: 40, borderTopWidth: 1, borderTopColor: colors.border, flexDirection: 'row', gap: 80, alignItems: 'flex-start'},
+  recipeGridCompact: {marginTop: 16, paddingTop: 28, flexDirection: 'column', alignItems: 'stretch', gap: 38},
   section: {flexGrow: 1, flexShrink: 1, flexBasis: 0, minWidth: 0},
   // Stacked sections must keep their content height, not share the column's height.
   sectionCompact: {flexGrow: 0, flexShrink: 0, flexBasis: 'auto'},
   sectionEyebrow: {color: colors.accent, fontSize: 12, fontWeight: '800', letterSpacing: 1.2, textTransform: 'uppercase'},
   sectionTitleRow: {minHeight: 50, flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', gap: 16},
-  sectionTitle: {color: colors.text, fontFamily: serif, fontSize: 32, lineHeight: 38, flexShrink: 1},
+  sectionTitle: {color: colors.text, fontFamily: serif, fontSize: 35, lineHeight: 44, fontWeight: '400', flexShrink: 1},
   servings: {color: colors.accent, fontSize: 14, fontWeight: '700'},
   ingredientsList: {borderTopWidth: 1, borderTopColor: colors.border},
   ingredientRow: {minHeight: 66, paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: colors.border, flexDirection: 'row', gap: 18},
-  amount: {width: 88, color: colors.accent, fontSize: 14, lineHeight: 21, fontWeight: '700'},
+  amount: {width: 88, color: colors.accent, fontFamily: serif, fontStyle: 'italic', fontSize: 21, lineHeight: 30},
   ingredientCopy: {flex: 1},
   ingredientLink: {minHeight: 44, justifyContent: 'center', alignSelf: 'flex-start'},
   ingredientName: {color: colors.text, fontSize: 15, lineHeight: 21},
@@ -408,14 +439,14 @@ const styles = StyleSheet.create({
   originalButtonText: {color: colors.accent, fontSize: 14, fontWeight: '700'},
   steps: {gap: 18, marginTop: 18},
   step: {flexDirection: 'row', gap: 14},
-  stepNumber: {width: 27, height: 27, borderRadius: 14, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center'},
-  stepNumberText: {color: colors.accent, fontFamily: serif, fontSize: 12},
-  stepText: {flex: 1, color: colors.text, fontSize: 14, lineHeight: 22, paddingTop: 2},
+  stepNumber: {width: 34, minHeight: 30, alignItems: 'center', justifyContent: 'flex-start'},
+  stepNumberText: {color: colors.amber, fontFamily: serif, fontStyle: 'italic', fontSize: 24, lineHeight: 30},
+  stepText: {flex: 1, color: colors.text, fontSize: 15, lineHeight: 25, paddingTop: 2},
   serveGrid: {flexDirection: 'row', gap: 12, marginTop: 28},
-  serveItem: {flex: 1, borderRadius: radii.medium, backgroundColor: colors.panel, padding: 15, borderWidth: 1, borderColor: colors.border},
+  serveItem: {flex: 1, paddingVertical: 18, borderTopWidth: 1, borderTopColor: colors.border},
   serveLabel: {color: colors.muted, fontSize: 12, fontWeight: '800', letterSpacing: 0.8, textTransform: 'uppercase'},
   serveValue: {color: colors.text, fontFamily: serif, fontSize: 16, marginTop: 6},
-  sourcePanel: {marginTop: 72, paddingVertical: 30, paddingHorizontal: 26, borderRadius: radii.large, backgroundColor: colors.panel, borderWidth: 1, borderColor: colors.border, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 28},
+  sourcePanel: {marginTop: 64, paddingVertical: 30, borderTopWidth: 1, borderBottomWidth: 1, borderColor: colors.border, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 28},
   sourcePanelCompact: {marginTop: 52, flexDirection: 'column', alignItems: 'stretch'},
   sourceCopy: {flex: 1},
   sourceTitle: {color: colors.text, fontFamily: serif, fontSize: 22, marginTop: 8},
@@ -425,15 +456,15 @@ const styles = StyleSheet.create({
   barBlock: {marginTop: 14},
   barLabel: {color: colors.accent, fontSize: 12, fontWeight: '800', textTransform: 'uppercase'},
   barName: {color: colors.text, fontSize: 14, marginTop: 4},
-  sourceButton: {minHeight: 50, paddingHorizontal: 20, borderRadius: radii.pill, backgroundColor: colors.accent, flexDirection: 'row', alignItems: 'center', gap: 10},
-  sourceButtonText: {color: colors.background, fontSize: 14, fontWeight: '800'},
-  sourceButtonArrow: {color: colors.background, fontSize: 16},
+  sourceButton: {minHeight: 50, paddingHorizontal: 20, borderRadius: radii.small, borderWidth: 1, borderColor: colors.accent, flexDirection: 'row', alignItems: 'center', gap: 10},
+  sourceButtonText: {color: colors.accent, fontSize: 14},
+  sourceButtonArrow: {color: colors.accent, fontSize: 16},
   endMark: {flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 13, marginTop: 56},
   endRule: {height: 1, width: 36, backgroundColor: colors.border},
   endLogo: {opacity: 0.55},
   notFound: {flex: 1, minHeight: 500, alignItems: 'center', justifyContent: 'center', padding: 24},
   notFoundTitle: {color: colors.text, fontFamily: serif, fontSize: 30, textAlign: 'center'},
-  primaryButton: {minHeight: 48, paddingHorizontal: 22, borderRadius: radii.pill, backgroundColor: colors.accent, alignItems: 'center', justifyContent: 'center', marginTop: 20},
-  primaryButtonText: {color: colors.background, fontWeight: '800'},
+  primaryButton: {minHeight: 54, paddingHorizontal: 14, borderRadius: radii.small, backgroundColor: colors.accent, alignItems: 'center', justifyContent: 'center'},
+  primaryButtonText: {color: colors.background, fontSize: 14, fontWeight: '700', textAlign: 'center'},
   pressed: {opacity: 0.7},
 });

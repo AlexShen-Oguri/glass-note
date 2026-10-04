@@ -10,12 +10,13 @@ async page => {
     const evidence = {animated: false, maxPromotedCards: 0, clonedPages: 0};
     const sample = () => {
       const transitions = [...document.querySelectorAll('[data-motion-transition]')];
-      evidence.animated ||= transitions.some(node => node.style.willChange.includes('transform'));
+      evidence.animated ||= transitions.some(node => node.style.willChange.includes('transform'))
+        || [...document.querySelectorAll('[data-motion-part]')].some(node => node.style.willChange.includes('transform'));
       evidence.maxPromotedCards = Math.max(evidence.maxPromotedCards,
         document.querySelectorAll('[data-motion-item][style*="will-change"]').length);
       evidence.animated ||= evidence.maxPromotedCards > 0;
       evidence.clonedPages = Math.max(evidence.clonedPages,
-        [...document.body.children].filter(node => node.getAttribute('aria-hidden') === 'true' && node.style.position === 'fixed').length);
+        [...document.body.children].filter(node => node.getAttribute('aria-hidden') === 'true' && node.style.position === 'fixed' && !node.hasAttribute('data-motion-photo-relay')).length);
     };
     const observer = new MutationObserver(sample);
     observer.observe(document.body, {subtree: true, childList: true, attributes: true, attributeFilter: ['style']});
@@ -28,7 +29,7 @@ async page => {
     if (evidence.clonedPages) throw Error(name + ': retained a duplicate page');
     if (animated !== evidence.animated) throw Error(name + ': wrong motion preference ' + JSON.stringify(evidence));
     const residual = await page.locator('[data-motion-transition][style*="will-change"]').count();
-    if (residual || await page.locator('[data-motion-item][style*="will-change"]').count()) throw Error(name + ': transition did not release its layer');
+    if (residual || await page.locator('[data-motion-item][style*="will-change"]').count() || await page.locator('[data-motion-part][style*="will-change"]').count()) throw Error(name + ': transition did not release its layer');
     if (evidence.maxPromotedCards > 8) throw Error(name + ': animated too many cards');
     checks.push({name, ...evidence});
   };
@@ -61,9 +62,14 @@ async page => {
     await page.getByRole('button', {name: '喝一杯 → 按口味找一杯喜欢的酒', exact: true}).click();
     await finish('mode-to-flavour-' + width);
     await page.getByRole('button', {name: /柑橘.*柠檬皮/}).click();
+    const progress = await page.locator('[data-motion-progress]').elementHandle();
+    const actions = await page.locator('[data-motion-actions]').elementHandle();
+    const summary = await page.locator('[data-motion-summary]').elementHandle();
     await begin();
     await page.getByRole('button', {name: '继续 →', exact: true}).click();
     await finish('flavour-to-taste-' + width);
+    if (!await progress.evaluate(node => node.isConnected) || !await actions.evaluate(node => node.isConnected) || !await summary.evaluate(node => node.isConnected)) throw Error('question relay remounted its persistent frame');
+    if (await page.locator('[data-motion-transition][inert]').count()) throw Error('question relay locked its live UI');
     await page.getByRole('button', {name: '返回', exact: true}).click();
     await settle();
     const selected = await page.getByRole('button', {name: /柑橘.*柠檬皮/}).textContent();
@@ -77,25 +83,26 @@ async page => {
 
   await page.setViewportSize({width: 1280, height: 800});
   await page.goto(base); await settle();
-  const track = page.locator('[data-motion-loop="waterfall"]').first();
-  const before = await track.evaluate(node => new DOMMatrix(getComputedStyle(node).transform).m42);
+  const sculpture = page.locator('[data-glass-scene],[data-glass-error]').first();
+  await sculpture.waitFor();
+  const canvas = await sculpture.locator('canvas').elementHandle();
   await page.getByRole('button', {name: '暂停动效', exact: true}).click();
   await page.waitForTimeout(100);
-  const paused = await track.evaluate(node => new DOMMatrix(getComputedStyle(node).transform).m42);
+  const paused = await sculpture.getAttribute('data-glass-motion');
   await page.waitForTimeout(350);
-  const still = await track.evaluate(node => new DOMMatrix(getComputedStyle(node).transform).m42);
-  if (Math.abs(before - paused) > 8 || Math.abs(paused - still) > 0.1) throw Error('pause reset or moved the waterfall');
+  const still = await sculpture.getAttribute('data-glass-motion');
+  if (canvas && (paused !== 'paused' || still !== 'paused' || !await canvas.evaluate(node => node.isConnected))) throw Error('pause restarted or kept the sculpture running');
   await begin();
   await page.getByRole('button', {name: '为我定制', exact: true}).click();
   await finish('user-paused', false);
   await page.goto(base); await settle();
   await page.getByRole('button', {name: '继续动效', exact: true}).click();
   await page.waitForTimeout(300);
-  const resumed = await track.evaluate(node => new DOMMatrix(getComputedStyle(node).transform).m42);
+  const resumed = await sculpture.getAttribute('data-glass-motion');
   await page.waitForTimeout(300);
-  const moving = await track.evaluate(node => new DOMMatrix(getComputedStyle(node).transform).m42);
-  if (Math.abs(resumed - moving) < 1) throw Error('waterfall did not resume');
-  checks.push({name: 'loop-pause-resume', before, paused, still, resumed, moving});
+  const moving = await sculpture.getAttribute('data-glass-motion');
+  if (canvas && (resumed !== 'running' || moving !== 'running')) throw Error('sculpture did not resume');
+  checks.push({name: 'loop-pause-resume', webglAvailable: Boolean(canvas), paused, still, resumed, moving});
 
   await page.goto(base); await settle(); await begin();
   await page.getByRole('button', {name: '为我定制', exact: true}).click();
@@ -140,16 +147,28 @@ async page => {
   for (const width of [1280, 390]) {
     await page.setViewportSize({width, height: 874});
     await startGuided(); await submitGuided();
-    await page.getByTestId('guided-reveal-stage').waitFor();
-    if (await page.locator('[data-reveal-results]').getAttribute('aria-hidden') !== 'true') throw Error('reveal exposed hidden results to assistive technology');
-    await page.getByTestId('guided-reveal-stage').waitFor({state: 'detached'});
-    if (await page.locator('[data-reveal-results]').getAttribute('aria-hidden') === 'true') throw Error('completed reveal kept results inaccessible');
+    const ready = await page.locator('[data-reveal-results]').evaluate(node => node.getAttribute('aria-hidden') !== 'true' && !node.closest('[inert]') && getComputedStyle(node).pointerEvents !== 'none');
+    if (!ready) throw Error('live results waited for the presentation tail');
+    const recipe = page.locator('[data-reveal-results] [data-motion-item] a[href*="/cocktails/"]').first();
+    const href = await recipe.getAttribute('href');
+    await recipe.click();
+    await page.waitForURL('**/cocktails/**');
+    if (!page.url().includes(new URL(href, base).pathname) || !page.url().includes('version=')) throw Error('photo relay lost the selected source version');
+    await settle();
+    if (await page.locator('canvas[data-motion-photo-relay]').count()) throw Error('photo relay retained its presentation layer');
+    const imageReady = await page.locator('[data-motion-photo-target]').evaluate(node => getComputedStyle(node).opacity !== '0');
+    if (!imageReady) throw Error('photo relay left the live recipe photo hidden');
+    await page.locator('[data-motion-photo-return]').click();
+    await page.waitForURL('**/customize');
+    await settle();
+    if (await page.getByTestId('guided-reveal-stage').count()) throw Error('returning replayed an unfinished business reveal');
     const invisiblePhotos = await page.locator('[data-reveal-results]').evaluate(root => [...root.querySelectorAll('img')]
       .some(image => {const parent = image.closest('[style*="visibility: hidden"]'); return Boolean(parent);}));
     if (invisiblePhotos) throw Error('photo handoff left a hidden result');
-    checks.push({name: 'reveal-photo-handoff-' + width});
+    checks.push({name: 'live-results-photo-relay-' + width});
     await startGuided(); await submitGuided();
-    await page.getByRole('button', {name: '直接查看结果', exact: true}).click();
+    const skip = page.getByTestId('guided-reveal-stage');
+    if (await skip.count()) await skip.click();
     await page.getByTestId('guided-reveal-stage').waitFor({state: 'detached'});
     checks.push({name: 'reveal-skip-' + width});
   }

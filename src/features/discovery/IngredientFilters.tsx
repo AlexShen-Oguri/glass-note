@@ -7,6 +7,7 @@ import {ingredientEntries, type IngredientEntry} from '../../domain/ingredients'
 import {scoreTextSearch} from '../../domain/search';
 import {findText} from '../../i18n/find';
 import {colors, radii} from '../../theme/tokens';
+import {serif} from './components';
 import {IngredientPicture} from '../ingredients/IngredientPicture';
 
 const PAGE_SIZE = 24;
@@ -185,40 +186,40 @@ export default function IngredientFilters({locale, query, onChange}: {locale: Lo
 }
 
 const styles = StyleSheet.create({
-  scopeNote: {color: colors.secondary, fontSize: 13, lineHeight: 20, marginBottom: 12},
+  scopeNote: {color: colors.secondary, fontSize: 14, lineHeight: 22, marginBottom: 12},
   selectedGroup: {gap: 8, marginBottom: 14},
-  selectedLabel: {color: colors.muted, fontSize: 12, lineHeight: 18, fontWeight: '700'},
+  selectedLabel: {color: colors.muted, fontSize: 12, lineHeight: 18, letterSpacing: 0.5},
   chips: {flexDirection: 'row', flexWrap: 'wrap', gap: 8},
-  selectedChip: {minHeight: 44, maxWidth: '100%', flexDirection: 'row', alignItems: 'center', gap: 7, paddingHorizontal: 13, borderRadius: radii.pill, borderWidth: 1, borderColor: colors.accent, backgroundColor: colors.accentDark},
+  selectedChip: {minHeight: 44, maxWidth: '100%', flexDirection: 'row', alignItems: 'center', gap: 7, paddingHorizontal: 13, borderRadius: radii.small, borderWidth: 1, borderColor: colors.accent, backgroundColor: colors.accentDark},
   selectedChipText: {maxWidth: 230, color: colors.text, fontSize: 13, fontWeight: '600'},
   removeGlyph: {color: colors.accent, fontSize: 18, lineHeight: 18},
   modeGroup: {gap: 10, marginTop: 4, marginBottom: 6},
-  groupTitle: {color: colors.text, fontSize: 14, lineHeight: 20, fontWeight: '700'},
-  modeChoice: {minHeight: 44, maxWidth: '100%', justifyContent: 'center', paddingHorizontal: 13, borderRadius: radii.pill, borderWidth: 1, borderColor: colors.border},
+  groupTitle: {color: colors.text, fontFamily: serif, fontSize: 21, lineHeight: 28, fontWeight: '400'},
+  modeChoice: {minHeight: 44, maxWidth: '100%', justifyContent: 'center', paddingHorizontal: 13, borderRadius: radii.small, borderWidth: 1, borderColor: colors.border},
   modeChoiceSelected: {borderColor: colors.accent, backgroundColor: colors.accentDark},
   modeChoiceText: {color: colors.secondary, fontSize: 13, lineHeight: 18},
   modeChoiceTextSelected: {color: colors.text, fontWeight: '700'},
   conflictNote: {color: colors.muted, fontSize: 12, lineHeight: 18, marginBottom: 16},
-  fieldLabel: {color: colors.text, fontSize: 14, lineHeight: 20, fontWeight: '700', marginBottom: 7},
-  searchField: {minHeight: 50, borderWidth: 1, borderColor: colors.border, borderRadius: radii.small, backgroundColor: colors.background, paddingHorizontal: 14, justifyContent: 'center'},
+  fieldLabel: {color: colors.text, fontSize: 14, lineHeight: 20, marginBottom: 7},
+  searchField: {minHeight: 54, borderBottomWidth: 1, borderBottomColor: colors.accent, backgroundColor: 'transparent', paddingHorizontal: 2, justifyContent: 'center'},
   searchFieldFocused: {borderColor: colors.accent, outlineColor: colors.accent, outlineStyle: 'solid', outlineWidth: 2, outlineOffset: 2} as never,
   searchInput: {minHeight: 48, color: colors.text, fontSize: 15, outlineStyle: 'none'} as never,
   resultCount: {color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 9, marginBottom: 9},
   listViewport: {maxHeight: 320},
-  list: {gap: 7},
-  ingredientRow: {gap: 7, paddingVertical: 7, paddingHorizontal: 7, borderRadius: radii.small, backgroundColor: colors.raised},
+  list: {gap: 0},
+  ingredientRow: {gap: 12, paddingVertical: 14, paddingHorizontal: 0, borderBottomWidth: 1, borderBottomColor: colors.border},
   ingredientTop: {width: '100%', flexDirection: 'row', alignItems: 'center', gap: 8},
   ingredientCopy: {flex: 1, minWidth: 0},
-  ingredientName: {color: colors.text, fontSize: 14, lineHeight: 19, fontWeight: '600'},
+  ingredientName: {color: colors.text, fontFamily: serif, fontSize: 20, lineHeight: 27},
   ingredientEnglish: {color: colors.muted, fontSize: 11, lineHeight: 16, marginTop: 1},
   ingredientActions: {width: '100%', flexDirection: 'row', gap: 8, paddingLeft: 48},
   ingredientAction: {flex: 1, minHeight: 44, minWidth: 0, paddingHorizontal: 9, alignItems: 'center', justifyContent: 'center', borderRadius: radii.small, borderWidth: 1, borderColor: colors.border},
   ingredientActionIncluded: {backgroundColor: colors.accent, borderColor: colors.accent},
   ingredientActionExcluded: {backgroundColor: colors.danger, borderColor: colors.danger},
-  ingredientActionText: {color: colors.secondary, fontSize: 11, lineHeight: 15, fontWeight: '700', textAlign: 'center'},
+  ingredientActionText: {color: colors.secondary, fontSize: 12, lineHeight: 17, fontWeight: '700', textAlign: 'center'},
   ingredientActionTextActive: {color: colors.background},
   emptyText: {color: colors.secondary, fontSize: 14, lineHeight: 21, paddingVertical: 16},
-  moreButton: {minHeight: 44, marginTop: 12, alignItems: 'center', justifyContent: 'center', borderRadius: radii.pill, borderWidth: 1, borderColor: colors.border},
+  moreButton: {minHeight: 44, marginTop: 12, alignItems: 'center', justifyContent: 'center', borderRadius: radii.small, borderWidth: 1, borderColor: colors.border},
   moreButtonText: {color: colors.accent, fontSize: 13, fontWeight: '700'},
   pressed: {opacity: 0.7},
 });

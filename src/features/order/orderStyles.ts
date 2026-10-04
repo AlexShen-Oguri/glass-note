@@ -4,8 +4,8 @@ import {serif} from '../discovery/components';
 
 export const orderStyles=StyleSheet.create({
   previewWrap:{width:'100%',alignItems:'center'},
-  visualCard:{width:'100%',maxWidth:640,alignSelf:'center',gap:18,padding:22,borderWidth:1,borderColor:colors.accentDark,borderRadius:radii.medium,backgroundColor:colors.raised},
-  visualTitle:{fontFamily:serif,fontSize:30,lineHeight:38,color:colors.text},
+  visualCard:{width:'100%',maxWidth:640,alignSelf:'center',gap:24,padding:28,borderWidth:1,borderColor:colors.accentDark,borderRadius:radii.medium,backgroundColor:colors.raised},
+  visualTitle:{fontFamily:serif,fontSize:40,lineHeight:50,color:colors.text},
   visualOriginalTitle:{color:colors.muted,fontSize:13,lineHeight:20,marginTop:-12},
   visualSection:{gap:9},
   visualSectionLabel:{fontSize:10,lineHeight:15,fontWeight:'800',letterSpacing:1.3,textTransform:'uppercase',color:colors.accent},

@@ -6,7 +6,7 @@ import type {Locale} from '../../domain/contracts';
 import {collectionCountState} from '../../domain/discovery/navigation-state';
 import {lib} from '../../i18n/library';
 import {nav, pantryCountLabel} from '../../i18n/navigation';
-import {colors, radii} from '../../theme/tokens';
+import {colors} from '../../theme/tokens';
 import {serif} from '../discovery/components';
 import {useFavorites} from '../../platform/FavoritesProvider';
 import {favoriteCopy} from '../../i18n/favorites';
@@ -94,36 +94,26 @@ function LibraryDestinations({locale, variant='full', pantrySummary}: LibraryLin
 export default LibraryLinks;
 
 const styles = StyleSheet.create({
-  favorites: {minHeight: 48, flexDirection: 'row', alignItems: 'center', gap: 12, borderBottomWidth: 1, borderBottomColor: colors.border, paddingHorizontal: 12, marginTop: 4},
-  favoriteHeart: {color: colors.accent, fontSize: 24}, favoriteTitle: {color: colors.text, fontSize: 14, flex: 1}, favoriteCount: {color: colors.accent, fontSize: 12},
-  compactLinks:{flexDirection:'row',flexWrap:'wrap',gap:10,marginTop:22},
-  compactCard:{flexGrow:1,flexBasis:145,minHeight:84,padding:12,borderWidth:1,borderColor:colors.border,borderRadius:radii.medium,backgroundColor:'rgba(25,35,30,0.88)',flexDirection:'row',alignItems:'center',gap:10},
-  compactIcon:{width:28,height:32,alignItems:'center',justifyContent:'center'},
-  compactTitle:{fontFamily:serif,color:colors.text,fontSize:17,lineHeight:23},
-  compactNote:{fontSize:10,lineHeight:16,color:colors.accent,marginTop:4},
-  links: {flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginTop: 24},
-  card: {
-    flexGrow: 1,
-    flexBasis: 250,
-    minHeight: 154,
-    padding: 18,
-    borderRadius: radii.medium,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: 'rgba(25,35,30,0.88)',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 13,
-  },
-  pantryCard: {borderColor: '#4a5b4d', backgroundColor: 'rgba(34,48,40,0.90)'},
-  icon: {width: 38, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.raised, borderWidth: 1, borderColor: colors.border},
-  pantryIcon: {backgroundColor: colors.accentDark, borderColor: colors.accent},
-  iconText: {color: colors.accent, fontSize: 18, lineHeight: 22},
-  copy: {flex: 1},
-  kicker: {color: colors.muted, fontSize: 10, lineHeight: 14, fontWeight: '800', letterSpacing: 1.2, textTransform: 'uppercase'},
-  title: {color: colors.text, fontFamily: serif, fontSize: 20, lineHeight: 26, marginTop: 4},
-  description: {color: colors.secondary, fontSize: 12, lineHeight: 18, marginTop: 6},
-  count: {color: colors.accent, fontSize: 11, lineHeight: 16, marginTop: 9, fontWeight: '700'},
-  arrow: {color: colors.accent, fontSize: 19, lineHeight: 24},
-  pressed: {opacity: 0.74, transform: [{scale: 0.994}]},
+  favorites: {minHeight: 70, flexDirection: 'row', alignItems: 'center', gap: 16, borderBottomWidth: 1, borderBottomColor: colors.border, paddingVertical: 14, marginTop: 4},
+  favoriteHeart: {color: colors.accent, fontSize: 22, width: 28},
+  favoriteTitle: {fontFamily: serif, color: colors.text, fontSize: 23, lineHeight: 31, flex: 1},
+  favoriteCount: {fontFamily: serif, color: colors.accent, fontSize: 21, lineHeight: 29},
+  compactLinks: {flexDirection: 'row', flexWrap: 'wrap', gap: 22, marginTop: 26},
+  compactCard: {flexGrow: 1, flexBasis: 145, minHeight: 100, paddingVertical: 18, borderTopWidth: 1, borderBottomWidth: 1, borderColor: colors.border, flexDirection: 'row', alignItems: 'center', gap: 12},
+  compactIcon: {width: 26, height: 32, alignItems: 'center', justifyContent: 'center'},
+  compactTitle: {fontFamily: serif, color: colors.text, fontSize: 21, lineHeight: 29},
+  compactNote: {fontSize: 12, lineHeight: 19, color: colors.accent, marginTop: 5},
+  links: {gap: 0, marginTop: 30, borderTopWidth: 1, borderColor: colors.border},
+  card: {minHeight: 140, paddingVertical: 24, borderBottomWidth: 1, borderColor: colors.border, flexDirection: 'row', alignItems: 'center', gap: 20},
+  pantryCard: {backgroundColor: 'transparent'},
+  icon: {width: 32, height: 38, alignItems: 'center', justifyContent: 'center'},
+  pantryIcon: {backgroundColor: 'transparent'},
+  iconText: {color: colors.accent, fontSize: 18, lineHeight: 24},
+  copy: {flex: 1, minWidth: 0},
+  kicker: {color: colors.muted, fontSize: 10, lineHeight: 16, letterSpacing: 1.4, textTransform: 'uppercase'},
+  title: {color: colors.text, fontFamily: serif, fontWeight: '400', fontSize: 28, lineHeight: 38, marginTop: 6},
+  description: {color: colors.secondary, fontSize: 13, lineHeight: 22, marginTop: 7, maxWidth: 600},
+  count: {color: colors.accent, fontSize: 12, lineHeight: 19, marginTop: 10},
+  arrow: {color: colors.accent, fontSize: 21, lineHeight: 28},
+  pressed: {opacity: 0.74},
 });

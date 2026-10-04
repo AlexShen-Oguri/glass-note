@@ -66,7 +66,7 @@ export function MakingScreen(){
           {making.error||error?<PersistenceNotice kind={making.error??'write'} retrying={busy} onRetry={()=>void retry()} copy={copy}/>:null}
           {!making.hydrated&&!making.error?<Text style={s.empty}>{copy('loading')}</Text>:null}
           {completed?<View style={{flexGrow:1,minHeight:300,justifyContent:'center',alignItems:'center',gap:36,paddingVertical:48}}><Text accessibilityRole="header" accessibilityLiveRegion="polite" style={[s.title,{fontSize:48,lineHeight:60}]}>{copy('completed')}</Text><View style={[s.row,{justifyContent:'center'}]}><Action primary label={refinementText(app.locale,'again')} disabled={busy||making.saving} onPress={()=>void again()}/><Action label={refinementText(app.locale,'backToList')} onPress={()=>router.replace('/discover' as never)}/></View></View>:recipe?<>
-            <View style={s.hero}><Text accessibilityRole="header" style={s.title}>{recipeDisplayName(recipe, app.locale)}</Text><CocktailOriginalName recipe={recipe} locale={app.locale} /></View>
+            <View style={s.hero}><Heading level={1} style={s.title}>{recipeDisplayName(recipe, app.locale)}</Heading><CocktailOriginalName recipe={recipe} locale={app.locale} /></View>
             <RecipeBody recipe={recipe} servings={session?.servings??recipe.version.servings} locale={app.locale} unit={app.unit}/>
             <Action primary label={copy(busy||making.saving?'saving':'complete')} disabled={!session||session.completed||busy||making.saving||Boolean(making.error)} onPress={()=>void complete()}/>
           </>:making.hydrated?<Text style={s.empty}>{copy('sessionMissing')}</Text>:null}

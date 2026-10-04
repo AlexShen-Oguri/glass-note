@@ -14,14 +14,16 @@ export function MotionInteractions({changeKey, ...props}: ViewProps & {changeKey
     const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
     const find = (target: EventTarget | null) => {
       const node = target instanceof Element ? target.closest<HTMLElement>('button,a,[role="button"],[role="link"]') : null;
-      return node && root.contains(node) && !node.closest('[data-motion-loop]') && node.getAttribute('aria-disabled') !== 'true' && !node.hasAttribute('disabled') ? node : null;
+      return node && root.contains(node) && !node.closest('[data-motion-loop]') && !node.style.willChange.includes('transform') && node.getAttribute('aria-disabled') !== 'true' && !node.hasAttribute('disabled') ? node : null;
     };
     const move = contextSafe((node: HTMLElement, lifted: boolean, pressed = false) => {
       let control = controls.get(node);
       if (!control) {
-        const baseY = Number(gsap.getProperty(node, 'y')) || 0;
-        const baseScaleX = Number(gsap.getProperty(node, 'scaleX')) || 1;
-        const baseScaleY = Number(gsap.getProperty(node, 'scaleY')) || 1;
+        // Foreground entrances temporarily own a control's transform. Their
+        // intermediate pose must never become the permanent interaction base.
+        const baseY = 0;
+        const baseScaleX = 1;
+        const baseScaleY = 1;
         control = {baseY, baseScaleX, baseScaleY,
           y: gsap.quickTo(node, 'y', {duration: 0.22, ease: 'power2.out'}),
           scaleX: gsap.quickTo(node, 'scaleX', {duration: 0.22, ease: 'power2.out'}),

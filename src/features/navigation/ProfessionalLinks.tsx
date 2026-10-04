@@ -60,7 +60,7 @@ export function ProfessionalLinks({locale, variant = 'full', selected, showHeadi
         )}
       </View> : null}
       <View style={[styles.cards, compact && styles.compactCards, navigation && styles.navigationCards]}>
-        {destinations.map((item) => {
+        {destinations.map((item, index) => {
           const isSelected = item.key === selected;
           const title = professionalText(locale, item.titleKey);
           const description = professionalText(locale, item.descriptionKey);
@@ -76,13 +76,14 @@ export function ProfessionalLinks({locale, variant = 'full', selected, showHeadi
                 isSelected && styles.selectedCard,
               ])}
             >
+              <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants"><Text style={styles.cardNumber}>{String(index + 1).padStart(2, '0')}</Text></View>
               <View style={styles.cardCopy}>
                 <Text style={[styles.cardTitle, compact && styles.compactCardTitle, navigation && styles.navigationCardTitle, isSelected && styles.selectedCardTitle]}>
                   {title}
                 </Text>
                 {!navigation ? <Text style={[styles.cardDescription, compact && styles.compactCardDescription]}>{description}</Text> : null}
               </View>
-              {!navigation ? <Text style={[styles.arrow, compact && styles.compactArrow]}>↗</Text> : null}
+              {!navigation ? <View style={styles.arrowCircle}><Text style={[styles.arrow, compact && styles.compactArrow]}>↗</Text></View> : null}
             </Pressable></Link>
           );
         })}
@@ -94,7 +95,7 @@ export function ProfessionalLinks({locale, variant = 'full', selected, showHeadi
 export default ProfessionalLinks;
 
 const styles = StyleSheet.create({
-  section: {width: '100%', marginTop: 24, gap: 12},
+  section: {width: '100%', marginTop: 24, gap: 20},
   compactSection: {marginTop: 20, gap: 10},
   navigationSection: {minWidth:0,flex:1},
   tabs:{gap:8,alignItems:'center'},
@@ -107,21 +108,22 @@ const styles = StyleSheet.create({
   compactTitle: {fontSize: 19, lineHeight: 25},
   navigationTitle: {fontFamily: undefined, fontSize: 11, lineHeight: 16, letterSpacing: 1.4, fontWeight: '800', color: colors.accent, textTransform: 'uppercase'},
   current: {fontSize: 12, lineHeight: 18, color: colors.secondary},
-  description: {fontSize: 12, lineHeight: 18, color: colors.secondary, maxWidth: 620},
+  description: {fontSize: 13, lineHeight: 22, color: colors.secondary, maxWidth: 620},
   compactDescription: {fontSize: 11, lineHeight: 17},
-  cards: {gap: 0},
-  compactCards: {gap: 8},
+  cards: {gap: 0, borderTopWidth: 1, borderColor: colors.border},
+  compactCards: {gap: 0},
   navigationCards: {gap: 8},
   card: {
-    minHeight: 104,
-    paddingVertical: 20,
+    minHeight: 128,
+    paddingVertical: 24,
     borderBottomWidth: 1,
     borderColor: colors.border,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 18,
   },
-  compactCard: {flexBasis: 145, minHeight: 88, padding: 11, gap: 9, alignItems: 'center'},
+  compactCard: {minHeight: 96, paddingVertical: 18, gap: 12, alignItems: 'center'},
+  cardNumber: {width: 24, fontSize: 10, lineHeight: 17, color: colors.muted, letterSpacing: 1},
   navigationCard: {flexBasis: 100, minWidth: 94, minHeight: 50, paddingHorizontal: 10, paddingVertical: 8, gap: 7, alignItems: 'center', backgroundColor: 'transparent', borderRadius: radii.small},
   selectedCard: {backgroundColor: colors.accentDark, borderColor: colors.accent},
   icon: {width: 38, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.raised, borderWidth: 1, borderColor: colors.border},
@@ -131,12 +133,13 @@ const styles = StyleSheet.create({
   iconText: {color: colors.accent, fontSize: 18, lineHeight: 22},
   selectedIconText: {color: colors.background},
   cardCopy: {flex: 1, minWidth: 0},
-  cardTitle: {fontFamily: serif, fontSize: 18, lineHeight: 24, color: colors.text},
-  compactCardTitle: {fontSize: 15, lineHeight: 20},
+  cardTitle: {fontFamily: serif, fontWeight: '400', fontSize: 28, lineHeight: 37, color: colors.text},
+  compactCardTitle: {fontSize: 22, lineHeight: 30},
   navigationCardTitle: {fontFamily: undefined, fontSize: 12, lineHeight: 17, fontWeight: '700', color: colors.secondary},
   selectedCardTitle: {color: colors.text},
-  cardDescription: {fontSize: 12, lineHeight: 18, color: colors.secondary, marginTop: 5},
-  compactCardDescription: {fontSize: 10, lineHeight: 15, marginTop: 3},
+  cardDescription: {fontSize: 13, lineHeight: 22, color: colors.secondary, marginTop: 7},
+  compactCardDescription: {fontSize: 12, lineHeight: 19, marginTop: 4},
+  arrowCircle: {width: 34, height: 34, borderRadius: 17, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center'},
   arrow: {color: colors.accent, fontSize: 19, lineHeight: 24},
   compactArrow: {fontSize: 16, lineHeight: 20},
   pressed: {opacity: 0.68, transform: [{scale: 0.985}]},

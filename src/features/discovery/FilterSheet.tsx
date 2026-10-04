@@ -33,6 +33,7 @@ function FilterChoice({label, selected, onPress}: {label: string; selected: bool
   return (
     <Pressable aria-checked={selected} accessibilityRole="checkbox" accessibilityState={{checked: selected}}
       onPress={onPress} style={({pressed}) => [styles.choice, selected && styles.choiceSelected, pressed && styles.pressed]}>
+      {selected ? <Text aria-hidden style={styles.choiceCheck}>✓</Text> : null}
       <Text style={[styles.choiceText, selected && styles.choiceTextSelected]}>{label}</Text>
     </Pressable>
   );
@@ -250,25 +251,26 @@ export default function FilterSheet({
 const styles = StyleSheet.create({
   backdrop: {flex: 1, backgroundColor: 'rgba(4,8,6,0.74)', alignItems: 'center', justifyContent: 'center', padding: 24},
   compactBackdrop: {padding: 0, justifyContent: 'flex-end'},
-  sheet: {width: '100%', maxWidth: 760, maxHeight: '90%', backgroundColor: colors.panel, borderRadius: radii.large, borderWidth: 1, borderColor: colors.border, overflow: 'hidden'},
+  sheet: {width: '100%', maxWidth: 800, maxHeight: '90%', backgroundColor: colors.background, borderRadius: radii.small, borderWidth: 1, borderColor: colors.border, overflow: 'hidden'},
   sheetCompact: {maxHeight: '96%', borderBottomLeftRadius: 0, borderBottomRightRadius: 0, borderBottomWidth: 0},
-  handle: {width: 42, height: 4, borderRadius: 2, backgroundColor: colors.border, alignSelf: 'center', marginTop: 10},
-  header: {paddingHorizontal: 24, paddingTop: 14, paddingBottom: 18, flexDirection: 'row', justifyContent: 'space-between', gap: 12, borderBottomWidth: 1, borderBottomColor: colors.border},
+  handle: {width: 42, height: 2, borderRadius: 1, backgroundColor: colors.accent, alignSelf: 'center', marginTop: 10},
+  header: {paddingHorizontal: 24, paddingTop: 24, paddingBottom: 24, flexDirection: 'row', justifyContent: 'space-between', gap: 12, borderBottomWidth: 1, borderBottomColor: colors.border},
   headerCopy: {flex: 1},
-  title: {color: colors.text, fontFamily: serif, fontSize: 28, lineHeight: 34},
+  title: {color: colors.text, fontFamily: serif, fontSize: 40, lineHeight: 48, fontWeight: '400', letterSpacing: -1},
   hint: {color: colors.secondary, fontSize: 14, lineHeight: 21, marginTop: 7},
   closeButton: {width: 44, height: 44, alignItems: 'center', justifyContent: 'center'},
   closeText: {color: colors.secondary, fontSize: 28, fontWeight: '300'},
-  content: {padding: 24, paddingBottom: 30},
-  group: {marginBottom: 24, gap: 10},
-  groupTitle: {color: colors.text, fontSize: 15, lineHeight: 20, fontWeight: '700'},
+  content: {padding: 24, paddingBottom: 36},
+  group: {marginBottom: 28, gap: 14},
+  groupTitle: {color: colors.text, fontFamily: serif, fontSize: 23, lineHeight: 29, fontWeight: '400'},
   chips: {flexDirection: 'row', flexWrap: 'wrap', gap: 8},
-  choice: {minHeight: 44, maxWidth: '100%', justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 9, borderWidth: 1, borderColor: colors.border, borderRadius: radii.pill},
+  choice: {minHeight: 44, maxWidth: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingHorizontal: 14, paddingVertical: 9, borderWidth: 1, borderColor: colors.border, borderRadius: radii.small},
   choiceSelected: {borderColor: colors.accent, backgroundColor: colors.accentDark},
+  choiceCheck: {color: colors.accent, fontSize: 12},
   choiceText: {color: colors.secondary, fontSize: 13, lineHeight: 18, flexShrink: 1},
   choiceTextSelected: {color: colors.text, fontWeight: '700'},
   optionalGroup: {borderTopWidth: 1, borderTopColor: colors.border},
-  groupToggle: {minHeight: 58, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 16, paddingVertical: 10},
+  groupToggle: {minHeight: 70, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 16, paddingVertical: 10},
   groupToggleCopy: {flex: 1, minWidth: 0},
   groupAction: {color: colors.accent, fontSize: 13, lineHeight: 18, fontWeight: '700'},
   selectionSummary: {color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 3},
@@ -278,10 +280,10 @@ const styles = StyleSheet.create({
   methodRow: {flexDirection: 'row', alignItems: 'center', gap: 12},
   methodHint: {flex: 1, color: colors.secondary, fontSize: 13, lineHeight: 19},
   coverage: {color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 18},
-  footer: {padding: 16, borderTopWidth: 1, borderTopColor: colors.border, flexDirection: 'row', gap: 10},
-  resetButton: {minHeight: 50, paddingHorizontal: 20, alignItems: 'center', justifyContent: 'center', borderRadius: radii.pill, borderWidth: 1, borderColor: colors.border},
+  footer: {padding: 20, borderTopWidth: 1, borderTopColor: colors.border, flexDirection: 'row', gap: 10},
+  resetButton: {minHeight: 50, paddingHorizontal: 20, alignItems: 'center', justifyContent: 'center', borderRadius: radii.small, borderWidth: 1, borderColor: colors.border},
   resetText: {color: colors.secondary, fontSize: 14, fontWeight: '700'},
-  applyButton: {minHeight: 50, flex: 1, paddingHorizontal: 20, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 12, borderRadius: radii.pill, backgroundColor: colors.accent},
+  applyButton: {minHeight: 50, flex: 1, paddingHorizontal: 20, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 12, borderRadius: radii.small, backgroundColor: colors.accent},
   applyText: {color: colors.background, fontSize: 14, fontWeight: '800'},
   applyArrow: {color: colors.background, fontSize: 20},
   pressed: {opacity: 0.72},

@@ -116,10 +116,10 @@ function Single({label, value}: {label: string; value: string}) {
 }
 
 const styles = StyleSheet.create({
-  panel: {marginTop: 34, borderWidth: 1, borderColor: colors.border, borderRadius: radii.large, backgroundColor: colors.panel, overflow: 'hidden'},
-  heading: {minHeight: 76, paddingHorizontal: 18, paddingVertical: 16, flexDirection: 'row', alignItems: 'center', gap: 16},
+  panel: {marginTop: 40, borderWidth: 1, borderColor: colors.border, borderRadius: radii.small, backgroundColor: colors.panel, overflow: 'hidden'},
+  heading: {minHeight: 88, paddingHorizontal: 20, paddingVertical: 20, flexDirection: 'row', alignItems: 'center', gap: 16},
   headingCopy: {flex: 1},
-  eyebrow: {color: colors.accent, fontSize: 12, fontWeight: '800', letterSpacing: 1, textTransform: 'uppercase'},
+  eyebrow: {color: colors.text, fontFamily: serif, fontSize: 25, lineHeight: 32, fontWeight: '400'},
   summary: {color: colors.secondary, fontSize: 13, lineHeight: 19, marginTop: 5},
   headingMeta: {alignItems: 'flex-end', gap: 7},
   status: {color: colors.accent, fontSize: 11, fontWeight: '700'},
@@ -128,10 +128,10 @@ const styles = StyleSheet.create({
   body: {paddingHorizontal: 14, paddingBottom: 16, gap: 10},
   recipeGaps: {borderTopWidth: 1, borderTopColor: colors.border, paddingHorizontal: 4, paddingTop: 14, paddingBottom: 4},
   gap: {color: colors.secondary, fontSize: 13, lineHeight: 20, marginTop: 5},
-  card: {borderWidth: 1, borderColor: colors.border, borderRadius: radii.medium, backgroundColor: colors.background},
+  card: {borderWidth: 1, borderColor: colors.border, borderRadius: radii.small, backgroundColor: colors.background},
   cardHeading: {minHeight: 58, paddingHorizontal: 14, paddingVertical: 12, flexDirection: 'row', alignItems: 'center', gap: 12},
   cardHeadingCopy: {flex: 1},
-  cardTitle: {color: colors.text, fontFamily: serif, fontSize: 17, lineHeight: 22},
+  cardTitle: {color: colors.text, fontFamily: serif, fontSize: 22, lineHeight: 28},
   cardRole: {color: colors.muted, fontSize: 11, marginTop: 3},
   cardBody: {borderTopWidth: 1, borderTopColor: colors.border, padding: 14, gap: 15},
   detail: {gap: 5},

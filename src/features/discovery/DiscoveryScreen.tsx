@@ -57,13 +57,20 @@ function CocktailCard({
   result,
   locale,
   listId,
+  index,
+  photoHeight,
+  compact,
 }: {
   cocktail: Cocktail;
   result: SearchResult;
   locale: Locale;
   listId?: string;
+  index: number;
+  photoHeight: number;
+  compact: boolean;
 }) {
   const asset = media[cocktail.id];
+  const [hovered, setHovered] = useState(false);
   const origin = catalogue.versions.find(version => version.id === result.selectedVersionId)?.origin;
   return (
     <View {...motionData({motionItem: cocktail.id})} style={styles.cardCellContent}>
@@ -77,17 +84,22 @@ function CocktailCard({
         <Pressable
           accessibilityRole="link"
           accessibilityLabel={`${cocktail.name[locale]}. ${t(locale, 'viewRecipe')}`}
-          style={styles.card}
+          onHoverIn={() => setHovered(true)}
+          onHoverOut={() => setHovered(false)}
+          style={({pressed}) => [styles.card, hovered && styles.cardHovered, pressed && styles.pressed]}
         >
-          <PhotoFrame asset={asset} accent={cocktail.accent} locale={locale} height={260} preserveAspect borderRadius={radii.medium} />
+          <View {...motionData({motionPhoto: cocktail.id})} style={styles.cardPhoto}>
+            <PhotoFrame asset={asset} accent={cocktail.accent} locale={locale} height={photoHeight} borderRadius={radii.small} />
+            <Text aria-hidden style={styles.cardNumber}>{String(index + 1).padStart(2, '0')}</Text>
+          </View>
           <View style={styles.cardCopy}>
             <Text style={styles.cardCategory}>{origin ? recipeCategoryText(locale,origin.kind) : t(locale, cocktail.category as UiKey)}</Text>
-            <Text style={styles.cardTitle}>{cocktail.name[locale]}</Text><CocktailOriginalName cocktail={cocktail} locale={locale} />
+            <Text style={[styles.cardTitle, compact && styles.cardTitleCompact]}>{cocktail.name[locale]}</Text><CocktailOriginalName cocktail={cocktail} locale={locale} />
           </View>
         </Pressable>
       </Link>
       {listId ? <ListBrowseAddButton key={result.selectedVersionId} listId={listId} versionId={result.selectedVersionId} locale={locale} /> : null}
-      <View style={{position: 'absolute', top: 10, right: 10}}>
+      <View style={styles.cardFavorite}>
         <FavoriteButton versionId={result.selectedVersionId} locale={locale} compact />
       </View>
       {asset?.origin === 'ai-generated' || asset?.origin === 'ai-styled' ? null : asset ? <Text style={styles.credit}>{asset.author}{asset.license ? ` · ${asset.license}` : ''}</Text> : null}
@@ -121,7 +133,11 @@ export default function DiscoveryScreen() {
     ? pagination
     : paginationForQuery(undefined, query, locale);
   const visibleResults = results.slice(0, activePagination.limit);
-  const columns = getDiscoveryColumnCount(width);
+  const compact = width < 520;
+  const gutter = compact ? 22 : width < 900 ? 36 : 64;
+  const columns = Math.min(3, getDiscoveryColumnCount(width)) as 2 | 3;
+  const columnGap = compact ? 14 : 28;
+  const photoHeight = Math.max(140, Math.min(330, Math.round((Math.min(width - gutter * 2, 1260) - columnGap * (columns - 1)) / columns * (compact ? 0.96 : 0.79))));
   const cardData = visibleResults.flatMap((result) => {
     const cocktail = catalogue.cocktails.find((item) => item.id === result.cocktailId);
     return cocktail ? [{cocktail, result}] : [];
@@ -167,7 +183,7 @@ export default function DiscoveryScreen() {
     <SafeAreaView style={styles.screen} edges={['top']}>
       <ScrollView
         ref={scrollRef}
-        contentContainerStyle={styles.page}
+        contentContainerStyle={[styles.page, {paddingHorizontal: gutter}]}
         keyboardShouldPersistTaps="handled"
         scrollEventThrottle={80}
         onScroll={(event) => {
@@ -179,13 +195,16 @@ export default function DiscoveryScreen() {
       >
         <View style={styles.shell}>
           <BrandToolbar {...{locale, setLocale, unit, setUnit, motionPaused, setMotionPaused}} showUnits={false} />
-          {listId ? <ListBrowseSelection listId={listId} locale={locale} /> : <Heading level={1} style={[styles.pageTitle, width < 520 && styles.pageTitleCompact]}>{p02DiscoveryText(locale, 'collectionTitle')}</Heading>}
+          <View {...motionData({motionPart: 'title'})} style={styles.collectionHeading}>
+            <View style={styles.editionLine}><View style={styles.editionRule} /><Text style={styles.editionText}>GLASS NOTES / COLLECTION</Text></View>
+            {listId ? <ListBrowseSelection listId={listId} locale={locale} /> : <Heading level={1} style={[styles.pageTitle, compact && styles.pageTitleCompact]}>{p02DiscoveryText(locale, 'collectionTitle')}</Heading>}
+          </View>
           <View style={styles.collectionFilters}>
             {(['all','classic','competition','bar'] as const).map(category=><SelectionChip key={category} label={recipeCategoryText(locale,category)} selected={category==='all'?!query.recipeCategory:query.recipeCategory===category} onPress={()=>setQuery({...query,recipeCategory:category==='all'?undefined:category})}/>)}
           </View>
-          <View style={styles.searchPanel}>
+          <View {...motionData({motionPart: 'copy'})} style={styles.searchPanel}>
               <View style={[styles.searchField, searchFocused && styles.searchFieldFocused]}>
-                <Text style={styles.searchGlyph}>⌕</Text>
+                <Text aria-hidden style={styles.searchGlyph}>⌕</Text>
                 <TextInput
                   accessibilityLabel={t(locale, 'searchPlaceholder')}
                   autoCapitalize="none"
@@ -204,7 +223,7 @@ export default function DiscoveryScreen() {
                 />
               </View>
               <Pressable ref={filterTriggerRef as never} aria-expanded={filterOpen} accessibilityRole="button" accessibilityState={{expanded: filterOpen}} accessibilityLabel={p02DiscoveryText(locale, 'filters')} onPress={openFilters} style={({pressed}) => [styles.filterButton, pressed && styles.pressed]}>
-                <Text style={styles.filterIcon}>≋</Text>
+                <Text aria-hidden style={styles.filterIcon}>≋</Text>
                 <Text numberOfLines={1} style={styles.filterButtonText}>{p02DiscoveryText(locale, 'filters')}</Text>
                 {preferenceCount(query) > 0 ? <View style={styles.filterCount}><Text style={styles.filterCountText}>{preferenceCount(query)}</Text></View> : null}
               </Pressable>
@@ -253,10 +272,10 @@ export default function DiscoveryScreen() {
           <MotionTransition changeKey={`${fingerprint}:${activePagination.limit}`} kind="card" disabled={Boolean(query.text)}>{results.length ? (
             <View style={styles.grid}>
               {resultRows.map((items, rowIndex) => (
-                <View key={items[0]?.cocktail.id ?? `row-${rowIndex}`} style={styles.gridRow}>
-                  {items.map(({cocktail, result}) => (
-                    <View key={cocktail.id} style={styles.gridCell}>
-                      <CocktailCard {...{cocktail, result, locale, listId}} />
+                <View key={items[0]?.cocktail.id ?? `row-${rowIndex}`} style={[styles.gridRow, {gap: columnGap}]}>
+                  {items.map(({cocktail, result}, columnIndex) => (
+                    <View key={cocktail.id} style={[styles.gridCell, {paddingTop: columnIndex * (compact ? 28 : 42)}]}>
+                      <CocktailCard {...{cocktail, result, locale, listId, photoHeight, compact}} index={rowIndex * columns + columnIndex} />
                     </View>
                   ))}
                   {Array.from({length: columns - items.length}, (_, spacerIndex) => (
@@ -298,53 +317,62 @@ export default function DiscoveryScreen() {
 
 const styles = StyleSheet.create({
   screen: {flex: 1, backgroundColor: 'transparent'},
-  page: {minHeight: '100%', paddingHorizontal: 18, paddingBottom: 56},
-  shell: {width: '100%', maxWidth: 1400, alignSelf: 'center'},
-  pageTitle: {color: colors.text, fontFamily: serif, fontSize: 34, lineHeight: 40, letterSpacing: -0.7, marginTop: 22, marginBottom: 14},
-  pageTitleCompact: {fontSize: 30, lineHeight: 36, marginTop: 16},
-  searchPanel: {width: '100%', flexDirection: 'row', gap: 10},
-  searchField: {height: 54, flex: 1, flexDirection: 'row', alignItems: 'center', gap: 9, borderRadius: radii.pill, backgroundColor: colors.panel, borderWidth: 1, borderColor: colors.border, paddingHorizontal: 18},
-  searchFieldFocused: {borderColor: colors.accent, outlineColor: colors.accent, outlineStyle: 'solid', outlineWidth: 2, outlineOffset: 2} as never,
-  searchGlyph: {color: colors.accent, fontSize: 24, marginTop: -3},
-  searchInput: {flex: 1, minWidth: 0, height: 52, color: colors.text, fontSize: 16},
-  filterButton: {height: 54, minWidth: 96, paddingHorizontal: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7, backgroundColor: colors.accent, borderRadius: radii.pill},
+  page: {minHeight: '100%', paddingBottom: 80},
+  shell: {width: '100%', maxWidth: 1260, alignSelf: 'center'},
+  collectionHeading: {marginTop: 32, marginBottom: 12},
+  editionLine: {flexDirection: 'row', alignItems: 'center', gap: 14},
+  editionRule: {width: 32, height: 1, backgroundColor: colors.accent},
+  editionText: {color: colors.accent, fontSize: 11, letterSpacing: 2.2},
+  pageTitle: {color: colors.text, fontFamily: serif, fontSize: 94, lineHeight: 108, fontWeight: '400', letterSpacing: -4, marginTop: 18, marginBottom: 16},
+  pageTitleCompact: {fontSize: 56, lineHeight: 67, letterSpacing: -2, marginTop: 18, marginBottom: 10},
+  searchPanel: {width: '100%', flexDirection: 'row', gap: 12, marginTop: 16},
+  searchField: {height: 62, flex: 1, flexDirection: 'row', alignItems: 'center', gap: 12, borderBottomWidth: 1, borderBottomColor: colors.accent, paddingHorizontal: 2},
+  searchFieldFocused: {borderBottomColor: colors.text, outlineColor: colors.accent, outlineStyle: 'solid', outlineWidth: 2, outlineOffset: 4} as never,
+  searchGlyph: {color: colors.accent, fontSize: 28, marginTop: -3},
+  searchInput: {flex: 1, minWidth: 0, height: 58, color: colors.text, fontSize: 16},
+  filterButton: {minHeight: 62, minWidth: 96, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7, backgroundColor: colors.accent, borderRadius: radii.small},
   filterIcon: {color: colors.background, fontSize: 20, transform: [{rotate: '90deg'}]},
-  filterButtonText: {color: colors.background, fontSize: 14, fontWeight: '800'},
+  filterButtonText: {color: colors.background, fontSize: 14, fontWeight: '700'},
   filterCount: {width: 20, height: 20, alignItems: 'center', justifyContent: 'center', borderRadius: 10, backgroundColor: colors.background},
   filterCountText: {color: colors.accent, fontSize: 10, fontWeight: '800'},
-  secondaryActions: {minHeight: 46, flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 4, marginTop: 4},
-  secondaryLink: {minHeight: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 10, gap: 7},
-  secondaryLinkText: {color: colors.accent, fontSize: 13, lineHeight: 18, fontWeight: '700'},
+  secondaryActions: {minHeight: 48, flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 12, marginTop: 8},
+  secondaryLink: {minHeight: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 2, gap: 7},
+  secondaryLinkText: {color: colors.accent, fontSize: 13, lineHeight: 18},
   secondaryCount: {minWidth: 20, height: 20, borderRadius: 10, paddingHorizontal: 5, textAlign: 'center', color: colors.background, backgroundColor: colors.accent, fontSize: 11, lineHeight: 20, fontWeight: '800'},
-  collectionFilters: {flexDirection: 'row', flexWrap: 'wrap', gap: 8, paddingVertical: 10},
-  resultsHeader: {minHeight: 70, paddingVertical: 15, borderTopWidth: 1, borderTopColor: colors.border, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'},
-  resultsEyebrow: {color: colors.text, fontFamily: serif, fontSize: 19},
-  resultsTitle: {color: colors.muted, fontSize: 12, marginTop: 4},
+  collectionFilters: {flexDirection: 'row', flexWrap: 'wrap', gap: 10, paddingVertical: 10},
+  resultsHeader: {minHeight: 88, marginTop: 20, paddingVertical: 20, borderTopWidth: 1, borderTopColor: colors.border, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'},
+  resultsEyebrow: {color: colors.text, fontFamily: serif, fontSize: 28, lineHeight: 35, fontWeight: '400'},
+  resultsTitle: {color: colors.muted, fontSize: 12, marginTop: 7, letterSpacing: 0.5},
   clearButton: {minHeight: 44, justifyContent: 'center', paddingHorizontal: 12},
-  clearText: {color: colors.accent, fontSize: 14, fontWeight: '700'},
+  clearText: {color: colors.accent, fontSize: 14},
   notice: {marginBottom: 6, borderLeftWidth: 2, borderLeftColor: colors.amber, paddingVertical: 11, paddingHorizontal: 14, backgroundColor: colors.panel},
   noticeText: {color: colors.secondary, fontSize: 14, lineHeight: 20},
-  grid: {gap: 24, paddingVertical: 32},
-  gridRow: {flexDirection: 'row', gap: 14, alignItems: 'stretch'},
-  gridCell: {flex: 1},
+  grid: {gap: 36, paddingTop: 16, paddingBottom: 32},
+  gridRow: {flexDirection: 'row', alignItems: 'flex-start'},
+  gridCell: {flex: 1, minWidth: 0},
   gridSpacer: {flex: 1},
   cardCellContent: {flex: 1},
-  card: {flex: 1, backgroundColor: colors.panel, borderRadius: radii.medium, borderWidth: 1, borderColor: colors.border, overflow: 'hidden'},
-  cardCopy: {flex: 1, paddingHorizontal: 15, paddingTop: 13, paddingBottom: 16},
-  cardCategory: {color: colors.accent, fontSize: 12, fontWeight: '800', letterSpacing: 0.8, textTransform: 'uppercase', flexShrink: 1},
-  cardTitle: {color: colors.text, fontFamily: serif, fontSize: 22, lineHeight: 27, marginTop: 9},
-  credit: {color: colors.muted, fontSize: 12, lineHeight: 17, marginTop: 7, marginHorizontal: 4},
-  emptyState: {minHeight: 350, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: colors.border, borderRadius: radii.large, padding: 30},
+  card: {flex: 1, backgroundColor: 'transparent', borderRadius: radii.small, borderBottomWidth: 1, borderBottomColor: colors.border, paddingBottom: 4},
+  cardHovered: {borderBottomColor: colors.accent},
+  cardPhoto: {width: '100%'},
+  cardNumber: {position: 'absolute', top: 12, left: 14, color: colors.text, fontFamily: serif, fontStyle: 'italic', fontSize: 20, textShadowColor: colors.background, textShadowRadius: 8},
+  cardFavorite: {position: 'absolute', top: 8, right: 8},
+  cardCopy: {paddingTop: 16, paddingBottom: 18, minHeight: 112},
+  cardCategory: {color: colors.muted, fontSize: 11, lineHeight: 16, letterSpacing: 1.1, textTransform: 'uppercase', flexShrink: 1},
+  cardTitle: {color: colors.text, fontFamily: serif, fontSize: 32, lineHeight: 39, fontWeight: '400', marginTop: 8},
+  cardTitleCompact: {fontSize: 23, lineHeight: 30},
+  credit: {color: colors.muted, fontSize: 12, lineHeight: 17, marginTop: 7},
+  emptyState: {minHeight: 350, alignItems: 'center', justifyContent: 'center', borderTopWidth: 1, borderBottomWidth: 1, borderColor: colors.border, padding: 30},
   emptyOrnament: {color: colors.accent, fontSize: 25},
-  emptyTitle: {color: colors.text, fontFamily: serif, fontSize: 27, marginTop: 14, textAlign: 'center'},
+  emptyTitle: {color: colors.text, fontFamily: serif, fontSize: 36, lineHeight: 43, marginTop: 14, textAlign: 'center'},
   emptyHint: {color: colors.secondary, fontSize: 14, lineHeight: 21, maxWidth: 400, textAlign: 'center', marginTop: 9},
-  emptyButton: {minHeight: 48, borderRadius: radii.pill, backgroundColor: colors.accent, paddingHorizontal: 20, alignItems: 'center', justifyContent: 'center', marginTop: 20},
-  emptyButtonText: {color: colors.background, fontSize: 14, fontWeight: '800'},
+  emptyButton: {minHeight: 48, borderRadius: radii.small, backgroundColor: colors.accent, paddingHorizontal: 20, alignItems: 'center', justifyContent: 'center', marginTop: 20},
+  emptyButtonText: {color: colors.background, fontSize: 14, fontWeight: '700'},
   emptyClearButton: {minHeight: 44, paddingHorizontal: 16, alignItems: 'center', justifyContent: 'center', marginTop: 8},
-  loadMoreButton: {minHeight: 54, marginTop: 32, borderRadius: radii.pill, borderWidth: 1, borderColor: colors.border, alignSelf: 'center', paddingHorizontal: 28, flexDirection: 'row', alignItems: 'center'},
-  loadMoreText: {color: colors.text, fontSize: 14, fontWeight: '700'},
-  endMark: {flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 13, marginTop: 56},
-  endRule: {height: 1, width: 36, backgroundColor: colors.border},
+  loadMoreButton: {minHeight: 54, minWidth: 180, marginTop: 32, borderRadius: radii.small, borderWidth: 1, borderColor: colors.border, alignSelf: 'center', paddingHorizontal: 28, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'},
+  loadMoreText: {color: colors.text, fontSize: 14},
+  endMark: {flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 13, marginTop: 64},
+  endRule: {height: 1, width: 48, backgroundColor: colors.border},
   endLogo: {opacity: 0.55},
   pressed: {opacity: 0.7},
 });

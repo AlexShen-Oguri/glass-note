@@ -21,6 +21,9 @@ import {usePantry} from '../../platform/PantryProvider';
 import {useBottles} from '../../platform/BottleProvider';
 import {g175} from '../../i18n/round17-5-guided';
 import {MotionTransition,useMotionEnabled} from '../motion';
+import {motionData} from '../motion/attributes';
+import {ProgressOrbit} from '../motion/ProgressOrbit';
+import {MotionSelection} from '../motion/Selection';
 import type {
   Approachability,
   Exclusion,
@@ -49,7 +52,6 @@ import {colors, radii} from '../../theme/tokens';
 import {BrandToolbar, PhotoFrame, serif, useReduceMotion, useViewport} from '../discovery/components';
 import {Heading} from '../navigation/Heading';
 import {ContextReasons, ContextSelector} from '../context';
-import Waterfall from './Waterfall';
 import {GuidedReveal} from './GuidedReveal';
 import type {Animated} from 'react-native';
 import {MotionPhoto} from '../motion/primitives';
@@ -159,11 +161,11 @@ function preferenceGroups(query: SearchQuery, context: ContextSelection, locale:
 function SelectionSummary({query, context, locale, compact = false, onEditContext}: {query: SearchQuery; context: ContextSelection; locale: Locale; compact?: boolean; onEditContext?: () => void}) {
   const groups = preferenceGroups(query, context, locale);
   return (
-    <View style={[styles.summary, compact && styles.summaryCompact]}>
+    <View {...motionData({motionSummary: ''})} style={[styles.summary, compact && styles.summaryCompact]}>
       <Text style={styles.summaryLabel}>{gr(locale, 'preferenceProfile')}</Text>
-      {groups.length ? <View style={styles.summaryGroups}>{groups.map((group) => (
+      {groups.length ? <View style={styles.summaryGroups}>{groups.map((group, index) => (
         <View key={group.key} style={styles.summaryGroup}>
-          <Text style={styles.summaryGroupName}>{group.name}</Text>
+          <Text style={styles.summaryGroupName}>{String(index + 1).padStart(2, '0')} / {group.name}</Text>
           <View style={styles.summaryItems}>{group.labels.map((label) => <Text key={`${group.key}-${label}`} style={styles.summaryItem}>{label}</Text>)}</View>
           {group.key === 'context' && onEditContext ? <Pressable accessibilityRole="button" onPress={onEditContext} style={({pressed}) => [styles.summaryEdit, pressed && styles.pressed]}><Text style={styles.summaryEditText}>{contextText(locale, 'change')}</Text></Pressable> : null}
         </View>
@@ -252,7 +254,8 @@ function OptionCard({label, note, selected, compact, selectedText, onPress}: {la
       onPress={onPress}
       style={({pressed}) => [styles.option, compact && styles.optionCompact, selected && styles.optionSelected, pressed && styles.pressed]}
     >
-      <View style={[styles.optionIndicator, selected && styles.optionIndicatorSelected]}><Text style={styles.optionCheck}>{selected ? '✓' : ''}</Text></View>
+      {selected ? <View pointerEvents="none" style={styles.optionSelectedRule} /> : null}
+      <MotionSelection selected={selected} style={[styles.optionIndicator, selected && styles.optionIndicatorSelected]}><Text style={styles.optionCheck}>{selected ? '✓' : ''}</Text></MotionSelection>
       <View style={styles.optionCopy}>
         <View style={styles.optionTitleLine}>
           <Text style={[styles.optionLabel, selected && styles.optionLabelSelected]}>{label}</Text>
@@ -270,6 +273,7 @@ function Progress({guided, locale, dispatch}: {guided: GuidedSession; locale: Lo
   };
   return (
     <View style={styles.progress}>
+      <ProgressOrbit step={guided.step} />
       {STEPS.map((item, index) => {
         const completed = index < guided.step;
         const current = index === guided.step;
@@ -314,7 +318,7 @@ function ResultCard({result, locale, query, contextActive, onHide, cardWidth,onP
   const matches = version ? matchedLabels(query, version, locale) : [];
   const avoided = query.excluded?.map((value) => exclusionLabel(value, locale)) ?? [];
   return (
-    <View style={[styles.resultWrap, {width: cardWidth}]}>
+    <View {...motionData({motionItem: cocktail.id})} style={[styles.resultWrap, {width: cardWidth}]}>
       <Link
         href={{pathname: '/cocktails/[id]', params: {id: cocktail.id, version: result.selectedVersionId, from: 'customize'}} as never}
         asChild
@@ -324,9 +328,9 @@ function ResultCard({result, locale, query, contextActive, onHide, cardWidth,onP
           accessibilityLabel={`${cocktail.name[locale]}. ${t(locale, 'viewRecipe')}`}
           style={StyleSheet.flatten([styles.resultCard])}
         >
-          <View ref={node=>onPhotoRef?.(cocktail.id,node)} collapsable={false}>
+          <View {...motionData({motionPhoto: cocktail.id})} ref={node=>onPhotoRef?.(cocktail.id,node)} collapsable={false}>
             <MotionPhoto opacity={photoOpacity}>
-              <PhotoFrame asset={asset} accent={cocktail.accent} locale={locale} height={240} preserveAspect borderRadius={radii.medium} />
+              <PhotoFrame asset={asset} accent={cocktail.accent} locale={locale} height={cardWidth >= 380 ? 340 : 270} preserveAspect borderRadius={0} />
             </MotionPhoto>
           </View>
           <View style={styles.resultCopy}>
@@ -360,7 +364,7 @@ function ResultCard({result, locale, query, contextActive, onHide, cardWidth,onP
 
 function StepActions({guided, dispatch, locale, compact = false}: {guided: GuidedSession; dispatch: React.Dispatch<GuidedAction>; locale: Locale; compact?: boolean}) {
   return (
-    <View style={[styles.stepActions, compact && styles.stepActionsCompact]}>
+    <View {...motionData({motionActions: ''})} style={[styles.stepActions, compact && styles.stepActionsCompact]}>
       <Pressable accessibilityRole="button" onPress={() => guided.step === 0 ? dispatch({type:'set-mode',mode:null}) : dispatch({type: 'back'})} style={[styles.secondaryAction, compact && styles.secondaryActionCompact]}>
         <Text style={styles.secondaryActionText}>{t(locale, 'back')}</Text>
       </Pressable>
@@ -377,9 +381,9 @@ function StepActions({guided, dispatch, locale, compact = false}: {guided: Guide
 
 function ModeChoice({locale,dispatch,compact}:{locale:Locale;dispatch:React.Dispatch<GuidedAction>;compact:boolean}) {
   return <View style={styles.modeIntro}>
-    <Heading level={1} style={[styles.questionTitle,compact&&styles.questionTitleCompact]}>{g175(locale,'modeTitle')}</Heading>
-    <Text style={styles.questionHint}>{g175(locale,'modeHint')}</Text>
-    <View style={[styles.modeChoices,compact&&styles.modeChoicesCompact]}>
+    <View {...motionData({motionPart: 'title'})}><Heading level={1} style={[styles.questionTitle,compact&&styles.questionTitleCompact]}>{g175(locale,'modeTitle')}</Heading></View>
+    <View {...motionData({motionPart: 'copy'})}><Text style={styles.questionHint}>{g175(locale,'modeHint')}</Text></View>
+    <View {...motionData({motionPart: 'options'})} style={[styles.modeChoices,compact&&styles.modeChoicesCompact]}>
       {(['drink','make'] as const).map(mode=><Pressable key={mode} accessibilityRole="button" onPress={()=>dispatch({type:'set-mode',mode})} style={({pressed})=>[styles.modeChoice,pressed&&styles.pressed]}>
         <Text style={styles.modeName}>{g175(locale,mode)} <Text style={styles.primaryArrow}>→</Text></Text>
         <Text style={styles.questionHint}>{g175(locale,mode==='drink'?'drinkHint':'makeHint')}</Text>
@@ -424,17 +428,18 @@ function ChoosingView({
   const [exclusionsOpen, setExclusionsOpen] = useState(false);
   return (
     <View style={[styles.chooseLayout, compact && styles.chooseLayoutCompact]}>
-      {compact ? <Waterfall locale={locale} paused={motionPaused} reduceMotion={reduceMotion} decorative height={104} /> : null}
       <View style={[styles.questionPane, compact && styles.questionPaneCompact]}>
         <View style={styles.stepLine}>
           <Text style={styles.stepNumber}>{String(guided.step + 1).padStart(2, '0')} / 04</Text>
         </View>
         <View style={compact ? styles.progressCompact : undefined}><Progress guided={guided} locale={locale} dispatch={dispatch} /></View>
-        <Heading level={1} accessibilityLiveRegion="polite" style={[styles.questionTitle, compact && styles.questionTitleCompact]}>{t(locale, step.titleKey)}</Heading>
-        <Text style={styles.questionHint}>{t(locale, step.hintKey)}</Text>
-        <Text style={styles.selectionHint}>{t(locale, step.multi ? 'guidedMultiHint' : 'guidedSingleHint')}</Text>
+        <View {...motionData({motionPart: 'title'})}><Heading level={1} accessibilityLiveRegion="polite" style={[styles.questionTitle, compact && styles.questionTitleCompact]}>{t(locale, step.titleKey)}</Heading></View>
+        <View {...motionData({motionPart: 'copy'})}>
+          <Text style={styles.questionHint}>{t(locale, step.hintKey)}</Text>
+          <Text style={styles.selectionHint}>{t(locale, step.multi ? 'guidedMultiHint' : 'guidedSingleHint')}</Text>
+        </View>
         {guided.step === 0 ? <ContextSelector locale={locale} value={guided.contextDraft ?? {}} onApply={(selection) => dispatch({type: 'set-context', selection})} /> : null}
-        <View style={[styles.options, compact && styles.optionsCompact]}>
+        <View {...motionData({motionPart: 'options'})} style={[styles.options, compact && styles.optionsCompact]}>
           {step.options.map((option) => (
             <OptionCard
               key={option.value}
@@ -447,7 +452,7 @@ function ChoosingView({
             />
           ))}
         </View>
-        {selected.length ? <Text accessibilityLiveRegion="polite" style={styles.selectionFeedback}>{selected.length} · {gr(locale, 'selected')}</Text> : null}
+        <Text accessibilityLiveRegion="polite" style={styles.selectionFeedback}>{selected.length ? `${selected.length} · ${gr(locale, 'selected')}` : ' '}</Text>
         {guided.step === 3 ? (
           <View style={[styles.exclusions, compact && styles.exclusionsCompact]}>
             {compact ? (
@@ -488,7 +493,7 @@ function ChoosingView({
         {memorySettings}
         {!compact ? <StepActions guided={guided} dispatch={dispatch} locale={locale} /> : null}
       </View>
-      {!compact ? <View style={styles.waterfallPane}><Waterfall locale={locale} paused={motionPaused} reduceMotion={reduceMotion} decorative height={660} /></View> : null}
+      {!compact ? <View accessible={false} pointerEvents="none" style={styles.atmosphereSpace} /> : null}
     </View>
   );
 }
@@ -503,7 +508,7 @@ function ResultsView({guided, locale, results, baseResultCount, allResultsHidden
   useEffect(() => setShowAll(false), [guided.submitted,guided.mode,pantryFiltered]);
   return (
     <View style={styles.resultsView}>
-      <View style={styles.resultsLead}>
+      <View {...motionData({motionResultsLead: ''})} style={styles.resultsLead}>
         <Heading level={1} style={styles.resultsTitle}>{t(locale, 'guidedResultsTitle')}</Heading>
         <Text style={styles.resultsHint}>{pantryFiltered?g175(locale,'makeResultHint'):t(locale, 'guidedResultsHint')}</Text>
         <Text style={styles.resultsVersionNote}>{gr(locale, 'resultIntro')}</Text>
@@ -662,11 +667,11 @@ export default function GuidedScreen() {
 }
 
 const styles = StyleSheet.create({
-  modeIntro:{width:'100%',maxWidth:850,alignSelf:'center',paddingVertical:56,gap:20},
-  modeChoices:{flexDirection:'row',gap:16,marginVertical:16},
+  modeIntro:{width:'100%',maxWidth:1000,alignSelf:'flex-start',paddingVertical:54,gap:16},
+  modeChoices:{flexDirection:'row',gap:30,marginVertical:28},
   modeChoicesCompact:{flexDirection:'column'},
-  modeChoice:{flex:1,padding:24,minHeight:150,borderRadius:radii.medium,borderWidth:1,borderColor:colors.border,backgroundColor:colors.panel},
-  modeName:{fontFamily:serif,fontSize:28,color:colors.text},
+  modeChoice:{flex:1,paddingVertical:24,paddingHorizontal:4,minHeight:150,borderTopWidth:1,borderTopColor:colors.border,borderBottomWidth:1,borderBottomColor:colors.border},
+  modeName:{fontFamily:serif,fontSize:38,lineHeight:48,color:colors.text},
   modeBar:{flexDirection:'row',alignItems:'center',gap:16,marginTop:8},
   modeBarName:{color:colors.accent,fontSize:14,fontWeight:'700'},
   modeChange:{minHeight:44,justifyContent:'center',paddingHorizontal:8},
@@ -678,14 +683,14 @@ const styles = StyleSheet.create({
   ownedNote:{color:colors.muted,fontSize:12,lineHeight:19},
   resultControls: {flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, marginTop: 20, width: '100%'},
   resultCount: {color: colors.secondary, fontSize: 13},
-  memorySettings: {width: '100%', marginTop: 18, padding: 16, gap: 10, borderWidth: 1, borderColor: colors.border, borderRadius: radii.medium, backgroundColor: colors.panel},
-  memorySettingsCompact: {marginTop: 14, padding: 12, gap: 8},
+  memorySettings: {width: '100%', marginTop: 18, paddingVertical:16, gap: 10, borderTopWidth:1,borderTopColor:colors.border},
+  memorySettingsCompact: {marginTop: 14, paddingVertical:12, gap: 8},
   memorySettingsHeading: {minHeight: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12},
   memorySettingsTitle: {color: colors.text, fontSize: 14, fontWeight: '800'},
   memorySettingsGlyph: {color: colors.accent, fontFamily: serif, fontSize: 22, lineHeight: 24},
   memoryControls: {flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 10},
-  memoryToggle: {minHeight: 44, justifyContent: 'center', paddingHorizontal: 12, borderWidth: 1, borderColor: colors.border, borderRadius: radii.small},
-  memoryToggleActive: {borderColor: colors.accent, backgroundColor: colors.accentDark},
+  memoryToggle: {minHeight: 44, justifyContent: 'center', paddingHorizontal: 12, borderWidth: 1, borderColor: colors.border, borderRadius:2},
+  memoryToggleActive: {borderColor: colors.accent, backgroundColor: 'rgba(181,198,169,0.07)'},
   memoryToggleText: {color: colors.secondary, fontSize: 13, fontWeight: '700'},
   memoryToggleTextActive: {color: colors.text},
   memoryManage: {minHeight: 44, justifyContent: 'center', paddingHorizontal: 4},
@@ -697,100 +702,101 @@ const styles = StyleSheet.create({
   memoryNoticeText: {color: colors.text, fontSize: 13, lineHeight: 20},
   memoryRetry: {alignSelf: 'flex-start', minHeight: 44, justifyContent: 'center', paddingHorizontal: 14, borderWidth: 1, borderColor: colors.amber, borderRadius: radii.pill},
   memoryRetryText: {color: colors.amber, fontSize: 13, fontWeight: '800'},
-  screen: {flex: 1, backgroundColor: colors.background},
-  page: {minHeight: '100%', paddingHorizontal: 18, paddingBottom: 56},
+  screen: {flex: 1, backgroundColor: 'transparent'},
+  page: {minHeight: '100%', paddingHorizontal: 24, paddingBottom: 56},
   shell: {width: '100%', maxWidth: 1400, alignSelf: 'center'},
-  chooseLayout: {flexDirection: 'row', gap: 42, alignItems: 'stretch', paddingTop: 28},
+  chooseLayout: {flexDirection: 'row', gap: 28, alignItems: 'stretch', paddingTop: 18},
   chooseLayoutCompact: {flexDirection: 'column', gap: 12, paddingTop: 8},
-  questionPane: {flex: 1.1, minWidth: 0, justifyContent: 'center', paddingVertical: 26},
+  questionPane: {flex: 1, maxWidth:900,minWidth: 0, paddingVertical: 20},
   questionPaneCompact: {paddingVertical: 10, paddingBottom: 20},
-  waterfallPane: {flex: 0.9, maxWidth: 560, overflow: 'hidden', borderRadius: radii.large, borderWidth: 1, borderColor: colors.border},
+  atmosphereSpace: {width:'25%',maxWidth:420},
   stepLine: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12},
-  stepNumber: {color: colors.accent, fontFamily: serif, fontSize: 14},
-  progress: {flexDirection: 'row', gap: 7, marginTop: 13, marginBottom: 32},
+  stepNumber: {color: colors.amber, fontSize: 11,letterSpacing:2},
+  progress: {position:'relative',flexDirection: 'row', gap: 7, marginTop: 13, marginBottom: 22},
   progressStep: {flex: 1, minWidth: 0, minHeight: 46, justifyContent: 'flex-start', opacity: 0.52},
   progressStepReached: {opacity: 1},
-  progressSegment: {height: 3, width: '100%', borderRadius: 2, backgroundColor: colors.border},
+  progressSegment: {height: 1, width: '100%', backgroundColor: colors.border},
   progressSegmentActive: {backgroundColor: colors.accent},
-  progressSegmentCurrent: {height: 4, backgroundColor: colors.amber},
+  progressSegmentCurrent: {height: 1, backgroundColor: colors.amber},
   progressLabelLine: {flexDirection: 'row', alignItems: 'center', gap: 5, minHeight: 38, paddingTop: 7},
   progressIndex: {color: colors.muted, fontFamily: serif, fontSize: 11},
   progressLabel: {flexShrink: 1, color: colors.muted, fontSize: 11, fontWeight: '700'},
   progressTextReached: {color: colors.secondary},
   progressEdit: {color: colors.amber, fontSize: 11},
   progressCompact: {marginBottom: -10},
-  questionTitle: {color: colors.text, fontFamily: serif, fontSize: 40, lineHeight: 47, letterSpacing: -0.7},
-  questionTitleCompact: {fontSize: 29, lineHeight: 36, letterSpacing: -0.3},
-  questionHint: {color: colors.secondary, fontSize: 15, lineHeight: 23, marginTop: 12, maxWidth: 650},
+  questionTitle: {color: colors.text, fontFamily: serif, fontSize: 56, lineHeight: 70, letterSpacing: -1.8,fontWeight:'400'},
+  questionTitleCompact: {fontSize: 40, lineHeight: 52, letterSpacing: -1.2},
+  questionHint: {color: colors.secondary, fontSize: 13, lineHeight: 22, marginTop: 12, maxWidth: 650},
   selectionHint: {color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 7},
-  options: {flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginTop: 24},
-  optionsCompact: {marginTop: 16, gap: 8},
-  option: {width: '48%', minHeight: 86, flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14, borderWidth: 1, borderColor: colors.border, borderRadius: radii.medium, backgroundColor: colors.panel},
-  optionCompact: {minHeight: 72, gap: 9, paddingVertical: 11, paddingHorizontal: 11},
-  optionSelected: {borderColor: colors.amber, backgroundColor: colors.accentDark, shadowColor: colors.amber, shadowOpacity: 0.13, shadowRadius: 14, shadowOffset: {width: 0, height: 4}},
-  optionIndicator: {width: 24, height: 24, borderRadius: 12, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center'},
-  optionIndicatorSelected: {borderColor: colors.accent, backgroundColor: colors.accent},
-  optionCheck: {color: colors.background, fontSize: 13, fontWeight: '800'},
+  options: {flexDirection: 'row', flexWrap: 'wrap', columnGap:'4%',rowGap:0,marginTop: 20,minHeight:276,alignContent:'flex-start'},
+  optionsCompact: {marginTop: 16,minHeight:264},
+  option: {position:'relative',width: '48%', minHeight: 92, flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 16,paddingHorizontal:12,borderBottomWidth: 1, borderBottomColor: colors.border},
+  optionCompact: {minHeight: 88, gap: 10, paddingVertical: 13, paddingHorizontal: 6},
+  optionSelected: {backgroundColor: 'rgba(181,198,169,0.055)'},
+  optionSelectedRule: {position:'absolute',left:0,top:20,bottom:20,width:2,backgroundColor:colors.accent},
+  optionIndicator: {width: 22, height: 22, borderRadius: 12, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center'},
+  optionIndicatorSelected: {borderColor: colors.accent,backgroundColor:'transparent'},
+  optionCheck: {color: colors.accent, fontSize: 12, fontWeight: '600'},
   optionCopy: {flex: 1},
   optionTitleLine: {flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: 7, rowGap: 2},
-  optionLabel: {color: colors.text, fontSize: 15, fontWeight: '700', flexShrink: 1, maxWidth: '100%'},
+  optionLabel: {color: colors.text,fontFamily:serif, fontSize: 27,lineHeight:36,fontWeight:'400',flexShrink: 1, maxWidth: '100%'},
   optionLabelSelected: {color: colors.text},
   selectedBadge: {color: colors.amber, fontSize: 9, lineHeight: 14, fontWeight: '800', letterSpacing: 0.5, textTransform: 'uppercase'},
   optionNote: {color: colors.muted, fontSize: 12, lineHeight: 17, marginTop: 4},
   optionNoteSelected: {color: colors.secondary},
-  selectionFeedback: {alignSelf: 'flex-end', color: colors.amber, fontSize: 12, fontWeight: '700', marginTop: 10},
+  selectionFeedback: {alignSelf: 'flex-end', color: colors.amber, fontSize: 11,lineHeight:18, marginTop: 6},
   exclusions: {marginTop: 26, paddingTop: 20, borderTopWidth: 1, borderTopColor: colors.border},
   exclusionsCompact: {marginTop: 17, paddingTop: 14},
   exclusionHeading: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12},
   exclusionTitle: {color: colors.text, fontSize: 15, fontWeight: '700'},
   optional: {color: colors.muted, fontSize: 12},
   exclusionChips: {flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 12},
-  exclusionChip: {minHeight: 44, justifyContent: 'center', paddingHorizontal: 13, borderWidth: 1, borderColor: colors.border, borderRadius: radii.pill},
-  exclusionChipActive: {backgroundColor: colors.accent, borderColor: colors.accent},
+  exclusionChip: {minHeight: 44, justifyContent: 'center', paddingHorizontal: 13, borderBottomWidth:1,borderBottomColor:colors.border},
+  exclusionChipActive: {backgroundColor:'rgba(181,198,169,0.08)',borderBottomColor:colors.accent},
   exclusionChipText: {color: colors.secondary, fontSize: 13, fontWeight: '600'},
-  exclusionChipTextActive: {color: colors.background},
-  summary: {width: '100%', marginTop: 26, borderTopWidth: 1, borderTopColor: colors.border, paddingTop: 16},
+  exclusionChipTextActive: {color: colors.accent},
+  summary: {width: '100%', marginTop: 20, borderTopWidth: 1, borderTopColor: colors.border, paddingTop: 14,minHeight:74},
   summaryCompact: {marginTop: 16, paddingTop: 12},
-  summaryLabel: {color: colors.muted, fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1},
-  summaryGroups: {flexDirection: 'row', flexWrap: 'wrap', gap: 9, paddingTop: 11},
-  summaryGroup: {minWidth: 128, flexGrow: 1, padding: 10, borderRadius: radii.small, backgroundColor: 'rgba(34,48,40,0.72)', borderWidth: 1, borderColor: colors.border},
-  summaryGroupName: {color: colors.secondary, fontSize: 10, fontWeight: '800', letterSpacing: 0.7, textTransform: 'uppercase'},
-  summaryItems: {flexDirection: 'row', flexWrap: 'wrap', gap: 6, paddingTop: 7},
-  summaryItem: {color: colors.accent, fontSize: 12, paddingVertical: 5, paddingHorizontal: 8, borderRadius: radii.pill, backgroundColor: colors.accentDark},
+  summaryLabel: {color: colors.muted, fontSize: 10,textTransform: 'uppercase', letterSpacing: 1.8},
+  summaryGroups: {flexDirection: 'row', flexWrap: 'wrap', columnGap:22,rowGap:12,paddingTop: 11},
+  summaryGroup: {minWidth: 90,paddingRight:18,borderRightWidth:1,borderRightColor:colors.border},
+  summaryGroupName: {color: colors.muted, fontSize: 9,letterSpacing: 1, textTransform: 'uppercase'},
+  summaryItems: {flexDirection: 'row', flexWrap: 'wrap',gap:6,paddingTop:5},
+  summaryItem: {color: colors.accent, fontSize: 12,lineHeight:20},
   summaryEdit: {minHeight: 44, alignSelf: 'flex-start', justifyContent: 'center', paddingHorizontal: 2, marginTop: 3},
   summaryEditText: {color: colors.amber, fontSize: 12, lineHeight: 18, fontWeight: '700', textDecorationLine: 'underline'},
   summaryOpen: {color: colors.secondary, fontSize: 13, paddingVertical: 7},
-  stepActions: {flexDirection: 'row', alignItems: 'center', gap: 9, marginTop: 26},
+  stepActions: {flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 22,paddingTop:18,borderTopWidth:1,borderTopColor:colors.border},
   stepActionsCompact: {flexWrap: 'wrap', marginTop: 0},
-  fixedActions: {paddingHorizontal: 18, paddingTop: 12, paddingBottom: 16, borderTopWidth: 1, borderTopColor: colors.border, backgroundColor: 'rgba(16,23,20,0.98)'},
-  secondaryAction: {minHeight: 48, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 17, borderWidth: 1, borderColor: colors.border, borderRadius: radii.pill},
+  fixedActions: {paddingHorizontal: 24, paddingTop: 0, paddingBottom: 16, borderTopWidth: 1, borderTopColor: colors.border, backgroundColor: 'rgba(16,23,20,0.96)'},
+  secondaryAction: {minHeight: 48, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 12,borderBottomWidth:1,borderBottomColor:colors.border},
   secondaryActionCompact: {flexGrow: 1, minWidth: 92},
   secondaryActionText: {color: colors.secondary, fontSize: 14, fontWeight: '700'},
   skipAction: {minHeight: 48, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 10},
   skipActionCompact: {flexGrow: 1, minWidth: 120},
   skipActionText: {color: colors.accent, fontSize: 14, fontWeight: '700'},
-  primaryAction: {minWidth: 150, minHeight: 50, flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10, paddingHorizontal: 20, borderRadius: radii.pill, backgroundColor: colors.accent},
-  primaryActionCompact: {flexBasis: '100%', minHeight: 54},
+  primaryAction: {minWidth: 150, minHeight: 50, flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10, paddingHorizontal: 20,borderRadius:2, backgroundColor: colors.accent},
+  primaryActionCompact: {flexBasis: '100%', minHeight: 50},
   primaryActionText: {color: colors.background, fontSize: 14, fontWeight: '800'},
   primaryArrow: {color: colors.background, fontSize: 19},
   pressed: {opacity: 0.72},
   resultsView: {paddingTop: 40},
-  resultsLead: {alignItems: 'center', maxWidth: 700, alignSelf: 'center', marginBottom: 30},
-  resultsTitle: {color: colors.text, fontFamily: serif, fontSize: 40, lineHeight: 47, textAlign: 'center', marginTop: 8},
-  resultsHint: {color: colors.secondary, fontSize: 15, lineHeight: 22, textAlign: 'center', marginTop: 10},
-  resultsVersionNote: {color: colors.muted, fontSize: 12, lineHeight: 18, textAlign: 'center', marginTop: 7},
+  resultsLead: {maxWidth:1000, alignSelf: 'flex-start', marginBottom: 30},
+  resultsTitle: {color: colors.text, fontFamily: serif, fontSize: 54, lineHeight: 68, marginTop: 8,letterSpacing:-1.5},
+  resultsHint: {color: colors.secondary, fontSize: 14, lineHeight: 22, marginTop: 10},
+  resultsVersionNote: {color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 7},
   resultColumns: {flexDirection: 'row', flexWrap: 'wrap', gap: 16, marginTop: 28},
   resultColumnsCompact: {gap: 12},
   resultWrap: {minWidth: 0, flexGrow: 0, flexShrink: 0},
-  resultCard: {overflow: 'hidden', borderRadius: radii.medium, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.panel, shadowColor: colors.amber, shadowOpacity: 0.07, shadowRadius: 18, shadowOffset: {width: 0, height: 7}},
-  resultCopy: {padding: 16},
+  resultCard: {overflow: 'hidden',borderBottomWidth:1,borderBottomColor:colors.border},
+  resultCopy: {paddingHorizontal:2,paddingTop:18,paddingBottom:22},
   resultMeta: {color: colors.accent, fontSize: 12, fontWeight: '700', textTransform: 'uppercase'},
-  resultName: {color: colors.text, fontFamily: serif, fontSize: 24, lineHeight: 29, marginTop: 8},
+  resultName: {color: colors.text, fontFamily: serif, fontSize: 34, lineHeight: 43, marginTop: 8},
   resultDescription: {color: colors.secondary, fontSize: 14, lineHeight: 21, marginTop: 7},
   matchPanel: {marginTop: 14, paddingTop: 12, borderTopWidth: 1, borderTopColor: colors.border},
   matchTitle: {color: colors.amber, fontSize: 11, fontWeight: '800', letterSpacing: 0.7, textTransform: 'uppercase'},
   matchChips: {flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8},
-  matchChip: {color: colors.accent, fontSize: 12, lineHeight: 17, paddingVertical: 5, paddingHorizontal: 8, borderRadius: radii.pill, backgroundColor: colors.accentDark},
+  matchChip: {color: colors.accent, fontSize: 12, lineHeight: 17, paddingVertical: 4, paddingRight:8},
   matchOpen: {color: colors.secondary, fontSize: 12, lineHeight: 18, marginTop: 7},
   avoidedText: {color: colors.muted, fontSize: 11, lineHeight: 17, marginTop: 8},
   resultLink: {color: colors.accent, fontSize: 14, fontWeight: '700', marginTop: 15},
@@ -800,7 +806,7 @@ const styles = StyleSheet.create({
   recipeSource: {alignSelf: 'flex-start', minHeight: 34, justifyContent: 'center', paddingHorizontal: 4},
   hideResult: {alignSelf: 'flex-start', minHeight: 44, justifyContent: 'center', paddingHorizontal: 4, marginTop: 2},
   hideResultText: {color: colors.secondary, fontSize: 12, lineHeight: 18, textDecorationLine: 'underline'},
-  showAll: {alignSelf: 'center', minHeight: 48, justifyContent: 'center', paddingHorizontal: 22, marginTop: 28, borderWidth: 1, borderColor: colors.border, borderRadius: radii.pill},
+  showAll: {alignSelf: 'center', minHeight: 48, justifyContent: 'center', paddingHorizontal: 22, marginTop: 28, borderBottomWidth: 1, borderBottomColor: colors.border},
   showAllText: {color: colors.text, fontSize: 14, fontWeight: '700'},
   empty: {minHeight: 270, alignItems: 'center', justifyContent: 'center', padding: 30, borderWidth: 1, borderColor: colors.border, borderRadius: radii.large},
   emptyTitle: {color: colors.text, fontFamily: serif, fontSize: 28, textAlign: 'center'},

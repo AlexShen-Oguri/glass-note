@@ -1,72 +1,99 @@
-import {motionData} from '../motion/attributes';
 import React, {useEffect, useRef} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {usePathname} from 'expo-router';
+import {useApp} from '../../platform/AppProvider';
+import {motionData} from '../motion/attributes';
 import {element, gsap, useGSAP, useVisibleMotion} from '../motion/gsap.web';
+import {useViewport} from './components';
 import type {AmbientLightProps} from './AmbientLight';
+import type {GlassScene, GlassStage} from './sculpture.web';
 
-/** Static light textures drift as three composited layers; no animated gradients or blur. */
+/** One continuous, non-interactive space; route changes never remount the coupe. */
 export function AmbientLight({paused, reduceMotion = false}: AmbientLightProps) {
-  const host = useRef<View>(null);
-  const loops = useRef<gsap.core.Tween[]>([]);
-  const running = useVisibleMotion(host, paused || reduceMotion);
-  useGSAP(() => {
-    const node = element(host);
-    if (!node || reduceMotion) return;
-    const media = gsap.matchMedia();
-    media.add('(prefers-reduced-motion: no-preference)', () => {
-      const layers = Array.from(node.children);
-      gsap.set(layers, {willChange: 'transform, opacity'});
-      loops.current = layers.map((layer, index) => gsap.to(layer, {
-        xPercent: index % 2 ? -4 : 4, yPercent: index % 2 ? 3 : -3,
-        rotation: index === 2 ? -9 : index % 2 ? 5 : -4,
-        opacity: index === 2 ? 0.45 : 0.85, duration: 24 + index * 5,
-        ease: 'sine.inOut', repeat: -1, yoyo: true, paused: true,
-      }));
+  const host = useRef<View>(null), rig = useRef<View>(null), glass = useRef<View>(null);
+  const stage = useRef<GlassStage | null>(null);
+  const tween = useRef<gsap.core.Timeline | null>(null);
+  const {width, height} = useViewport();
+  const pathname = usePathname();
+  const {guided} = useApp();
+  const compact = width < 760;
+  const scene: GlassScene = pathname === '/' ? 'home'
+    : pathname.startsWith('/cocktails/') ? 'recipe'
+    : pathname === '/customize' ? guided.mode === null ? 'mode' : guided.phase === 'choosing' ? 'guided' : 'results'
+    : 'discover';
+  const sculptureVisible = scene === 'home' || scene === 'mode' || scene === 'guided';
+  const running = useVisibleMotion(host, paused || reduceMotion || !sculptureVisible);
+  const latest = useRef({scene, running, reduceMotion});
+  latest.current = {scene, running, reduceMotion};
+
+  useEffect(() => {
+    let disposed = false;
+    // Defer the GPU dependency until after hydration. Native never imports this adapter.
+    void import('./sculpture.web').then(({createGlassStage}) => {
+      const node = element(glass);
+      if (disposed || !node) return;
+      const current = latest.current;
+      stage.current = createGlassStage(node, {paused:!current.running, reduced:current.reduceMotion});
+      stage.current.setScene(current.scene, {duration:0});
+    }).catch(() => {
+      // The orbital composition remains usable if WebGL/module loading is unavailable.
+      const node = element(glass);
+      if (node) node.dataset.glassError = 'unavailable';
     });
-    return () => {media.revert(); loops.current = [];};
-  }, {scope: host, dependencies: [reduceMotion], revertOnUpdate: true});
-  useEffect(() => {loops.current.forEach(loop => loop.paused(!running));}, [running, reduceMotion]);
-  return <View ref={host} {...motionData({motionLoop: 'ambient'})} pointerEvents="none" accessible={false}
-    importantForAccessibility="no-hide-descendants" aria-hidden style={styles.root}>
-    <View style={[styles.curtain, styles.northCurtain]} />
-    <View style={[styles.curtain, styles.tealCurtain]} />
-    <View style={[styles.curtain, styles.edgeCurtain]} />
+    return () => {disposed = true; stage.current?.dispose(); stage.current = null;};
+  }, []);
+
+  useEffect(() => {
+    stage.current?.setReduced(reduceMotion);
+    stage.current?.setPaused(!running);
+    stage.current?.setScene(scene, {duration:running ? .86 : 0});
+  }, [scene, running, reduceMotion]);
+
+  useGSAP(() => {
+    const node = element(rig), cup = element(glass);
+    if (!node || !cup) return;
+    const w = compact ? 380 : 640, h = compact ? 440 : 700;
+    const centerX = scene === 'home' ? width * (compact ? .54 : .75)
+      : scene === 'mode' ? width * (compact ? .50 : .79)
+      : scene === 'guided' ? width * (compact ? .97 : .81) : width * .86;
+    const centerY = compact ? scene === 'home' ? 490 : scene === 'mode' ? 460 : height * .45
+      : height * (scene === 'home' ? .50 : .49);
+    const scale = compact ? 1 : Math.min(1.08, Math.max(.78, height / 820));
+    const alpha = sculptureVisible ? scene === 'guided' ? compact ? .16 : .63 : 1 : .24;
+    tween.current?.kill();
+    const timeline = gsap.timeline({defaults:{duration:paused || reduceMotion ? 0 : .85, ease:'power3.inOut'}});
+    tween.current = timeline;
+    timeline.to(node, {x:centerX-w/2, y:centerY-h/2, scale, opacity:alpha}, 0)
+      .to(cup, {opacity:sculptureVisible ? 1 : 0}, 0);
+    return () => {timeline.kill();};
+  }, {scope:host, dependencies:[scene, width, height, compact, sculptureVisible, paused, reduceMotion]});
+
+  useEffect(() => {
+    if (paused || reduceMotion) tween.current?.progress(1);
+  }, [paused, reduceMotion]);
+
+  return <View ref={host} {...motionData({motionLoop:'night-space', nightScene:scene})}
+    pointerEvents="none" accessible={false} importantForAccessibility="no-hide-descendants" aria-hidden style={styles.root}>
+    <View style={styles.light} />
+    <View ref={rig} style={[styles.rig, compact && styles.compactRig]}>
+      <View style={[styles.portal, compact && styles.compactPortal]}>
+        <View style={styles.inner} /><View style={styles.orbit} /><View style={styles.secondOrbit} />
+      </View>
+      <View ref={glass} style={styles.glass} />
+    </View>
   </View>;
 }
 export default AmbientLight;
 
 const styles = StyleSheet.create({
-  root: {position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, overflow: 'hidden'},
-  curtain: {
-    position: 'absolute',
-    // Feather the layer bounds so the off-centre light arcs never expose a hard cut edge.
-    maskImage: 'radial-gradient(ellipse at center, black 28%, rgba(0,0,0,0.9) 48%, transparent 74%)',
-  } as never,
-  northCurtain: {
-    width: '108%',
-    height: '74%',
-    top: '-18%',
-    left: '-12%',
-    backgroundImage: 'radial-gradient(ellipse 74% 108% at 24% 122%, transparent 51%, rgba(55, 139, 104, 0.035) 54%, rgba(105, 194, 139, 0.17) 58%, rgba(55, 145, 113, 0.09) 62%, transparent 70%), radial-gradient(ellipse 62% 92% at 76% 116%, transparent 49%, rgba(56, 136, 111, 0.025) 52%, rgba(91, 180, 138, 0.12) 56%, rgba(49, 126, 105, 0.055) 61%, transparent 68%)',
-    transform: 'translate3d(1%, 0, 0) rotate(-7deg) scaleY(0.94)',
-    opacity: 0.76,
-  } as never,
-  tealCurtain: {
-    width: '108%',
-    height: '78%',
-    right: '-18%',
-    bottom: '-29%',
-    backgroundImage: 'radial-gradient(ellipse 72% 105% at 72% -21%, transparent 50%, rgba(35, 128, 124, 0.03) 53%, rgba(65, 166, 151, 0.15) 57%, rgba(53, 132, 120, 0.075) 62%, transparent 70%), radial-gradient(ellipse 58% 88% at 19% -12%, transparent 47%, rgba(49, 132, 119, 0.025) 51%, rgba(86, 163, 126, 0.10) 55%, transparent 65%)',
-    transform: 'translate3d(-2%, 0, 0) rotate(8deg) scaleY(0.9)',
-    opacity: 0.72,
-  } as never,
-  edgeCurtain: {
-    width: '88%',
-    height: '68%',
-    top: '9%',
-    right: '-39%',
-    backgroundImage: 'radial-gradient(ellipse 69% 102% at 102% 52%, transparent 48%, rgba(138, 94, 137, 0.018) 51%, rgba(157, 112, 145, 0.065) 55%, rgba(180, 133, 88, 0.035) 59%, transparent 67%)',
-    transform: 'translate3d(0, 1%, 0) rotate(-13deg)',
-    opacity: 0.58,
-  } as never,
+  root:{position:'absolute',top:0,right:0,bottom:0,left:0,overflow:'hidden',zIndex:0} as never,
+  light:{position:'absolute',right:'-15%',top:'-5%',width:'85%',height:'100%',backgroundImage:'radial-gradient(ellipse at center,rgba(181,198,169,.12),transparent 68%)'} as never,
+  rig:{position:'absolute',left:0,top:0,width:640,height:700,opacity:0},
+  compactRig:{width:380,height:440},
+  portal:{position:'absolute',left:65,top:100,width:510,height:510,borderRadius:999,borderWidth:1,borderColor:'rgba(181,198,169,.3)',backgroundImage:'radial-gradient(circle at 30% 20%,rgba(174,194,159,.15),rgba(68,88,65,.1) 45%,rgba(10,17,12,.35) 78%)'} as never,
+  compactPortal:{left:45,top:75,width:290,height:290},
+  inner:{position:'absolute',top:14,left:14,right:14,bottom:14,borderRadius:999,borderWidth:1,borderColor:'rgba(181,198,169,.075)'},
+  orbit:{position:'absolute',top:-31,left:-31,right:-31,bottom:-31,borderRadius:999,borderWidth:1,borderColor:'rgba(212,173,115,.13)',transform:[{rotate:'-17deg'},{scaleY:.87}]},
+  secondOrbit:{position:'absolute',top:-54,left:-54,right:-54,bottom:-54,borderRadius:999,borderWidth:1,borderColor:'rgba(181,198,169,.065)',transform:[{rotate:'22deg'},{scaleX:.93}]},
+  glass:{position:'absolute',top:0,left:0,right:0,bottom:0},
 });
