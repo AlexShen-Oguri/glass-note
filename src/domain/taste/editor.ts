@@ -1,13 +1,18 @@
 import type {Catalogue} from '../contracts';
 import type {FavoriteList} from '../favorites';
 import {recipeSnapshot} from '../making';
+import type {MakingSession} from '../making/types';
 import type {TasteFeedback} from './types';
 
 /** Resolve before rendering: an editor URL must never briefly render the memory list. */
-export function tasteEditorTarget(params:{entry?:string;version?:string;list?:string},entries:TasteFeedback[],lists:FavoriteList[],catalogue:Catalogue){
+export function tasteEditorTarget(params:{entry?:string;version?:string;list?:string;session?:string},entries:TasteFeedback[],lists:FavoriteList[],catalogue:Catalogue,sessions:MakingSession[]=[]){
   if(params.entry){
     const entry=entries.find(item=>item.id===params.entry);
     return entry?{kind:'edit' as const,entry}:{kind:'missing' as const};
+  }
+  if(params.session){
+    const recipe=sessions.find(item=>item.id===params.session)?.recipe;
+    return recipe?.version.sourceChecked?{kind:'create' as const,recipe}:{kind:'missing' as const};
   }
   if(params.version){
     const recipe=params.list

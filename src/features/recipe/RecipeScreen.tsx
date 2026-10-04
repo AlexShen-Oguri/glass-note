@@ -23,7 +23,8 @@ import {useApp} from '../../platform/AppProvider';
 import {tm} from '../../i18n/taste';
 import {makingText} from '../../i18n/making';
 import {p02RecipeText} from '../../i18n/p02-recipe';
-import {colors, radii} from '../../theme/tokens';
+import {editorialText as e} from '../../i18n/editorial';
+import {colors, radii, editorialType, spacing} from '../../theme/tokens';
 import {BrandToolbar, isAiMedia, PhotoFrame, SelectionChip, serif, useViewport} from '../discovery/components';
 import {FavoriteButton} from '../favorites/FavoriteButton';
 import {AddToListButton} from '../favorites/AddToListButton';
@@ -112,6 +113,7 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
   const requestedVersion = versions.find((version) => version.id === versionId);
   const fallbackVersion = versions.find((version) => version.id === cocktail?.defaultVersionId) ?? versions[0];
   const [showOriginal, setShowOriginal] = useState(false);
+  const [sourceOpen,setSourceOpen]=useState(false);
   const version = requestedVersion ?? fallbackVersion;
 
   useEffect(() => {
@@ -140,6 +142,90 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
   const instructions = showOriginal && version.originalSteps ? version.originalSteps : version.steps[locale] || version.steps.en;
   const hasOriginal = Boolean(version.originalSteps?.length);
 
+  const photoRegion = (
+            <View style={[styles.photoColumn, compact && styles.photoColumnCompact]}>
+              <PhotoFrame asset={asset} accent={cocktail.accent} locale={locale} height={520} preserveAspect borderRadius={10} />
+              {aiAsset ? <Text style={styles.photoCaption}>{t(locale,'aiImage')}</Text> : null}
+            </View>
+
+  );
+  const recipeControls = <>
+              <View style={styles.primaryActions}>
+                {listId ? <ListBrowseAddButton key={`list-add-${version.id}`} listId={listId} versionId={version.id} locale={locale} /> : null}
+                {!compact ? <Link href={{pathname:'/make',params:{version:version.id}} as never} asChild><Pressable accessibilityRole="link" style={styles.primaryButton}><Text style={styles.primaryButtonText}>{makingText(locale,'startMaking')} →</Text></Pressable></Link> : null}
+                <Link href={{pathname: '/order', params: {version: version.id}} as never} asChild>
+                  <Pressable accessibilityRole="link" style={StyleSheet.flatten([styles.orderButton])}>
+                    <Text style={styles.orderButtonText}>{tm(locale, 'orderCard')} ↗</Text>
+                  </Pressable>
+                </Link>
+                <View style={styles.secondaryActions}>
+                  <FavoriteButton versionId={version.id} locale={locale} compact />
+                  <RecipeExperience key={`experience-${version.id}`} recipe={recipeSnapshot(catalogue,version.id)!} locale={locale}/>
+                </View>
+                <MoreActions key={version.id} version={version} locale={locale} />
+              </View>
+              <View style={styles.sourceDisclosure}>
+                <Pressable accessibilityRole="button" accessibilityState={{expanded:sourceOpen}} onPress={()=>setSourceOpen(value=>!value)} style={styles.sourceToggle}>
+                  <View style={{flex:1,gap:4}}><Text style={styles.sourceIdentityLabel}>{e(locale,'sourceDetails')}</Text><Text style={styles.sourceIdentityMeta}>{localize(version.label,locale)} · {source?.title??t(locale,'unknown')}</Text></View><Text style={styles.moreActionsGlyph}>{sourceOpen?'−':'+'}</Text>
+                </Pressable>
+                {sourceOpen ? <View><VersionPicker versions={versions} selectedId={version.id} locale={locale} onSelect={id=>{setShowOriginal(false);router.setParams({version:id});}}/>
+          <View style={[styles.sourcePanel, compact && styles.sourcePanelCompact]}>
+            <View style={styles.sourceCopy}>
+              <Text style={styles.sectionEyebrow}>{t(locale, 'source')}</Text>
+              <Text style={styles.sourceTitle}>{source?.title ?? t(locale, 'unknown')}</Text>
+              {source?.author ? <Text style={styles.sourceMeta}>{source.author}</Text> : null}
+              {source?.book ? <Text style={styles.sourceMeta}>{source.book}</Text> : null}
+              {asset ? (
+                <View style={styles.photoSourceBlock}>
+                  <Text style={styles.photoSourceLabel}>{t(locale, aiAsset ? 'aiImage' as UiKey : 'photograph')}</Text>
+                  {aiAsset ? (
+                    <>
+                      <Text style={styles.sourceMeta}>{t(locale, 'imageInfo' as UiKey)}</Text>
+                      {asset.referenceUrl ? (
+                        <Pressable accessibilityRole="link" onPress={() => Linking.openURL(asset.referenceUrl!)} style={styles.referenceLink}>
+                          <Text style={styles.creditText}>{t(locale, 'referenceImage' as UiKey)} ↗</Text>
+                        </Pressable>
+                      ) : null}
+                    </>
+                  ) : (
+                    <View style={styles.creditLine}>
+                      <Text style={styles.creditLabel}>{t(locale, 'credits')}:</Text>
+                      <Pressable accessibilityRole="link" onPress={() => Linking.openURL(asset.sourceUrl)} style={styles.creditLink}>
+                        <Text style={styles.creditText}>{asset.author} ↗</Text>
+                      </Pressable>
+                      {asset.license && asset.licenseUrl ? (
+                        <>
+                          <Text style={styles.creditDivider}>·</Text>
+                          <Pressable accessibilityRole="link" onPress={() => Linking.openURL(asset.licenseUrl!)} style={styles.creditLink}>
+                            <Text style={styles.creditText}>{asset.license} ↗</Text>
+                          </Pressable>
+                        </>
+                      ) : null}
+                    </View>
+                  )}
+                </View>
+              ) : null}
+              {version.bar ? (
+                <View style={styles.barBlock}>
+                  <Text style={styles.barLabel}>{t(locale, 'bar')}</Text>
+                  {version.bar.url ? <Pressable accessibilityRole="link" onPress={() => Linking.openURL(version.bar!.url!)} style={styles.creditLink}>
+                    <Text style={styles.barName}>{version.bar.name} ↗</Text>
+                  </Pressable> : <Text style={styles.barName}>{version.bar.name}</Text>}
+                  <Text style={styles.sourceMeta}>{version.bar.address}</Text>
+                </View>
+              ) : null}
+            </View>
+            {source?.url ? (
+              <Pressable accessibilityRole="link" onPress={() => Linking.openURL(source.url)} style={({pressed}) => [styles.sourceButton, pressed && styles.pressed]}>
+                <Text style={styles.sourceButtonText}>{t(locale, 'sourceLink')}</Text>
+                <Text style={styles.sourceButtonArrow}>↗</Text>
+              </Pressable>
+            ) : null}
+          </View>
+                </View> : null}
+              </View>
+  </>;
+
   return (
     <SafeAreaView style={styles.screen} edges={['top']}>
       <ScrollView contentContainerStyle={styles.page}>
@@ -151,51 +237,16 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
           </Pressable>
 
           <View style={[styles.lead, compact && styles.leadCompact]}>
-            <View style={[styles.photoColumn, compact && styles.photoColumnCompact]}>
-              <PhotoFrame asset={asset} accent={cocktail.accent} locale={locale} height={compact ? Math.min(width * 0.94, 520) : 590} />
-            </View>
+            {!compact ? photoRegion : null}
 
-            <View style={styles.leadCopy}>
+            <View style={[styles.leadCopy,compact && {flex:undefined}]}>
               {listId ? <ListBrowseSelection listId={listId} locale={locale} /> : null}
               <Text style={styles.category}>{version.origin ? recipeCategoryText(locale, version.origin.kind) : t(locale, cocktail.category as UiKey)}</Text>
               <Heading level={1} style={[styles.title, compact && styles.titleCompact]}>{localize(cocktail.name, locale)}</Heading><CocktailOriginalName cocktail={cocktail} locale={locale} />
               <Text style={styles.description}>{localize(cocktail.description, locale)}</Text>
 
-              <View style={styles.divider} />
-              <VersionPicker versions={versions} selectedId={version.id} locale={locale} onSelect={(id) => {
-                setShowOriginal(false);
-                router.setParams({version: id});
-              }} />
-              <View style={styles.sourceIdentity}>
-                <View style={styles.sourceIdentityCopy}>
-                  <Text style={styles.sourceIdentityLabel}>{p02RecipeText(locale, 'exactSource')}</Text>
-                  <Text style={styles.sourceIdentityTitle}>{source?.title ?? t(locale, 'unknown')}</Text>
-                  <Text style={styles.sourceIdentityMeta}>{localize(version.label, locale)}</Text>
-                </View>
-                {source?.url ? (
-                  <Pressable accessibilityRole="link" onPress={() => Linking.openURL(source.url)} style={styles.sourceIdentityLink}>
-                    <Text style={styles.sourceIdentityLinkText}>{t(locale, 'sourceLink')} ↗</Text>
-                  </Pressable>
-                ) : null}
-              </View>
-              <View style={styles.primaryActions}>
-                {listId ? <ListBrowseAddButton key={`list-add-${version.id}`} listId={listId} versionId={version.id} locale={locale} /> : null}
-                <Link href={{pathname: '/make', params: {version: version.id}} as never} asChild>
-                  <Pressable accessibilityRole="link" style={StyleSheet.flatten([styles.primaryButton])}>
-                    <Text style={styles.primaryButtonText}>{makingText(locale, 'startMaking')} →</Text>
-                  </Pressable>
-                </Link>
-                <Link href={{pathname: '/order', params: {version: version.id}} as never} asChild>
-                  <Pressable accessibilityRole="link" style={StyleSheet.flatten([styles.orderButton])}>
-                    <Text style={styles.orderButtonText}>{tm(locale, 'orderCard')} ↗</Text>
-                  </Pressable>
-                </Link>
-                <View style={styles.favoriteRow}>
-                  <FavoriteButton versionId={version.id} locale={locale} compact />
-                </View>
-                <RecipeExperience key={`experience-${version.id}`} recipe={recipeSnapshot(catalogue,version.id)!} locale={locale}/>
-                <MoreActions key={version.id} version={version} locale={locale} />
-              </View>
+              <View style={styles.flavourLine}>{[...version.flavours.map(value=>t(locale,`flavour.${value}` as UiKey)),...version.tastes.map(value=>t(locale,`taste.${value}` as UiKey))].map(label=><Text key={label} style={styles.flavourWord}>{label}</Text>)}</View>
+              {!compact ? recipeControls : null}
               {!matching ? (
                 <View style={styles.mismatch}>
                   <Text style={styles.mismatchGlyph}>!</Text>
@@ -203,7 +254,10 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
                 </View>
               ) : null}
             </View>
+            {compact ? photoRegion : null}
           </View>
+
+          {compact ? recipeControls : null}
 
           <View style={[styles.recipeGrid, compact && styles.recipeGridCompact]}>
             <DetailSection compact={compact} title={t(locale, 'ingredients')} aside={<Text style={styles.servings}>{t(locale, 'servings')} · {version.servings}</Text>}>
@@ -271,76 +325,31 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
 
           <PreparationPanel key={version.id} versionId={version.id} locale={locale} showSources/>
           <RecipeAbv version={version} locale={locale} showSources/>
-          <View style={[styles.sourcePanel, compact && styles.sourcePanelCompact]}>
-            <View style={styles.sourceCopy}>
-              <Text style={styles.sectionEyebrow}>{t(locale, 'source')}</Text>
-              <Text style={styles.sourceTitle}>{source?.title ?? t(locale, 'unknown')}</Text>
-              {source?.author ? <Text style={styles.sourceMeta}>{source.author}</Text> : null}
-              {source?.book ? <Text style={styles.sourceMeta}>{source.book}</Text> : null}
-              {asset ? (
-                <View style={styles.photoSourceBlock}>
-                  <Text style={styles.photoSourceLabel}>{t(locale, aiAsset ? 'aiImage' as UiKey : 'photograph')}</Text>
-                  {aiAsset ? (
-                    <>
-                      <Text style={styles.sourceMeta}>{t(locale, 'imageInfo' as UiKey)}</Text>
-                      {asset.referenceUrl ? (
-                        <Pressable accessibilityRole="link" onPress={() => Linking.openURL(asset.referenceUrl!)} style={styles.referenceLink}>
-                          <Text style={styles.creditText}>{t(locale, 'referenceImage' as UiKey)} ↗</Text>
-                        </Pressable>
-                      ) : null}
-                    </>
-                  ) : (
-                    <View style={styles.creditLine}>
-                      <Text style={styles.creditLabel}>{t(locale, 'credits')}:</Text>
-                      <Pressable accessibilityRole="link" onPress={() => Linking.openURL(asset.sourceUrl)} style={styles.creditLink}>
-                        <Text style={styles.creditText}>{asset.author} ↗</Text>
-                      </Pressable>
-                      {asset.license && asset.licenseUrl ? (
-                        <>
-                          <Text style={styles.creditDivider}>·</Text>
-                          <Pressable accessibilityRole="link" onPress={() => Linking.openURL(asset.licenseUrl!)} style={styles.creditLink}>
-                            <Text style={styles.creditText}>{asset.license} ↗</Text>
-                          </Pressable>
-                        </>
-                      ) : null}
-                    </View>
-                  )}
-                </View>
-              ) : null}
-              {version.bar ? (
-                <View style={styles.barBlock}>
-                  <Text style={styles.barLabel}>{t(locale, 'bar')}</Text>
-                  {version.bar.url ? <Pressable accessibilityRole="link" onPress={() => Linking.openURL(version.bar!.url!)} style={styles.creditLink}>
-                    <Text style={styles.barName}>{version.bar.name} ↗</Text>
-                  </Pressable> : <Text style={styles.barName}>{version.bar.name}</Text>}
-                  <Text style={styles.sourceMeta}>{version.bar.address}</Text>
-                </View>
-              ) : null}
-            </View>
-            {source?.url ? (
-              <Pressable accessibilityRole="link" onPress={() => Linking.openURL(source.url)} style={({pressed}) => [styles.sourceButton, pressed && styles.pressed]}>
-                <Text style={styles.sourceButtonText}>{t(locale, 'sourceLink')}</Text>
-                <Text style={styles.sourceButtonArrow}>↗</Text>
-              </Pressable>
-            ) : null}
-          </View>
           <View style={styles.endMark}><View style={styles.endRule} /><View style={styles.endLogo}><BrandMark size={20} decorative /></View><View style={styles.endRule} /></View>
         </View>
       </ScrollView>
+      {compact ? <SafeAreaView edges={['bottom']} style={styles.stickyAction}><Link href={{pathname:'/make',params:{version:version.id}} as never} asChild><Pressable accessibilityRole="link" style={styles.primaryButton}><Text style={styles.primaryButtonText}>{makingText(locale,'startMaking')} →</Text></Pressable></Link></SafeAreaView> : null}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  flavourLine:{flexDirection:'row',flexWrap:'wrap',gap:12,marginTop:20},
+  flavourWord:{color:colors.amber,fontSize:13,lineHeight:20},
+  photoCaption:{color:colors.muted,...editorialType.caption,marginTop:12},
+  secondaryActions:{flexDirection:'row',alignItems:'center',flexWrap:'wrap',gap:16},
+  sourceDisclosure:{borderTopWidth:1,borderTopColor:colors.border,marginTop:16},
+  sourceToggle:{minHeight:64,flexDirection:'row',alignItems:'center',gap:16,paddingVertical:12},
+  stickyAction:{paddingHorizontal:24,paddingVertical:12,borderTopWidth:1,borderTopColor:colors.border,backgroundColor:colors.background},
   screen: {flex: 1, backgroundColor: colors.background},
-  page: {minHeight: '100%', paddingHorizontal: 18, paddingBottom: 56},
-  shell: {width: '100%', maxWidth: 1400, alignSelf: 'center'},
+  page: {minHeight:'100%',paddingHorizontal:spacing.lg,paddingBottom:spacing.section},
+  shell: {width:'100%',maxWidth:1280,alignSelf:'center'},
   backButton: {alignSelf: 'flex-start', minHeight: 46, marginTop: 16, marginBottom: 18, flexDirection: 'row', alignItems: 'center', gap: 9, paddingRight: 14},
   backArrow: {color: colors.accent, fontSize: 22},
   backText: {color: colors.secondary, fontSize: 14, fontWeight: '700'},
-  lead: {flexDirection: 'row', gap: 56, alignItems: 'flex-start'},
-  leadCompact: {flexDirection: 'column', gap: 30, alignItems: 'stretch'},
-  photoColumn: {width: '51%', maxWidth: 720},
+  lead: {flexDirection:'row',gap:spacing.section,alignItems:'center'},
+  leadCompact: {flexDirection:'column',gap:spacing.lg,alignItems:'stretch'},
+  photoColumn: {width:'48%',maxWidth:640},
   photoColumnCompact: {width: '100%', maxWidth: undefined},
   creditLine: {minHeight: 40, paddingHorizontal: 5, paddingTop: 9, flexDirection: 'row', alignItems: 'flex-start', flexWrap: 'wrap', gap: 6},
   creditLabel: {color: colors.muted, fontSize: 12, lineHeight: 20},
@@ -348,22 +357,22 @@ const styles = StyleSheet.create({
   creditText: {color: colors.accent, fontSize: 12, lineHeight: 20},
   creditDivider: {color: colors.muted, fontSize: 12, lineHeight: 20},
   referenceLink: {minHeight: 32, justifyContent: 'center', marginTop: 4},
-  leadCopy: {flex: 1, paddingVertical: 8},
-  category: {color: colors.accent, fontSize: 12, fontWeight: '800', letterSpacing: 1.2, textTransform: 'uppercase'},
-  title: {color: colors.text, fontFamily: serif, fontSize: 56, lineHeight: 62, letterSpacing: -1.5, marginTop: 13},
-  titleCompact: {fontSize: 42, lineHeight: 48},
-  description: {color: colors.secondary, fontSize: 16, lineHeight: 25, marginTop: 16, maxWidth: 560},
+  leadCopy: {flex:1,minWidth:0,paddingVertical:8},
+  category: {color:colors.accent,...editorialType.caption,letterSpacing:1.2},
+  title: {color:colors.text,fontFamily:serif,fontSize:44,lineHeight:54,letterSpacing:-0.7,marginTop:12},
+  titleCompact: {...editorialType.titlePhone},
+  description: {color:colors.secondary,...editorialType.body,marginTop:16,maxWidth:560},
   divider: {height: 1, backgroundColor: colors.border, marginVertical: 28},
   versionBlock: {gap: 10},
   versionList: {gap: 8, paddingRight: 12},
   sourceIdentity: {marginTop: 18, paddingTop: 14, borderTopWidth: 1, borderTopColor: colors.border, flexDirection: 'row', alignItems: 'center', gap: 14},
   sourceIdentityCopy: {flex: 1, minWidth: 0},
-  sourceIdentityLabel: {color: colors.accent, fontSize: 11, fontWeight: '800', letterSpacing: 0.8, textTransform: 'uppercase'},
+  sourceIdentityLabel: {color: colors.accent, fontSize: 12, fontWeight: '800', letterSpacing: 0.8, textTransform: 'uppercase'},
   sourceIdentityTitle: {color: colors.text, fontFamily: serif, fontSize: 17, lineHeight: 22, marginTop: 4},
   sourceIdentityMeta: {color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 3},
   sourceIdentityLink: {minHeight: 44, justifyContent: 'center', paddingHorizontal: 6},
   sourceIdentityLinkText: {color: colors.accent, fontSize: 12, fontWeight: '700'},
-  primaryActions: {marginTop: 16, gap: 9},
+  primaryActions: {marginTop:24,gap:12},
   orderButton: {minHeight: 48, paddingHorizontal: 20, borderRadius: radii.pill, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center'},
   orderButtonText: {color: colors.accent, fontSize: 14, fontWeight: '800'},
   favoriteRow: {alignSelf: 'flex-start'},
@@ -377,14 +386,14 @@ const styles = StyleSheet.create({
   mismatch: {marginTop: 14, borderRadius: radii.small, borderWidth: 1, borderColor: colors.amber, padding: 12, flexDirection: 'row', alignItems: 'center', gap: 10},
   mismatchGlyph: {width: 22, height: 22, textAlign: 'center', color: colors.background, backgroundColor: colors.amber, borderRadius: 11, overflow: 'hidden', fontWeight: '900', lineHeight: 22},
   mismatchText: {flex: 1, color: colors.text, fontSize: 14, lineHeight: 20},
-  profilePanel: {marginTop: 30, backgroundColor: colors.panel, borderRadius: radii.medium, borderWidth: 1, borderColor: colors.border, padding: 18},
+  profilePanel: {marginTop:48,paddingVertical:24,borderTopWidth:1,borderTopColor:colors.border},
   profileTitle: {color: colors.text, fontFamily: serif, fontSize: 24, lineHeight: 30},
-  profileText: {color: colors.text, fontFamily: serif, fontSize: 19, lineHeight: 27, marginTop: 10},
+  profileText: {color:colors.text,fontFamily:serif,fontSize:20,lineHeight:30,marginTop:16},
   profileTags: {flexDirection: 'row', flexWrap: 'wrap', gap: 7, marginTop: 15},
   profileTag: {borderRadius: radii.pill, backgroundColor: colors.accentDark, paddingHorizontal: 10, paddingVertical: 7},
   profileTagText: {color: colors.accent, fontSize: 12, fontWeight: '700'},
   editorialNote: {color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 15},
-  recipeGrid: {marginTop: 34, flexDirection: 'row', gap: 64, alignItems: 'flex-start'},
+  recipeGrid: {marginTop:48,flexDirection:'row',gap:64,alignItems:'flex-start'},
   recipeGridCompact: {marginTop: 28, flexDirection: 'column', alignItems: 'stretch', gap: 38},
   section: {flexGrow: 1, flexShrink: 1, flexBasis: 0, minWidth: 0},
   // Stacked sections must keep their content height, not share the column's height.
@@ -398,7 +407,7 @@ const styles = StyleSheet.create({
   amount: {width: 88, color: colors.accent, fontSize: 14, lineHeight: 21, fontWeight: '700'},
   ingredientCopy: {flex: 1},
   ingredientLink: {minHeight: 44, justifyContent: 'center', alignSelf: 'flex-start'},
-  ingredientName: {color: colors.text, fontSize: 15, lineHeight: 21},
+  ingredientName: {color:colors.text,...editorialType.body},
   ingredientBrand: {color: colors.accent, fontSize: 13, lineHeight: 18, marginTop: 3},
   ingredientNote: {color: colors.secondary, fontSize: 13, lineHeight: 18, marginTop: 3},
   optional: {color: colors.muted, fontSize: 12, fontWeight: '700', textTransform: 'uppercase', marginTop: 4},
@@ -410,13 +419,13 @@ const styles = StyleSheet.create({
   step: {flexDirection: 'row', gap: 14},
   stepNumber: {width: 27, height: 27, borderRadius: 14, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center'},
   stepNumberText: {color: colors.accent, fontFamily: serif, fontSize: 12},
-  stepText: {flex: 1, color: colors.text, fontSize: 14, lineHeight: 22, paddingTop: 2},
+  stepText: {flex:1,color:colors.text,...editorialType.body,paddingTop:2},
   serveGrid: {flexDirection: 'row', gap: 12, marginTop: 28},
-  serveItem: {flex: 1, borderRadius: radii.medium, backgroundColor: colors.panel, padding: 15, borderWidth: 1, borderColor: colors.border},
+  serveItem: {flex:1,paddingVertical:16,borderTopWidth:1,borderTopColor:colors.border},
   serveLabel: {color: colors.muted, fontSize: 12, fontWeight: '800', letterSpacing: 0.8, textTransform: 'uppercase'},
   serveValue: {color: colors.text, fontFamily: serif, fontSize: 16, marginTop: 6},
-  sourcePanel: {marginTop: 72, paddingVertical: 30, paddingHorizontal: 26, borderRadius: radii.large, backgroundColor: colors.panel, borderWidth: 1, borderColor: colors.border, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 28},
-  sourcePanelCompact: {marginTop: 52, flexDirection: 'column', alignItems: 'stretch'},
+  sourcePanel: {marginTop:16,paddingVertical:16,borderTopWidth:1,borderTopColor:colors.border,gap:16},
+  sourcePanelCompact: {},
   sourceCopy: {flex: 1},
   sourceTitle: {color: colors.text, fontFamily: serif, fontSize: 22, marginTop: 8},
   sourceMeta: {color: colors.secondary, fontSize: 13, lineHeight: 19, marginTop: 4},
@@ -433,7 +442,7 @@ const styles = StyleSheet.create({
   endLogo: {opacity: 0.55},
   notFound: {flex: 1, minHeight: 500, alignItems: 'center', justifyContent: 'center', padding: 24},
   notFoundTitle: {color: colors.text, fontFamily: serif, fontSize: 30, textAlign: 'center'},
-  primaryButton: {minHeight: 48, paddingHorizontal: 22, borderRadius: radii.pill, backgroundColor: colors.accent, alignItems: 'center', justifyContent: 'center', marginTop: 20},
+  primaryButton: {minHeight:54,paddingHorizontal:24,borderRadius:10,backgroundColor:colors.accent,alignItems:'center',justifyContent:'center'},
   primaryButtonText: {color: colors.background, fontWeight: '800'},
   pressed: {opacity: 0.7},
 });
