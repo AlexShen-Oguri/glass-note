@@ -13,6 +13,6 @@ export default function Html({children}:PropsWithChildren) {
     <meta name="robots" content="noindex,nofollow" />
     <meta name="description" content="Explore classic cocktails, follow your taste, and discover recipes with their sources." />
     <ScrollViewStyleReset />
-    <style>{`html,body{background:#101714;color:#f3f0e8}*{box-sizing:border-box}button,input,select{font:inherit}::selection{background:#b5c6a9;color:#101714}a{color:inherit}a:focus-visible,button:focus-visible,[role="button"]:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #d4ad73;outline-offset:4px}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}`}</style>
+    <style>{`html,body{background:#101714;color:#f0ebdf}*{box-sizing:border-box}button,input,select{font:inherit}::selection{background:#b5c6a9;color:#101714}a{color:inherit}a:focus-visible,button:focus-visible,[role="button"]:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #d4ad73;outline-offset:4px}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}`}</style>
   </head><body>{children}</body></html>;
 }

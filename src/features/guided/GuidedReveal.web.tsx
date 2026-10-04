@@ -37,8 +37,8 @@ export function GuidedReveal({revealing, motionAllowed, activeWindow, children, 
       gsap.set(targets, {willChange: 'transform,opacity'});
       const tl = gsap.timeline({defaults: {ease: 'power3.out'}, onComplete: finishOnce});
       timeline.current = tl;
-      if (lead) tl.fromTo(lead, {y: 14, opacity: 0.25}, {y: 0, opacity: 1, duration: 0.48, clearProps: 'transform,opacity,willChange'}, 0);
-      if (cards.length) tl.fromTo(cards, {y: 24, opacity: 0.08}, {y: 0, opacity: 1, duration: 0.62, stagger: 0.035, clearProps: 'transform,opacity,willChange'}, 0);
+      if (lead) tl.fromTo(lead, {y: 28, opacity: 0.08}, {y: 0, opacity: 1, duration: 0.62, clearProps: 'transform,opacity,willChange'}, 0);
+      if (cards.length) tl.fromTo(cards, {y: 18, opacity: 0.38}, {y: 0, opacity: 1, duration: 0.62, stagger: 0.035, clearProps: 'transform,opacity,willChange'}, 0);
     }));
     return () => {cancelAnimationFrame(frame); timeline.current = null;};
   }, {scope: host, dependencies: [complete, enabled], revertOnUpdate: true});

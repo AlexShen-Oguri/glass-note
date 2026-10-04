@@ -21,6 +21,7 @@ import {TasteProvider} from '../platform/TasteProvider';
 import {MakingProvider} from '../platform/MakingProvider';
 import {MotionPhotoRelay,MotionTransition,useMotionEnabled} from '../features/motion';
 import {MotionInteractions} from '../features/motion/Interactions';
+import {RelayTrace} from '../features/motion/RelayTrace';
 
 const nightTheme = {...DarkTheme, colors:{...DarkTheme.colors, background:'transparent', card:colors.background, text:colors.text, border:colors.border, primary:colors.accent}};
 
@@ -43,6 +44,7 @@ function AppScene() {
   return <MotionInteractions changeKey={pathname} style={{flex: 1, backgroundColor: colors.background}}>
     <AmbientLight paused={motionPaused||!canAnimate} reduceMotion={reduceMotion} />
     <MotionPhotoRelay changeKey={pathname} />
+    <RelayTrace />
     {desktop && <AppNavigation />}
     {!dismissed && pathname !== '/backup' && (notice === 'restored' || notice === 'rolled-back' || notice === 'stale') && <View style={{padding:16,gap:10,backgroundColor:colors.panel}}>
       <Text accessibilityLiveRegion="polite" style={{color:colors.accent,fontSize:14,lineHeight:22}}>{backupText(locale,notice==='restored'?'restored':notice==='rolled-back'?'rolledBack':'stale')}</Text>

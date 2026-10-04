@@ -37,7 +37,7 @@ import type {GuidedAction, GuidedField, GuidedSession} from '../../domain/guided
 import {diversifyContextResults, rankForContext} from '../../domain/context';
 import type {ContextResult, ContextSelection} from '../../domain/context/types';
 import {emptyTasteState} from '../../domain/taste/types';
-import {cardGrid} from '../../domain/discovery/card-grid';
+import {resultsLayout} from '../../domain/guided/results-layout';
 import {useTaste} from '../../platform/TasteProvider';
 import {tm} from '../../i18n/taste';
 import {contextText, occasionLabel, seasonLabel} from '../../i18n/context';
@@ -158,12 +158,12 @@ function preferenceGroups(query: SearchQuery, context: ContextSelection, locale:
   return groups.filter(({labels}) => labels.length > 0);
 }
 
-function SelectionSummary({query, context, locale, compact = false, onEditContext}: {query: SearchQuery; context: ContextSelection; locale: Locale; compact?: boolean; onEditContext?: () => void}) {
+function SelectionSummary({query, context, locale, compact = false, inline=false, onEditContext}: {query: SearchQuery; context: ContextSelection; locale: Locale; compact?: boolean;inline?:boolean; onEditContext?: () => void}) {
   const groups = preferenceGroups(query, context, locale);
   return (
-    <View {...motionData({motionSummary: ''})} style={[styles.summary, compact && styles.summaryCompact]}>
+    <View {...motionData({motionSummary: ''})} style={[styles.summary, compact && styles.summaryCompact,inline&&styles.summaryInline]}>
       <Text style={styles.summaryLabel}>{gr(locale, 'preferenceProfile')}</Text>
-      {groups.length ? <View style={styles.summaryGroups}>{groups.map((group, index) => (
+      {groups.length ? <View style={[styles.summaryGroups,inline&&styles.summaryGroupsInline]}>{groups.map((group, index) => (
         <View key={group.key} style={styles.summaryGroup}>
           <Text style={styles.summaryGroupName}>{String(index + 1).padStart(2, '0')} / {group.name}</Text>
           <View style={styles.summaryItems}>{group.labels.map((label) => <Text key={`${group.key}-${label}`} style={styles.summaryItem}>{label}</Text>)}</View>
@@ -245,24 +245,24 @@ function TasteStorageNotice({taste, locale}: {taste: ReturnType<typeof useTaste>
   );
 }
 
-function OptionCard({label, note, selected, compact, selectedText, onPress}: {label: string; note?: string; selected: boolean; compact: boolean; selectedText: string; onPress: () => void}) {
+function OptionCard({label, note, selected, compact, short=false, selectedText, onPress}: {label: string; note?: string; selected: boolean; compact: boolean;short?:boolean; selectedText: string; onPress: () => void}) {
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityState={{selected}}
       aria-pressed={selected}
       onPress={onPress}
-      style={({pressed}) => [styles.option, compact && styles.optionCompact, selected && styles.optionSelected, pressed && styles.pressed]}
+      style={({pressed}) => [styles.option, compact && styles.optionCompact, short&&styles.optionShort, selected && styles.optionSelected, pressed && styles.pressed]}
     >
       {selected ? <View pointerEvents="none" style={styles.optionSelectedRule} /> : null}
-      <MotionSelection selected={selected} style={[styles.optionIndicator, selected && styles.optionIndicatorSelected]}><Text style={styles.optionCheck}>{selected ? '✓' : ''}</Text></MotionSelection>
       <View style={styles.optionCopy}>
         <View style={styles.optionTitleLine}>
-          <Text style={[styles.optionLabel, selected && styles.optionLabelSelected]}>{label}</Text>
+          <Text style={[styles.optionLabel,(compact||short)&&styles.optionLabelSmall, selected && styles.optionLabelSelected]}>{label}</Text>
           {selected ? <Text style={styles.selectedBadge}>{selectedText}</Text> : null}
         </View>
-        {note ? <Text style={[styles.optionNote, selected && styles.optionNoteSelected]}>{note}</Text> : null}
+        {note ? <Text style={[styles.optionNote,(compact||short)&&styles.optionNoteSmall, selected && styles.optionNoteSelected]}>{note}</Text> : null}
       </View>
+      <MotionSelection selected={selected} style={[styles.optionIndicator, compact && styles.optionIndicatorCompact, selected && styles.optionIndicatorSelected]}><Text style={[styles.optionCheck, selected && styles.optionCheckSelected]}>{selected ? '✓' : ''}</Text></MotionSelection>
     </Pressable>
   );
 }
@@ -272,6 +272,8 @@ function Progress({guided, locale, dispatch}: {guided: GuidedSession; locale: Lo
     dispatch({type: 'review', step: target});
   };
   return (
+    <View style={styles.progressLine}>
+      <Text style={styles.stepNumber}>{String(guided.step + 1).padStart(2, '0')}<Text style={styles.stepTotal}> / 04</Text></Text>
     <View style={styles.progress}>
       <ProgressOrbit step={guided.step} />
       {STEPS.map((item, index) => {
@@ -289,13 +291,13 @@ function Progress({guided, locale, dispatch}: {guided: GuidedSession; locale: Lo
           >
             <View style={[styles.progressSegment, (completed || current) && styles.progressSegmentActive, current && styles.progressSegmentCurrent]} />
             <View style={styles.progressLabelLine}>
-              <Text style={[styles.progressIndex, (completed || current) && styles.progressTextReached]}>{String(index + 1).padStart(2, '0')}</Text>
               <Text numberOfLines={1} style={[styles.progressLabel, (completed || current) && styles.progressTextReached]}>{gr(locale, item.nameKey)}</Text>
               {completed ? <Text style={styles.progressEdit}>↙</Text> : null}
             </View>
           </Pressable>
         );
       })}
+    </View>
     </View>
   );
 }
@@ -310,7 +312,7 @@ function matchedLabels(query: SearchQuery, version: NonNullable<(typeof catalogu
 }
 
 type GuidedResult = ContextResult & {pantryMatch?:OwnedVersionMatch};
-function ResultCard({result, locale, query, contextActive, onHide, cardWidth,onPhotoRef,photoOpacity}: {result: GuidedResult; locale: Locale; query: SearchQuery; contextActive: boolean; onHide: () => void; cardWidth: number;onPhotoRef?:(cocktailId:string,node:View|null)=>void;photoOpacity?:Animated.Value}) {
+function ResultCard({result, locale, query, contextActive, onHide, cardWidth, photoHeight, hero, mobile, index,onPhotoRef,photoOpacity}: {result: GuidedResult; locale: Locale; query: SearchQuery; contextActive: boolean; onHide: () => void; cardWidth: number;photoHeight:number;hero:boolean;mobile:boolean;index:number;onPhotoRef?:(cocktailId:string,node:View|null)=>void;photoOpacity?:Animated.Value}) {
   const cocktail = catalogue.cocktails.find((item) => item.id === result.cocktailId);
   if (!cocktail) return null;
   const asset = media[cocktail.id];
@@ -326,16 +328,17 @@ function ResultCard({result, locale, query, contextActive, onHide, cardWidth,onP
         <Pressable
           accessibilityRole="link"
           accessibilityLabel={`${cocktail.name[locale]}. ${t(locale, 'viewRecipe')}`}
-          style={StyleSheet.flatten([styles.resultCard])}
+          style={StyleSheet.flatten([styles.resultCard, hero && !mobile && styles.resultCardHero])}
         >
-          <View {...motionData({motionPhoto: cocktail.id})} ref={node=>onPhotoRef?.(cocktail.id,node)} collapsable={false}>
+          <View {...motionData({motionPhoto: cocktail.id})} ref={node=>onPhotoRef?.(cocktail.id,node)} collapsable={false} style={[styles.resultPhoto,hero && !mobile && styles.resultPhotoHero]}>
             <MotionPhoto opacity={photoOpacity}>
-              <PhotoFrame asset={asset} accent={cocktail.accent} locale={locale} height={cardWidth >= 380 ? 340 : 270} preserveAspect borderRadius={0} />
+              <PhotoFrame asset={asset} accent={cocktail.accent} locale={locale} height={photoHeight} borderRadius={0} />
             </MotionPhoto>
+            <Text accessible={false} pointerEvents="none" style={styles.resultNumber}>{String(index+1).padStart(2,'0')}</Text>
           </View>
-          <View style={styles.resultCopy}>
+          <View style={[styles.resultCopy,hero && !mobile && styles.resultCopyHero]}>
             <Text style={styles.resultMeta}>{t(locale, cocktail.category as UiKey)} · {t(locale, 'guidedMatchReason')}</Text>
-            <Heading level={2} style={styles.resultName}>{cocktail.name[locale]}</Heading><CocktailOriginalName cocktail={cocktail} locale={locale} />
+            <Heading level={2} style={[styles.resultName,mobile&&styles.resultNameMobile,hero&&styles.resultNameHero]}>{cocktail.name[locale]}</Heading><CocktailOriginalName cocktail={cocktail} locale={locale} />
             <Text style={styles.resultDescription}>{cocktail.description[locale]}</Text>
             {result.pantryMatch ? <View style={styles.ownedSummary}>
               <Text style={styles.ownedHeading}>{g175(locale,result.pantryMatch.baseReady?'baseReady':'baseMissing')}</Text>
@@ -362,9 +365,9 @@ function ResultCard({result, locale, query, contextActive, onHide, cardWidth,onP
   );
 }
 
-function StepActions({guided, dispatch, locale, compact = false}: {guided: GuidedSession; dispatch: React.Dispatch<GuidedAction>; locale: Locale; compact?: boolean}) {
+function StepActions({guided, dispatch, locale, compact = false,short=false}: {guided: GuidedSession; dispatch: React.Dispatch<GuidedAction>; locale: Locale; compact?: boolean;short?:boolean}) {
   return (
-    <View {...motionData({motionActions: ''})} style={[styles.stepActions, compact && styles.stepActionsCompact]}>
+    <View {...motionData({motionActions: ''})} style={[styles.stepActions, compact && styles.stepActionsCompact,short&&styles.stepActionsShort]}>
       <Pressable accessibilityRole="button" onPress={() => guided.step === 0 ? dispatch({type:'set-mode',mode:null}) : dispatch({type: 'back'})} style={[styles.secondaryAction, compact && styles.secondaryActionCompact]}>
         <Text style={styles.secondaryActionText}>{t(locale, 'back')}</Text>
       </Pressable>
@@ -380,13 +383,15 @@ function StepActions({guided, dispatch, locale, compact = false}: {guided: Guide
 }
 
 function ModeChoice({locale,dispatch,compact}:{locale:Locale;dispatch:React.Dispatch<GuidedAction>;compact:boolean}) {
-  return <View style={styles.modeIntro}>
-    <View {...motionData({motionPart: 'title'})}><Heading level={1} style={[styles.questionTitle,compact&&styles.questionTitleCompact]}>{g175(locale,'modeTitle')}</Heading></View>
+  const {width}=useViewport();
+  return <View style={[styles.modeIntro,compact&&styles.modeIntroCompact]}>
+    <Text style={styles.sceneKicker}>YOUR WAY / YOUR GLASS</Text>
+    <View {...motionData({motionPart: 'title'})}><Heading level={1} style={[styles.modeTitle,{fontSize:compact?53:Math.min(98,Math.max(65,width*.062)),lineHeight:compact?61:Math.min(112,Math.max(75,width*.071))}]}>{g175(locale,'modeTitle')}</Heading></View>
     <View {...motionData({motionPart: 'copy'})}><Text style={styles.questionHint}>{g175(locale,'modeHint')}</Text></View>
     <View {...motionData({motionPart: 'options'})} style={[styles.modeChoices,compact&&styles.modeChoicesCompact]}>
       {(['drink','make'] as const).map(mode=><Pressable key={mode} accessibilityRole="button" onPress={()=>dispatch({type:'set-mode',mode})} style={({pressed})=>[styles.modeChoice,pressed&&styles.pressed]}>
-        <Text style={styles.modeName}>{g175(locale,mode)} <Text style={styles.primaryArrow}>→</Text></Text>
-        <Text style={styles.questionHint}>{g175(locale,mode==='drink'?'drinkHint':'makeHint')}</Text>
+        <View style={styles.modeEntryLine}><Text style={styles.modeIndex}>{mode==='drink'?'01':'02'}</Text><Text style={styles.modeName}>{g175(locale,mode)}</Text><Text style={styles.modeArrow}>↗</Text></View>
+        <Text style={styles.modeHint}>{g175(locale,mode==='drink'?'drinkHint':'makeHint')}</Text>
       </Pressable>)}
     </View>
     <Pressable accessibilityRole="button" onPress={()=>router.replace('/')} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{t(locale,'back')}</Text></Pressable>
@@ -424,22 +429,20 @@ function ChoosingView({
   memorySettings?: React.ReactNode;
 }) {
   const step = STEPS[guided.step] ?? STEPS[0]!;
+  const viewport=useViewport(), short=!compact&&viewport.height<=800;
   const selected = selectedValues(guided.draft, step.field);
   const [exclusionsOpen, setExclusionsOpen] = useState(false);
   return (
-    <View style={[styles.chooseLayout, compact && styles.chooseLayoutCompact]}>
-      <View style={[styles.questionPane, compact && styles.questionPaneCompact]}>
-        <View style={styles.stepLine}>
-          <Text style={styles.stepNumber}>{String(guided.step + 1).padStart(2, '0')} / 04</Text>
-        </View>
+    <View style={[styles.chooseLayout, compact && styles.chooseLayoutCompact,short&&styles.chooseLayoutShort]}>
+      <View style={[styles.questionPane, compact && styles.questionPaneCompact,short&&styles.questionPaneShort]}>
         <View style={compact ? styles.progressCompact : undefined}><Progress guided={guided} locale={locale} dispatch={dispatch} /></View>
-        <View {...motionData({motionPart: 'title'})}><Heading level={1} accessibilityLiveRegion="polite" style={[styles.questionTitle, compact && styles.questionTitleCompact]}>{t(locale, step.titleKey)}</Heading></View>
+        <View {...motionData({motionPart: 'title'})}><Heading level={1} accessibilityLiveRegion="polite" style={[styles.questionTitle,{fontSize:Math.min(74,Math.max(47,viewport.width*.045)),lineHeight:Math.min(90,Math.max(57,viewport.width*.055))}, compact && styles.questionTitleCompact,short&&styles.questionTitleShort]}>{t(locale, step.titleKey)}</Heading></View>
         <View {...motionData({motionPart: 'copy'})}>
-          <Text style={styles.questionHint}>{t(locale, step.hintKey)}</Text>
-          <Text style={styles.selectionHint}>{t(locale, step.multi ? 'guidedMultiHint' : 'guidedSingleHint')}</Text>
+          <Text style={[styles.questionHint,short&&styles.questionHintShort,compact&&styles.questionHintCompact]}>{t(locale, step.hintKey)}</Text>
+          <Text style={[styles.selectionHint,short&&styles.selectionHintShort]}>{t(locale, step.multi ? 'guidedMultiHint' : 'guidedSingleHint')}</Text>
         </View>
-        {guided.step === 0 ? <ContextSelector locale={locale} value={guided.contextDraft ?? {}} onApply={(selection) => dispatch({type: 'set-context', selection})} /> : null}
-        <View {...motionData({motionPart: 'options'})} style={[styles.options, compact && styles.optionsCompact]}>
+        {guided.step === 0 ? <ContextSelector editorial compact={compact||short} locale={locale} value={guided.contextDraft ?? {}} onApply={(selection) => dispatch({type: 'set-context', selection})} /> : null}
+        <View {...motionData({motionPart: 'options'})} style={[styles.options, compact && styles.optionsCompact,short&&styles.optionsShort]}>
           {step.options.map((option) => (
             <OptionCard
               key={option.value}
@@ -447,6 +450,7 @@ function ChoosingView({
               note={option.exampleKey ? gr(locale, option.exampleKey) : option.noteKey ? t(locale, option.noteKey) : undefined}
               selected={selected.includes(option.value)}
               compact={compact}
+              short={short}
               selectedText={gr(locale, 'selected')}
               onPress={() => dispatch({type: 'toggle', field: step.field, value: option.value})}
             />
@@ -489,9 +493,9 @@ function ChoosingView({
             </View> : null}
           </View>
         ) : null}
-        <SelectionSummary query={guided.draft} context={guided.contextDraft ?? {}} locale={locale} compact={compact} />
+        <SelectionSummary query={guided.draft} context={guided.contextDraft ?? {}} locale={locale} compact={compact} inline />
         {memorySettings}
-        {!compact ? <StepActions guided={guided} dispatch={dispatch} locale={locale} /> : null}
+        <StepActions guided={guided} dispatch={dispatch} locale={locale} compact={compact} short={short}/>
       </View>
       {!compact ? <View accessible={false} pointerEvents="none" style={styles.atmosphereSpace} /> : null}
     </View>
@@ -502,17 +506,18 @@ function ResultsView({guided, locale, results, baseResultCount, allResultsHidden
   const [showAll, setShowAll] = useState(false);
   const viewport = useViewport();
   const [containerWidth, setContainerWidth] = useState<number | null>(null);
-  const grid = cardGrid(containerWidth ?? Math.max(0, Math.min(1400, viewport.width - 36)), 250, compact ? 12 : 16);
   const shown = showAll ? results : results.slice(0, 6);
+  const layout=resultsLayout(containerWidth??Math.max(1,viewport.width*.86),shown.length);
   const contextActive = Boolean(guided.contextSubmitted?.occasion || guided.contextSubmitted?.season);
   useEffect(() => setShowAll(false), [guided.submitted,guided.mode,pantryFiltered]);
   return (
-    <View style={styles.resultsView}>
+    <View style={styles.resultsView} onLayout={event=>setContainerWidth(event.nativeEvent.layout.width)}>
       <View {...motionData({motionResultsLead: ''})} style={styles.resultsLead}>
-        <Heading level={1} style={styles.resultsTitle}>{t(locale, 'guidedResultsTitle')}</Heading>
+        <Text style={styles.sceneKicker}>YOUR TASTE / IN {shown.length} {shown.length===1?'GLASS':'GLASSES'}</Text>
+        <Heading level={1} style={[styles.resultsTitle,{fontSize:layout.mobile?51:Math.min(97,Math.max(58,viewport.width*.061)),lineHeight:layout.mobile?63:Math.min(116,Math.max(70,viewport.width*.073))}]}>{t(locale, 'guidedResultsTitle')}</Heading>
         <Text style={styles.resultsHint}>{pantryFiltered?g175(locale,'makeResultHint'):t(locale, 'guidedResultsHint')}</Text>
         <Text style={styles.resultsVersionNote}>{gr(locale, 'resultIntro')}</Text>
-        <SelectionSummary query={guided.submitted ?? {}} context={guided.contextSubmitted ?? {}} locale={locale} onEditContext={() => dispatch({type: 'edit', step: 0})} />
+        <SelectionSummary inline query={guided.submitted ?? {}} context={guided.contextSubmitted ?? {}} locale={locale} onEditContext={() => dispatch({type: 'edit', step: 0})} />
         {memorySettings}
         <View style={styles.resultControls}>
           <Text accessibilityLiveRegion="polite" style={styles.resultCount}>{contextActive&&!pantryFiltered ? `${contextText(locale, 'baseResultCount')} · ${baseResultCount}. ${contextText(locale, 'contextPriorityNote')}` : `${t(locale, 'results')} · ${results.length}`}</Text>
@@ -521,8 +526,11 @@ function ResultsView({guided, locale, results, baseResultCount, allResultsHidden
       </View>
       {results.length ? (
         <>
-          <View onLayout={(event) => setContainerWidth(event.nativeEvent.layout.width)} style={[styles.resultColumns, compact && styles.resultColumnsCompact]}>
-            {shown.map((result) => <ResultCard key={result.cocktailId} result={result} locale={locale} query={guided.submitted ?? {}} contextActive={Boolean(guided.contextSubmitted?.occasion || guided.contextSubmitted?.season)} onHide={() => onHide(result.cocktailId)} cardWidth={grid.cardWidth} onPhotoRef={onPhotoRef} photoOpacity={photoOpacity}/>)}
+          <View style={[styles.resultColumns,{rowGap:layout.rowGap}]}>
+            {layout.rows.map((row,rowIndex)=><View key={rowIndex} style={[styles.resultRow,{columnGap:layout.gap}]}>{row.map(({index,top})=>{
+              const result=shown[index]!;
+              return <View key={result.cocktailId} style={{paddingTop:top}}><ResultCard result={result} locale={locale} query={guided.submitted ?? {}} contextActive={contextActive} onHide={() => onHide(result.cocktailId)} cardWidth={layout.cardWidth} photoHeight={layout.photoHeight} hero={layout.hero} mobile={layout.mobile} index={index} onPhotoRef={onPhotoRef} photoOpacity={photoOpacity}/></View>;
+            })}</View>)}
           </View>
           {results.length > 6 ? (
             <Pressable accessibilityRole="button" onPress={() => setShowAll(!showAll)} style={styles.showAll}>
@@ -573,7 +581,7 @@ export default function GuidedScreen() {
   const {width} = useViewport();
   const reduceMotion = useReduceMotion();
   const [focused, setFocused] = useState(true);
-  const compact = width < 820;
+  const compact = width <= 700;
   const screenPaused = !canAnimate || !focused;
   const mode=guided.mode===undefined?'drink':guided.mode;
   const ownedPantry=useMemo(()=>mergeOwnedPantry(pantry.pantry,bottles.filter(bottle=>owned.ids.includes(bottle.id))),[pantry.pantry,owned.ids]);
@@ -637,7 +645,7 @@ export default function GuidedScreen() {
 
   return (
     <SafeAreaView style={styles.screen} edges={['top', 'bottom']}>
-      <ScrollView ref={scrollRef} style={stableWebScrollGutter} contentContainerStyle={styles.page} keyboardShouldPersistTaps="handled">
+      <ScrollView ref={scrollRef} style={stableWebScrollGutter} contentContainerStyle={[styles.page,{paddingHorizontal:width*(compact ? 0.07 : 0.065)}]} keyboardShouldPersistTaps="handled">
         <View style={styles.shell}>
           <BrandToolbar {...{locale, setLocale, unit, setUnit, motionPaused, setMotionPaused}} showUnits={false} />
           {mode!==null?<View style={styles.modeBar}>
@@ -659,30 +667,34 @@ export default function GuidedScreen() {
           {guided.phase === 'revealing' ? <TasteStorageNotice taste={taste} locale={locale} /> : null}
         </View>
       </ScrollView>
-      {mode!==null&&!gate&&guided.phase === 'choosing' && compact ? (
-        <View style={styles.fixedActions}><StepActions guided={guided} dispatch={dispatchGuided} locale={locale} compact /></View>
-      ) : null}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  modeIntro:{width:'100%',maxWidth:1000,alignSelf:'flex-start',paddingVertical:54,gap:16},
-  modeChoices:{flexDirection:'row',gap:30,marginVertical:28},
-  modeChoicesCompact:{flexDirection:'column'},
-  modeChoice:{flex:1,paddingVertical:24,paddingHorizontal:4,minHeight:150,borderTopWidth:1,borderTopColor:colors.border,borderBottomWidth:1,borderBottomColor:colors.border},
-  modeName:{fontFamily:serif,fontSize:38,lineHeight:48,color:colors.text},
-  modeBar:{flexDirection:'row',alignItems:'center',gap:16,marginTop:8},
-  modeBarName:{color:colors.accent,fontSize:14,fontWeight:'700'},
-  modeChange:{minHeight:44,justifyContent:'center',paddingHorizontal:8},
+  modeIntro:{width:'100%',maxWidth:1000,alignSelf:'flex-start',paddingTop:70,paddingBottom:40},
+  modeIntroCompact:{paddingTop:30},
+  sceneKicker:{color:colors.muted,fontSize:9,lineHeight:15,letterSpacing:2.2},
+  modeTitle:{color:colors.text,fontFamily:serif,fontWeight:'400',maxWidth:810,marginTop:28,marginBottom:16,letterSpacing:-2},
+  modeChoices:{width:'100%',maxWidth:560,marginTop:48,marginBottom:24},
+  modeChoicesCompact:{marginTop:40},
+  modeChoice:{paddingVertical:20,minHeight:100,borderBottomWidth:1,borderBottomColor:colors.border},
+  modeEntryLine:{flexDirection:'row',alignItems:'center',gap:18},
+  modeIndex:{color:colors.amber,fontSize:12,fontFamily:serif,width:28},
+  modeArrow:{color:colors.accent,fontSize:26,marginLeft:'auto'},
+  modeHint:{color:colors.muted,fontSize:12,lineHeight:19,marginTop:9,marginLeft:46},
+  modeName:{fontFamily:serif,fontSize:31,lineHeight:40,color:colors.text},
+  modeBar:{flexDirection:'row',alignItems:'center',gap:25,marginTop:4,minHeight:28},
+  modeBarName:{color:colors.accent,fontSize:11},
+  modeChange:{minHeight:28,justifyContent:'center',paddingHorizontal:0},
   gateActions:{flexDirection:'row',flexWrap:'wrap',gap:12,marginTop:12},
   fallbackNote:{color:colors.amber,fontSize:13,lineHeight:21,paddingVertical:12},
   ownedSummary:{gap:6,paddingVertical:12,borderTopWidth:1,borderTopColor:colors.border,marginTop:14},
   ownedHeading:{color:colors.accent,fontSize:13,fontWeight:'700'},
   ownedText:{color:colors.text,fontSize:13,lineHeight:21},
   ownedNote:{color:colors.muted,fontSize:12,lineHeight:19},
-  resultControls: {flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, marginTop: 20, width: '100%'},
-  resultCount: {color: colors.secondary, fontSize: 13},
+  resultControls: {flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, marginTop: 30, paddingBottom:16,borderBottomWidth:1,borderBottomColor:colors.border,width: '100%'},
+  resultCount: {color: colors.secondary, fontSize: 11,lineHeight:18},
   memorySettings: {width: '100%', marginTop: 18, paddingVertical:16, gap: 10, borderTopWidth:1,borderTopColor:colors.border},
   memorySettingsCompact: {marginTop: 14, paddingVertical:12, gap: 8},
   memorySettingsHeading: {minHeight: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12},
@@ -704,47 +716,61 @@ const styles = StyleSheet.create({
   memoryRetryText: {color: colors.amber, fontSize: 13, fontWeight: '800'},
   screen: {flex: 1, backgroundColor: 'transparent'},
   page: {minHeight: '100%', paddingHorizontal: 24, paddingBottom: 56},
-  shell: {width: '100%', maxWidth: 1400, alignSelf: 'center'},
-  chooseLayout: {flexDirection: 'row', gap: 28, alignItems: 'stretch', paddingTop: 18},
+  shell: {width: '100%', maxWidth: 1500, alignSelf: 'center'},
+  chooseLayout: {flexDirection: 'row', gap: 28, alignItems: 'stretch', paddingTop: 20},
+  chooseLayoutShort:{paddingTop:0},
   chooseLayoutCompact: {flexDirection: 'column', gap: 12, paddingTop: 8},
-  questionPane: {flex: 1, maxWidth:900,minWidth: 0, paddingVertical: 20},
-  questionPaneCompact: {paddingVertical: 10, paddingBottom: 20},
+  questionPane: {flex: 1, maxWidth:920,minWidth: 0},
+  questionPaneShort:{paddingVertical:0},
+  questionPaneCompact: {paddingVertical: 0, paddingBottom: 20},
   atmosphereSpace: {width:'25%',maxWidth:420},
   stepLine: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12},
-  stepNumber: {color: colors.amber, fontSize: 11,letterSpacing:2},
-  progress: {position:'relative',flexDirection: 'row', gap: 7, marginTop: 13, marginBottom: 22},
-  progressStep: {flex: 1, minWidth: 0, minHeight: 46, justifyContent: 'flex-start', opacity: 0.52},
+  progressLine:{width:'100%',maxWidth:860,flexDirection:'row',alignItems:'flex-start',gap:24},
+  stepNumber: {color: colors.accent, fontFamily:Platform.OS==='web'?'Georgia, serif':Platform.OS==='ios'?'Georgia':'serif',fontStyle:'italic',fontSize:27,lineHeight:35},
+  stepTotal:{color:colors.muted,fontSize:11,fontStyle:'normal'},
+  progress: {position:'relative',flex:1,flexDirection: 'row', gap: 16},
+  progressStep: {flex: 1, minWidth: 0, minHeight: 35, justifyContent: 'flex-start', opacity: 0.7},
   progressStepReached: {opacity: 1},
   progressSegment: {height: 1, width: '100%', backgroundColor: colors.border},
   progressSegmentActive: {backgroundColor: colors.accent},
   progressSegmentCurrent: {height: 1, backgroundColor: colors.amber},
-  progressLabelLine: {flexDirection: 'row', alignItems: 'center', gap: 5, minHeight: 38, paddingTop: 7},
+  progressLabelLine: {flexDirection: 'row', alignItems: 'center', gap: 5, minHeight: 34, paddingTop: 3},
   progressIndex: {color: colors.muted, fontFamily: serif, fontSize: 11},
-  progressLabel: {flexShrink: 1, color: colors.muted, fontSize: 11, fontWeight: '700'},
+  progressLabel: {flexShrink: 1, color: colors.muted, fontSize: 10},
   progressTextReached: {color: colors.secondary},
   progressEdit: {color: colors.amber, fontSize: 11},
-  progressCompact: {marginBottom: -10},
-  questionTitle: {color: colors.text, fontFamily: serif, fontSize: 56, lineHeight: 70, letterSpacing: -1.8,fontWeight:'400'},
-  questionTitleCompact: {fontSize: 40, lineHeight: 52, letterSpacing: -1.2},
-  questionHint: {color: colors.secondary, fontSize: 13, lineHeight: 22, marginTop: 12, maxWidth: 650},
-  selectionHint: {color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 7},
-  options: {flexDirection: 'row', flexWrap: 'wrap', columnGap:'4%',rowGap:0,marginTop: 20,minHeight:276,alignContent:'flex-start'},
-  optionsCompact: {marginTop: 16,minHeight:264},
-  option: {position:'relative',width: '48%', minHeight: 92, flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 16,paddingHorizontal:12,borderBottomWidth: 1, borderBottomColor: colors.border},
-  optionCompact: {minHeight: 88, gap: 10, paddingVertical: 13, paddingHorizontal: 6},
-  optionSelected: {backgroundColor: 'rgba(181,198,169,0.055)'},
-  optionSelectedRule: {position:'absolute',left:0,top:20,bottom:20,width:2,backgroundColor:colors.accent},
-  optionIndicator: {width: 22, height: 22, borderRadius: 12, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center'},
-  optionIndicatorSelected: {borderColor: colors.accent,backgroundColor:'transparent'},
+  progressCompact: {marginBottom: 0},
+  questionTitle: {color: colors.text, fontFamily: serif, fontSize: 56, lineHeight: 70, letterSpacing: -1.8,fontWeight:'400',marginTop:24,marginBottom:11},
+  questionTitleShort:{fontSize:45,lineHeight:55,marginTop:14,marginBottom:8},
+  questionTitleCompact: {fontSize: 38, lineHeight: 46, letterSpacing: -1.2,marginTop:16,marginBottom:8},
+  questionHint: {color: colors.muted, fontSize: 12, lineHeight: 20, maxWidth: 710},
+  questionHintShort:{fontSize:11,lineHeight:18},
+  questionHintCompact:{fontSize:11,lineHeight:20},
+  selectionHint: {color: colors.muted, fontSize: 12, lineHeight: 20,marginBottom:23},
+  selectionHintShort:{fontSize:11,lineHeight:18,marginBottom:12},
+  options: {width:'100%',maxWidth:820,flexDirection: 'row', flexWrap: 'wrap', columnGap:'4%',rowGap:0,minHeight:276,alignContent:'flex-start'},
+  optionsShort:{minHeight:228},
+  optionsCompact: {minHeight:240},
+  option: {position:'relative',width: '48%', minHeight: 92, flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 14,paddingLeft:0,paddingRight:10,borderBottomWidth: 1, borderBottomColor: colors.border},
+  optionShort:{minHeight:76,paddingVertical:10},
+  optionCompact: {minHeight: 80, gap: 5, paddingVertical: 14, paddingHorizontal: 0},
+  optionSelected: {backgroundColor: 'transparent',borderBottomColor:colors.accent},
+  optionSelectedRule: {position:'absolute',left:-11,top:26,height:24,width:2,backgroundColor:colors.accent},
+  optionIndicator: {width: 25, height: 25,flexShrink:0, borderRadius: 13, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center'},
+  optionIndicatorCompact:{width:20,height:20,borderRadius:10},
+  optionIndicatorSelected: {borderColor: colors.accent,backgroundColor:colors.accent},
   optionCheck: {color: colors.accent, fontSize: 12, fontWeight: '600'},
+  optionCheckSelected:{color:colors.background},
   optionCopy: {flex: 1},
   optionTitleLine: {flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: 7, rowGap: 2},
-  optionLabel: {color: colors.text,fontFamily:serif, fontSize: 27,lineHeight:36,fontWeight:'400',flexShrink: 1, maxWidth: '100%'},
+  optionLabel: {color: colors.text,fontFamily:serif, fontSize: 29,lineHeight:38,fontWeight:'400',flexShrink: 1, maxWidth: '100%'},
+  optionLabelSmall:{fontSize:25,lineHeight:33},
   optionLabelSelected: {color: colors.text},
-  selectedBadge: {color: colors.amber, fontSize: 9, lineHeight: 14, fontWeight: '800', letterSpacing: 0.5, textTransform: 'uppercase'},
-  optionNote: {color: colors.muted, fontSize: 12, lineHeight: 17, marginTop: 4},
+  selectedBadge: {display:'none'},
+  optionNote: {color: colors.muted, fontSize: 11, lineHeight: 17, marginTop: 5},
+  optionNoteSmall:{fontSize:10,lineHeight:16,marginTop:3},
   optionNoteSelected: {color: colors.secondary},
-  selectionFeedback: {alignSelf: 'flex-end', color: colors.amber, fontSize: 11,lineHeight:18, marginTop: 6},
+  selectionFeedback: {position:'absolute',width:1,height:1,overflow:'hidden',opacity:0},
   exclusions: {marginTop: 26, paddingTop: 20, borderTopWidth: 1, borderTopColor: colors.border},
   exclusionsCompact: {marginTop: 17, paddingTop: 14},
   exclusionHeading: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12},
@@ -756,7 +782,9 @@ const styles = StyleSheet.create({
   exclusionChipText: {color: colors.secondary, fontSize: 13, fontWeight: '600'},
   exclusionChipTextActive: {color: colors.accent},
   summary: {width: '100%', marginTop: 20, borderTopWidth: 1, borderTopColor: colors.border, paddingTop: 14,minHeight:74},
-  summaryCompact: {marginTop: 16, paddingTop: 12},
+  summaryCompact: {marginTop: 14, paddingTop: 0},
+  summaryInline:{maxWidth:820,flexDirection:'row',alignItems:'flex-start',gap:18,marginTop:14,minHeight:36,borderTopWidth:0,paddingTop:0},
+  summaryGroupsInline:{flex:1,paddingTop:0,columnGap:13,rowGap:4},
   summaryLabel: {color: colors.muted, fontSize: 10,textTransform: 'uppercase', letterSpacing: 1.8},
   summaryGroups: {flexDirection: 'row', flexWrap: 'wrap', columnGap:22,rowGap:12,paddingTop: 11},
   summaryGroup: {minWidth: 90,paddingRight:18,borderRightWidth:1,borderRightColor:colors.border},
@@ -766,33 +794,42 @@ const styles = StyleSheet.create({
   summaryEdit: {minHeight: 44, alignSelf: 'flex-start', justifyContent: 'center', paddingHorizontal: 2, marginTop: 3},
   summaryEditText: {color: colors.amber, fontSize: 12, lineHeight: 18, fontWeight: '700', textDecorationLine: 'underline'},
   summaryOpen: {color: colors.secondary, fontSize: 13, paddingVertical: 7},
-  stepActions: {flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 22,paddingTop:18,borderTopWidth:1,borderTopColor:colors.border},
-  stepActionsCompact: {flexWrap: 'wrap', marginTop: 0},
+  stepActions: {width:'100%',maxWidth:820,flexDirection: 'row', alignItems: 'center', gap: 25, marginTop: 18,paddingTop:21,borderTopWidth:1,borderTopColor:colors.border},
+  stepActionsShort:{marginTop:8,paddingTop:14},
+  stepActionsCompact: {flexWrap: 'wrap',gap:14,marginTop:12,paddingTop:14},
   fixedActions: {paddingHorizontal: 24, paddingTop: 0, paddingBottom: 16, borderTopWidth: 1, borderTopColor: colors.border, backgroundColor: 'rgba(16,23,20,0.96)'},
   secondaryAction: {minHeight: 48, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 12,borderBottomWidth:1,borderBottomColor:colors.border},
-  secondaryActionCompact: {flexGrow: 1, minWidth: 92},
+  secondaryActionCompact: {minWidth:44,paddingHorizontal:0},
   secondaryActionText: {color: colors.secondary, fontSize: 14, fontWeight: '700'},
   skipAction: {minHeight: 48, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 10},
-  skipActionCompact: {flexGrow: 1, minWidth: 120},
+  skipActionCompact: {paddingHorizontal:0},
   skipActionText: {color: colors.accent, fontSize: 14, fontWeight: '700'},
-  primaryAction: {minWidth: 150, minHeight: 50, flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10, paddingHorizontal: 20,borderRadius:2, backgroundColor: colors.accent},
-  primaryActionCompact: {flexBasis: '100%', minHeight: 50},
+  primaryAction: {minWidth: 180, minHeight: 48,marginLeft:'auto', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 30, paddingHorizontal: 26,borderRadius:2, backgroundColor: colors.accent},
+  primaryActionCompact: {minWidth:128,minHeight:48,paddingHorizontal:16,gap:14},
   primaryActionText: {color: colors.background, fontSize: 14, fontWeight: '800'},
   primaryArrow: {color: colors.background, fontSize: 19},
   pressed: {opacity: 0.72},
-  resultsView: {paddingTop: 40},
-  resultsLead: {maxWidth:1000, alignSelf: 'flex-start', marginBottom: 30},
-  resultsTitle: {color: colors.text, fontFamily: serif, fontSize: 54, lineHeight: 68, marginTop: 8,letterSpacing:-1.5},
-  resultsHint: {color: colors.secondary, fontSize: 14, lineHeight: 22, marginTop: 10},
+  resultsView: {width:'100%',maxWidth:1260,alignSelf:'center',paddingTop:35},
+  resultsLead: {width:'100%',marginBottom:22},
+  resultsTitle: {color: colors.text, fontFamily: serif, fontSize: 97, lineHeight: 116, marginTop: 14,marginBottom:10,letterSpacing:-2,fontWeight:'400'},
+  resultsHint: {color: colors.muted, fontSize: 12, lineHeight: 20},
   resultsVersionNote: {color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 7},
-  resultColumns: {flexDirection: 'row', flexWrap: 'wrap', gap: 16, marginTop: 28},
+  resultColumns: {width:'100%'},
+  resultRow:{width:'100%',flexDirection:'row',justifyContent:'center',alignItems:'flex-start'},
   resultColumnsCompact: {gap: 12},
   resultWrap: {minWidth: 0, flexGrow: 0, flexShrink: 0},
   resultCard: {overflow: 'hidden',borderBottomWidth:1,borderBottomColor:colors.border},
-  resultCopy: {paddingHorizontal:2,paddingTop:18,paddingBottom:22},
-  resultMeta: {color: colors.accent, fontSize: 12, fontWeight: '700', textTransform: 'uppercase'},
-  resultName: {color: colors.text, fontFamily: serif, fontSize: 34, lineHeight: 43, marginTop: 8},
-  resultDescription: {color: colors.secondary, fontSize: 14, lineHeight: 21, marginTop: 7},
+  resultCopy: {minWidth:0,paddingTop:15,paddingBottom:22},
+  resultCardHero:{flexDirection:'row',alignItems:'center',gap:42,paddingBottom:24},
+  resultPhoto:{position:'relative'},
+  resultPhotoHero:{width:'48%',flexShrink:0},
+  resultCopyHero:{flex:1,paddingTop:0,paddingBottom:0},
+  resultNumber:{position:'absolute',top:10,left:15,color:colors.text,fontFamily:Platform.OS==='web'?'Georgia, serif':Platform.OS==='ios'?'Georgia':'serif',fontStyle:'italic',fontSize:19,lineHeight:25,textShadowColor:colors.background,textShadowRadius:9},
+  resultMeta: {color: colors.muted, fontSize: 10, lineHeight:16,letterSpacing:1},
+  resultName: {color: colors.text, fontFamily: serif, fontSize: 27, lineHeight: 36, marginTop: 5,fontWeight:'400'},
+  resultNameMobile:{fontSize:21,lineHeight:28},
+  resultNameHero:{fontSize:48,lineHeight:59,marginTop:10,marginBottom:6},
+  resultDescription: {color: colors.secondary, fontSize: 12, lineHeight: 20, marginTop: 7},
   matchPanel: {marginTop: 14, paddingTop: 12, borderTopWidth: 1, borderTopColor: colors.border},
   matchTitle: {color: colors.amber, fontSize: 11, fontWeight: '800', letterSpacing: 0.7, textTransform: 'uppercase'},
   matchChips: {flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8},

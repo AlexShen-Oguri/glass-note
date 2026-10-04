@@ -241,7 +241,7 @@ export function createGlassStage(container, { reduced = false, paused = false } 
   if (!(container instanceof HTMLElement)) throw new TypeError('Glass stage needs an HTML container.');
   let renderer;
   try {
-    renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'default', preserveDrawingBuffer: false });
+    renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: false });
   } catch (error) {
     container.dataset.glassError = 'webgl-unavailable';
     console.warn('Glassnote 3D stage is unavailable.', error);
@@ -296,7 +296,8 @@ export function createGlassStage(container, { reduced = false, paused = false } 
   shadow.position.set(0, -1.491, 0);
   scene.add(shadow);
 
-  let dead = false, contextLost = false, frameId = 0, lastTime = 0, elapsed = 0, tween = null;
+  let dead = false, contextLost = false, ready = false, frameId = 0, lastTime = 0, elapsed = 0, tween = null;
+  let quality = Math.min(window.devicePixelRatio || 1, 1.6), slowFrames = 0, sampledFrames = 0;
   let isReduced = !!reduced, isPaused = !!paused;
   let stageAspect = 1, frameDistance = 0;
   const state = { ...COMPOSITIONS.home, color: new THREE.Color(COMPOSITIONS.home.tint) };
@@ -311,7 +312,7 @@ export function createGlassStage(container, { reduced = false, paused = false } 
   }
 
   function draw() {
-    if (dead || contextLost) return;
+    if (dead || contextLost || !ready) return;
     const moving = !isReduced && !isPaused;
     const drift = moving ? elapsed : 0;
     const breathe = moving ? Math.sin(drift * TAU / 12) : 0;
@@ -335,6 +336,17 @@ export function createGlassStage(container, { reduced = false, paused = false } 
     const delta = lastTime ? Math.min((time - lastTime) / 1000, .05) : 0;
     lastTime = time;
     elapsed += delta;
+    // Keep the approved geometry/materials. On sustained dropped frames, lower
+    // only the pixel workload rather than stepping the visible motion at 30Hz.
+    if (delta > 0) {sampledFrames++; if (delta > .025) slowFrames++;}
+    if (sampledFrames === 60) {
+      if (slowFrames > 18 && quality > 1) {
+        quality = Math.max(1, quality - .2);
+        renderer.setPixelRatio(quality);
+        container.dataset.glassPixelRatio = quality.toFixed(2);
+      }
+      sampledFrames = 0; slowFrames = 0;
+    }
     if (tween) {
       const fraction = Math.min(1, (elapsed - tween.start) / tween.duration);
       const ease = easeInOutCubic(fraction);
@@ -349,7 +361,7 @@ export function createGlassStage(container, { reduced = false, paused = false } 
     cancelAnimationFrame(frameId);
     frameId = 0;
     lastTime = 0;
-    const running = !dead && !contextLost && !isPaused && !isReduced;
+    const running = !dead && !contextLost && ready && !isPaused && !isReduced;
     container.dataset.glassMotion = running ? 'running' : 'paused';
     if (running) frameId = requestAnimationFrame(tick);
     else draw();
@@ -357,7 +369,9 @@ export function createGlassStage(container, { reduced = false, paused = false } 
 
   function resize() {
     if (dead) return;
-    const { width, height } = container.getBoundingClientRect();
+    // CSS scale is an animation pose, not the render-buffer size. Measuring
+    // client dimensions avoids resize/draw churn and double-scaled sampling.
+    const width = container.clientWidth, height = container.clientHeight;
     if (width < 2 || height < 2) return;
     stageAspect = width / height;
     camera.aspect = stageAspect;
@@ -386,7 +400,14 @@ export function createGlassStage(container, { reduced = false, paused = false } 
   const resizeObserver = new ResizeObserver(resize);
   resizeObserver.observe(container);
   resize();
-  restart();
+  container.dataset.glassPixelRatio = quality.toFixed(2);
+  // Warm shaders with KHR_parallel_shader_compile before foreground entrances
+  // compete for the main thread. The orbital backdrop is already visible.
+  void renderer.compileAsync(scene, camera).then(() => {
+    if (dead) return;
+    ready = true;
+    restart();
+  }).catch(() => {if (!dead) {ready = true; restart();}});
 
   return {
     setScene(name, { duration = 1.5 } = {}) {

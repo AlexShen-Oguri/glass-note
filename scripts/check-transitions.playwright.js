@@ -57,7 +57,7 @@ async page => {
     await finish('home-to-mode-' + width);
     const direction = await page.getByRole('button', {name: '喝一杯 → 按口味找一杯喜欢的酒', exact: true})
       .evaluate(node => getComputedStyle(node.parentElement).flexDirection);
-    if (direction !== (width === 1280 ? 'row' : 'column')) throw Error('incorrect responsive mode layout');
+    if (direction !== 'column') throw Error('incorrect editorial mode layout');
     await begin();
     await page.getByRole('button', {name: '喝一杯 → 按口味找一杯喜欢的酒', exact: true}).click();
     await finish('mode-to-flavour-' + width);

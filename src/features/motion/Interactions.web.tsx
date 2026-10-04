@@ -2,6 +2,7 @@ import React, {useRef} from 'react';
 import {View, type ViewProps} from 'react-native';
 import {element, gsap, useGSAP} from './gsap.web';
 import {useMotionEnabled} from './useMotionEnabled';
+import {colors} from '../../theme/tokens';
 
 /** Delegate interactions to the current route; quickTo reuses each control's tween. */
 export function MotionInteractions({changeKey, ...props}: ViewProps & {changeKey: string}) {
@@ -11,12 +12,32 @@ export function MotionInteractions({changeKey, ...props}: ViewProps & {changeKey
     const root = element(host);
     if (!root || !enabled || !contextSafe) return;
     const controls = new WeakMap<HTMLElement, {y: (value: number) => void; scaleX: (value: number) => void; scaleY: (value: number) => void; baseY: number; baseScaleX: number; baseScaleY: number}>();
+    const editorial = new WeakMap<HTMLElement, gsap.core.Timeline>();
     const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
     const find = (target: EventTarget | null) => {
       const node = target instanceof Element ? target.closest<HTMLElement>('button,a,[role="button"],[role="link"]') : null;
       return node && root.contains(node) && !node.closest('[data-motion-loop]') && !node.style.willChange.includes('transform') && node.getAttribute('aria-disabled') !== 'true' && !node.hasAttribute('disabled') ? node : null;
     };
     const move = contextSafe((node: HTMLElement, lifted: boolean, pressed = false) => {
+      const arrow=node.querySelector<HTMLElement>('[data-night-arrow]');
+      const photo=node.querySelector<HTMLElement>('[data-motion-photo] img');
+      if(photo?.closest('[data-motion-photo-hover="owned"]'))return;
+      if(arrow||photo){
+        let timeline=editorial.get(node);
+        if(!timeline){
+          timeline=gsap.timeline({paused:true,defaults:{ease:'power3.out'}});
+          if(arrow){
+            const rule=node.querySelector<HTMLElement>('[data-night-rule]');
+            if(rule)timeline.to(rule,{scaleX:1,duration:.55},0);
+            timeline.to(arrow,{rotation:-40,backgroundColor:colors.accent,duration:.55},0);
+            const glyph=arrow.firstElementChild;
+            if(glyph)timeline.to(glyph,{color:colors.background,duration:.45},0);
+          }else if(photo)timeline.to(photo,{scale:1.1,duration:1.2},0);
+          editorial.set(node,timeline);
+        }
+        if(lifted&&!pressed)timeline.play();else timeline.reverse();
+        return;
+      }
       let control = controls.get(node);
       if (!control) {
         // Foreground entrances temporarily own a control's transform. Their

@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {usePathname} from 'expo-router';
 import {useApp} from '../../platform/AppProvider';
 import {motionData} from '../motion/attributes';
@@ -8,92 +8,89 @@ import {useViewport} from './components';
 import type {AmbientLightProps} from './AmbientLight';
 import type {GlassScene, GlassStage} from './sculpture.web';
 
+type Box = {left:number; top:number; width:number; height:number; opacity:number};
+/** Exact spatial endpoints from the accepted Night Score prototype. */
+function composition(scene:GlassScene, width:number, height:number) {
+  const phone=width<=700, short=!phone&&height<=800, tablet=!phone&&width<=1100;
+  const glass=(w:number,h:number,x:number,y:number,opacity=1):Box=>({width:w,height:h,left:x-w/2,top:y-h/2,opacity});
+  const portal=(diameter:number,x:number,y:number,opacity=1)=>glass(diameter,diameter,x,y,opacity);
+  if(scene==='home') {
+    if(phone)return {glass:glass(380,460,width*.57,510),portal:portal(290,width*.57,488)};
+    if(short)return {glass:glass(540,610,width*.74,height*.48),portal:portal(470,width*.74,height*.49)};
+    if(tablet)return {glass:glass(540,620,width*.75,height*.48),portal:portal(450,width*.75,height*.49)};
+    return {glass:glass(650,720,width*.72,height*.48),portal:portal(580,width*.72,height*.49)};
+  }
+  if(scene==='mode'||scene==='guided') {
+    const opacity=scene==='guided'?.48:1;
+    if(phone)return {glass:glass(350,430,width*.93,390,scene==='guided'?.14:1),portal:portal(260,width*.93,386,scene==='guided'?.25:1)};
+    return {glass:glass(500,600,width*.80,height*.50,opacity),portal:portal(410,width*.80,height*.48,scene==='guided'?.5:1)};
+  }
+  if(scene==='recipe')return {glass:glass(500,600,width*.3,height*.49,0),portal:phone?portal(290,width*.5,415,.55):portal(470,width*.3,height*.49,.55)};
+  return {glass:glass(500,600,width*.94,height*.48,0),portal:phone?portal(450,width*.9,105,.18):portal(680,width*.94,180,.18)};
+}
+
 /** One continuous, non-interactive space; route changes never remount the coupe. */
 export function AmbientLight({paused, reduceMotion = false}: AmbientLightProps) {
-  const host = useRef<View>(null), rig = useRef<View>(null), glass = useRef<View>(null);
-  const stage = useRef<GlassStage | null>(null);
-  const tween = useRef<gsap.core.Timeline | null>(null);
-  const {width, height} = useViewport();
-  const pathname = usePathname();
-  const {guided} = useApp();
-  const compact = width < 760;
-  const scene: GlassScene = pathname === '/' ? 'home'
-    : pathname.startsWith('/cocktails/') ? 'recipe'
-    : pathname === '/customize' ? guided.mode === null ? 'mode' : guided.phase === 'choosing' ? 'guided' : 'results'
-    : 'discover';
-  const sculptureVisible = scene === 'home' || scene === 'mode' || scene === 'guided';
-  const running = useVisibleMotion(host, paused || reduceMotion || !sculptureVisible);
-  const latest = useRef({scene, running, reduceMotion});
-  latest.current = {scene, running, reduceMotion};
-
-  useEffect(() => {
-    let disposed = false;
-    // Defer the GPU dependency until after hydration. Native never imports this adapter.
-    void import('./sculpture.web').then(({createGlassStage}) => {
-      const node = element(glass);
-      if (disposed || !node) return;
-      const current = latest.current;
-      stage.current = createGlassStage(node, {paused:!current.running, reduced:current.reduceMotion});
-      stage.current.setScene(current.scene, {duration:0});
-    }).catch(() => {
-      // The orbital composition remains usable if WebGL/module loading is unavailable.
-      const node = element(glass);
-      if (node) node.dataset.glassError = 'unavailable';
-    });
-    return () => {disposed = true; stage.current?.dispose(); stage.current = null;};
-  }, []);
-
-  useEffect(() => {
+  const host=useRef<View>(null), portal=useRef<View>(null), glass=useRef<View>(null);
+  const stage=useRef<GlassStage|null>(null);
+  const last=useRef<ReturnType<typeof composition>|null>(null);
+  const {width,height}=useViewport();
+  const pathname=usePathname();
+  const {guided}=useApp();
+  const scene:GlassScene=pathname==='/'?'home':pathname.startsWith('/cocktails/')?'recipe':pathname==='/customize'?guided.mode===null?'mode':guided.phase==='choosing'?'guided':'results':'discover';
+  const sculptureVisible=scene==='home'||scene==='mode'||scene==='guided';
+  const running=useVisibleMotion(host,paused||reduceMotion||!sculptureVisible);
+  const latest=useRef({scene,running,reduceMotion});latest.current={scene,running,reduceMotion};
+  const geometry=composition(scene,width,height);
+  useEffect(()=>{
+    let disposed=false;
+    void import('./sculpture.web').then(({createGlassStage})=>{
+      const node=element(glass);if(disposed||!node)return;
+      const current=latest.current;
+      stage.current=createGlassStage(node,{paused:!current.running,reduced:current.reduceMotion});
+      stage.current.setScene(current.scene,{duration:0});
+    }).catch(()=>{const node=element(glass);if(node)node.dataset.glassError='unavailable';});
+    return()=>{disposed=true;stage.current?.dispose();stage.current=null;};
+  },[]);
+  useEffect(()=>{
     stage.current?.setReduced(reduceMotion);
     stage.current?.setPaused(!running);
-    stage.current?.setScene(scene, {duration:running ? .86 : 0});
-  }, [scene, running, reduceMotion]);
-
-  useGSAP(() => {
-    const node = element(rig), cup = element(glass);
-    if (!node || !cup) return;
-    const w = compact ? 380 : 640, h = compact ? 440 : 700;
-    const centerX = scene === 'home' ? width * (compact ? .54 : .75)
-      : scene === 'mode' ? width * (compact ? .50 : .79)
-      : scene === 'guided' ? width * (compact ? .97 : .81) : width * .86;
-    const centerY = compact ? scene === 'home' ? 490 : scene === 'mode' ? 460 : height * .45
-      : height * (scene === 'home' ? .50 : .49);
-    const scale = compact ? 1 : Math.min(1.08, Math.max(.78, height / 820));
-    const alpha = sculptureVisible ? scene === 'guided' ? compact ? .16 : .63 : 1 : .24;
-    tween.current?.kill();
-    const timeline = gsap.timeline({defaults:{duration:paused || reduceMotion ? 0 : .85, ease:'power3.inOut'}});
-    tween.current = timeline;
-    timeline.to(node, {x:centerX-w/2, y:centerY-h/2, scale, opacity:alpha}, 0)
-      .to(cup, {opacity:sculptureVisible ? 1 : 0}, 0);
-    return () => {timeline.kill();};
-  }, {scope:host, dependencies:[scene, width, height, compact, sculptureVisible, paused, reduceMotion]});
-
-  useEffect(() => {
-    if (paused || reduceMotion) tween.current?.progress(1);
-  }, [paused, reduceMotion]);
-
-  return <View ref={host} {...motionData({motionLoop:'night-space', nightScene:scene})}
-    pointerEvents="none" accessible={false} importantForAccessibility="no-hide-descendants" aria-hidden style={styles.root}>
-    <View style={styles.light} />
-    <View ref={rig} style={[styles.rig, compact && styles.compactRig]}>
-      <View style={[styles.portal, compact && styles.compactPortal]}>
-        <View style={styles.inner} /><View style={styles.orbit} /><View style={styles.secondOrbit} />
-      </View>
-      <View ref={glass} style={styles.glass} />
-    </View>
+    stage.current?.setScene(scene,{duration:running?.86:0});
+  },[scene,running,reduceMotion]);
+  useGSAP(()=>{
+    const prior=last.current;last.current=geometry;
+    const nodes=[{node:element(portal),box:geometry.portal,old:prior?.portal},{node:element(glass),box:geometry.glass,old:prior?.glass}];
+    // Capture every current transform before writes. CSS commits the endpoint
+    // once; only the compositor bridges the previous pose to that endpoint.
+    const poses=nodes.map(({node,box,old})=>({node,box,from:node&&old?{
+      x:old.left+Number(gsap.getProperty(node,'x'))-box.left,
+      y:old.top+Number(gsap.getProperty(node,'y'))-box.top,
+      scaleX:old.width*Number(gsap.getProperty(node,'scaleX'))/box.width,
+      scaleY:old.height*Number(gsap.getProperty(node,'scaleY'))/box.height,
+      opacity:Number(gsap.getProperty(node,'opacity')),
+    }:null}));
+    const timeline=gsap.timeline({defaults:{duration:paused||reduceMotion?0:.85,ease:'power3.inOut'}});
+    for(const {node,box,from} of poses){if(!node)continue;gsap.killTweensOf(node);if(!from){gsap.set(node,{x:0,y:0,scaleX:1,scaleY:1,opacity:box.opacity});continue;}
+      timeline.fromTo(node,{...from,willChange:'transform,opacity'},{x:0,y:0,scaleX:1,scaleY:1,opacity:box.opacity,clearProps:'willChange'},0);
+    }
+    return()=>{timeline.kill();};
+  },{scope:host,dependencies:[scene,width,height,paused,reduceMotion]});
+  return <View ref={host} {...motionData({motionLoop:'night-space',nightScene:scene})} pointerEvents="none" accessible={false} importantForAccessibility="no-hide-descendants" aria-hidden style={styles.root}>
+    <View style={styles.light}/><View style={styles.grain}/>
+    <View ref={portal} style={[styles.portal,geometry.portal]}><View style={styles.inner}/><View style={styles.orbit}/><View style={styles.secondOrbit}/></View>
+    <View ref={glass} style={[styles.glass,geometry.glass]}/>
+    {width>700&&<Text style={[styles.signature,{opacity:scene==='guided'?.5:scene==='home'?1:0}]}>A STUDY IN TASTE &amp; TIME</Text>}
   </View>;
 }
 export default AmbientLight;
-
-const styles = StyleSheet.create({
-  root:{position:'absolute',top:0,right:0,bottom:0,left:0,overflow:'hidden',zIndex:0} as never,
-  light:{position:'absolute',right:'-15%',top:'-5%',width:'85%',height:'100%',backgroundImage:'radial-gradient(ellipse at center,rgba(181,198,169,.12),transparent 68%)'} as never,
-  rig:{position:'absolute',left:0,top:0,width:640,height:700,opacity:0},
-  compactRig:{width:380,height:440},
-  portal:{position:'absolute',left:65,top:100,width:510,height:510,borderRadius:999,borderWidth:1,borderColor:'rgba(181,198,169,.3)',backgroundImage:'radial-gradient(circle at 30% 20%,rgba(174,194,159,.15),rgba(68,88,65,.1) 45%,rgba(10,17,12,.35) 78%)'} as never,
-  compactPortal:{left:45,top:75,width:290,height:290},
-  inner:{position:'absolute',top:14,left:14,right:14,bottom:14,borderRadius:999,borderWidth:1,borderColor:'rgba(181,198,169,.075)'},
-  orbit:{position:'absolute',top:-31,left:-31,right:-31,bottom:-31,borderRadius:999,borderWidth:1,borderColor:'rgba(212,173,115,.13)',transform:[{rotate:'-17deg'},{scaleY:.87}]},
-  secondOrbit:{position:'absolute',top:-54,left:-54,right:-54,bottom:-54,borderRadius:999,borderWidth:1,borderColor:'rgba(181,198,169,.065)',transform:[{rotate:'22deg'},{scaleX:.93}]},
-  glass:{position:'absolute',top:0,left:0,right:0,bottom:0},
+const styles=StyleSheet.create({
+  root:{position:'absolute',top:0,right:0,bottom:0,left:0,overflow:'hidden',zIndex:0,backgroundImage:'radial-gradient(ellipse at 85% 35%,#1d2b23 0,transparent 60%)'} as never,
+  light:{position:'absolute',right:'-10%',top:'3%',width:'75%',height:'90%',backgroundImage:'radial-gradient(ellipse,rgba(181,198,169,.14),transparent 64%)'} as never,
+  grain:{position:'absolute',top:0,right:0,bottom:0,left:0,opacity:.027,backgroundImage:'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 170 170\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'.89\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Cpath fill=\'white\' filter=\'url(%23n)\' d=\'M0 0h170v170H0z\'/%3E%3C/svg%3E")'} as never,
+  portal:{position:'absolute',borderRadius:999,borderWidth:1,borderColor:'rgba(181,198,169,.32)',backgroundImage:'radial-gradient(circle at 30% 20%,rgba(174,194,159,.19),rgba(68,88,65,.16) 40%,rgba(10,17,12,.5) 75%)',boxShadow:'0 0 85px rgba(147,176,129,.05),inset 0 0 70px rgba(0,0,0,.16)',transformOrigin:'0 0'} as never,
+  inner:{position:'absolute',top:15,left:15,right:15,bottom:15,borderRadius:999,borderWidth:1,borderColor:'rgba(181,198,169,.08)'},
+  orbit:{position:'absolute',top:-37,left:-37,right:-37,bottom:-37,borderRadius:999,borderWidth:1,borderColor:'rgba(212,173,115,.17)',transform:[{rotate:'-28deg'},{scaleY:.58}]},
+  secondOrbit:{position:'absolute',top:-75,left:-75,right:-75,bottom:-75,borderRadius:999,borderWidth:1,borderColor:'rgba(181,198,169,.09)',transform:[{rotate:'32deg'},{scaleY:.7}]},
+  glass:{position:'absolute',transformOrigin:'0 0'} as never,
+  signature:{position:'absolute',right:'6.1%',top:'16%',fontSize:10,letterSpacing:2.6,color:'#a7b3a7',writingMode:'vertical-rl'} as never,
 });

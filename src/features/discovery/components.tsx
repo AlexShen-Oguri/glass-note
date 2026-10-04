@@ -61,6 +61,7 @@ export function BrandToolbar({
   motionPaused,
   setMotionPaused,
   showUnits = true,
+  variant = 'default',
 }: {
   locale: Locale;
   setLocale: (locale: Locale) => void;
@@ -69,32 +70,37 @@ export function BrandToolbar({
   motionPaused: boolean;
   setMotionPaused: (paused: boolean) => void;
   showUnits?: boolean;
+  variant?: 'default' | 'home';
 }) {
   const [languageOpen, setLanguageOpen] = useState(false);
   const reduceMotion = useReduceMotion();
   const {width, height} = useViewport();
-  const compact = width < 520;
+  const home = variant === 'home';
+  const compact = width <= 700;
   return (
-    <View {...motionData({nightToolbar: ''})} testID="night-toolbar" style={[styles.toolbar, compact && styles.toolbarCompact, Platform.OS === 'web' && styles.toolbarWeb]}>
+    <View {...motionData({nightToolbar: '', ...(home ? {nightHomeToolbar: ''} : {})})} testID="night-toolbar" style={[styles.toolbar, compact && styles.toolbarCompact, !home && !compact && {minHeight:height<=800?88:106}, Platform.OS === 'web' && styles.toolbarWeb, home && styles.homeToolbar, home && {paddingHorizontal: width * (compact ? .06 : .044)}, home && compact && styles.homeToolbarCompact, Platform.OS === 'web' && styles.homeToolbarWeb]}>
       <Link href="/" asChild>
         <Pressable accessibilityRole="link" accessibilityLabel={appNavigationText(locale, 'returnHome')} style={{minHeight: 44, justifyContent: 'center', flexShrink: 0}}>
-          <BrandLockup compact={compact} />
+          <View style={[styles.homeLogoBox, compact && styles.homeLogoBoxCompact]}><View style={{transform: [{scale: compact ? 37 / 30.078125 : 45 / 42.96875}]}}><BrandLockup compact={compact}/></View></View>
         </Pressable>
       </Link>
-      <View style={[styles.toolbarActions, compact && styles.toolbarActionsCompact]}>
+      {home && !compact && <Text style={[styles.homeEdition, width <= 1100 && styles.homeEditionNarrow]}>COCKTAIL COLLECTION<Text style={styles.homeEditionDash}>—</Text>{locale === 'zh' ? '夜色饮谱' : t(locale, 'browseMode')}</Text>}
+      <View style={[styles.toolbarActions, compact && styles.toolbarActionsCompact, home && styles.homeToolbarActions, home && compact && styles.homeToolbarActionsCompact]}>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={t(locale, 'language')}
           onPress={() => setLanguageOpen(true)}
-          style={({pressed}) => [styles.toolButton, compact && styles.toolButtonCompact, pressed && styles.pressed]}
+          hitSlop={home && compact ? 3 : undefined}
+          style={({pressed}) => [styles.toolButton, compact && styles.toolButtonCompact, home && styles.homeToolButton, home && compact && styles.homeToolButtonCompact, pressed && styles.pressed]}
         >
-          <Text style={styles.toolButtonText}>{locale.toUpperCase()}</Text>
+          <Text style={[styles.toolButtonText, home && styles.homeToolButtonText]}>{locale.toUpperCase()}</Text>
         </Pressable>
         {showUnits && <Pressable
           accessibilityRole="button"
           accessibilityLabel={t(locale, 'units')}
           onPress={() => setUnit(unit === 'ml' ? 'oz' : 'ml')}
-          style={({pressed}) => [styles.toolButton, compact && styles.toolButtonCompact, pressed && styles.pressed]}
+          hitSlop={home && compact ? 3 : undefined}
+          style={({pressed}) => [styles.toolButton, compact && styles.toolButtonCompact, home && styles.homeToolButton, home && compact && styles.homeToolButtonCompact, pressed && styles.pressed]}
         >
           <Text style={styles.toolButtonText}>{unit === 'ml' ? 'ML' : 'FL OZ'}</Text>
         </Pressable>}
@@ -102,7 +108,8 @@ export function BrandToolbar({
           accessibilityRole="button"
           accessibilityLabel={t(locale, motionPaused ? 'resume' : 'pause')}
           onPress={() => setMotionPaused(!motionPaused)}
-          style={({pressed}) => [styles.toolButton, compact && styles.toolButtonCompact, styles.motionButton, pressed && styles.pressed]}
+          hitSlop={home && compact ? 3 : undefined}
+          style={({pressed}) => [styles.toolButton, compact && styles.toolButtonCompact, styles.motionButton, home && styles.homeToolButton, home && compact && styles.homeToolButtonCompact, pressed && styles.pressed]}
         >
           <Text style={styles.motionGlyph}>{motionPaused ? '▶' : 'Ⅱ'}</Text>
         </Pressable>
@@ -213,7 +220,20 @@ export function SelectionChip({label, selected, onPress}: {label: string; select
 
 const styles = StyleSheet.create({
   toolbar: {minHeight: 92, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 22},
-  toolbarWeb: {position: 'sticky' as never, top: 0, zIndex: 12, backgroundColor: colors.background},
+  toolbarWeb: {position: 'sticky' as never, top: 0, zIndex: 12},
+  homeToolbar: {height: 106, minHeight: 106, gap: 25},
+  homeToolbarCompact: {height: 87, minHeight: 87, gap: 14},
+  homeToolbarWeb: {backgroundColor: 'transparent', backgroundImage: 'linear-gradient(#101714,rgba(16,23,20,.88),transparent)'} as never,
+  homeLogoBox: {width: 170, height: 45, alignItems: 'center', justifyContent: 'center'},
+  homeLogoBoxCompact: {width: 139, height: 37},
+  homeEdition: {fontSize: 10, lineHeight: 16, letterSpacing: 1.9, color: '#a7b3a7', marginLeft: 'auto', marginRight: '10%'},
+  homeEditionNarrow: {fontSize: 9, lineHeight: 14.4, marginRight: '3%'},
+  homeEditionDash: {paddingHorizontal: 17},
+  homeToolbarActions: {gap: 14, flexWrap: 'nowrap'},
+  homeToolbarActionsCompact: {gap: 10},
+  homeToolButton: {borderColor: 'rgba(181,198,169,.24)'},
+  homeToolButtonCompact: {width: 38, height: 38},
+  homeToolButtonText: {fontSize: 12, fontWeight: '400', letterSpacing: 0, color: '#f0ebdf'},
   toolbarCompact: {minHeight: 78, gap: 8},
   toolbarActions: {flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end', gap: 10},
   toolbarActionsCompact: {gap: 7},
