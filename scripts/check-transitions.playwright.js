@@ -20,6 +20,21 @@ async page => {
     let running = true, raf;
     const visible = node => node.isConnected && !node.closest('[aria-hidden="true"]') && node.getBoundingClientRect().width > 0;
     const active = selector => [...document.querySelectorAll(selector)].find(visible);
+    const sourcePhotos=new WeakSet([...document.querySelectorAll('[data-motion-photo]')].filter(visible));
+    const firstPhotos=[],seenPhotos=new WeakSet();
+    const flights=()=>[...document.querySelectorAll('canvas[data-motion-photo-relay]')].map(canvas=>{
+      const id=canvas.getAttribute('data-motion-photo-relay');
+      return {id,gate:[...document.querySelectorAll('[data-motion-photo-gate]')].some(node=>node.getAttribute('data-motion-photo-gate')===id),
+        targets:[...document.querySelectorAll('[data-motion-photo]')].filter(node=>node.getAttribute('data-motion-photo')===id&&visible(node)&&!sourcePhotos.has(node))
+          .map(node=>{
+            const image=node.querySelector('img'),opacity=Number(getComputedStyle(node).opacity);
+            if(!seenPhotos.has(node)){seenPhotos.add(node);firstPhotos.push({id,opacity,t:performance.now()-start});}
+            return {opacity,complete:Boolean(image?.complete),naturalWidth:image?.naturalWidth||0};
+          })};
+    });
+    // Read newly mounted/unhidden destinations before their first painted frame.
+    const photoObserver=new MutationObserver(flights);
+    photoObserver.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['aria-hidden','inert']});
     const pose = node => {
       if (!node) return null;
       const style = getComputedStyle(node), matrix = new DOMMatrixReadOnly(style.transform === 'none' ? undefined : style.transform);
@@ -46,7 +61,7 @@ async page => {
       frames.push({t: performance.now() - start, busy: Boolean(document.querySelector('[data-scene-busy="true"]')),
         heading: heading?.textContent.replace(/\s+/g, '') || '', content: pose(content), veil: pose(veil),
         titles: titles.map(pose), menus: menus.map(pose), grid: pose(grid), departure: pose(departure),
-        photoDetails: photoDetails.map(pose), portal: pose(portal),
+        photoDetails: photoDetails.map(pose), portal: pose(portal), flights:flights(),
         promotedCards: document.querySelectorAll('[data-motion-item][style*="will-change"]').length,
         clones: [...document.body.children].filter(node => node.getAttribute('aria-hidden') === 'true'
           && node.style.position === 'fixed' && !node.hasAttribute('data-motion-photo-relay')
@@ -58,16 +73,29 @@ async page => {
     }) : null;
     try {observer?.observe({type: 'longtask', buffered: false});} catch {}
     sample();
-    window.__finishMotionCheck = () => {running = false; cancelAnimationFrame(raf); observer?.disconnect(); return {frames, longTasks};};
+    window.__finishMotionCheck = () => {running = false; cancelAnimationFrame(raf); observer?.disconnect();photoObserver.disconnect(); return {frames, longTasks,firstPhotos};};
   });
   const finish = async (name, animated = true, {direction = 1, menus = true, kind = 'page', departure = true, photoDetails = true, space = false} = {}) => {
     await settle();
-    const {frames, longTasks} = await page.evaluate(() => window.__finishMotionCheck());
+    if(kind==='photo')await page.waitForFunction(()=>!document.querySelector('canvas[data-motion-photo-relay],[data-motion-photo-gate]'),undefined,{timeout:6500});
+    const {frames, longTasks,firstPhotos} = await page.evaluate(() => window.__finishMotionCheck());
     const assert = (condition, message) => {if (!condition) throw Error(name + ': ' + message);};
     assert(!frames.some(frame => frame.clones), 'retained a duplicate page');
     assert(Math.max(...frames.map(frame => frame.promotedCards)) <= 8, 'promoted more than eight visible cards');
     const moving = frames.some(frame => frame.veil && frame.veil.scaleY > .03);
     assert(!moving, 'reintroduced a curtain instead of the uninterrupted orbital relay');
+    if(animated&&kind==='photo'){
+      const photoFrames=frames.flatMap(frame=>frame.flights),ids=[...new Set(photoFrames.map(flight=>flight.id))];
+      assert(photoFrames.length>1,'missing the continuous shared-photo texture');
+      assert(firstPhotos.length>0,'never observed the incoming shared-photo destination');
+      assert(firstPhotos.every(photo=>photo.opacity<.001),'destination appeared before its first-paint photo gate');
+      assert(photoFrames.every(flight=>flight.gate&&flight.targets.every(target=>target.opacity<.001)),'live destination flashed while its photo texture was flying');
+      const landed=await page.evaluate(ids=>ids.map(id=>[...document.querySelectorAll('[data-motion-photo]')]
+        .filter(node=>node.getAttribute('data-motion-photo')===id&&!node.closest('[aria-hidden="true"]')&&node.getBoundingClientRect().width>0)
+        .map(node=>{const image=node.querySelector('img');return {opacity:Number(getComputedStyle(node).opacity),complete:Boolean(image?.complete),naturalWidth:image?.naturalWidth||0};})),ids);
+      assert(landed.every(targets=>targets.length>0&&targets.every(target=>target.opacity>.98&&target.complete&&target.naturalWidth>0)),'photo texture landed before the live image could paint');
+      assert(!await page.locator('canvas[data-motion-photo-relay],[data-motion-photo-gate]').count(),'photo landing retained its texture or CSS gate');
+    }
     if (!animated) {
       assert(!frames.some(frame => frame.departure), 'played an outgoing title while motion was disabled');
       assert(!frames.some(frame => frame.titles.some(title => Math.abs(title.y) > 1)
@@ -313,6 +341,7 @@ async page => {
     await settle();
     const recipe = page.locator('[data-reveal-results] [data-motion-item] a[href*="/cocktails/"]').first();
     const href = await recipe.getAttribute('href');
+    await page.waitForFunction(href=>{const link=[...document.querySelectorAll('a[href]')].find(node=>node.getAttribute('href')===href&&!node.closest('[aria-hidden="true"]'));const image=link?.querySelector('img');return image?.complete&&image.naturalWidth>0;},href);
     await begin(); await recipe.click();
     await page.waitForURL('**/cocktails/**');
     if (!page.url().includes(new URL(href, base).pathname) || !page.url().includes('version=')) throw Error('photo relay lost the selected source version');
@@ -366,6 +395,39 @@ async page => {
   if (await page.getByTestId('guided-reveal-stage').count()) throw Error('reduced motion played a reveal');
   checks.push({name: 'reduced-motion-reveal'});
   await page.emulateMedia({reducedMotion: 'no-preference'});
+
+  const archiveRows=async()=>{
+    await page.waitForFunction(()=>[...document.querySelectorAll('[data-night-home] [data-motion-part="archive"] a[href*="/cocktails/"]')]
+      .filter(node=>!node.closest('[aria-hidden="true"]')&&node.getBoundingClientRect().width>0).length===3);
+    await page.waitForFunction(()=>[...document.querySelectorAll('[data-night-home] [data-motion-part="archive"] img')]
+      .filter(node=>!node.closest('[aria-hidden="true"]')&&node.getBoundingClientRect().width>0)
+      .every(image=>image.complete&&image.naturalWidth>0));
+    const rows=await page.evaluate(()=>[...document.querySelectorAll('[data-night-home] [data-motion-part="archive"] a[href*="/cocktails/"]')]
+      .filter(node=>!node.closest('[aria-hidden="true"]')&&node.getBoundingClientRect().width>0)
+      .map(link=>({id:link.querySelector('[data-motion-photo]').getAttribute('data-motion-photo'),href:link.getAttribute('href'),label:link.getAttribute('aria-label')})));
+    if(rows.length!==3||new Set(rows.map(row=>row.id)).size!==3)throw Error('home archive did not show three different drinks');
+    for(const row of rows){const url=new URL(row.href,base);if(!row.id||!row.label||url.pathname!==`/cocktails/${row.id}`||!url.searchParams.get('version')||url.searchParams.get('from')!=='welcome')throw Error('home archive lost a real recipe/version route');}
+    return rows;
+  };
+  for(const width of [1280,390]){
+    await page.setViewportSize({width,height:874});await page.goto(base);await settle();
+    const first=await archiveRows(),identity=rows=>JSON.stringify(rows.map(row=>[row.id,row.href]));
+    await page.setViewportSize({width:width+12,height:874});await settle();
+    if(identity(await archiveRows())!==identity(first))throw Error('resizing resampled the home archive');
+    await page.setViewportSize({width,height:874});await settle();
+    await page.getByRole('link',{name:first[0].label,exact:true}).click();await page.waitForURL('**/cocktails/**');await settle();
+    if(new URL(page.url()).searchParams.get('version')!==new URL(first[0].href,base).searchParams.get('version'))throw Error('home archive changed the chosen recipe version');
+    await page.locator('[data-motion-photo-return]').click();await page.waitForURL(url=>url.pathname==='/');await settle();
+    if(identity(await archiveRows())!==identity(first))throw Error('recipe return resampled the shared home photo destination');
+    const observed=new Set([identity(first)]);
+    for(let visit=0;visit<4;visit++){
+      await page.getByRole('link',{name:'随便逛逛',exact:true}).click();await page.waitForURL('**/discover');await settle();
+      await page.getByRole('link',{name:'首页',exact:true}).click();await page.waitForURL(url=>url.pathname==='/');await settle();
+      observed.add(identity(await archiveRows()));
+    }
+    if(observed.size===1)throw Error('five fresh home visits kept the permanently fixed archive');
+    checks.push({name:'home-random-trio-and-recipe-return-'+width,distinctVisits:observed.size});
+  }
 
   if (errors.length) throw Error('browser errors: ' + errors.join('; '));
   return {base, passed: true, count: checks.length, checks};

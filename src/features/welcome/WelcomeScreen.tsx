@@ -1,6 +1,6 @@
-import React, {useMemo} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Image, Platform, Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {Link, router} from 'expo-router';
+import {Link, router, useIsFocused, usePathname} from 'expo-router';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useApp} from '../../platform/AppProvider';
 import {catalogue} from '../../content/catalogue';
@@ -14,6 +14,13 @@ import {recipeCategoryText} from '../../i18n/recipe-categories';
 import {appNavigationText} from '../../i18n/app-navigation';
 
 const cover = {ivory: '#f0ebdf', muted: '#a7b3a7', line: 'rgba(181,198,169,.24)'};
+const archiveCandidates=catalogue.cocktails.filter(cocktail=>media[cocktail.id]?.uri
+  && cocktail.versionIds.includes(cocktail.defaultVersionId)
+  && catalogue.versions.some(version=>version.id===cocktail.defaultVersionId&&version.cocktailId===cocktail.id));
+const drawArchive=()=>{
+  const pool=[...archiveCandidates];
+  return Array.from({length:Math.min(3,pool.length)},()=>pool.splice(Math.floor(Math.random()*pool.length),1)[0]!);
+};
 
 export default function WelcomeScreen() {
   const app = useApp();
@@ -24,10 +31,18 @@ export default function WelcomeScreen() {
   const short = !compact && height <= 800;
   const narrow = !compact && width <= 1100;
   const large = width >= 1600;
-  const previews = useMemo(() => ['alexander', 'old-fashioned', 'negroni'].flatMap(id => {
-    const cocktail = catalogue.cocktails.find(item => item.id === id);
-    return cocktail ? [cocktail] : [];
-  }), []);
+  // RecoveryProvider mounts this screen only after client storage is ready.
+  const [previews,setPreviews]=useState(drawArchive);
+  const focused=useIsFocused(),pathname=usePathname();
+  const previousFocus=useRef(focused),returnFromArchive=useRef(false);
+  useEffect(()=>{
+    if(!focused&&pathname!=='/'&&!pathname.startsWith('/cocktails/'))returnFromArchive.current=false;
+    if(focused&&!previousFocus.current){
+      if(!returnFromArchive.current)setPreviews(drawArchive());
+      returnFromArchive.current=false;
+    }
+    previousFocus.current=focused;
+  },[focused,pathname]);
   const titleSize = compact ? 61 : short ? Math.min(100, Math.max(75, width * .069)) : narrow ? 85 : Math.min(126, Math.max(75, width * .078));
   const lineHeight = titleSize * (compact ? 1.11 : short ? 1.09 : 1.13);
   const scenePadding = width * (compact ? .07 : .061);
@@ -66,11 +81,11 @@ export default function WelcomeScreen() {
           })}
         </View>
         <View {...motionData({motionPart: 'archive'})} style={[styles.archive, {right: width * (compact ? .05 : narrow ? .04 : .058), bottom: compact ? undefined : short ? 44 : large ? 65 : 74}, compact && styles.archiveCompact, narrow && styles.archiveNarrow]}>
-          {(compact ? previews.slice(0, 1) : previews).map((cocktail, index) => {
+          {previews.map((cocktail, index) => {
             const asset = media[cocktail.id];
-            return <Link key={cocktail.id} asChild href={{pathname: '/cocktails/[id]', params: {id: cocktail.id, version: cocktail.defaultVersionId, from: 'welcome'}} as never}><Pressable accessibilityRole="link" accessibilityLabel={`${cocktail.name[locale]}. ${t(locale, 'viewRecipe')}`} accessibilityHint={asset && isAiMedia(asset) ? t(locale, 'aiImage') : asset ? `${asset.author}${asset.license ? ` · ${asset.license}` : ''}` : undefined} style={StyleSheet.flatten([styles.archiveItem, index === 1 && styles.archiveRaised, narrow && styles.archiveItemNarrow, compact && styles.archiveItemCompact])}>
+            return <Link key={cocktail.id} asChild href={{pathname: '/cocktails/[id]', params: {id: cocktail.id, version: cocktail.defaultVersionId, from: 'welcome'}} as never}><Pressable onPress={()=>{returnFromArchive.current=true;}} accessibilityRole="link" accessibilityLabel={`${cocktail.name[locale]}. ${t(locale, 'viewRecipe')}`} accessibilityHint={asset && isAiMedia(asset) ? t(locale, 'aiImage') : asset ? `${asset.author}${asset.license ? ` · ${asset.license}` : ''}` : undefined} style={StyleSheet.flatten([styles.archiveItem, index === 1 && styles.archiveRaised, narrow && styles.archiveItemNarrow, compact && styles.archiveItemCompact])}>
               <View {...motionData({motionPhoto: cocktail.id})} style={[styles.archivePhoto, narrow && styles.archivePhotoNarrow, compact && styles.archivePhotoCompact]}>{asset && <Image source={{uri: asset.uri}} resizeMode="cover" style={StyleSheet.absoluteFill} accessibilityLabel={isAiMedia(asset) ? t(locale, 'aiImage') : t(locale, 'photograph')}/>}</View>
-              <Text style={[styles.archiveName, compact && styles.archiveNameCompact]}>{String(index + 1).padStart(2, '0')} / {cocktail.name.en}</Text>
+              <Text numberOfLines={2} style={[styles.archiveName, compact && styles.archiveNameCompact]}>{String(index + 1).padStart(2, '0')} / {cocktail.name.en}</Text>
             </Pressable></Link>;
           })}
         </View>
@@ -117,7 +132,7 @@ const styles = StyleSheet.create({
   choiceArrow: {width: 36, height: 36, borderWidth: 1, borderColor: cover.line, borderRadius: 18, alignItems: 'center', justifyContent: 'center'},
   arrowText: {color: cover.ivory, fontSize: 15, lineHeight: 24},
   archive: {position: 'absolute', flexDirection: 'row', alignItems: 'flex-end', gap: 17},
-  archiveCompact: {top: 356, gap: 0, opacity: .85},
+  archiveCompact: {top: 356, gap: 10, opacity: .85},
   archiveNarrow: {gap: 10},
   archiveItem: {width: 96},
   archiveRaised: {marginBottom: 24},
@@ -126,8 +141,8 @@ const styles = StyleSheet.create({
   archivePhoto: {height: 119, overflow: 'hidden'},
   archivePhotoNarrow: {height: 92},
   archivePhotoCompact: {height: 86},
-  archiveName: {color: cover.muted, fontSize: 9, lineHeight: 14.4, letterSpacing: .9, marginTop: 8},
-  archiveNameCompact: {fontSize: 8, lineHeight: 12.8, letterSpacing: .8},
+  archiveName: {color: cover.muted, fontSize: 9, lineHeight: 14.4, height: 28.8, letterSpacing: .9, marginTop: 8},
+  archiveNameCompact: {fontSize: 8, lineHeight: 12.8, height: 25.6, letterSpacing: .8},
   collection: {position: 'absolute', bottom: 35, flexDirection: 'row', alignItems: 'center', gap: 16},
   collectionRule: {width: 47, height: 1, backgroundColor: cover.line},
   collectionText: {color: cover.muted, fontSize: 10, lineHeight: 16, letterSpacing: 1.5},

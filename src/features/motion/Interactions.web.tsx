@@ -31,7 +31,8 @@ export function MotionInteractions({changeKey, ...props}: ViewProps & {changeKey
       let visual=editorial.get(node);
       if(!visual){
         const arrow=node.querySelector<HTMLElement>('[data-night-arrow]');
-        const photo=node.matches('[data-motion-photo]')?node.querySelector<HTMLElement>('img'):node.querySelector<HTMLElement>('[data-motion-photo] img');
+        const image=node.matches('[data-motion-photo]')?node.querySelector<HTMLElement>('img'):node.querySelector<HTMLElement>('[data-motion-photo] img');
+        const photo=image?.parentElement??null;
         if(photo?.closest('[data-motion-photo-hover="owned"]'))return;
         if(!arrow&&!photo)return;
         const glyph=arrow?.firstElementChild??null;
