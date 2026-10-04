@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {catalogue} from '../../content/catalogue';
-import {createSession,recipeFingerprint,recipeSnapshot} from '../making';
+import {recipeFingerprint,recipeSnapshot} from '../making';
 import type {FavoriteList} from '../favorites';
 import {createFeedback} from './index';
 import {tasteEditorTarget} from './editor';
@@ -53,17 +53,4 @@ test('short version labels keep catalogue versions distinct without displaying p
       assert.ok(labels.every(label=>!label.includes('IBA')));
     }
   }
-});
-
-// The just-made glass can differ from today’s catalogue after edits or removal.
-test('making completion records its exact snapshot, including archived versions',()=>{
-  const snapshot=structuredClone(recipe);snapshot.version.ingredients[0]!.amount=25;
-  const session=createSession(snapshot,'made-glass',now);
-  const before=JSON.stringify(session);
-  const target=tasteEditorTarget({session:session.id,version:recipe.version.id},[],[],{...catalogue,versions:[]},[session]);
-  assert.equal(target.kind,'create');
-  if(target.kind==='create'){assert.equal(target.recipe,session.recipe);assert.deepEqual(target.recipe,snapshot);}
-  assert.equal(JSON.stringify(session),before);
-  assert.equal(tasteEditorTarget({session:'missing',version:recipe.version.id},[],[],catalogue,[session]).kind,'missing');
-  assert.deepEqual(tasteEditorTarget({entry:entry.id,session:session.id},[entry],[],catalogue,[session]),{kind:'edit',entry});
 });

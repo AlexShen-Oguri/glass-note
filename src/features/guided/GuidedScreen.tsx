@@ -45,12 +45,11 @@ import {lib} from '../../i18n/library';
 import {t} from '../../i18n/ui';
 import {media} from '../../media';
 import {useApp} from '../../platform/AppProvider';
-import {colors, radii, editorialType, spacing} from '../../theme/tokens';
-import {BrandToolbar, isAiMedia, PhotoFrame, serif, useReduceMotion, useViewport} from '../discovery/components';
+import {colors, radii} from '../../theme/tokens';
+import {BrandToolbar, PhotoFrame, serif, useReduceMotion, useViewport} from '../discovery/components';
 import {Heading} from '../navigation/Heading';
 import {ContextReasons, ContextSelector} from '../context';
-import {editorialText as e} from '../../i18n/editorial';
-import {motionData} from '../motion/attributes';
+import Waterfall from './Waterfall';
 import {GuidedReveal} from './GuidedReveal';
 import type {Animated} from 'react-native';
 import {MotionPhoto} from '../motion/primitives';
@@ -307,26 +306,32 @@ function matchedLabels(query: SearchQuery, version: NonNullable<(typeof catalogu
 }
 
 type GuidedResult = ContextResult & {pantryMatch?:OwnedVersionMatch};
-function ResultCard({result, locale, query, contextActive, onHide, cardWidth,onPhotoRef,photoOpacity,featured=false,compact=false}: {result: GuidedResult; locale: Locale; query: SearchQuery; contextActive: boolean; onHide: () => void; cardWidth: number;onPhotoRef?:(cocktailId:string,node:View|null)=>void;photoOpacity?:Animated.Value;featured?:boolean;compact?:boolean}) {
+function ResultCard({result, locale, query, contextActive, onHide, cardWidth,onPhotoRef,photoOpacity}: {result: GuidedResult; locale: Locale; query: SearchQuery; contextActive: boolean; onHide: () => void; cardWidth: number;onPhotoRef?:(cocktailId:string,node:View|null)=>void;photoOpacity?:Animated.Value}) {
   const cocktail = catalogue.cocktails.find((item) => item.id === result.cocktailId);
   if (!cocktail) return null;
   const asset = media[cocktail.id];
   const version = catalogue.versions.find((item) => item.id === result.selectedVersionId);
   const matches = version ? matchedLabels(query, version, locale) : [];
   const avoided = query.excluded?.map((value) => exclusionLabel(value, locale)) ?? [];
-  const photo = <>
-          <View ref={node=>onPhotoRef?.(cocktail.id,node)} collapsable={false} style={featured && !compact ? styles.featuredPhoto : undefined}>
+  return (
+    <View style={[styles.resultWrap, {width: cardWidth}]}>
+      <Link
+        href={{pathname: '/cocktails/[id]', params: {id: cocktail.id, version: result.selectedVersionId, from: 'customize'}} as never}
+        asChild
+      >
+        <Pressable
+          accessibilityRole="link"
+          accessibilityLabel={`${cocktail.name[locale]}. ${t(locale, 'viewRecipe')}`}
+          style={StyleSheet.flatten([styles.resultCard])}
+        >
+          <View ref={node=>onPhotoRef?.(cocktail.id,node)} collapsable={false}>
             <MotionPhoto opacity={photoOpacity}>
-              <PhotoFrame asset={asset} accent={cocktail.accent} locale={locale} height={featured ? 520 : compact ? 240 : 420} preserveAspect borderRadius={10} />
+              <PhotoFrame asset={asset} accent={cocktail.accent} locale={locale} height={240} preserveAspect borderRadius={radii.medium} />
             </MotionPhoto>
           </View>
-  </>;
-  const cardHeading = <View style={featured&&compact ? styles.phoneCardHeading : undefined}>
-            <Text style={styles.resultMeta}>{featured ? e(locale,'mainPick') : t(locale, cocktail.category as UiKey)}</Text>
-            <Heading level={2} style={[styles.resultName,featured && styles.featuredName,featured && compact && styles.featuredNameCompact]}>{cocktail.name[locale]}</Heading><CocktailOriginalName cocktail={cocktail} locale={locale} />
-            <Text style={styles.resultReason}>{matches.length ? e(locale,'reason',{labels:matches.join(' · ')}) : contextActive ? contextText(locale,result.contextScore>0?'contextRankedMatch':'contextBaseMatch') : gr(locale,'openMatch')}</Text>
-  </View>;
-  const details = <View>
+          <View style={styles.resultCopy}>
+            <Text style={styles.resultMeta}>{t(locale, cocktail.category as UiKey)} · {t(locale, 'guidedMatchReason')}</Text>
+            <Heading level={2} style={styles.resultName}>{cocktail.name[locale]}</Heading><CocktailOriginalName cocktail={cocktail} locale={locale} />
             <Text style={styles.resultDescription}>{cocktail.description[locale]}</Text>
             {result.pantryMatch ? <View style={styles.ownedSummary}>
               <Text style={styles.ownedHeading}>{g175(locale,result.pantryMatch.baseReady?'baseReady':'baseMissing')}</Text>
@@ -337,25 +342,20 @@ function ResultCard({result, locale, query, contextActive, onHide, cardWidth,onP
             </View> : null}
             <View style={styles.matchPanel}>
               <Text style={styles.matchTitle}>{gr(locale, 'matchesThese')}</Text>
-              {matches.length ? <View {...motionData({revealReasons:''})} style={styles.matchChips}>{matches.map((label) => <Text key={label} style={styles.matchChip}>✓ {label}</Text>)}</View> : <Text style={styles.matchOpen}>{contextActive ? contextText(locale, result.contextScore > 0 ? 'contextRankedMatch' : 'contextBaseMatch') : gr(locale, 'openMatch')}</Text>}
+              {matches.length ? <View style={styles.matchChips}>{matches.map((label) => <Text key={label} style={styles.matchChip}>✓ {label}</Text>)}</View> : <Text style={styles.matchOpen}>{contextActive ? contextText(locale, result.contextScore > 0 ? 'contextRankedMatch' : 'contextBaseMatch') : gr(locale, 'openMatch')}</Text>}
               {avoided.length ? <Text style={styles.avoidedText}>{gr(locale, 'keepsOut')}: {avoided.join(' · ')}</Text> : null}
             </View>
-  </View>;
-  const recipeLink = <>
-            <View style={[styles.recipeLink,featured && styles.recipeLinkPrimary]}><Text style={[styles.resultLink,featured && styles.recipeLinkPrimaryText]}>{t(locale, 'viewRecipe')} ↗</Text></View>
-  </>;
-  return <View style={[styles.resultWrap,{width:cardWidth}]}>
-    <Link href={{pathname:'/cocktails/[id]',params:{id:cocktail.id,version:result.selectedVersionId,from:'customize'}} as never} asChild>
-      <Pressable accessibilityRole="link" accessibilityLabel={`${cocktail.name[locale]}. ${t(locale,'viewRecipe')}`} style={StyleSheet.flatten([styles.resultCard,featured&&styles.featuredCard,featured&&compact&&styles.featuredCardCompact])}>
-        {featured&&compact ? <>{cardHeading}{photo}{recipeLink}{isAiMedia(asset)?<Text style={styles.imageNote}>{t(locale,'aiImage')}</Text>:null}{details}</> : <>{photo}<View style={[styles.resultCopy,featured&&styles.featuredCopy]}>{cardHeading}{details}{recipeLink}{isAiMedia(asset)?<Text style={styles.imageNote}>{t(locale,'aiImage')}</Text>:null}</View></>}
-      </Pressable>
-    </Link>
+            <Text style={styles.resultLink}>{t(locale, 'viewRecipe')} ↗</Text>
+          </View>
+        </Pressable>
+      </Link>
       <TasteReasons result={result} locale={locale} />
       {contextActive ? <ContextReasons locale={locale} reasons={result.contextReasons} /> : null}
       <Pressable accessibilityRole="button" accessibilityLabel={`${contextText(locale, 'notThisOne')}: ${cocktail.name[locale]}`} onPress={onHide} style={({pressed}) => [styles.hideResult, pressed && styles.pressed]}>
         <Text style={styles.hideResultText}>{contextText(locale, 'notThisOne')}</Text>
       </Pressable>
-    </View>;
+    </View>
+  );
 }
 
 function StepActions({guided, dispatch, locale, compact = false}: {guided: GuidedSession; dispatch: React.Dispatch<GuidedAction>; locale: Locale; compact?: boolean}) {
@@ -402,23 +402,6 @@ function PantryGate({locale,access,onRetry,onContinue,onDrink}:{locale:Locale;ac
   </View>;
 }
 
-function FlavourPreview({guided,locale}:{guided:GuidedSession;locale:Locale}) {
-  return <View style={styles.flavourPreview}>
-    <Text style={styles.previewEyebrow}>GLASS / NOTES</Text>
-    <Heading level={2} style={styles.previewTitle}>{e(locale,'preview')}</Heading>
-    <View style={styles.previewRows}>{STEPS.map((step,index)=>{
-      const labels=selectedValues(guided.draft,step.field).map(value=>t(locale,step.options.find(option=>option.value===value)!.labelKey));
-      return <MotionTransition key={step.field} changeKey={labels.join('|')} kind="selection">
-        <View style={[styles.previewRow,index===guided.step && styles.previewRowCurrent]}>
-          <Text style={styles.previewNumber}>{String(index+1).padStart(2,'0')}</Text>
-          <View style={{flex:1,gap:8}}><Text style={styles.previewLabel}>{gr(locale,step.nameKey)}</Text><Text accessibilityLiveRegion="polite" style={styles.previewValue}>{labels.length ? labels.join(' · ') : t(locale,'guidedOpen')}</Text></View>
-        </View>
-      </MotionTransition>;
-    })}</View>
-    <Text style={styles.previewHint}>{e(locale,'previewHint')}</Text>
-  </View>;
-}
-
 function ChoosingView({
   guided,
   dispatch,
@@ -441,7 +424,7 @@ function ChoosingView({
   const [exclusionsOpen, setExclusionsOpen] = useState(false);
   return (
     <View style={[styles.chooseLayout, compact && styles.chooseLayoutCompact]}>
-
+      {compact ? <Waterfall locale={locale} paused={motionPaused} reduceMotion={reduceMotion} decorative height={104} /> : null}
       <View style={[styles.questionPane, compact && styles.questionPaneCompact]}>
         <View style={styles.stepLine}>
           <Text style={styles.stepNumber}>{String(guided.step + 1).padStart(2, '0')} / 04</Text>
@@ -501,47 +484,42 @@ function ChoosingView({
             </View> : null}
           </View>
         ) : null}
-        {compact ? <Text accessibilityLiveRegion="polite" style={styles.phonePreview}>{preferenceGroups(guided.draft,guided.contextDraft ?? {},locale).flatMap(group=>group.labels).join(' · ') || t(locale,'guidedOpen')}</Text> : null}
+        <SelectionSummary query={guided.draft} context={guided.contextDraft ?? {}} locale={locale} compact={compact} />
         {memorySettings}
         {!compact ? <StepActions guided={guided} dispatch={dispatch} locale={locale} /> : null}
       </View>
-      {!compact ? <View style={styles.waterfallPane}><FlavourPreview guided={guided} locale={locale}/></View> : null}
+      {!compact ? <View style={styles.waterfallPane}><Waterfall locale={locale} paused={motionPaused} reduceMotion={reduceMotion} decorative height={660} /></View> : null}
     </View>
   );
 }
 
 function ResultsView({guided, locale, results, baseResultCount, allResultsHidden, compact, dispatch, onHide, onRestore, memorySettings,pantryFiltered,onPhotoRef,photoOpacity}: {guided: GuidedSession; locale: Locale; results: GuidedResult[]; baseResultCount: number; allResultsHidden: boolean; compact: boolean; dispatch: React.Dispatch<GuidedAction>; onHide: (cocktailId: string) => void; onRestore: () => void; memorySettings?: React.ReactNode;pantryFiltered:boolean;onPhotoRef?:(cocktailId:string,node:View|null)=>void;photoOpacity?:Animated.Value}) {
   const [showAll, setShowAll] = useState(false);
-  const [profileOpen,setProfileOpen]=useState(false);
   const viewport = useViewport();
   const [containerWidth, setContainerWidth] = useState<number | null>(null);
-  const grid = cardGrid(containerWidth ?? Math.max(0, Math.min(1280, viewport.width - 48)), compact ? 250 : 440, 24);
-  const shown = showAll ? results : results.slice(0, 3);
+  const grid = cardGrid(containerWidth ?? Math.max(0, Math.min(1400, viewport.width - 36)), 250, compact ? 12 : 16);
+  const shown = showAll ? results : results.slice(0, 6);
   const contextActive = Boolean(guided.contextSubmitted?.occasion || guided.contextSubmitted?.season);
   useEffect(() => setShowAll(false), [guided.submitted,guided.mode,pantryFiltered]);
   return (
     <View style={styles.resultsView}>
       <View style={styles.resultsLead}>
-        <View style={styles.resultsHeadingRow}>
-          <View style={{flex:1}}>{!compact ? <Text style={styles.previewEyebrow}>{e(locale,'journey')}</Text> : null}<Heading level={1} style={[styles.resultsTitle,compact && styles.resultsTitleCompact]}>{e(locale,'resultTitle')}</Heading></View>
-          {!compact ? <Pressable accessibilityRole="button" onPress={()=>dispatch({type:'edit'})} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{t(locale,'guidedEdit')} ↙</Text></Pressable> : null}
+        <Heading level={1} style={styles.resultsTitle}>{t(locale, 'guidedResultsTitle')}</Heading>
+        <Text style={styles.resultsHint}>{pantryFiltered?g175(locale,'makeResultHint'):t(locale, 'guidedResultsHint')}</Text>
+        <Text style={styles.resultsVersionNote}>{gr(locale, 'resultIntro')}</Text>
+        <SelectionSummary query={guided.submitted ?? {}} context={guided.contextSubmitted ?? {}} locale={locale} onEditContext={() => dispatch({type: 'edit', step: 0})} />
+        {memorySettings}
+        <View style={styles.resultControls}>
+          <Text accessibilityLiveRegion="polite" style={styles.resultCount}>{contextActive&&!pantryFiltered ? `${contextText(locale, 'baseResultCount')} · ${baseResultCount}. ${contextText(locale, 'contextPriorityNote')}` : `${t(locale, 'results')} · ${results.length}`}</Text>
+          <Pressable accessibilityRole="button" onPress={() => dispatch({type: 'edit'})} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{t(locale, 'guidedEdit')}</Text></Pressable>
         </View>
-        <View style={{flexDirection:'row',alignItems:'center',gap:12}}><Pressable accessibilityRole="button" accessibilityState={{expanded:profileOpen}} onPress={()=>setProfileOpen(value=>!value)} style={styles.profileDisclosure}>
-          <Text style={styles.profileSummary}>{!compact ? `${gr(locale,'preferenceProfile')} · ` : ''}{preferenceGroups(guided.submitted??{},guided.contextSubmitted??{},locale).flatMap(group=>group.labels).join(' · ') || t(locale,'guidedOpen')}</Text><Text style={styles.secondaryActionText}>{profileOpen?'−':'+'}</Text>
-        </Pressable>{compact ? <Pressable accessibilityRole="button" onPress={()=>dispatch({type:'edit'})} style={{minHeight:48,justifyContent:'center'}}><Text style={styles.secondaryActionText}>{t(locale,'guidedEdit')} ↙</Text></Pressable> : null}</View>
-        {profileOpen ? <><SelectionSummary query={guided.submitted??{}} context={guided.contextSubmitted??{}} locale={locale} onEditContext={()=>dispatch({type:'edit',step:0})}/>{memorySettings}</> : null}
-        {pantryFiltered ? <Text style={styles.resultsHint}>{g175(locale,'makeResultHint')}</Text> : null}
-        {!compact||profileOpen ? <Text style={styles.resultsVersionNote}>{gr(locale,'resultIntro')}</Text> : null}
-        <Text accessibilityLiveRegion="polite" style={styles.resultCount}>{contextActive&&!pantryFiltered ? `${contextText(locale,'baseResultCount')} · ${baseResultCount}. ${contextText(locale,'contextPriorityNote')}` : `${t(locale,'results')} · ${results.length}`}</Text>
       </View>
       {results.length ? (
         <>
-          <View onLayout={event=>setContainerWidth(event.nativeEvent.layout.width)}>
-            <ResultCard result={shown[0]!} locale={locale} query={guided.submitted??{}} contextActive={contextActive} onHide={()=>onHide(shown[0]!.cocktailId)} cardWidth={containerWidth??Math.min(1280,viewport.width-48)} featured compact={compact} onPhotoRef={onPhotoRef} photoOpacity={photoOpacity}/>
-            {shown.length>1 ? <Heading level={2} style={styles.alternativesHeading}>{e(locale,'alternatives')}</Heading> : null}
-            <View style={[styles.resultColumns,compact && styles.resultColumnsCompact]}>{shown.slice(1).map(result=><ResultCard key={result.cocktailId} result={result} locale={locale} query={guided.submitted??{}} contextActive={contextActive} onHide={()=>onHide(result.cocktailId)} cardWidth={grid.cardWidth} compact={compact} onPhotoRef={onPhotoRef} photoOpacity={photoOpacity}/>)}</View>
+          <View onLayout={(event) => setContainerWidth(event.nativeEvent.layout.width)} style={[styles.resultColumns, compact && styles.resultColumnsCompact]}>
+            {shown.map((result) => <ResultCard key={result.cocktailId} result={result} locale={locale} query={guided.submitted ?? {}} contextActive={Boolean(guided.contextSubmitted?.occasion || guided.contextSubmitted?.season)} onHide={() => onHide(result.cocktailId)} cardWidth={grid.cardWidth} onPhotoRef={onPhotoRef} photoOpacity={photoOpacity}/>)}
           </View>
-          {results.length > 3 ? (
+          {results.length > 6 ? (
             <Pressable accessibilityRole="button" onPress={() => setShowAll(!showAll)} style={styles.showAll}>
               <Text style={styles.showAllText}>{t(locale, showAll ? 'less' : 'allResults')}</Text>
             </Pressable>
@@ -614,7 +592,7 @@ export default function GuidedScreen() {
     () => orderedResults.filter((result) => !hiddenResults.includes(result.cocktailId)),
     [hiddenResults, orderedResults],
   );
-  const resultIds = useMemo(() => results.slice(0, 3).map((result) => result.cocktailId), [results]);
+  const resultIds = useMemo(() => results.slice(0, 6).map((result) => result.cocktailId), [results]);
   const revealCandidates=useMemo(()=>resultIds.flatMap(id=>{
     const cocktail=catalogue.cocktails.find(item=>item.id===id);
     return cocktail?[{...cocktail,asset:media[cocktail.id]}]:[];
@@ -684,34 +662,6 @@ export default function GuidedScreen() {
 }
 
 const styles = StyleSheet.create({
-  flavourPreview:{padding:32,borderWidth:1,borderColor:colors.border,borderRadius:14,backgroundColor:colors.panel},
-  previewEyebrow:{color:colors.accent,...editorialType.caption,letterSpacing:0.8},
-  previewTitle:{color:colors.text,fontFamily:serif,fontSize:28,lineHeight:38,marginTop:16},
-  previewRows:{marginTop:32},
-  previewRow:{flexDirection:'row',gap:16,paddingVertical:20,borderTopWidth:1,borderTopColor:colors.border},
-  previewRowCurrent:{borderTopColor:colors.amber},
-  previewNumber:{color:colors.amber,fontFamily:serif,fontSize:16,lineHeight:24,width:24},
-  previewLabel:{color:colors.secondary,...editorialType.caption},
-  previewValue:{color:colors.text,...editorialType.body},
-  previewHint:{color:colors.secondary,...editorialType.caption,marginTop:24},
-  phonePreview:{color:colors.accent,...editorialType.caption,marginTop:20},
-  resultsHeadingRow:{flexDirection:'row',alignItems:'center',gap:16,flexWrap:'wrap'},
-  resultsTitleCompact:{...editorialType.titlePhone},
-  profileDisclosure:{flex:1,minHeight:48,flexDirection:'row',alignItems:'center',gap:12},
-  profileSummary:{flex:1,color:colors.secondary,...editorialType.caption},
-  featuredCard:{flexDirection:'row',alignItems:'center',gap:48,paddingVertical:24,borderTopWidth:1,borderBottomWidth:1,borderColor:colors.border,borderRadius:0},
-  featuredCardCompact:{flexDirection:'column',alignItems:'stretch',gap:8,paddingVertical:16},
-  featuredPhoto:{width:'46%',flexShrink:0},
-  featuredCopy:{flex:1,minWidth:0,paddingVertical:16},
-  featuredName:{...editorialType.title,marginTop:16},
-  featuredNameCompact:{...editorialType.titlePhone},
-  phoneCardHeading:{paddingBottom:16},
-  resultReason:{color:colors.text,...editorialType.body,marginTop:16},
-  recipeLink:{minHeight:48,alignSelf:'flex-start',justifyContent:'center',marginTop:16},
-  recipeLinkPrimary:{minWidth:176,paddingHorizontal:24,backgroundColor:colors.accent,borderRadius:10,alignItems:'center'},
-  recipeLinkPrimaryText:{color:colors.background},
-  imageNote:{color:colors.muted,...editorialType.caption,marginTop:12},
-  alternativesHeading:{color:colors.text,fontFamily:serif,...editorialType.section,marginTop:32},
   modeIntro:{width:'100%',maxWidth:850,alignSelf:'center',paddingVertical:56,gap:20},
   modeChoices:{flexDirection:'row',gap:16,marginVertical:16},
   modeChoicesCompact:{flexDirection:'column'},
@@ -748,13 +698,13 @@ const styles = StyleSheet.create({
   memoryRetry: {alignSelf: 'flex-start', minHeight: 44, justifyContent: 'center', paddingHorizontal: 14, borderWidth: 1, borderColor: colors.amber, borderRadius: radii.pill},
   memoryRetryText: {color: colors.amber, fontSize: 13, fontWeight: '800'},
   screen: {flex: 1, backgroundColor: colors.background},
-  page: {minHeight:'100%',paddingHorizontal:spacing.lg,paddingBottom:spacing.section},
-  shell: {width:'100%',maxWidth:1280,alignSelf:'center'},
-  chooseLayout: {flexDirection:'row',gap:spacing.spread,alignItems:'flex-start',paddingTop:spacing.xl},
+  page: {minHeight: '100%', paddingHorizontal: 18, paddingBottom: 56},
+  shell: {width: '100%', maxWidth: 1400, alignSelf: 'center'},
+  chooseLayout: {flexDirection: 'row', gap: 42, alignItems: 'stretch', paddingTop: 28},
   chooseLayoutCompact: {flexDirection: 'column', gap: 12, paddingTop: 8},
-  questionPane: {flex:1.1,minWidth:0,paddingVertical:spacing.md},
+  questionPane: {flex: 1.1, minWidth: 0, justifyContent: 'center', paddingVertical: 26},
   questionPaneCompact: {paddingVertical: 10, paddingBottom: 20},
-  waterfallPane: {flex:0.9,maxWidth:480,marginTop:spacing.md},
+  waterfallPane: {flex: 0.9, maxWidth: 560, overflow: 'hidden', borderRadius: radii.large, borderWidth: 1, borderColor: colors.border},
   stepLine: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12},
   stepNumber: {color: colors.accent, fontFamily: serif, fontSize: 14},
   progress: {flexDirection: 'row', gap: 7, marginTop: 13, marginBottom: 32},
@@ -764,8 +714,8 @@ const styles = StyleSheet.create({
   progressSegmentActive: {backgroundColor: colors.accent},
   progressSegmentCurrent: {height: 4, backgroundColor: colors.amber},
   progressLabelLine: {flexDirection: 'row', alignItems: 'center', gap: 5, minHeight: 38, paddingTop: 7},
-  progressIndex: {color:colors.secondary,fontFamily:serif,fontSize:12},
-  progressLabel: {flexShrink:1,color:colors.secondary,fontSize:12,fontWeight:'700'},
+  progressIndex: {color: colors.muted, fontFamily: serif, fontSize: 11},
+  progressLabel: {flexShrink: 1, color: colors.muted, fontSize: 11, fontWeight: '700'},
   progressTextReached: {color: colors.secondary},
   progressEdit: {color: colors.amber, fontSize: 11},
   progressCompact: {marginBottom: -10},
@@ -775,9 +725,9 @@ const styles = StyleSheet.create({
   selectionHint: {color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 7},
   options: {flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginTop: 24},
   optionsCompact: {marginTop: 16, gap: 8},
-  option: {width:'48%',minHeight:88,flexDirection:'row',alignItems:'center',gap:12,padding:16,borderWidth:1,borderColor:colors.border,borderRadius:10,backgroundColor:colors.panel},
+  option: {width: '48%', minHeight: 86, flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14, borderWidth: 1, borderColor: colors.border, borderRadius: radii.medium, backgroundColor: colors.panel},
   optionCompact: {minHeight: 72, gap: 9, paddingVertical: 11, paddingHorizontal: 11},
-  optionSelected: {borderColor:colors.accent,backgroundColor:colors.accentDark},
+  optionSelected: {borderColor: colors.amber, backgroundColor: colors.accentDark, shadowColor: colors.amber, shadowOpacity: 0.13, shadowRadius: 14, shadowOffset: {width: 0, height: 4}},
   optionIndicator: {width: 24, height: 24, borderRadius: 12, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center'},
   optionIndicatorSelected: {borderColor: colors.accent, backgroundColor: colors.accent},
   optionCheck: {color: colors.background, fontSize: 13, fontWeight: '800'},
@@ -785,7 +735,7 @@ const styles = StyleSheet.create({
   optionTitleLine: {flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: 7, rowGap: 2},
   optionLabel: {color: colors.text, fontSize: 15, fontWeight: '700', flexShrink: 1, maxWidth: '100%'},
   optionLabelSelected: {color: colors.text},
-  selectedBadge: {color:colors.accent,fontSize:12,lineHeight:18,fontWeight:'700'},
+  selectedBadge: {color: colors.amber, fontSize: 9, lineHeight: 14, fontWeight: '800', letterSpacing: 0.5, textTransform: 'uppercase'},
   optionNote: {color: colors.muted, fontSize: 12, lineHeight: 17, marginTop: 4},
   optionNoteSelected: {color: colors.secondary},
   selectionFeedback: {alignSelf: 'flex-end', color: colors.amber, fontSize: 12, fontWeight: '700', marginTop: 10},
@@ -814,36 +764,36 @@ const styles = StyleSheet.create({
   stepActionsCompact: {flexWrap: 'wrap', marginTop: 0},
   fixedActions: {paddingHorizontal: 18, paddingTop: 12, paddingBottom: 16, borderTopWidth: 1, borderTopColor: colors.border, backgroundColor: 'rgba(16,23,20,0.98)'},
   secondaryAction: {minHeight: 48, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 17, borderWidth: 1, borderColor: colors.border, borderRadius: radii.pill},
-  secondaryActionCompact: {minWidth:56,paddingHorizontal:8},
+  secondaryActionCompact: {flexGrow: 1, minWidth: 92},
   secondaryActionText: {color: colors.secondary, fontSize: 14, fontWeight: '700'},
   skipAction: {minHeight: 48, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 10},
-  skipActionCompact: {minWidth:80,paddingHorizontal:4},
+  skipActionCompact: {flexGrow: 1, minWidth: 120},
   skipActionText: {color: colors.accent, fontSize: 14, fontWeight: '700'},
   primaryAction: {minWidth: 150, minHeight: 50, flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10, paddingHorizontal: 20, borderRadius: radii.pill, backgroundColor: colors.accent},
-  primaryActionCompact: {flexBasis:'auto',minWidth:0,minHeight:54,paddingHorizontal:12},
-  primaryActionText: {color:colors.background,fontSize:14,lineHeight:20,fontWeight:'700',flexShrink:1},
+  primaryActionCompact: {flexBasis: '100%', minHeight: 54},
+  primaryActionText: {color: colors.background, fontSize: 14, fontWeight: '800'},
   primaryArrow: {color: colors.background, fontSize: 19},
   pressed: {opacity: 0.72},
-  resultsView: {paddingTop:spacing.lg},
-  resultsLead: {width:'100%',marginBottom:spacing.lg,gap:8},
-  resultsTitle: {color:colors.text,fontFamily:serif,...editorialType.title,marginTop:8},
-  resultsHint: {color:colors.secondary,...editorialType.body,marginTop:8},
-  resultsVersionNote: {color:colors.muted,...editorialType.caption},
-  resultColumns: {flexDirection:'row',flexWrap:'wrap',gap:spacing.lg,marginTop:spacing.lg},
-  resultColumnsCompact: {gap:spacing.lg},
+  resultsView: {paddingTop: 40},
+  resultsLead: {alignItems: 'center', maxWidth: 700, alignSelf: 'center', marginBottom: 30},
+  resultsTitle: {color: colors.text, fontFamily: serif, fontSize: 40, lineHeight: 47, textAlign: 'center', marginTop: 8},
+  resultsHint: {color: colors.secondary, fontSize: 15, lineHeight: 22, textAlign: 'center', marginTop: 10},
+  resultsVersionNote: {color: colors.muted, fontSize: 12, lineHeight: 18, textAlign: 'center', marginTop: 7},
+  resultColumns: {flexDirection: 'row', flexWrap: 'wrap', gap: 16, marginTop: 28},
+  resultColumnsCompact: {gap: 12},
   resultWrap: {minWidth: 0, flexGrow: 0, flexShrink: 0},
-  resultCard: {overflow:'hidden',borderRadius:10,backgroundColor:'transparent'},
-  resultCopy: {paddingVertical:16},
+  resultCard: {overflow: 'hidden', borderRadius: radii.medium, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.panel, shadowColor: colors.amber, shadowOpacity: 0.07, shadowRadius: 18, shadowOffset: {width: 0, height: 7}},
+  resultCopy: {padding: 16},
   resultMeta: {color: colors.accent, fontSize: 12, fontWeight: '700', textTransform: 'uppercase'},
   resultName: {color: colors.text, fontFamily: serif, fontSize: 24, lineHeight: 29, marginTop: 8},
-  resultDescription: {color:colors.secondary,...editorialType.body,marginTop:8},
+  resultDescription: {color: colors.secondary, fontSize: 14, lineHeight: 21, marginTop: 7},
   matchPanel: {marginTop: 14, paddingTop: 12, borderTopWidth: 1, borderTopColor: colors.border},
-  matchTitle: {color:colors.amber,fontSize:12,lineHeight:18,fontWeight:'700',letterSpacing:0.7},
+  matchTitle: {color: colors.amber, fontSize: 11, fontWeight: '800', letterSpacing: 0.7, textTransform: 'uppercase'},
   matchChips: {flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8},
   matchChip: {color: colors.accent, fontSize: 12, lineHeight: 17, paddingVertical: 5, paddingHorizontal: 8, borderRadius: radii.pill, backgroundColor: colors.accentDark},
   matchOpen: {color: colors.secondary, fontSize: 12, lineHeight: 18, marginTop: 7},
   avoidedText: {color: colors.muted, fontSize: 11, lineHeight: 17, marginTop: 8},
-  resultLink: {color:colors.accent,fontSize:15,lineHeight:24,fontWeight:'700'},
+  resultLink: {color: colors.accent, fontSize: 14, fontWeight: '700', marginTop: 15},
   resultCredit: {color: colors.muted, fontSize: 12, lineHeight: 17, marginTop: 6, marginHorizontal: 4},
   resultCredits: {minHeight: 38, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 5, paddingHorizontal: 4},
   resultCreditDivider: {color: colors.muted, fontSize: 12},

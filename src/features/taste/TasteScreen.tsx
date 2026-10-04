@@ -13,7 +13,6 @@ import {createFeedback,editFeedback} from '../../domain/taste';
 import type {TasteFeedback,TasteFeedbackInput,TasteState} from '../../domain/taste/types';
 import {tm,type TasteKey} from '../../i18n/taste';
 import {useApp} from '../../platform/AppProvider';
-import {useMaking} from '../../platform/MakingProvider';
 import {useTaste} from '../../platform/TasteProvider';
 import {BrandToolbar} from '../discovery/components';
 import {Action,Choice,Panel} from './ui';
@@ -27,34 +26,33 @@ const first=(value:string|string[]|undefined)=>Array.isArray(value)?value[0]:val
 const localeTag:Record<Locale,string>={en:'en-US',zh:'zh-CN',fr:'fr-FR',de:'de-DE',es:'es-ES',ko:'ko-KR',ja:'ja-JP',it:'it-IT'};
 
 export default function TasteScreen(){
-  const app=useApp(),taste=useTaste(),making=useMaking(),params=useLocalSearchParams<{version?:string|string[];entry?:string|string[];list?:string|string[];session?:string|string[]}>(),versionId=first(params.version),entryId=first(params.entry),listId=first(params.list),sessionId=first(params.session);
+  const app=useApp(),taste=useTaste(),params=useLocalSearchParams<{version?:string|string[];entry?:string|string[];list?:string|string[]}>(),versionId=first(params.version),entryId=first(params.entry),listId=first(params.list);
   const copy=(key:TasteKey,values?:Record<string,string|number>)=>tm(app.locale,key,values);
   const favorites=useFavorites();
-  const target=useMemo(()=>tasteEditorTarget({version:versionId,entry:entryId,list:listId,session:sessionId},taste.state.entries,favorites.lists,catalogue,making.state.sessions),[versionId,entryId,listId,sessionId,taste.state.entries,favorites.lists,making.state.sessions]);
+  const target=useMemo(()=>tasteEditorTarget({version:versionId,entry:entryId,list:listId},taste.state.entries,favorites.lists,catalogue),[versionId,entryId,listId,taste.state.entries,favorites.lists]);
   const recipe=target.kind==='create'?target.recipe:target.kind==='edit'?target.entry.recipe:null;
-  const ready=taste.hydrated&&(!listId||favorites.hydrated)&&(!sessionId||making.hydrated);
+  const ready=taste.hydrated&&(!listId||favorites.hydrated);
   const listError=Boolean(listId&&favorites.error);
-  const editorKey=sessionId?`session:${sessionId}`:entryId?`entry:${entryId}`:versionId?`version:${listId??''}:${versionId}`:'list';
+  const editorKey=entryId?`entry:${entryId}`:versionId?`version:${listId??''}:${versionId}`:'list';
   const [undo,setUndo]=useState<Undo|null>(null),[confirm,setConfirm]=useState<string|null>(null),[message,setMessage]=useState(''),[localError,setLocalError]=useState('');
   const pending=useRef<Pending|null>(null),writing=useRef(false),returnToList=useRef(false),scroll=useRef<ScrollView>(null);
   useLayoutEffect(()=>{scroll.current?.scrollTo({y:0,animated:false});},[editorKey]);
-  const blocked=!ready||Boolean(sessionId&&making.error)||listError||taste.saving||taste.error==='read'||taste.error==='write';
-  const finalize=(outcome:Pending)=>{pending.current=null;setLocalError('');if(outcome.kind==='save'){returnToList.current=false;setMessage(copy('saved'));router.setParams({entry:undefined,version:undefined,list:undefined,session:undefined});}else if(outcome.kind==='undo'){setUndo(null);setMessage(copy('updated'));}else{setUndo({kind:outcome.kind,entries:outcome.entries});setMessage(copy(outcome.kind==='delete'?'deleted':'cleared'));setConfirm(null);}};
+  const blocked=!ready||listError||taste.saving||taste.error==='read'||taste.error==='write';
+  const finalize=(outcome:Pending)=>{pending.current=null;setLocalError('');if(outcome.kind==='save'){returnToList.current=false;setMessage(copy('saved'));router.setParams({entry:undefined,version:undefined,list:undefined});}else if(outcome.kind==='undo'){setUndo(null);setMessage(copy('updated'));}else{setUndo({kind:outcome.kind,entries:outcome.entries});setMessage(copy(outcome.kind==='delete'?'deleted':'cleared'));setConfirm(null);}};
   const retry=async()=>{if(listError)await favorites.retry();const ok=await taste.retry();if(ok&&pending.current)finalize(pending.current);};
   const mutate=async(next:(state:TasteState)=>TasteState,outcome:Pending)=>{if(blocked||writing.current)return;writing.current=true;setMessage('');setLocalError('');pending.current=outcome;try{const ok=await taste.change(next);if(ok)finalize(outcome);}catch{pending.current=null;setLocalError(copy('saveError'));}finally{writing.current=false;}};
   const remove=(entry:TasteFeedback)=>void mutate(state=>({...state,entries:state.entries.filter(item=>item.id!==entry.id)}),{kind:'delete',entries:[entry]});
   const clear=()=>{const removed=[...taste.state.entries];void mutate(state=>({...state,entries:[]}),{kind:'clear',entries:removed});};
   const restore=()=>{if(!undo)return;const restoring=undo;void mutate(state=>({...state,entries:[...state.entries,...restoring.entries.filter(entry=>!state.entries.some(current=>current.id===entry.id))].sort((a,b)=>Date.parse(a.createdAt)-Date.parse(b.createdAt)||a.id.localeCompare(b.id))}),{kind:'undo',undo:restoring});};
   const goBack=()=>{if(returnToList.current){returnToList.current=false;router.setParams({entry:undefined});return;}router.canGoBack()?router.back():recipe?router.replace({pathname:'/cocktails/[id]' as never,params:{id:recipe.version.cocktailId,version:recipe.version.id}}):router.replace('/my' as never);};
-  return <SafeAreaView style={s.screen} edges={['top']}><MotionTransition changeKey={editorKey} kind={message?'completion':'page'} style={{flex:1,minHeight:0}}><ScrollView ref={scroll} automaticallyAdjustKeyboardInsets keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" contentContainerStyle={s.page}><View style={s.shell}><BrandToolbar {...app}/><View style={s.nav}><Action quiet label={`← ${copy('back')}`} onPress={goBack}/></View>
+  return <SafeAreaView style={s.screen} edges={['top']}><MotionTransition changeKey={editorKey} style={{flex:1,minHeight:0}}><ScrollView ref={scroll} automaticallyAdjustKeyboardInsets keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" contentContainerStyle={s.page}><View style={s.shell}><BrandToolbar {...app}/><View style={s.nav}><Action quiet label={`← ${copy('back')}`} onPress={goBack}/></View>
     {!ready&&!taste.error&&!listError?<Text style={s.muted}>{copy('loading')}</Text>:null}
     {taste.error?<Panel warning><Text accessibilityRole="alert" style={s.error}>{copy(taste.error==='read'?'storageReadError':'storageWriteError')}</Text><Action disabled={taste.saving} label={copy(taste.saving?'retrying':'retry')} onPress={()=>void retry()}/></Panel>:null}
-    {sessionId&&making.error?<Panel warning><Text accessibilityRole="alert" style={s.error}>{copy('storageReadError')}</Text><Action label={copy('retry')} onPress={()=>void making.retry()}/></Panel>:null}
     {listError?<Panel warning><Text accessibilityRole="alert" style={s.error}>{copy('savedRecipeReadError')}</Text><Action label={copy('retry')} onPress={()=>void retry()}/></Panel>:null}
     {localError?<Text accessibilityRole="alert" style={s.error}>{localError}</Text>:null}
     {taste.saving?<Text accessibilityLiveRegion="polite" style={s.muted}>{copy('saving')}</Text>:null}
     {message?<Panel raised><Text accessibilityLiveRegion="polite" style={s.success}>{message}</Text>{undo?<Action label={copy('undo')} onPress={restore} disabled={blocked}/>:null}</Panel>:null}
-      {ready&&!listError?(target.kind==='create'?<FeedbackEditor key={editorKey} recipe={target.recipe} initial={{...blank(),experience:sessionId?'made':'drank'}} locale={app.locale} disabled={blocked} saveKey="saveMemory" onCancel={goBack} onSave={input=>{
+      {ready&&!listError?(target.kind==='create'?<FeedbackEditor key={editorKey} recipe={target.recipe} initial={blank()} locale={app.locale} disabled={blocked} saveKey="saveMemory" onCancel={goBack} onSave={input=>{
         const id=`taste-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,9)}`;
         void mutate(state=>state.entries.some(entry=>entry.id===id)?state:{...state,entries:[...state.entries,createFeedback(target.recipe,id,new Date().toISOString(),input)]},{kind:'save'});
       }}/>:target.kind==='edit'?<EntryEditor key={editorKey} entry={target.entry} locale={app.locale} disabled={blocked} onCancel={goBack} onSave={(entry,input)=>void mutate(state=>({...state,entries:state.entries.map(item=>item.id===entry.id?editFeedback(item,new Date().toISOString(),input):item)}),{kind:'save'})}/>:target.kind==='missing'?<Missing copy={copy}/>:<MemoryList entries={taste.state.entries} locale={app.locale} disabled={blocked} confirm={confirm} setConfirm={setConfirm} onEdit={id=>{returnToList.current=true;router.setParams({entry:id});}} onDelete={remove} onClear={clear}/>):null}

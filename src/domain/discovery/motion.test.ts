@@ -8,7 +8,6 @@ test('motion stays static until preferences and system settings are known and al
   assert.equal(motionEnabled(true,true,false,true),false);
   assert.equal(motionEnabled(true,true,false,false),true);
   assert.ok(transitionDuration.page>=300&&transitionDuration.page<=500);
-  assert.ok(transitionDuration.completion>=180&&transitionDuration.completion<=300);
-  assert.ok(transitionDuration.selection>=160&&transitionDuration.selection<=240);
+  assert.ok(transitionDuration.completion>transitionDuration.page);
   assert.ok(transitionDuration.step<transitionDuration.page);
 });

@@ -49,7 +49,7 @@ function AppScene() {
     </View>}
     <View {...(Platform.OS === 'web' ? {role:'main' as const} : {})} style={{flex:1,minHeight:0}}><Stack layout={sceneLayout} screenOptions={{title:'Glass Notes', headerShown:false, contentStyle:{backgroundColor:colors.background}, animation:Platform.OS==='web'||!canAnimate?'none':'fade',animationDuration:700}} /></View>
     {!desktop && <AppNavigation />}
-    <AmbientLight paused={motionPaused||!canAnimate||pathname==='/customize'||pathname==='/make'||pathname==='/taste'} reduceMotion={reduceMotion} />
+    <AmbientLight paused={motionPaused||!canAnimate} reduceMotion={reduceMotion} />
   </MotionInteractions>;
 }
 

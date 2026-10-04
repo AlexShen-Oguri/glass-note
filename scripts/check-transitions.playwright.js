@@ -77,31 +77,31 @@ async page => {
 
   await page.setViewportSize({width: 1280, height: 800});
   await page.goto(base); await settle();
-  const track = page.locator('[data-motion-loop="ambient"]').first();
-  const before = await track.evaluate(node => [...node.children].map(child=>getComputedStyle(child).transform).join('|'));
+  const track = page.locator('[data-motion-loop="waterfall"]').first();
+  const before = await track.evaluate(node => new DOMMatrix(getComputedStyle(node).transform).m42);
   await page.getByRole('button', {name: '暂停动效', exact: true}).click();
   await page.waitForTimeout(100);
-  const paused = await track.evaluate(node => [...node.children].map(child=>getComputedStyle(child).transform).join('|'));
+  const paused = await track.evaluate(node => new DOMMatrix(getComputedStyle(node).transform).m42);
   await page.waitForTimeout(350);
-  const still = await track.evaluate(node => [...node.children].map(child=>getComputedStyle(child).transform).join('|'));
-  if (paused !== still) throw Error('pause left ambient motion running');
+  const still = await track.evaluate(node => new DOMMatrix(getComputedStyle(node).transform).m42);
+  if (Math.abs(before - paused) > 8 || Math.abs(paused - still) > 0.1) throw Error('pause reset or moved the waterfall');
   await begin();
   await page.getByRole('button', {name: '为我定制', exact: true}).click();
   await finish('user-paused', false);
   await page.goto(base); await settle();
   await page.getByRole('button', {name: '继续动效', exact: true}).click();
   await page.waitForTimeout(300);
-  const resumed = await track.evaluate(node => [...node.children].map(child=>getComputedStyle(child).transform).join('|'));
+  const resumed = await track.evaluate(node => new DOMMatrix(getComputedStyle(node).transform).m42);
   await page.waitForTimeout(300);
-  const moving = await track.evaluate(node => [...node.children].map(child=>getComputedStyle(child).transform).join('|'));
-  if (resumed === moving) throw Error('ambient light did not resume');
+  const moving = await track.evaluate(node => new DOMMatrix(getComputedStyle(node).transform).m42);
+  if (Math.abs(resumed - moving) < 1) throw Error('waterfall did not resume');
   checks.push({name: 'loop-pause-resume', before, paused, still, resumed, moving});
 
   await page.goto(base); await settle(); await begin();
   await page.getByRole('button', {name: '为我定制', exact: true}).click();
   await page.waitForTimeout(50); await page.goBack();
   await finish('rapid-navigation');
-  await page.getByRole('heading', {name: /今晚，/}).waitFor();
+  await page.getByRole('heading', {name: '今天你想喝点什么', exact: true}).waitFor();
 
   for (const width of [1280, 390]) {
     await page.setViewportSize({width, height: 874});
@@ -141,13 +141,13 @@ async page => {
     await page.setViewportSize({width, height: 874});
     await startGuided(); await submitGuided();
     await page.getByTestId('guided-reveal-stage').waitFor();
-    if (await page.locator('[data-reveal-results]').getAttribute('aria-hidden') === 'true') throw Error('reveal delayed readable results');
+    if (await page.locator('[data-reveal-results]').getAttribute('aria-hidden') !== 'true') throw Error('reveal exposed hidden results to assistive technology');
     await page.getByTestId('guided-reveal-stage').waitFor({state: 'detached'});
     if (await page.locator('[data-reveal-results]').getAttribute('aria-hidden') === 'true') throw Error('completed reveal kept results inaccessible');
     const invisiblePhotos = await page.locator('[data-reveal-results]').evaluate(root => [...root.querySelectorAll('img')]
       .some(image => {const parent = image.closest('[style*="visibility: hidden"]'); return Boolean(parent);}));
     if (invisiblePhotos) throw Error('photo handoff left a hidden result');
-    checks.push({name: 'reveal-live-photos-' + width});
+    checks.push({name: 'reveal-photo-handoff-' + width});
     await startGuided(); await submitGuided();
     await page.getByRole('button', {name: '直接查看结果', exact: true}).click();
     await page.getByTestId('guided-reveal-stage').waitFor({state: 'detached'});
