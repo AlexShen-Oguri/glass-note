@@ -44,11 +44,11 @@ export function MotionInteractions({changeKey, ...props}: ViewProps & {changeKey
       // a .55s arrow must not delay the .45s colour feedback by another .1s.
       if(arrow){
         const ruleActive=lifted||node.matches(':focus-visible');
-        if(rule)gsap.to(rule,{scaleX:ruleActive?1:0,duration:.55,ease:editorialEase,overwrite:'auto',clearProps:ruleActive?undefined:'transform'});
-        gsap.to(arrow,{rotation:lifted?-40:0,duration:.55,ease:arrowEase,overwrite:'auto',clearProps:lifted?undefined:'transform'});
-        gsap.to(arrow,{backgroundColor:lifted?colors.accent:visual.background,duration:.45,ease:arrowEase,overwrite:'auto',clearProps:lifted?undefined:'backgroundColor'});
-        if(glyph)gsap.to(glyph,{color:lifted?colors.background:visual.color,duration:.45,ease:arrowEase,overwrite:'auto',clearProps:lifted?undefined:'color'});
-      }else if(photo)gsap.to(photo,{scale:lifted?visual.photoScale:1,duration:1.2,ease:editorialEase,overwrite:'auto',clearProps:lifted?undefined:'transform'});
+        if(rule)gsap.to(rule,{scaleX:ruleActive?1:0,duration:.55,ease:editorialEase,overwrite:'auto',...(!ruleActive?{clearProps:'transform'}:{})});
+        gsap.to(arrow,{rotation:lifted?-40:0,duration:.55,ease:arrowEase,overwrite:'auto',...(!lifted?{clearProps:'transform'}:{})});
+        gsap.to(arrow,{backgroundColor:lifted?colors.accent:visual.background,duration:.45,ease:arrowEase,overwrite:'auto',...(!lifted?{clearProps:'backgroundColor'}:{})});
+        if(glyph)gsap.to(glyph,{color:lifted?colors.background:visual.color,duration:.45,ease:arrowEase,overwrite:'auto',...(!lifted?{clearProps:'color'}:{})});
+      }else if(photo)gsap.to(photo,{scale:lifted?visual.photoScale:1,duration:1.2,ease:editorialEase,overwrite:'auto',...(!lifted?{clearProps:'transform'}:{})});
     });
     const over = (event: PointerEvent) => {
       if (!fine.matches || event.pointerType !== 'mouse') return;

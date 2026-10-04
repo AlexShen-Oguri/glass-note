@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform,Pressable,Text,View} from 'react-native';
+import {Platform,Pressable,Text,View,type StyleProp,type ViewStyle} from 'react-native';
 import {memoryStyles as s} from './styles';
 
 export function Action({label,accessibilityLabel,onPress,primary=false,quiet=false,danger=false,disabled=false,expanded}:{label:string;accessibilityLabel?:string;onPress:()=>void;primary?:boolean;quiet?:boolean;danger?:boolean;disabled?:boolean;expanded?:boolean}){
@@ -8,4 +8,4 @@ export function Action({label,accessibilityLabel,onPress,primary=false,quiet=fal
 export function Choice({label,selected,onPress,disabled=false}:{label:string;selected:boolean;onPress:()=>void;disabled?:boolean}){
   return <Pressable accessibilityRole="button" accessibilityLabel={label} accessibilityState={{selected,disabled}} {...(Platform.OS==='web'?{'aria-pressed':selected}:{})} disabled={disabled} onPress={onPress} style={({pressed})=>[s.chip,selected&&s.chipSelected,disabled&&s.disabled,pressed&&s.pressed]}><Text style={[s.chipText,selected&&s.chipTextSelected]}>{label}</Text></Pressable>;
 }
-export function Panel({children,raised=false,warning=false}:{children:React.ReactNode;raised?:boolean;warning?:boolean}){return <View style={[s.panel,raised&&s.raised,warning&&s.warning]}>{children}</View>;}
+export function Panel({children,raised=false,warning=false,style}:{children:React.ReactNode;raised?:boolean;warning?:boolean;style?:StyleProp<ViewStyle>}){return <View style={[s.panel,raised&&s.raised,warning&&s.warning,style]}>{children}</View>;}

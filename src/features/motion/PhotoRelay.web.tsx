@@ -10,6 +10,7 @@ type PhotoFlight = {
   id: string; frame: Frame; shape: Shape; canvas: HTMLCanvasElement;
   width: number; height: number; source: HTMLElement; gate: HTMLStyleElement;
   target?: HTMLElement; ready?: boolean; landed?: boolean; observer?: MutationObserver;
+  layoutObserver?: ResizeObserver;
   paint?: number; timeline?: gsap.core.Timeline; timeout?: ReturnType<typeof setTimeout>;
 };
 
@@ -61,6 +62,7 @@ export function MotionPhotoRelay({changeKey}: {changeKey: string}) {
     if (flight.timeout) clearTimeout(flight.timeout);
     flight.timeline?.kill();
     flight.observer?.disconnect();
+    flight.layoutObserver?.disconnect();
     if (flight.paint !== undefined) cancelAnimationFrame(flight.paint);
     flight.gate.remove();
     flight.canvas.remove();
@@ -107,7 +109,7 @@ export function MotionPhotoRelay({changeKey}: {changeKey: string}) {
       const flight: PhotoFlight = {id, frame, shape, canvas, source, gate, width: canvas.width, height: canvas.height};
       pending.current = flight;
       gsap.set(canvas, {...pose(flight, frame, shape, zoom), opacity});
-      root.appendChild(canvas);
+      document.body.appendChild(canvas);
       document.head.appendChild(gate);
       // A cancelled link or unchanged route must never leave a captured photo.
       flight.timeout = setTimeout(settle, 5000);
@@ -151,6 +153,14 @@ export function MotionPhotoRelay({changeKey}: {changeKey: string}) {
       const shape = readShape(target, frame);
       if (frame.top >= window.innerHeight || frame.top + frame.height <= 0) {settle(); return;}
       flight.target = target;
+      // Fonts, disclosures and image intrinsic sizes can reflow a destination
+      // after navigation. Hand back to its live photo if the measured box moves.
+      flight.layoutObserver = new ResizeObserver(() => {
+        if(pending.current!==flight||!flight.timeline)return;
+        const current=readFrame(target);
+        if(Math.abs(current.left-frame.left)>1||Math.abs(current.top-frame.top)>1||Math.abs(current.width-frame.width)>1||Math.abs(current.height-frame.height)>1)settle();
+      });
+      for(let node:HTMLElement|null=target;node;node=node.parentElement)flight.layoutObserver.observe(node);
       if (flight.timeout) clearTimeout(flight.timeout);
       // Decoding runs alongside the flight. On a slow image, retain the landed
       // texture until the real Image view can paint, without blocking controls.
@@ -195,19 +205,25 @@ export function MotionPhotoRelay({changeKey}: {changeKey: string}) {
   useEffect(() => {
     if (!enabled || !pending.current) return;
     if (pending.current.timeline) {settle(); return;}
-    let outer:number|undefined,inner:number|undefined;
+    let outer:number|undefined,inner:number|undefined,revision=0,disposed=false;
     const attempt=()=>{
+      if(disposed)return;
       if(pending.current&&!pending.current.timeline)launch.current?.();
       if(!pending.current||pending.current.timeline)observer.disconnect();
     };
     const schedule=()=>{
+      const current=++revision;
       if(outer!==undefined)cancelAnimationFrame(outer);if(inner!==undefined)cancelAnimationFrame(inner);
-      outer=requestAnimationFrame(()=>{inner=requestAnimationFrame(attempt);});
+      // Wait for local typography as well as the router's scroll restoration;
+      // this is one endpoint read, not layout sampling during a flight.
+      void document.fonts.ready.then(()=>{if(disposed||current!==revision)return;outer=requestAnimationFrame(()=>{inner=requestAnimationFrame(attempt);});});
     };
     const observer=new MutationObserver(schedule);
     observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['aria-hidden','inert']});
     deferLaunch.current=schedule;schedule();
-    return ()=>{deferLaunch.current=null;observer.disconnect();if(outer!==undefined)cancelAnimationFrame(outer);if(inner!==undefined)cancelAnimationFrame(inner);};
+    return ()=>{disposed=true;deferLaunch.current=null;observer.disconnect();if(outer!==undefined)cancelAnimationFrame(outer);if(inner!==undefined)cancelAnimationFrame(inner);};
   }, [changeKey, enabled]);
-  return <View ref={host} pointerEvents="none" accessible={false} {...motionData({motionPhotoRelayRoot: ''})} style={{position: 'absolute', width: 0, height: 0, zIndex: 40}} />;
+  // Fixed flight coordinates belong to the viewport, even when a retained
+  // navigator ancestor creates a transformed containing block.
+  return <View ref={host} pointerEvents="none" accessible={false} {...motionData({motionPhotoRelayRoot: ''})} style={{position:'absolute',width:0,height:0}}/>;
 }

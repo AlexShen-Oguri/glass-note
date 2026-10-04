@@ -1,5 +1,5 @@
 // Run with playwright-cli run-code on a local preview in an isolated zh-CN browser.
-// The accepted reference is the uninterrupted 4188 orbital relay. Inspect
+// The accepted reference combines the 4188 spatial relay and 4192 sensory reveal. Inspect
 // intermediate painted poses, immediate content exchange and cleanup, rather
 // than accepting the final screen or merely checking for will-change.
 async page => {
@@ -58,9 +58,12 @@ async page => {
       const veil = active('[data-scene-veil]');
       const departure = document.querySelector('[data-motion-title-departure]');
       const portal = document.querySelector('[data-motion-space-portal]');
+      const cup=document.querySelector('[data-motion-space-glass]'),cupRect=cup?.getBoundingClientRect(),results=document.querySelector('[data-motion-reveal-results]');
       frames.push({t: performance.now() - start, busy: Boolean(document.querySelector('[data-scene-busy="true"]')),
         heading: heading?.textContent.replace(/\s+/g, '') || '', content: pose(content), veil: pose(veil),
-        titles: titles.map(pose), menus: menus.map(pose), grid: pose(grid), departure: pose(departure),
+        titles: titles.map(pose), menus: menus.map(pose), grid: pose(grid), options: grid?[...grid.children].map(pose):[], departure: pose(departure),
+        reveal:document.querySelector('[data-reveal-phase]')?.dataset.revealPhase,resultsOpacity:results?Number(getComputedStyle(results).opacity):0,
+        cup:cupRect?{x:cupRect.left+cupRect.width/2,y:cupRect.top+cupRect.height/2,opacity:Number(getComputedStyle(cup).opacity),centerX:innerWidth/2,centerY:innerHeight/2}:null,
         photoDetails: photoDetails.map(pose), portal: pose(portal), flights:flights(),
         promotedCards: document.querySelectorAll('[data-motion-item][style*="will-change"]').length,
         clones: [...document.body.children].filter(node => node.getAttribute('aria-hidden') === 'true'
@@ -76,6 +79,7 @@ async page => {
     window.__finishMotionCheck = () => {running = false; cancelAnimationFrame(raf); observer?.disconnect();photoObserver.disconnect(); return {frames, longTasks,firstPhotos};};
   });
   const finish = async (name, animated = true, {direction = 1, menus = true, kind = 'page', departure = true, photoDetails = true, space = false} = {}) => {
+    if(kind==='results')await page.locator('[data-reveal-phase="complete"]').waitFor({timeout:8500});
     await settle();
     if(kind==='photo')await page.waitForFunction(()=>!document.querySelector('canvas[data-motion-photo-relay],[data-motion-photo-gate]'),undefined,{timeout:6500});
     const {frames, longTasks,firstPhotos} = await page.evaluate(() => window.__finishMotionCheck());
@@ -100,12 +104,20 @@ async page => {
       assert(!frames.some(frame => frame.departure), 'played an outgoing title while motion was disabled');
       assert(!frames.some(frame => frame.titles.some(title => Math.abs(title.y) > 1)
         || frame.menus.some(menu => Math.abs(menu.y) > 1) || frame.grid && Math.abs(frame.grid.x) > 1), 'played a foreground entrance while motion was disabled');
+    } else if(kind==='results'){
+      const entrance=frames.find(frame=>frame.reveal==='results-enter');
+      assert(entrance&&entrance.t>=3500&&entrance.t<6500,'results did not wait for the complete cup exit and decoding');
+      assert(!frames.some(frame=>frame.t<3500&&frame.resultsOpacity>.01),'results flashed during cup presentation');
+      const centered=frames.filter(frame=>frame.t>1400&&frame.t<2900&&frame.cup);
+      assert(centered.length>10&&centered.every(frame=>Math.hypot(frame.cup.x-frame.cup.centerX,frame.cup.y-frame.cup.centerY)<2),'cup did not land at viewport centre');
+      assert(frames.some(frame=>frame.t>3200&&frame.t<3700&&frame.cup.opacity<.9),'missing the cup fade before results');
+      if(menus)assert(frames.some(frame=>frame.reveal==='results-enter'&&frame.menus.some(menu=>menu.y>6&&menu.y<=30&&menu.opacity<.8)),'missing the 28px rising results');
     } else if (kind !== 'card') {
       const oldHeading = frames[0].heading;
       const swap = frames.find(frame => frame.heading && frame.heading !== oldHeading);
       assert(swap, 'did not exchange the old scene');
       assert(swap.t <= 500, 'content waited for an outgoing scene instead of committing immediately (' + swap.t.toFixed(0) + 'ms)');
-      if (departure) {
+      if (departure&&kind!=='step') {
         const outgoing = frames.filter(frame => frame.departure);
         assert(outgoing.length > 1, 'missing the live outgoing title presentation');
         const first = outgoing[0], last = outgoing[outgoing.length - 1];
@@ -116,9 +128,9 @@ async page => {
         assert(!frames[frames.length - 1].departure, 'outgoing title presentation was retained');
       }
       const incoming = frames.filter(frame => frame.t >= swap.t && frame.heading === swap.heading);
-      const initialY = kind === 'step' ? 18 : 28;
-      const titleStart = incoming.find(frame => frame.titles.some(title => title.y * direction > initialY * .35
-        && title.y * direction <= initialY + 2 && title.opacity < .5));
+      const initialY = kind === 'step' ? 14 : 28, titleDirection=kind==='step'?1:direction;
+      const titleStart = incoming.find(frame => frame.titles.some(title => title.y * titleDirection > initialY * .35
+        && title.y * titleDirection <= initialY + 2 && title.opacity < .5));
       assert(titleStart, 'missing the ' + initialY + 'px low-opacity incoming title');
       const titleEnd = incoming.find(frame => frame.t > titleStart.t + 100 && frame.titles.every(title => Math.abs(title.y) < .7 && title.opacity > .98));
       // power3.out reaches the near-zero threshold before the declared end;
@@ -126,13 +138,9 @@ async page => {
       assert(titleEnd && titleEnd.t - swap.t >= (kind === 'step' ? 220 : 330)
         && titleEnd.t - swap.t <= 1000, 'title entrance did not retain the reference cadence');
       if (kind === 'step') {
-        const gridStart = incoming.find(frame => frame.grid && frame.grid.x * direction > 8
-          && frame.grid.x * direction <= 24 && frame.grid.opacity < .7);
-        assert(gridStart, 'missing the directional 22px question-grid relay');
-        const gridEnd = incoming.find(frame => frame.t > gridStart.t + 100 && frame.grid
-          && Math.abs(frame.grid.x) < .7 && frame.grid.opacity > .98);
-        assert(gridEnd && gridEnd.t - gridStart.t >= 180 && gridEnd.t - swap.t <= 800, 'question grid snapped or kept its previous long timing');
-        assert(incoming.every(frame => !frame.grid || Math.abs(frame.grid.y) < 1), 'question grid also played a vertical card entrance');
+        assert(incoming.some(frame=>frame.options.some(option=>option.y>3&&option.y<=12&&option.opacity<.7)),'missing the 4192 option rise');
+        assert(incoming.some(frame=>frame.options.every(option=>Math.abs(option.y)<.7&&option.opacity>.98)),'options did not settle');
+        assert(incoming.every(frame=>!frame.grid||Math.abs(frame.grid.x)<1),'old directional grid slide remains');
       } else if (menus) {
         const y = kind === 'results' ? 24 : kind === 'photo' ? 18 : 16, opacity = kind === 'results' || kind === 'photo' ? .38 : .34;
         const initialMenus = incoming.find(frame => frame.menus.some(menu => menu.y * direction > y * .35
@@ -174,7 +182,7 @@ async page => {
     await settle();
     await page.getByRole('button', {name: '为我定制', exact: true}).click();
     await settle();
-    await page.getByRole('button', {name: '喝一杯 → 按口味找一杯喜欢的酒', exact: true}).click();
+    await page.getByRole('button', {name: '01 喝一杯 ↗ 按口味找一杯喜欢的酒', exact: true}).click();
     await settle();
   };
   const submitGuided = async () => {
@@ -205,11 +213,11 @@ async page => {
     await begin();
     await page.getByRole('button', {name: '为我定制', exact: true}).click();
     await finish('home-to-mode-' + width, true, {space: true});
-    const direction = await page.getByRole('button', {name: '喝一杯 → 按口味找一杯喜欢的酒', exact: true})
+    const direction = await page.getByRole('button', {name: '01 喝一杯 ↗ 按口味找一杯喜欢的酒', exact: true})
       .evaluate(node => getComputedStyle(node.parentElement).flexDirection);
     if (direction !== 'column') throw Error('incorrect editorial mode layout');
     await begin();
-    await page.getByRole('button', {name: '喝一杯 → 按口味找一杯喜欢的酒', exact: true}).click();
+    await page.getByRole('button', {name: '01 喝一杯 ↗ 按口味找一杯喜欢的酒', exact: true}).click();
     await finish('mode-to-flavour-' + width, true, {menus: false, space: true});
     await page.getByRole('button', {name: /柑橘.*柠檬皮/}).click();
     const progress = await page.locator('[data-motion-progress]').elementHandle();
@@ -244,9 +252,9 @@ async page => {
     await page.getByRole('button', {name: '找一杯适合我的 →', exact: true}).click();
     await finish('question-to-results-' + count + '-' + width, true, {kind: 'results', menus: count > 0, space: true});
     await page.getByRole('heading', {name: '为你找到的酒', exact: true}).waitFor();
-    const cards = page.locator('[data-reveal-results] [data-motion-item]');
+    const cards = page.locator('[data-motion-reveal-results] [data-motion-item]');
     if (await cards.count() !== count) throw Error('unexpected visible result count for ' + count + ' at ' + width);
-    const ready = await page.locator('[data-reveal-results]').evaluate(node => node.getAttribute('aria-hidden') !== 'true'
+    const ready = await page.locator('[data-motion-reveal-results]').evaluate(node => node.getAttribute('aria-hidden') !== 'true'
       && !node.closest('[inert]') && getComputedStyle(node).pointerEvents !== 'none');
     if (!ready) throw Error('completed reveal kept results inaccessible');
     if (count === 0) await page.getByText('暂时没有配方同时满足所有选择。调整一个偏好再试试。', {exact: true}).waitFor();
@@ -254,6 +262,12 @@ async page => {
     if (count === 6) {
       const columns = await cards.evaluateAll(nodes => new Set(nodes.map(node => Math.round(node.getBoundingClientRect().left))).size);
       if (columns !== (width < 700 ? 2 : 3)) throw Error('six results did not use the intended two/three-column layout');
+      // Returning to choices must retain the ambient controller, not revert its
+      // GSAP context and silently skip every subsequent cup presentation.
+      await page.getByRole('button', {name: '调整我的选择', exact: true}).click(); await settle();
+      await begin();
+      await page.getByRole('button', {name: '找一杯适合我的 →', exact: true}).click();
+      await finish('repeat-question-to-results-' + width, true, {kind: 'results'});
     }
     checks.push({name: 'results-data-layout-' + count + '-' + width});
   }
@@ -272,13 +286,13 @@ async page => {
   await begin();
   await page.getByRole('button', {name: '为我定制', exact: true}).click();
   await finish('user-paused', false);
-  await page.getByRole('button', {name: '喝一杯 → 按口味找一杯喜欢的酒', exact: true}).click(); await settle();
+  await page.getByRole('button', {name: '01 喝一杯 ↗ 按口味找一杯喜欢的酒', exact: true}).click(); await settle();
   for (let index = 0; index < 3; index++) {
     await page.getByRole('button', {name: '继续 →', exact: true}).click(); await settle();
   }
   await begin(); await page.getByRole('button', {name: '找一杯适合我的 →', exact: true}).click();
   await finish('user-paused-results', false);
-  if (await page.locator('[data-reveal-results] [data-motion-item]').count() !== 6) throw Error('paused reveal lost live results');
+  if (await page.locator('[data-motion-reveal-results] [data-motion-item]').count() !== 6) throw Error('paused reveal lost live results');
   await page.goto(base); await settle();
   await page.getByRole('button', {name: '继续动效', exact: true}).click();
   await page.waitForTimeout(300);
@@ -339,7 +353,7 @@ async page => {
     await page.setViewportSize({width, height: 874});
     await startGuided(); await submitGuided();
     await settle();
-    const recipe = page.locator('[data-reveal-results] [data-motion-item] a[href*="/cocktails/"]').first();
+    const recipe = page.locator('[data-motion-reveal-results] [data-motion-item] a[href*="/cocktails/"]').first();
     const href = await recipe.getAttribute('href');
     await page.waitForFunction(href=>{const link=[...document.querySelectorAll('a[href]')].find(node=>node.getAttribute('href')===href&&!node.closest('[aria-hidden="true"]'));const image=link?.querySelector('img');return image?.complete&&image.naturalWidth>0;},href);
     await begin(); await recipe.click();
@@ -353,7 +367,7 @@ async page => {
     await page.waitForURL('**/customize');
     await finish('recipe-to-results-' + width, true, {kind: 'photo', direction: -1, photoDetails: false});
     if (await page.getByTestId('guided-reveal-stage').count()) throw Error('returning replayed an unfinished business reveal');
-    const invisiblePhotos = await page.locator('[data-reveal-results]').evaluate(root => [...root.querySelectorAll('img')]
+    const invisiblePhotos = await page.locator('[data-motion-reveal-results]').evaluate(root => [...root.querySelectorAll('img')]
       .some(image => {const parent = image.closest('[style*="visibility: hidden"]'); return Boolean(parent);}));
     if (invisiblePhotos) throw Error('photo handoff left a hidden result');
     checks.push({name: 'live-results-photo-relay-' + width});
@@ -362,8 +376,8 @@ async page => {
     await skip.waitFor({state: 'visible'}); await skip.click();
     await page.getByTestId('guided-reveal-stage').waitFor({state: 'detached'});
     await settle();
-    if (await page.locator('[data-reveal-results] [data-motion-item]').count() !== 6) throw Error('skip lost live results');
-    if (await page.locator('[data-reveal-results]').evaluate(node => Boolean(node.closest('[inert]')))) throw Error('skip kept results locked');
+    if (await page.locator('[data-motion-reveal-results] [data-motion-item]').count() !== 6) throw Error('skip lost live results');
+    if (await page.locator('[data-motion-reveal-results]').evaluate(node => Boolean(node.closest('[inert]')))) throw Error('skip kept results locked');
     checks.push({name: 'reveal-skip-' + width});
   }
 
@@ -373,8 +387,8 @@ async page => {
   await page.emulateMedia({reducedMotion: 'reduce'});
   await page.getByTestId('guided-reveal-stage').waitFor({state: 'detached'});
   await settle();
-  if (await page.locator('[data-reveal-results]').getAttribute('aria-hidden') === 'true') throw Error('interrupted reveal kept results hidden');
-  if (await page.locator('[data-reveal-results] [data-motion-item]').count() !== 6) throw Error('reduced-motion interruption lost results');
+  if (await page.locator('[data-motion-reveal-results]').getAttribute('aria-hidden') === 'true') throw Error('interrupted reveal kept results hidden');
+  if (await page.locator('[data-motion-reveal-results] [data-motion-item]').count() !== 6) throw Error('reduced-motion interruption lost results');
   checks.push({name: 'reduced-motion-during-reveal'});
   await page.emulateMedia({reducedMotion: 'no-preference'});
 
@@ -390,7 +404,7 @@ async page => {
   await page.goto(base); await settle(); await begin();
   await page.getByRole('button', {name: '为我定制', exact: true}).click();
   await finish('reduced-motion', false);
-  await page.getByRole('button', {name: '喝一杯 → 按口味找一杯喜欢的酒', exact: true}).click();
+  await page.getByRole('button', {name: '01 喝一杯 ↗ 按口味找一杯喜欢的酒', exact: true}).click();
   await submitGuided(); await settle();
   if (await page.getByTestId('guided-reveal-stage').count()) throw Error('reduced motion played a reveal');
   checks.push({name: 'reduced-motion-reveal'});

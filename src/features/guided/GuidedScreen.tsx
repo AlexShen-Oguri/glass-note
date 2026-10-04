@@ -552,7 +552,7 @@ function ResultsView({guided, locale, results, baseResultCount, allResultsHidden
           ) : null}
         </>
       ) : (
-        <View style={styles.empty}>
+        <View {...motionData({revealEmpty:''})} style={styles.empty}>
           <Text style={styles.emptyTitle}>{allResultsHidden ? contextText(locale, 'hiddenAllTitle') : pantryFiltered?g175(locale,'noMakeTitle'):t(locale, 'noResults')}</Text>
           <Text style={styles.emptyHint}>{allResultsHidden ? contextText(locale, 'hiddenAllHint') : pantryFiltered?g175(locale,'noMakeBody'):t(locale, 'guidedEmptyHint')}</Text>
           {pantryFiltered&&!allResultsHidden?<View style={styles.gateActions}>
@@ -562,7 +562,7 @@ function ResultsView({guided, locale, results, baseResultCount, allResultsHidden
           {allResultsHidden ? <Pressable accessibilityRole="button" onPress={()=>{setReplayKey(value=>value+1);onRestore();}} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{contextText(locale, 'restoreHidden')}</Text></Pressable> : null}
         </View>
       )}
-      <View style={styles.resultActions}>
+      <View {...motionData({revealActions:''})} style={styles.resultActions}>
         <Pressable accessibilityRole="button" onPress={() => dispatch({type: 'restart'})} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{t(locale, 'guidedRestart')}</Text></Pressable>
         <Link href="/ingredients" asChild>
           <Pressable accessibilityRole="link" style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{lib(locale, 'library')} ↗</Text></Pressable>
@@ -603,7 +603,7 @@ export default function GuidedScreen() {
     if(label){
       const inQuestion=guided.phase==='choosing'&&guided.mode!==null;
       const kind=label==='遇见'?'results':inQuestion&&['next','skip','back','review'].includes(action.type)?'step':direction<0?'back':'page';
-      run(()=>commitGuided(action),{label,direction,kind});
+      if(kind==='results')commitGuided(action);else run(()=>commitGuided(action),{label,direction,kind});
     }else commitGuided(action);
   },[commitGuided,guided.step,guided.phase,guided.mode,run]);
   const previousPhaseRef=useRef(guided.phase);
@@ -681,17 +681,15 @@ export default function GuidedScreen() {
         <View style={styles.shell}>
           <BrandToolbar {...{locale, setLocale, unit, setUnit, motionPaused, setMotionPaused}} showUnits={false} />
           <MotionTransition changeKey={`${mode}:${gate}:${guided.phase==='choosing'?`choosing:${guided.step}`:'reveal-results'}`} kind="step" disabled={!focused}>
-          {mode!==null?<View {...motionData({motionPart:'detail'})} style={styles.modeBar}>
+          {mode!==null?<View {...motionData({motionPart:'detail',motionModeBar:''})} style={styles.modeBar}>
             <Text style={styles.modeBarName}>{g175(locale,mode)}</Text>
             <Pressable accessibilityRole="button" onPress={()=>dispatchGuided({type:'set-mode',mode:null})} style={styles.modeChange}><Text style={styles.secondaryActionText}>{g175(locale,'changeMode')}</Text></Pressable>
           </View>:null}
           {fallbackActive?<Text accessibilityLiveRegion="polite" style={styles.fallbackNote}>{g175(locale,'fallbackNote')}</Text>:null}
           {mode===null?<ModeChoice locale={locale} dispatch={dispatchGuided} compact={compact}/>:gate?
             <PantryGate locale={locale} access={access} onContinue={()=>dispatchGuided({type:'allow-pantry-fallback'})} onDrink={()=>dispatchGuided({type:'set-mode',mode:'drink'})} onRetry={()=>{void pantry.retry();void (owned.error==='write'?owned.retrySave():owned.load());}}/>:
-          guided.phase === 'choosing' ? (
-            <ChoosingView guided={guided} dispatch={dispatchGuided} locale={locale} compact={compact} motionPaused={screenPaused} reduceMotion={reduceMotion} memorySettings={memorySettings} />
-          ) : (
-            <GuidedReveal revealing={guided.phase==='revealing'} motionAllowed={revealMotionAllowed} activeWindow={focused} locale={locale} candidates={revealCandidates} resultPhotoRefs={resultPhotoRefs} onFinish={()=>dispatchGuided({type:'finish'})}>
+          (
+            <GuidedReveal choosing={guided.phase==='choosing'} revealing={guided.phase==='revealing'} motionAllowed={revealMotionAllowed} activeWindow={focused} locale={locale} candidates={revealCandidates} resultPhotoRefs={resultPhotoRefs} onFinish={()=>dispatchGuided({type:'finish'})} departure={<ChoosingView guided={guided} dispatch={dispatchGuided} locale={locale} compact={compact} motionPaused={screenPaused} reduceMotion={reduceMotion} memorySettings={memorySettings}/>}>
               {(photoOpacity,skipAction)=><ResultsView skipAction={skipAction} guided={guided} locale={locale} results={results} baseResultCount={rankedResults.length} allResultsHidden={rankedResults.length > 0 && results.length === 0} compact={compact} dispatch={dispatchGuided} onHide={(cocktailId) => setHiddenResults((current) => current.includes(cocktailId) ? current : [...current, cocktailId])} onRestore={() => setHiddenResults([])} memorySettings={memorySettings} pantryFiltered={pantryFiltered} onPhotoRef={registerResultPhoto} photoOpacity={photoOpacity}/>}
             </GuidedReveal>
           )}
@@ -753,11 +751,11 @@ const styles = StyleSheet.create({
   shell: {width: '100%', maxWidth: 1500, alignSelf: 'center'},
   chooseLayout: {flexDirection: 'row', gap: 28, alignItems: 'stretch', paddingTop: 20},
   chooseLayoutShort:{paddingTop:0},
-  chooseLayoutCompact: {flexDirection: 'column', gap: 12, paddingTop: 8},
+  chooseLayoutCompact: {flexDirection: 'column', gap: 12, paddingTop: Platform.OS==='web'?285:8},
   questionPane: {flex: 1, maxWidth:920,minWidth: 0},
   questionPaneShort:{paddingVertical:0},
   questionPaneCompact: {paddingVertical: 0, paddingBottom: 20},
-  atmosphereSpace: {width:'25%',maxWidth:420},
+  atmosphereSpace: {width:'34%',maxWidth:500},
   stepLine: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12},
   progressLine:{width:'100%',maxWidth:860,flexDirection:'row',alignItems:'flex-start',gap:24},
   stepNumber: {color: colors.accent, fontFamily:Platform.OS==='web'?'Georgia, serif':Platform.OS==='ios'?'Georgia':'serif',fontStyle:'italic',fontSize:27,lineHeight:35},

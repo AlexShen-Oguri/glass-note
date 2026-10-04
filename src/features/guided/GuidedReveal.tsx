@@ -14,11 +14,13 @@ export interface GuidedRevealProps {
   candidates: GuidedRevealCandidate[];
   resultPhotoRefs: React.MutableRefObject<Map<string, View>>;
   onFinish: () => void;
+  departure?: React.ReactNode;
+  choosing?: boolean;
   children: (resultPhotoOpacity?: Animated.Value,skipAction?:React.ReactNode) => React.ReactNode;
 }
 
 /** Native presentation follows the same immediate, interruptible result handoff. */
-export function GuidedReveal({revealing, motionAllowed, activeWindow, children, locale, onFinish}: GuidedRevealProps) {
+export function GuidedReveal({revealing, choosing=false, departure, motionAllowed, activeWindow, children, locale, onFinish}: GuidedRevealProps) {
   const {ready,enabled:preferred}=useMotionStatus();
   const enabled = preferred && motionAllowed && activeWindow;
   const progress = useRef(new Animated.Value(1)).current;
@@ -33,6 +35,7 @@ export function GuidedReveal({revealing, motionAllowed, activeWindow, children, 
     setComplete(true);
   };
   useEffect(() => {
+    if(choosing){started.current=true;issued.current=false;setComplete(false);return;}
     if (!ready || !started.current || complete) return;
     if (!issued.current) {issued.current = true; finish.current();}
     if (!enabled) {finishOnce(); return;}
@@ -41,7 +44,8 @@ export function GuidedReveal({revealing, motionAllowed, activeWindow, children, 
     animation.current = tween;
     tween.start(({finished}) => {if (finished) finishOnce();});
     return () => {tween.stop(); animation.current = null;};
-  }, [ready, complete, enabled, progress]);
+  }, [choosing, ready, complete, enabled, progress]);
+  if(choosing)return <View>{departure}</View>;
   return <View style={styles.container}>
     <Animated.View testID="guided-results-layer" style={{opacity: progress.interpolate({inputRange: [0, 1], outputRange: [0.18, 1]}), transform: [{translateY: progress.interpolate({inputRange: [0, 1], outputRange: [24, 0]})}]}}>{children()}</Animated.View>
     {started.current && !complete ? <Pressable testID="guided-reveal-stage" accessibilityRole="button" onPress={() => {animation.current?.stop(); finishOnce();}} style={styles.skip}><Text style={styles.skipText}>{t(locale, 'guidedSkipAnimation')} →</Text></Pressable> : null}

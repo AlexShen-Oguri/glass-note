@@ -5,17 +5,19 @@ import {captureTitleDeparture,settleTitleDeparture} from './TitleDeparture.web';
 import type {SceneOptions} from './SceneTransition';
 
 type Run=(commit:()=>void,options?:SceneOptions)=>void;
-const Context=createContext<Run>(commit=>commit());
+type GlassReveal=(outgoing:HTMLElement,results:HTMLElement,onResults:()=>void,onComplete:()=>void)=>()=>void;
+const Context=createContext<{run:Run;glass:React.MutableRefObject<GlassReveal|null>}>({run:commit=>commit(),glass:{current:null}});
 /** 4188 commits immediately. Presentation hands old title pixels to the new scene. */
 export function SceneTransitionProvider({children}:{children:React.ReactNode}){
   const status=useMotionStatus(),enabled=useRef(status.enabled),lastAction=useRef(-Infinity),replay=useRef(false);
+  const glass=useRef<GlassReveal|null>(null);
   enabled.current=status.enabled;
   const run=useCallback<Run>((commit,{direction=1,kind='page',automatic=false}={})=>{
     // Only repeated user navigation is throttled. A successful persistence
     // result or restored completed session must always commit its presentation.
     const now=performance.now();if(!automatic&&now-lastAction.current<130)return;lastAction.current=now;
     if(enabled.current&&!document.hidden){
-      captureTitleDeparture(kind as RelayKind,direction);
+      if(kind==='step')settleTitleDeparture();else captureTitleDeparture(kind as RelayKind,direction);
       beginHandoff(kind as RelayKind,direction);
     }else {settleTitleDeparture();settleHandoff();releaseHandoff();}
     commit();
@@ -36,6 +38,7 @@ export function SceneTransitionProvider({children}:{children:React.ReactNode}){
     return ()=>{document.removeEventListener('click',click,true);document.removeEventListener('visibilitychange',visibility);window.removeEventListener('resize',settle);settle();};
   },[run]);
   useEffect(()=>{if(status.ready&&!status.enabled){settleTitleDeparture();settleHandoff();releaseHandoff();}},[status.ready,status.enabled]);
-  return <Context.Provider value={run}>{children}</Context.Provider>;
+  return <Context.Provider value={{run,glass}}>{children}</Context.Provider>;
 }
-export function useSceneTransition(){return {run:useContext(Context)};}
+export function useSceneTransition(){return {run:useContext(Context).run};}
+export function useGlassReveal(){return useContext(Context).glass;}

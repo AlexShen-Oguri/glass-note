@@ -22,7 +22,7 @@ export const makingStyles = StyleSheet.create({
   shelfHeader: {flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12, marginTop: 12},
   count: {color: colors.accent, fontFamily: serif, fontSize: 22},
   panel: {borderTopWidth: 1, borderBottomWidth: 1, borderColor: colors.border, borderRadius: 0, backgroundColor: 'transparent', paddingVertical: 24, gap: 16},
-  raisedPanel: {backgroundColor: colors.raised, borderColor: colors.accentDark},
+  raisedPanel: {paddingHorizontal:24,backgroundColor: colors.panel, borderColor: colors.border},
   warningPanel: {borderColor: colors.amber},
   errorPanel: {borderColor: colors.danger},
   grid: {flexDirection: 'row', alignItems: 'stretch', flexWrap: 'wrap', gap: 12},
