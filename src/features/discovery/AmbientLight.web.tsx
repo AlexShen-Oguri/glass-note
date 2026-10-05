@@ -65,7 +65,7 @@ export function AmbientLight({paused, reduceMotion = false}: AmbientLightProps) 
     let origin=0;
     const scroll=()=>{if(!latest.current.revealing)moveY(origin-scroller.scrollTop);};
     const measure=()=>{
-      const current=Array.from(scroller.querySelectorAll<HTMLElement>('[data-night-glass-anchor]')).find(livePart);
+      const current=latest.current.revealing?anchor:Array.from(scroller.querySelectorAll<HTMLElement>('[data-night-glass-anchor]')).find(livePart);
       if(!current)return;
       if(current!==anchor){
         resize.unobserve(anchor!);visible.unobserve(anchor!);anchor=current;
