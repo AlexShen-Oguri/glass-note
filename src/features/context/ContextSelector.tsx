@@ -32,7 +32,7 @@ function ContextChoice({label, selected, onPress}: {label: string; selected: boo
   );
 }
 
-export function ContextSelector({locale, value, onApply, description}: {locale: Locale; value: ContextSelection; onApply: (value: ContextSelection) => void; description?: string}) {
+export function ContextSelector({locale, value, onApply, description, editorial=false, compact=false}: {locale: Locale; value: ContextSelection; onApply: (value: ContextSelection) => void; description?: string;editorial?:boolean;compact?:boolean}) {
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState<ContextSelection>(value);
   const openEditor = () => {
@@ -51,22 +51,22 @@ export function ContextSelector({locale, value, onApply, description}: {locale: 
   const selectSeason = (season?: Season) => setDraft((current) => ({...current, season}));
 
   return (
-    <View style={styles.selector}>
+    <View style={[styles.selector,editorial&&styles.selectorEditorial]}>
       <Pressable
         aria-expanded={open}
         accessibilityRole="button"
         accessibilityState={{expanded: open}}
         onPress={open ? cancel : openEditor}
-        style={({pressed}) => [styles.disclosure, pressed && styles.pressed]}
+        style={({pressed}) => [styles.disclosure,editorial&&styles.disclosureEditorial,editorial&&compact&&styles.disclosureCompact, pressed && styles.pressed]}
       >
-        <View style={styles.disclosureCopy}>
+        <View style={[styles.disclosureCopy,editorial&&styles.disclosureCopyEditorial]}>
           <View style={styles.titleLine}>
-            <Text style={styles.title}>{contextText(locale, 'disclosureTitle')}</Text>
-            <Text style={styles.optional}>{contextText(locale, 'optional')}</Text>
+            <Text style={[styles.title,editorial&&styles.smallText]}>{contextText(locale, 'disclosureTitle')}</Text>
+            <Text style={[styles.optional,editorial&&styles.smallText]}>{contextText(locale, 'optional')}</Text>
           </View>
-          <Text style={styles.summary}>{selectionSummary(locale, value)}</Text>
+          <Text style={[styles.summary,editorial&&styles.summaryEditorial]}>{selectionSummary(locale, value)}</Text>
         </View>
-        <Text style={styles.disclosureAction}>{contextText(locale, open ? 'cancel' : 'change')}</Text>
+        <Text style={[styles.disclosureAction,editorial&&styles.smallText]}>{contextText(locale, open ? 'cancel' : 'change')} {editorial?'↗':''}</Text>
       </Pressable>
       {open ? (
         <View style={styles.editor}>
@@ -97,6 +97,12 @@ export function ContextSelector({locale, value, onApply, description}: {locale: 
 
 const styles = StyleSheet.create({
   selector: {width: '100%', marginTop: 20, borderTopWidth: 1, borderTopColor: colors.border, borderBottomWidth: 1, borderBottomColor: colors.border},
+  selectorEditorial:{maxWidth:820,marginTop:0,marginBottom:6},
+  disclosureEditorial:{minHeight:44,paddingVertical:8},
+  disclosureCompact:{minHeight:33,paddingVertical:5},
+  disclosureCopyEditorial:{flexDirection:'row',justifyContent:'space-between',alignItems:'baseline',gap:10,flexWrap:'wrap'},
+  smallText:{fontSize:11,lineHeight:18,fontWeight:'400',color:colors.muted},
+  summaryEditorial:{fontSize:11,lineHeight:18,marginTop:0,color:colors.accent},
   disclosure: {minHeight: 58, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 16, paddingVertical: 9},
   disclosureCopy: {flex: 1, minWidth: 0},
   titleLine: {flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', columnGap: 8, rowGap: 2},

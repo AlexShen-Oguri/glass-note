@@ -3,6 +3,7 @@ import {Animated,Easing,Platform,type StyleProp,type ViewStyle} from 'react-nati
 import {transitionDuration} from '../../domain/discovery/motion';
 import {useMotionEnabled} from './useMotionEnabled';
 export {useMotionEnabled} from './useMotionEnabled';
+export {MotionPhotoRelay} from './PhotoRelay';
 
 /** Keeps the existing subtree mounted; input and provider state never reset for a transition. */
 export function MotionTransition({children,changeKey,kind='page',style,disabled=false}: {
@@ -18,9 +19,9 @@ export function MotionTransition({children,changeKey,kind='page',style,disabled=
     progress.stopAnimation();
     if (!enabled||!changed) {progress.setValue(1);return;}
     progress.setValue(0);
-    const animation=Animated.timing(progress,{toValue:1,duration:transitionDuration[kind],easing:Easing.out(Easing.cubic),useNativeDriver:Platform.OS!=='web'});
+    const animation=Animated.timing(progress,{toValue:1,duration:kind==='step'?480:kind==='completion'?650:620,easing:Easing.out(Easing.cubic),useNativeDriver:Platform.OS!=='web'});
     animation.start();
     return ()=>animation.stop();
   },[changeKey,enabled,kind,progress]);
-  return <Animated.View style={[style,{opacity:progress,transform:[{translateY:progress.interpolate({inputRange:[0,1],outputRange:[4,0]})}]}]}>{children}</Animated.View>;
+  return <Animated.View style={[style,{opacity:progress.interpolate({inputRange:[0,1],outputRange:[0.18,1]}),transform:[{translateY:progress.interpolate({inputRange:[0,1],outputRange:[18,0]})}]}]}>{children}</Animated.View>;
 }

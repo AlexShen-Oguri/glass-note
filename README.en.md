@@ -10,7 +10,7 @@ Find a drink for tonight, make it with what you have, and remember what you enjo
 
 [Features](#features) · [Get started](#get-started) · [Local data](#local-data-and-backups) · [Development](#development-and-builds) · [Sources and licence](#sources-and-licence)
 
-[Open the website](https://glass-notes.pages.dev/) · [Download the Windows / macOS 0.1.10 preview](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.10)
+[Open the website](https://glass-notes.pages.dev/) · [Download the Windows / macOS 0.1.11 preview](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.11)
 
 Use it in a desktop or phone browser, or download the Windows or macOS app. No account is needed, and personal records stay on your device.
 
@@ -196,7 +196,7 @@ See [architecture](docs/ARCHITECTURE.md), [hosting](docs/HOSTING.md) and [contri
 
 ## Releases and feedback
 
-The current desktop version is the 0.1.10 public preview. See the [release notes and checksums](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.10) for version details, tested scope and download verification.
+The current desktop version is the 0.1.11 public preview. See the [release notes and checksums](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.11) for version details, tested scope and download verification.
 
 For ordinary bug reports, include reproduction steps, platform and version. Do not attach personal backups, credentials or private information.
 

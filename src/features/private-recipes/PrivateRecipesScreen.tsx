@@ -1,3 +1,4 @@
+import {Heading} from '../navigation/Heading';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 import {router, useLocalSearchParams} from 'expo-router';
@@ -128,7 +129,7 @@ function RecipeList({locale, recipes}: {locale: Locale; recipes: PrivateRecipe[]
   const [query, setQuery] = useState('');
   const shown = useMemo(() => searchPrivateRecipes(recipes, query), [query, recipes]);
   return <>
-    <View style={styles.hero}><Text style={styles.kicker}>{text(locale, 'privateLabel')}</Text><Text accessibilityRole="header" style={styles.title}>{text(locale, 'title')}</Text><Text style={styles.body}>{text(locale, 'intro')}</Text></View>
+    <View style={styles.hero}><Text style={styles.kicker}>{text(locale, 'privateLabel')}</Text><Heading level={1} style={styles.title}>{text(locale, 'title')}</Heading><Text style={styles.body}>{text(locale, 'intro')}</Text></View>
     <View style={styles.actionRow}>
       <Action selected label={`＋ ${text(locale, 'newOriginal')}`} onPress={() => router.push({pathname: '/my-recipes' as never, params: {create: 'original'}})} />
       <Action label={text(locale, 'adaptFromLibrary')} onPress={() => router.push('/discover' as never)} />
@@ -182,7 +183,7 @@ function RecipeDetails({recipe, locale, onBack}: {recipe: PrivateRecipe; locale:
     catch { setError(text(locale, 'failed')); setDeleting(false); }
   };
   return <>
-    <View style={styles.hero}><Text style={styles.kicker}>{text(locale, 'privateLabel')}</Text><Text accessibilityRole="header" style={styles.title}>{revision.content.title}</Text>{revision.content.description ? <Text style={styles.body}>{revision.content.description}</Text> : null}</View>
+    <View style={styles.hero}><Text style={styles.kicker}>{text(locale, 'privateLabel')}</Text><Heading level={1} style={styles.title}>{revision.content.title}</Heading>{revision.content.description ? <Text style={styles.body}>{revision.content.description}</Text> : null}</View>
     <View style={styles.actionRow}><Action selected label={text(locale, 'edit')} onPress={() => setEditing({content: revision.content, basedOnRevisionId: revision.id})} /><Action quiet danger label={text(locale, 'delete')} onPress={() => setConfirming(true)} /><Action quiet label={text(locale, 'back')} onPress={onBack} /></View>
     {confirming ? <Panel title={text(locale, 'confirmDelete')}><Text style={styles.body}>{revision.content.title} · {recipe.revisions.length} {text(locale, 'revisions')}</Text><Text style={styles.error}>{text(locale, 'deleteImpact')}</Text><View style={styles.actionRow}><Action danger disabled={deleting} label={deleting ? text(locale, 'saving') : text(locale, pendingDelete.current ? 'retry' : 'delete')} onPress={() => void remove()} /><Action quiet disabled={deleting} label={text(locale, 'cancel')} onPress={() => setConfirming(false)} /></View></Panel> : null}
     {error ? <Text accessibilityRole="alert" style={styles.error}>{error}</Text> : null}
@@ -238,7 +239,7 @@ function RecipeEditor({locale, initial, origin, saving, onSave, onCancel}: {loca
   };
   const method = content.steps.length ? content.steps.join('\n') : content.method;
   return <>
-    <View style={styles.hero}><Text style={styles.kicker}>{originLabel(locale, capturedOrigin)}</Text><Text accessibilityRole="header" style={styles.title}>{content.title || text(locale, 'newOriginal')}</Text></View>
+    <View style={styles.hero}><Text style={styles.kicker}>{originLabel(locale, capturedOrigin)}</Text><Heading level={1} style={styles.title}>{content.title || text(locale, 'newOriginal')}</Heading></View>
     <Panel>
       <EditorField label={text(locale, 'name')} value={content.title} onChange={title => setContent(current => ({...current, title}))} />
       <EditorField label={text(locale, 'description')} value={content.description} multiline onChange={description => setContent(current => ({...current, description}))} />
@@ -285,9 +286,9 @@ function formatDateTime(value: string, locale: Locale) {
 }
 
 const styles = StyleSheet.create({
-  screen: {flex: 1, backgroundColor: colors.background},
-  page: {minHeight: '100%', paddingHorizontal: 18, paddingBottom: 100},
-  shell: {width: '100%', maxWidth: 960, alignSelf: 'center', gap: 16},
+  screen: {flex: 1, backgroundColor: 'transparent'},
+  page: {minHeight: '100%', paddingHorizontal: 26, paddingBottom: 100},
+  shell: {width: '100%', maxWidth: 1140, alignSelf: 'center', gap: 16},
   backRow: {alignItems: 'flex-start'},
   hero: {paddingVertical: 20, gap: 8, maxWidth: 720},
   kicker: {color: colors.accent, fontSize: 10, lineHeight: 15, fontWeight: '800', letterSpacing: 1.5, textTransform: 'uppercase'},
@@ -300,7 +301,7 @@ const styles = StyleSheet.create({
   actionRow: {flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 10},
   search: {minHeight: 50, paddingHorizontal: 15, borderWidth: 1, borderColor: colors.border, borderRadius: radii.small, backgroundColor: colors.panel, color: colors.text, fontSize: 15},
   cards: {gap: 10},
-  card: {minHeight: 108, padding: 18, borderWidth: 1, borderColor: colors.border, borderRadius: radii.medium, backgroundColor: colors.panel, flexDirection: 'row', alignItems: 'center', gap: 16},
+  card: {minHeight: 120, paddingVertical: 24, borderBottomWidth: 1, borderColor: colors.border, borderRadius: 0, backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center', gap: 16},
   cardCopy: {flex: 1, minWidth: 0},
   cardTitle: {color: colors.text, fontFamily: serif, fontSize: 23, lineHeight: 29},
   cardDescription: {color: colors.secondary, fontSize: 13, lineHeight: 20, marginTop: 4},

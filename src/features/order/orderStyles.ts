@@ -3,9 +3,10 @@ import {colors,radii} from '../../theme/tokens';
 import {serif} from '../discovery/components';
 
 export const orderStyles=StyleSheet.create({
+  previewPanel:{width:'100%',maxWidth:760,alignSelf:'flex-start'},
   previewWrap:{width:'100%',alignItems:'center'},
-  visualCard:{width:'100%',maxWidth:640,alignSelf:'center',gap:18,padding:22,borderWidth:1,borderColor:colors.accentDark,borderRadius:radii.medium,backgroundColor:colors.raised},
-  visualTitle:{fontFamily:serif,fontSize:30,lineHeight:38,color:colors.text},
+  visualCard:{width:'100%',maxWidth:640,alignSelf:'center',gap:24,padding:28,borderWidth:1,borderColor:colors.accentDark,borderRadius:radii.medium,backgroundColor:colors.raised},
+  visualTitle:{fontFamily:serif,fontSize:40,lineHeight:50,color:colors.text},
   visualOriginalTitle:{color:colors.muted,fontSize:13,lineHeight:20,marginTop:-12},
   visualSection:{gap:9},
   visualSectionLabel:{fontSize:10,lineHeight:15,fontWeight:'800',letterSpacing:1.3,textTransform:'uppercase',color:colors.accent},
@@ -19,10 +20,10 @@ export const orderStyles=StyleSheet.create({
   sourceTitle:{color:colors.secondary,fontSize:12,lineHeight:18},
   sourceVersion:{color:colors.muted,fontSize:12,lineHeight:18},
   sourceUrl:{color:colors.accent,fontSize:11,lineHeight:17,textDecorationLine:'underline',textDecorationColor:colors.accent},
-  previewActions:{width:'100%',maxWidth:640,flexDirection:'row',alignItems:'center',flexWrap:'wrap',gap:9,marginTop:14},
-  viewRecipe:{width:'100%',maxWidth:640,minHeight:44,justifyContent:'center',alignItems:'center',paddingHorizontal:12},
+  previewActions:{width:'100%',maxWidth:640,alignSelf:'center',flexDirection:'row',alignItems:'center',flexWrap:'wrap',gap:9,marginTop:14},
+  viewRecipe:{width:'100%',maxWidth:640,alignSelf:'center',minHeight:44,justifyContent:'center',alignItems:'flex-start',paddingHorizontal:0},
   viewRecipeText:{color:colors.accent,fontSize:13,lineHeight:19,fontWeight:'700',textAlign:'center'},
-  detailsWrap:{width:'100%',maxWidth:640,marginTop:4,padding:16,borderTopWidth:1,borderTopColor:colors.border,backgroundColor:colors.background},
+  detailsWrap:{width:'100%',maxWidth:640,alignSelf:'center',marginTop:4,padding:16,borderTopWidth:1,borderTopColor:colors.border,backgroundColor:colors.background},
   detailsText:{color:colors.secondary,fontSize:13,lineHeight:21},
   modalBackdrop:{flex:1,backgroundColor:'rgba(4,8,6,0.78)',alignItems:'center',justifyContent:'center',padding:24},
   modalBackdropCompact:{padding:14},

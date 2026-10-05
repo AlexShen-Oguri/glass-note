@@ -3,6 +3,7 @@ import {CocktailOriginalName} from '../names/OriginalName';
 import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {
   Linking,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -10,7 +11,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import {Link, useFocusEffect, useLocalSearchParams} from 'expo-router';
+import {Link, useFocusEffect, useIsFocused, useLocalSearchParams} from 'expo-router';
 import {ListBrowseAddButton, ListBrowseSelection} from '../favorites/ListBrowseSelection';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
@@ -18,7 +19,7 @@ import {ingredientTaxonomy} from '../../content/ingredients';
 import {Fold} from '../workspace/ui';
 import {catalogue} from '../../content/catalogue';
 import type {Cocktail, Locale, SearchQuery, SearchResult} from '../../domain/contracts';
-import {createDiscoveryRows, getDiscoveryColumnCount} from '../../domain/discovery/layout';
+import {createDiscoveryRows} from '../../domain/discovery/layout';
 import {
   type DiscoveryPaginationState,
   discoveryQueryFingerprint,
@@ -34,7 +35,7 @@ import {useApp} from '../../platform/AppProvider';
 import {colors, radii} from '../../theme/tokens';
 import {BrandToolbar, PhotoFrame, serif, useReduceMotion, useViewport} from './components';
 import FilterSheet from './FilterSheet';
-import {MotionTransition} from '../motion';
+import {MotionTransition, useMotionEnabled} from '../motion';
 import {FavoriteButton} from '../favorites/FavoriteButton';
 import {favoriteCopy} from '../../i18n/favorites';
 import {SelectionChip} from './components';
@@ -57,13 +58,21 @@ function CocktailCard({
   result,
   locale,
   listId,
+  index,
+  photoHeight,
+  compact,
 }: {
   cocktail: Cocktail;
   result: SearchResult;
   locale: Locale;
   listId?: string;
+  index: number;
+  photoHeight: number;
+  compact: boolean;
 }) {
   const asset = media[cocktail.id];
+  const [hovered, setHovered] = useState(false);
+  const motionEnabled = useMotionEnabled();
   const origin = catalogue.versions.find(version => version.id === result.selectedVersionId)?.origin;
   return (
     <View {...motionData({motionItem: cocktail.id})} style={styles.cardCellContent}>
@@ -77,17 +86,24 @@ function CocktailCard({
         <Pressable
           accessibilityRole="link"
           accessibilityLabel={`${cocktail.name[locale]}. ${t(locale, 'viewRecipe')}`}
-          style={styles.card}
+          onHoverIn={() => setHovered(true)}
+          onHoverOut={() => setHovered(false)}
+          style={({pressed}) => [styles.card, hovered && styles.cardHovered, pressed && styles.pressed]}
         >
-          <PhotoFrame asset={asset} accent={cocktail.accent} locale={locale} height={260} preserveAspect borderRadius={radii.medium} />
+          <View {...motionData({motionPhoto: cocktail.id})} style={styles.cardPhoto}>
+            <View {...motionData({motionPhotoHover:'owned'})} style={[styles.cardPhotoSurface, Platform.OS === 'web' && motionEnabled && styles.cardPhotoMotion, hovered && motionEnabled && styles.cardPhotoHovered]}>
+              <PhotoFrame asset={asset} accent={cocktail.accent} locale={locale} height={photoHeight} borderRadius={0} />
+            </View>
+            <Text aria-hidden style={styles.cardNumber}>{String(index + 1).padStart(2, '0')}</Text>
+          </View>
           <View style={styles.cardCopy}>
+            <Text style={[styles.cardTitle, compact && styles.cardTitleCompact]}>{cocktail.name[locale]}</Text><CocktailOriginalName cocktail={cocktail} locale={locale} />
             <Text style={styles.cardCategory}>{origin ? recipeCategoryText(locale,origin.kind) : t(locale, cocktail.category as UiKey)}</Text>
-            <Text style={styles.cardTitle}>{cocktail.name[locale]}</Text><CocktailOriginalName cocktail={cocktail} locale={locale} />
           </View>
         </Pressable>
       </Link>
       {listId ? <ListBrowseAddButton key={result.selectedVersionId} listId={listId} versionId={result.selectedVersionId} locale={locale} /> : null}
-      <View style={{position: 'absolute', top: 10, right: 10}}>
+      <View style={[styles.cardFavorite, {top: photoHeight + (compact ? 12 : 15)}]}>
         <FavoriteButton versionId={result.selectedVersionId} locale={locale} compact />
       </View>
       {asset?.origin === 'ai-generated' || asset?.origin === 'ai-styled' ? null : asset ? <Text style={styles.credit}>{asset.author}{asset.license ? ` · ${asset.license}` : ''}</Text> : null}
@@ -96,6 +112,7 @@ function CocktailCard({
 }
 
 export default function DiscoveryScreen() {
+  const focused=useIsFocused();
   const params = useLocalSearchParams<{listId?: string | string[]}>();
   const listId = (Array.isArray(params.listId) ? params.listId[0] : params.listId) || undefined;
   const {locale, setLocale, unit, setUnit, query, setQuery, motionPaused, setMotionPaused} = useApp();
@@ -121,7 +138,12 @@ export default function DiscoveryScreen() {
     ? pagination
     : paginationForQuery(undefined, query, locale);
   const visibleResults = results.slice(0, activePagination.limit);
-  const columns = getDiscoveryColumnCount(width);
+  const compact = width <= 700;
+  const gutter = Math.round(width * (compact ? 0.07 : 0.061));
+  const columns = compact ? 2 : 3;
+  const columnGap = compact ? 14 : 27;
+  const photoHeight = compact ? 175 : width <= 1100 ? 200 : 250;
+  const titleSize = compact ? 51 : Math.min(97, Math.max(58, width * 0.061));
   const cardData = visibleResults.flatMap((result) => {
     const cocktail = catalogue.cocktails.find((item) => item.id === result.cocktailId);
     return cocktail ? [{cocktail, result}] : [];
@@ -167,7 +189,7 @@ export default function DiscoveryScreen() {
     <SafeAreaView style={styles.screen} edges={['top']}>
       <ScrollView
         ref={scrollRef}
-        contentContainerStyle={styles.page}
+        contentContainerStyle={[styles.page, {paddingHorizontal: gutter}]}
         keyboardShouldPersistTaps="handled"
         scrollEventThrottle={80}
         onScroll={(event) => {
@@ -179,13 +201,15 @@ export default function DiscoveryScreen() {
       >
         <View style={styles.shell}>
           <BrandToolbar {...{locale, setLocale, unit, setUnit, motionPaused, setMotionPaused}} showUnits={false} />
-          {listId ? <ListBrowseSelection listId={listId} locale={locale} /> : <Heading level={1} style={[styles.pageTitle, width < 520 && styles.pageTitleCompact]}>{p02DiscoveryText(locale, 'collectionTitle')}</Heading>}
-          <View style={styles.collectionFilters}>
-            {(['all','classic','competition','bar'] as const).map(category=><SelectionChip key={category} label={recipeCategoryText(locale,category)} selected={category==='all'?!query.recipeCategory:query.recipeCategory===category} onPress={()=>setQuery({...query,recipeCategory:category==='all'?undefined:category})}/>)}
+          <View {...motionData({sceneContent:''})}>
+          <View {...motionData({motionPart: 'title'})} style={styles.collectionHeading}>
+            <View {...motionData({motionPart:'kicker'})} style={styles.editionLine}><View style={styles.editionRule} /><Text style={[styles.editionText, compact && styles.editionTextCompact]}>THE COLLECTION / OPEN TO DISCOVERY</Text></View>
+            {listId ? <ListBrowseSelection listId={listId} locale={locale} /> : <Heading level={1} style={[styles.pageTitle, {fontSize: titleSize, lineHeight: titleSize * (compact ? 1.22 : 1.13), letterSpacing: titleSize * -0.065}, compact && styles.pageTitleCompact]}>{locale === 'zh' ? '随便逛逛，慢慢遇见。' : t(locale, 'browseMode')}</Heading>}
+            <Text {...motionData({motionPart:'detail'})} style={[styles.collectionLead, compact && styles.collectionLeadCompact]}>{locale === 'zh' ? '酒单　·　每一杯，都有自己的故事。' : p02DiscoveryText(locale, 'collectionTitle')}</Text>
           </View>
-          <View style={styles.searchPanel}>
+          <View {...motionData({motionSearch: ''})} style={styles.searchPanel}>
               <View style={[styles.searchField, searchFocused && styles.searchFieldFocused]}>
-                <Text style={styles.searchGlyph}>⌕</Text>
+                <Text aria-hidden style={styles.searchGlyph}>⌕</Text>
                 <TextInput
                   accessibilityLabel={t(locale, 'searchPlaceholder')}
                   autoCapitalize="none"
@@ -196,25 +220,33 @@ export default function DiscoveryScreen() {
                   }}
                   onBlur={() => setSearchFocused(false)}
                   onFocus={() => setSearchFocused(true)}
-                  placeholder={t(locale, 'searchPlaceholder')}
+                  placeholder={locale === 'zh' ? '一杯鸡尾酒、一种基酒，或新的心头好…' : t(locale, 'searchPlaceholder')}
                   placeholderTextColor={colors.muted}
                   returnKeyType="search"
-                  style={styles.searchInput}
+                  style={[styles.searchInput, compact && styles.searchInputCompact]}
                   value={query.text ?? ''}
                 />
               </View>
               <Pressable ref={filterTriggerRef as never} aria-expanded={filterOpen} accessibilityRole="button" accessibilityState={{expanded: filterOpen}} accessibilityLabel={p02DiscoveryText(locale, 'filters')} onPress={openFilters} style={({pressed}) => [styles.filterButton, pressed && styles.pressed]}>
-                <Text style={styles.filterIcon}>≋</Text>
                 <Text numberOfLines={1} style={styles.filterButtonText}>{p02DiscoveryText(locale, 'filters')}</Text>
+                <Text aria-hidden style={styles.filterIcon}>↗</Text>
                 {preferenceCount(query) > 0 ? <View style={styles.filterCount}><Text style={styles.filterCountText}>{preferenceCount(query)}</Text></View> : null}
               </Pressable>
+              <Link href="/ingredients" asChild>
+                <Pressable accessibilityRole="link" style={styles.searchLibrary}>
+                  <Text style={styles.filterButtonText}>{p02DiscoveryText(locale, 'ingredientLibrary')}</Text>
+                </Pressable>
+              </Link>
+          </View>
+          <View style={[styles.categoryTabs, compact && styles.categoryTabsCompact]}>
+            {(['all', 'classic', 'competition', 'bar'] as const).map(category => {
+              const selected = category === 'all' ? !query.recipeCategory : query.recipeCategory === category;
+              return <Pressable key={category} accessibilityRole="button" accessibilityState={{selected}} aria-pressed={selected}
+                onPress={() => setQuery({...query, recipeCategory: category === 'all' ? undefined : category})}
+                style={[styles.categoryTab, selected && styles.categoryTabActive]}><Text style={[styles.categoryTabText, selected && styles.categoryTabTextActive]}>{recipeCategoryText(locale, category)}</Text></Pressable>;
+            })}
           </View>
           <View style={styles.secondaryActions}>
-            <Link href="/ingredients" asChild>
-              <Pressable accessibilityRole="link" style={styles.secondaryLink}>
-                <Text style={styles.secondaryLinkText}>{p02DiscoveryText(locale, 'ingredientLibrary')}</Text>
-              </Pressable>
-            </Link>
             <Pressable
               aria-expanded={collectionsOpen}
               accessibilityRole="button"
@@ -235,7 +267,7 @@ export default function DiscoveryScreen() {
           ) : null}
           {!filtered && !listId ? <ContextPicks locale={locale} query={query} /> : null}
           <View style={styles.resultsHeader}>
-            <View>
+            <View style={styles.resultsHeadingLine}>
               <Heading level={2} style={styles.resultsEyebrow}>{filtered ? t(locale, 'topPicks') : t(locale, 'explore')}</Heading>
               <Text style={styles.resultsTitle}>{p02ResultCount(locale, visibleResults.length, results.length)}</Text>
             </View>
@@ -243,20 +275,20 @@ export default function DiscoveryScreen() {
               <Pressable accessibilityRole="button" onPress={clearFilters} style={styles.clearButton}>
                 <Text style={styles.clearText}>{t(locale, 'clear')}</Text>
               </Pressable>
-            ) : null}
+            ) : <Text style={styles.collectionSignature}>GLASS NOTES / THE COLLECTION</Text>}
           </View>
 
           {filtered && results.length > 0 && !hasClassic && !query.recipeCategory ? (
             <View style={styles.notice}><Text style={styles.noticeText}>{t(locale, 'noClassics')}</Text></View>
           ) : null}
 
-          <MotionTransition changeKey={`${fingerprint}:${activePagination.limit}`} kind="card" disabled={Boolean(query.text)}>{results.length ? (
+          <MotionTransition changeKey={`${fingerprint}:${activePagination.limit}`} kind="card" disabled={!focused||Boolean(query.text)}>{results.length ? (
             <View style={styles.grid}>
               {resultRows.map((items, rowIndex) => (
-                <View key={items[0]?.cocktail.id ?? `row-${rowIndex}`} style={styles.gridRow}>
-                  {items.map(({cocktail, result}) => (
-                    <View key={cocktail.id} style={styles.gridCell}>
-                      <CocktailCard {...{cocktail, result, locale, listId}} />
+                <View key={items[0]?.cocktail.id ?? `row-${rowIndex}`} style={[styles.gridRow, {gap: columnGap}]}>
+                  {items.map(({cocktail, result}, columnIndex) => (
+                    <View key={cocktail.id} style={[styles.gridCell, {paddingTop: columnIndex * (compact ? 35 : 43)}]}>
+                      <CocktailCard {...{cocktail, result, locale, listId, photoHeight, compact}} index={rowIndex * columns + columnIndex} />
                     </View>
                   ))}
                   {Array.from({length: columns - items.length}, (_, spacerIndex) => (
@@ -289,6 +321,7 @@ export default function DiscoveryScreen() {
           ) : null}
           <View style={styles.endMark}><View style={styles.endRule} /><View style={styles.endLogo}><BrandMark size={20} decorative /></View><View style={styles.endRule} /></View>
           <Fold title={t(locale,'credits')}><Pressable accessibilityRole="link" onPress={()=>void Linking.openURL(ingredientTaxonomy.url)} style={styles.secondaryLink}><Text style={styles.secondaryLinkText}>{ingredientTaxonomy.title} ↗</Text></Pressable><Pressable accessibilityRole="link" onPress={()=>void Linking.openURL(ingredientTaxonomy.licenseUrl)} style={styles.secondaryLink}><Text style={styles.secondaryLinkText}>{ingredientTaxonomy.license} ↗</Text></Pressable></Fold>
+          </View>
         </View>
       </ScrollView>
       <FilterSheet visible={filterOpen} locale={locale} draft={draft} onChange={setDraft} onApply={applyFilters} onReset={resetFilters} onClose={closeFilters} pauseMotion={motionPaused || reduceMotion} />
@@ -298,53 +331,78 @@ export default function DiscoveryScreen() {
 
 const styles = StyleSheet.create({
   screen: {flex: 1, backgroundColor: 'transparent'},
-  page: {minHeight: '100%', paddingHorizontal: 18, paddingBottom: 56},
-  shell: {width: '100%', maxWidth: 1400, alignSelf: 'center'},
-  pageTitle: {color: colors.text, fontFamily: serif, fontSize: 34, lineHeight: 40, letterSpacing: -0.7, marginTop: 22, marginBottom: 14},
-  pageTitleCompact: {fontSize: 30, lineHeight: 36, marginTop: 16},
-  searchPanel: {width: '100%', flexDirection: 'row', gap: 10},
-  searchField: {height: 54, flex: 1, flexDirection: 'row', alignItems: 'center', gap: 9, borderRadius: radii.pill, backgroundColor: colors.panel, borderWidth: 1, borderColor: colors.border, paddingHorizontal: 18},
-  searchFieldFocused: {borderColor: colors.accent, outlineColor: colors.accent, outlineStyle: 'solid', outlineWidth: 2, outlineOffset: 2} as never,
-  searchGlyph: {color: colors.accent, fontSize: 24, marginTop: -3},
-  searchInput: {flex: 1, minWidth: 0, height: 52, color: colors.text, fontSize: 16},
-  filterButton: {height: 54, minWidth: 96, paddingHorizontal: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7, backgroundColor: colors.accent, borderRadius: radii.pill},
-  filterIcon: {color: colors.background, fontSize: 20, transform: [{rotate: '90deg'}]},
-  filterButtonText: {color: colors.background, fontSize: 14, fontWeight: '800'},
-  filterCount: {width: 20, height: 20, alignItems: 'center', justifyContent: 'center', borderRadius: 10, backgroundColor: colors.background},
+  page: {minHeight: '100%', paddingBottom: 80},
+  shell: {width: '100%', maxWidth: 1600, alignSelf: 'center'},
+  collectionHeading: {marginTop: 35},
+  editionLine: {flexDirection: 'row', alignItems: 'center', gap: 14},
+  editionRule: {width: 32, height: 1, backgroundColor: colors.accent},
+  editionText: {color: colors.accent, fontSize: 10, letterSpacing: 2.5},
+  editionTextCompact: {fontSize: 8, letterSpacing: 1.35},
+  pageTitle: {color: colors.text, fontFamily: serif, fontWeight: '400', marginTop: 14, marginBottom: 10},
+  pageTitleCompact: {marginTop: 19},
+  collectionLead: {color: colors.secondary, fontSize: 12, lineHeight: 20},
+  collectionLeadCompact: {fontSize: 11},
+  searchPanel: {width: '100%', flexDirection: 'row', alignItems:'center',gap: 24, marginTop: 29,borderBottomWidth:1,borderBottomColor:colors.accent},
+  searchField: {height: 64, flex: 1, flexDirection: 'row', alignItems: 'center', gap: 18, paddingHorizontal: 2},
+  searchFieldFocused: {borderBottomColor: colors.text, outlineColor: colors.accent, outlineStyle: 'solid', outlineWidth: 2, outlineOffset: 4} as never,
+  searchGlyph: {color: colors.text, fontSize: 20, marginTop: -3},
+  searchInput: {flex: 1, minWidth: 0, height: 64, color: colors.text, fontSize: 15},
+  searchInputCompact: {fontSize: 11,height:54},
+  filterButton: {minHeight: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5},
+  filterIcon: {color: colors.secondary, fontSize: 13},
+  filterButtonText: {color: colors.secondary, fontSize: 11},
+  searchLibrary: {minHeight:44, justifyContent:'center'},
+  filterCount: {width: 18, height: 18, alignItems: 'center', justifyContent: 'center', borderRadius: 10, backgroundColor: colors.panel},
   filterCountText: {color: colors.accent, fontSize: 10, fontWeight: '800'},
-  secondaryActions: {minHeight: 46, flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 4, marginTop: 4},
-  secondaryLink: {minHeight: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 10, gap: 7},
-  secondaryLinkText: {color: colors.accent, fontSize: 13, lineHeight: 18, fontWeight: '700'},
+  categoryTabs: {flexDirection:'row',flexWrap:'wrap',columnGap:30,rowGap:4,marginTop:16},
+  categoryTabsCompact: {columnGap:18,marginTop:10},
+  categoryTab: {minHeight:44,justifyContent:'center',borderBottomWidth:1,borderBottomColor:'transparent'},
+  categoryTabActive: {borderBottomColor:colors.accent},
+  categoryTabText: {color:colors.secondary,fontSize:11},
+  categoryTabTextActive: {color:colors.accent},
+  secondaryActions: {minHeight: 44, flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 20, marginTop: 12},
+  secondaryLink: {minHeight: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 2, gap: 7},
+  secondaryLinkText: {color: colors.accent, fontSize: 13, lineHeight: 18},
   secondaryCount: {minWidth: 20, height: 20, borderRadius: 10, paddingHorizontal: 5, textAlign: 'center', color: colors.background, backgroundColor: colors.accent, fontSize: 11, lineHeight: 20, fontWeight: '800'},
-  collectionFilters: {flexDirection: 'row', flexWrap: 'wrap', gap: 8, paddingVertical: 10},
-  resultsHeader: {minHeight: 70, paddingVertical: 15, borderTopWidth: 1, borderTopColor: colors.border, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'},
-  resultsEyebrow: {color: colors.text, fontFamily: serif, fontSize: 19},
-  resultsTitle: {color: colors.muted, fontSize: 12, marginTop: 4},
+  collectionFilters: {flexDirection: 'row', flexWrap: 'wrap', gap: 10, paddingVertical: 10},
+  resultsHeader: {minHeight: 42, marginTop: 28, paddingBottom:16,borderBottomWidth:1,borderBottomColor:colors.border,flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',gap:12},
+  resultsHeadingLine: {flexDirection:'row',alignItems:'center',flexWrap:'wrap',gap:14},
+  resultsEyebrow: {color: colors.secondary, fontSize: 11, lineHeight: 18, fontWeight: '400'},
+  resultsTitle: {color: colors.secondary, fontSize: 11, letterSpacing: 0.2},
+  collectionSignature: {color:colors.secondary,fontSize:9,letterSpacing:0.4,flexShrink:1},
   clearButton: {minHeight: 44, justifyContent: 'center', paddingHorizontal: 12},
-  clearText: {color: colors.accent, fontSize: 14, fontWeight: '700'},
+  clearText: {color: colors.accent, fontSize: 14},
   notice: {marginBottom: 6, borderLeftWidth: 2, borderLeftColor: colors.amber, paddingVertical: 11, paddingHorizontal: 14, backgroundColor: colors.panel},
   noticeText: {color: colors.secondary, fontSize: 14, lineHeight: 20},
-  grid: {gap: 24, paddingVertical: 32},
-  gridRow: {flexDirection: 'row', gap: 14, alignItems: 'stretch'},
-  gridCell: {flex: 1},
+  grid: {gap: 42, paddingTop: 22, paddingBottom: 32},
+  gridRow: {flexDirection: 'row', alignItems: 'flex-start'},
+  gridCell: {flex: 1, minWidth: 0},
   gridSpacer: {flex: 1},
   cardCellContent: {flex: 1},
-  card: {flex: 1, backgroundColor: colors.panel, borderRadius: radii.medium, borderWidth: 1, borderColor: colors.border, overflow: 'hidden'},
-  cardCopy: {flex: 1, paddingHorizontal: 15, paddingTop: 13, paddingBottom: 16},
-  cardCategory: {color: colors.accent, fontSize: 12, fontWeight: '800', letterSpacing: 0.8, textTransform: 'uppercase', flexShrink: 1},
-  cardTitle: {color: colors.text, fontFamily: serif, fontSize: 22, lineHeight: 27, marginTop: 9},
-  credit: {color: colors.muted, fontSize: 12, lineHeight: 17, marginTop: 7, marginHorizontal: 4},
-  emptyState: {minHeight: 350, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: colors.border, borderRadius: radii.large, padding: 30},
+  card: {flex: 1, backgroundColor: 'transparent'},
+  cardHovered: {opacity:1},
+  cardPhoto: {width: '100%',overflow:'hidden'},
+  cardPhotoSurface: {width:'100%'},
+  cardPhotoMotion: {transitionProperty:'transform',transitionDuration:'1.2s',transitionTimingFunction:'cubic-bezier(.22,1,.36,1)'} as never,
+  cardPhotoHovered: {transform:[{scale:1.07}]},
+  cardNumber: {position: 'absolute', top: 10, left: 15, color: colors.text, fontFamily: Platform.OS==='web'?'Georgia,serif':serif, fontStyle: 'italic', fontSize: 19, textShadowColor: colors.background, textShadowRadius: 8},
+  cardFavorite: {position: 'absolute',right:0},
+  cardCopy: {paddingTop: 15, paddingRight:52,minHeight:96},
+  cardCategory: {color: colors.muted, fontSize: 9, lineHeight: 14, letterSpacing: 0.7,marginTop:5,textTransform: 'uppercase', flexShrink: 1},
+  cardTitle: {color: colors.text, fontFamily: serif, fontSize: 27, lineHeight: 35, fontWeight: '400'},
+  cardTitleCompact: {fontSize: 21, lineHeight: 28},
+  credit: {color: colors.muted, fontSize: 12, lineHeight: 17, marginTop: 7},
+  emptyState: {minHeight: 350, alignItems: 'center', justifyContent: 'center', borderTopWidth: 1, borderBottomWidth: 1, borderColor: colors.border, padding: 30},
   emptyOrnament: {color: colors.accent, fontSize: 25},
-  emptyTitle: {color: colors.text, fontFamily: serif, fontSize: 27, marginTop: 14, textAlign: 'center'},
+  emptyTitle: {color: colors.text, fontFamily: serif, fontSize: 36, lineHeight: 43, marginTop: 14, textAlign: 'center'},
   emptyHint: {color: colors.secondary, fontSize: 14, lineHeight: 21, maxWidth: 400, textAlign: 'center', marginTop: 9},
-  emptyButton: {minHeight: 48, borderRadius: radii.pill, backgroundColor: colors.accent, paddingHorizontal: 20, alignItems: 'center', justifyContent: 'center', marginTop: 20},
-  emptyButtonText: {color: colors.background, fontSize: 14, fontWeight: '800'},
+  emptyButton: {minHeight: 48, borderRadius: radii.small, backgroundColor: colors.accent, paddingHorizontal: 20, alignItems: 'center', justifyContent: 'center', marginTop: 20},
+  emptyButtonText: {color: colors.background, fontSize: 14, fontWeight: '700'},
   emptyClearButton: {minHeight: 44, paddingHorizontal: 16, alignItems: 'center', justifyContent: 'center', marginTop: 8},
-  loadMoreButton: {minHeight: 54, marginTop: 32, borderRadius: radii.pill, borderWidth: 1, borderColor: colors.border, alignSelf: 'center', paddingHorizontal: 28, flexDirection: 'row', alignItems: 'center'},
-  loadMoreText: {color: colors.text, fontSize: 14, fontWeight: '700'},
-  endMark: {flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 13, marginTop: 56},
-  endRule: {height: 1, width: 36, backgroundColor: colors.border},
+  loadMoreButton: {minHeight: 54, minWidth: 180, marginTop: 32, borderRadius: radii.small, borderWidth: 1, borderColor: colors.border, alignSelf: 'center', paddingHorizontal: 28, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'},
+  loadMoreText: {color: colors.text, fontSize: 14},
+  endMark: {flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 13, marginTop: 64},
+  endRule: {height: 1, width: 48, backgroundColor: colors.border},
   endLogo: {opacity: 0.55},
   pressed: {opacity: 0.7},
 });

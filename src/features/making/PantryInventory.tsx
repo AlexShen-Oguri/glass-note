@@ -15,6 +15,7 @@ import {colors, radii} from '../../theme/tokens';
 import {IngredientPicture} from '../ingredients/IngredientPicture';
 import {BottlePhoto} from '../workspace/BottlePhoto';
 import {Heading} from '../navigation/Heading';
+import {serif} from '../discovery/components';
 import {Action, type MakingCopy} from './ui';
 
 const entries = ingredientEntries(catalogue);
@@ -119,8 +120,8 @@ function SearchField({label,value,onChange,disabled=false}:{label:string;value:s
 
 const styles=StyleSheet.create({
   root:{gap:20},hidden:{display:'none'},topline:{flexDirection:'row',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12},
-  sectionTitle:{fontSize:19,lineHeight:28,color:colors.text,fontWeight:'600'},emptyTitle:{fontSize:23,lineHeight:32,color:colors.text,fontWeight:'600'},
-  empty:{gap:15,paddingVertical:30},emptyText:{fontSize:14,lineHeight:23,color:colors.secondary},
+  sectionTitle:{fontFamily:serif,fontSize:23,lineHeight:30,color:colors.text,fontWeight:'400'},emptyTitle:{fontFamily:serif,fontSize:32,lineHeight:42,color:colors.text,fontWeight:'400'},
+  empty:{width:'100%',maxWidth:760,alignItems:'flex-start',gap:17,paddingVertical:32,paddingHorizontal:24,borderTopWidth:1,borderBottomWidth:1,borderColor:colors.border},emptyText:{fontSize:14,lineHeight:23,color:colors.secondary},
   input:{fontSize:16,lineHeight:24,minHeight:48,paddingHorizontal:13,paddingVertical:11,borderWidth:1,borderColor:colors.border,borderRadius:radii.small,color:colors.text,backgroundColor:colors.background,marginTop:14},
   inputFocused:{borderColor:colors.accent,backgroundColor:colors.panel},list:{marginVertical:14},
   item:{borderBottomWidth:1,borderBottomColor:colors.border},itemLead:{flexDirection:'row',alignItems:'center',gap:12,minHeight:78,paddingVertical:12},

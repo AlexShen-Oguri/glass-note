@@ -1,117 +1,159 @@
-import React, {useCallback, useState} from 'react';
-import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {Link, router, useFocusEffect} from 'expo-router';
+import React, {useEffect, useRef, useState} from 'react';
+import {Image, Platform, Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Link, router, useIsFocused, usePathname} from 'expo-router';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useApp} from '../../platform/AppProvider';
-import type {Cocktail} from '../../domain/contracts';
+import {catalogue} from '../../content/catalogue';
+import {media} from '../../media';
 import {t} from '../../i18n/ui';
-import {colors, radii} from '../../theme/tokens';
-import {BrandToolbar, serif, useReduceMotion, useViewport} from '../discovery/components';
-import {useMotionEnabled} from '../motion';
-import {MotionEntrance} from '../motion/primitives';
-import Waterfall from '../guided/Waterfall';
-import {Heading} from '../navigation/Heading';
-import {appNavigationText} from '../../i18n/app-navigation';
-import {BrandMark} from '../brand/BrandIdentity';
+import {colors} from '../../theme/tokens';
+import {BrandToolbar, isAiMedia, serif, useViewport} from '../discovery/components';
+import {useSceneTransition} from '../motion/SceneTransition';
+import {motionData} from '../motion/attributes';
 import {recipeCategoryText} from '../../i18n/recipe-categories';
+import {appNavigationText} from '../../i18n/app-navigation';
+
+const cover = {ivory: '#f0ebdf', muted: '#a7b3a7', line: 'rgba(181,198,169,.24)'};
+const archiveCandidates=catalogue.cocktails.filter(cocktail=>media[cocktail.id]?.uri
+  && cocktail.versionIds.includes(cocktail.defaultVersionId)
+  && catalogue.versions.some(version=>version.id===cocktail.defaultVersionId&&version.cocktailId===cocktail.id));
+const drawArchive=()=>{
+  const pool=[...archiveCandidates];
+  return Array.from({length:Math.min(3,pool.length)},()=>pool.splice(Math.floor(Math.random()*pool.length),1)[0]!);
+};
 
 export default function WelcomeScreen() {
   const app = useApp();
-  const {locale, motionPaused, dispatchGuided} = app;
+  const {run}=useSceneTransition();
+  const {locale, dispatchGuided} = app;
   const {width, height} = useViewport();
-  const canAnimate = useMotionEnabled();
-  const reduceMotion = useReduceMotion();
-  const [focused, setFocused] = useState(false);
-  const compact = width < 820;
+  const compact = width <= 700;
+  const short = !compact && height <= 800;
+  const narrow = !compact && width <= 1100;
+  const large = width >= 1600;
+  // RecoveryProvider mounts this screen only after client storage is ready.
+  const [previews,setPreviews]=useState(drawArchive);
+  const focused=useIsFocused(),pathname=usePathname();
+  const previousFocus=useRef(focused),returnFromArchive=useRef(false);
+  useEffect(()=>{
+    if(!focused&&pathname!=='/'&&!pathname.startsWith('/cocktails/'))returnFromArchive.current=false;
+    if(focused&&!previousFocus.current){
+      if(!returnFromArchive.current)setPreviews(drawArchive());
+      returnFromArchive.current=false;
+    }
+    previousFocus.current=focused;
+  },[focused,pathname]);
+  const titleSize = compact ? 61 : short ? Math.min(100, Math.max(75, width * .069)) : narrow ? 85 : Math.min(126, Math.max(75, width * .078));
+  const lineHeight = titleSize * (compact ? 1.11 : short ? 1.09 : 1.13);
+  const scenePadding = width * (compact ? .07 : .061);
+  const mask = {paddingBottom: titleSize * .11, marginBottom: -titleSize * .11};
+  const titleStyle = {fontSize: titleSize, lineHeight, letterSpacing: titleSize * -.065};
 
-  useFocusEffect(useCallback(() => {
-    setFocused(true);
-    return () => setFocused(false);
-  }, []));
-
-  const customize = () => {
+  const customize = () => run(() => {
     dispatchGuided({type: 'restart'});
     router.push('/customize' as never);
-  };
+  },{label:'一杯'});
+  const entries = [
+    {number: '01', title: t(locale, 'customizeMode'), description: t(locale, 'customizeDescription'), action: customize, primary: true},
+    {number: '02', title: t(locale, 'browseMode'), description: t(locale, 'browseDescription'), href: '/discover' as const},
+    {number: '03', title: recipeCategoryText(locale, 'topics'), description: recipeCategoryText(locale, 'topicsHint'), href: '/topics' as const},
+  ];
+  const navigation = <SafeAreaView edges={compact ? ['bottom'] : []} {...(Platform.OS === 'web' ? {role: 'navigation' as const} : {})} accessibilityLabel={appNavigationText(locale, 'primaryNavigation')} style={[styles.homeNav, compact ? styles.homeNavCompact : {marginHorizontal: scenePadding, marginTop: 32}]}>
+    {([['/', 'home'], ['/pantry', 'cabinet'], ['/professional', 'professional'], ['/my', 'my']] as const).map(([href, label]) => <Link key={href} href={href} asChild><Pressable accessibilityRole="link" accessibilityLabel={appNavigationText(locale, label)} {...(Platform.OS === 'web' && href === '/' ? {'aria-current': 'page' as const} : {})} style={StyleSheet.flatten([styles.destination, compact && styles.destinationCompact])}><Text style={[styles.destinationText, href === '/' && styles.destinationActive]}>{appNavigationText(locale, label)}</Text></Pressable></Link>)}
+  </SafeAreaView>;
 
-  const openCocktail = useCallback((cocktail: Cocktail) => {
-    router.push({
-      pathname: '/cocktails/[id]',
-      params: {id: cocktail.id, version: cocktail.defaultVersionId, from: 'welcome'},
-    } as never);
-  }, []);
-
-  return (
-    <SafeAreaView style={styles.screen} edges={['top', 'bottom']}>
-      <ScrollView contentContainerStyle={styles.page}>
-        <View style={styles.shell}>
-          <BrandToolbar {...app} showUnits={false} />
-          <View style={[styles.hero, compact && styles.heroCompact, !compact && {minHeight: Math.max(520, height - 155)}]}>
-            <MotionEntrance active={focused} style={[styles.copy, compact && styles.copyCompact]}>
-              <Heading style={[styles.title, compact && styles.titleCompact, locale === 'zh' && !compact && {fontSize: Math.min(53, Math.floor((Math.min(width - 40, 1280) * 0.54 - 80) / 8))}]}>{t(locale, 'welcomeTitle')}</Heading>
-              <View style={styles.choices}>
-                <Pressable accessibilityRole="button" accessibilityLabel={t(locale, 'customizeMode')} onPress={customize} style={({pressed}) => [styles.choice, styles.primary, pressed && styles.pressed]}>
-                  <View style={styles.choiceCopy}>
-                    <Text style={styles.primaryTitle}>{t(locale, 'customizeMode')}</Text>
-                    <Text style={styles.primaryDescription}>{t(locale, 'customizeDescription')}</Text>
-                  </View>
-                  <Text style={styles.primaryArrow}>↗</Text>
-                </Pressable>
-                <Link href="/discover" asChild><Pressable accessibilityRole="link" accessibilityLabel={t(locale, 'browseMode')} style={StyleSheet.flatten([styles.choice, styles.secondary])}>
-                  <View style={styles.choiceCopy}>
-                    <Text style={styles.secondaryTitle}>{t(locale, 'browseMode')}</Text>
-                    <Text style={styles.secondaryDescription}>{t(locale, 'browseDescription')}</Text>
-                  </View>
-                  <Text style={styles.secondaryArrow}>→</Text>
-                </Pressable></Link>
-                <Link href="/topics" asChild><Pressable accessibilityRole="link" style={StyleSheet.flatten([styles.choice,styles.secondary])}>
-                  <View style={styles.choiceCopy}><Text style={styles.secondaryTitle}>{recipeCategoryText(locale,'topics')}</Text><Text style={styles.secondaryDescription}>{recipeCategoryText(locale,'topicsHint')}</Text></View>
-                  <Text style={styles.secondaryArrow}>→</Text>
-                </Pressable></Link>
-              </View>
-            </MotionEntrance>
-            <View style={[styles.visual, compact && styles.visualCompact]}>
-              <Waterfall locale={locale} paused={!canAnimate || motionPaused || !focused} reduceMotion={reduceMotion} onCocktailPress={openCocktail} height={compact ? 260 : Math.min(640, Math.max(490, height - 150))} />
-              <View style={styles.visualCaption}><Text style={styles.caption}>{t(locale, 'guidedCollection')}</Text><View style={styles.captionMark}><BrandMark size={18} decorative /></View></View>
-            </View>
-          </View>
-          <View style={styles.destinations}>
-            {([['/pantry','cabinet'],['/professional','professional'],['/my','my']] as const).map(([href,label])=><Link key={href} href={href} asChild><Pressable accessibilityRole="link" style={styles.destination}><Text style={styles.destinationText}>{appNavigationText(locale,label)}</Text></Pressable></Link>)}
-          </View>
+  return <SafeAreaView {...motionData({nightHome: ''})} style={styles.screen} edges={['top']}>
+    <ScrollView contentContainerStyle={[styles.page, !compact && styles.pageDesktop]}>
+      <BrandToolbar {...app} showUnits={false} variant="home"/>
+      <View {...motionData({sceneContent:''})} testID="night-home-copy" style={[styles.scene, !compact && styles.sceneDesktop, {paddingHorizontal: scenePadding, minHeight: compact ? 0 : height - 220, paddingTop: compact ? 23 : short ? 20 : large ? 75 : 51}]}>
+        <View {...motionData({motionPart: 'kicker'})} style={[styles.kicker, compact && styles.kickerCompact]}><View style={[styles.kickerRule, compact && styles.kickerRuleCompact]}/><Text style={[styles.kickerText, compact && styles.kickerTextCompact]}>GLASS NOTES / EVERY TASTE TELLS A STORY</Text></View>
+        <View {...motionData({motionHeading: 'home'})} testID="night-home-title" accessibilityRole="header" accessibilityLabel={t(locale, 'welcomeTitle')} {...(Platform.OS === 'web' ? {'aria-level': 1} : {})} pointerEvents="none" style={[styles.heading, {width: compact ? '100%' : narrow ? '70%' : '66%', marginTop: compact ? 26 : short ? 20 : large ? 40 : 27}]}>
+          {locale === 'zh' ? <>
+            <View style={[styles.lineMask, mask]}><Text {...motionData({motionPart: 'title-line'})} style={[styles.title, titleStyle]}>今天你想</Text></View>
+            <View style={[styles.lineMask, mask, {paddingLeft: compact ? (width - scenePadding * 2) * .07 : width * .046}]}><Text {...motionData({motionPart: 'title-line'})} style={[styles.title, titleStyle]}>喝点<Text style={styles.titleAccent}>什么</Text></Text></View>
+          </> : <View style={[styles.lineMask, mask]}><Text {...motionData({motionPart: 'title-line'})} style={[styles.title, titleStyle]}>{t(locale, 'welcomeTitle')}</Text></View>}
         </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+        <Text {...motionData({motionPart: 'detail'})} style={[styles.subtitle, {marginLeft: compact ? (width - scenePadding * 2) * .07 : width * .05, marginTop: compact ? 16 : short ? 14 : 18}, compact && styles.subtitleCompact]}>{locale === 'zh' ? '让这一杯，刚好属于此刻。' : t(locale, 'welcomeSubtitle')}</Text>
+        <View style={[styles.choices, {maxWidth: compact ? '100%' : short ? 490 : narrow ? 460 : large ? 600 : 530, marginTop: compact ? 365 : short ? 24 : large ? 65 : 40}]}>
+          {entries.map(entry => {
+            const button = <Pressable {...motionData({motionPart: 'entry', nightEntry: entry.number})} accessibilityRole={entry.href ? 'link' : 'button'} accessibilityLabel={entry.title} onPress={entry.action} style={StyleSheet.flatten([styles.choice, compact && styles.choiceCompact, short && styles.choiceShort])}>
+              <View {...motionData({nightRule:''})} pointerEvents="none" style={styles.choiceRule}/>
+              <Text style={[styles.choiceNumber, compact && styles.choiceNumberCompact]}>{entry.number}</Text><View style={styles.choiceCopy}><Text style={[styles.choiceTitle, compact && styles.choiceTitleCompact, entry.primary && styles.primaryTitle]}>{entry.title}</Text><Text style={[styles.choiceDescription, compact && styles.choiceDescriptionCompact]}>{entry.description}</Text></View><View style={[styles.arrowTrack, compact && styles.arrowTrackCompact]}><View {...motionData({nightArrow:''})} style={styles.choiceArrow}><Text style={styles.arrowText}>↗</Text></View></View>
+            </Pressable>;
+            return entry.href ? <Link key={entry.number} href={entry.href} asChild>{button}</Link> : <React.Fragment key={entry.number}>{button}</React.Fragment>;
+          })}
+        </View>
+        <View {...motionData({motionPart: 'archive'})} style={[styles.archive, {right: width * (compact ? .05 : narrow ? .04 : .058), bottom: compact ? undefined : short ? 44 : large ? 65 : 74}, compact && styles.archiveCompact, narrow && styles.archiveNarrow]}>
+          {previews.map((cocktail, index) => {
+            const asset = media[cocktail.id];
+            return <Link key={cocktail.id} asChild href={{pathname: '/cocktails/[id]', params: {id: cocktail.id, version: cocktail.defaultVersionId, from: 'welcome'}} as never}><Pressable onPress={()=>{returnFromArchive.current=true;}} accessibilityRole="link" accessibilityLabel={`${cocktail.name[locale]}. ${t(locale, 'viewRecipe')}`} accessibilityHint={asset && isAiMedia(asset) ? t(locale, 'aiImage') : asset ? `${asset.author}${asset.license ? ` · ${asset.license}` : ''}` : undefined} style={StyleSheet.flatten([styles.archiveItem, index === 1 && styles.archiveRaised, narrow && styles.archiveItemNarrow, compact && styles.archiveItemCompact])}>
+              <View {...motionData({motionPhoto: cocktail.id})} style={[styles.archivePhoto, narrow && styles.archivePhotoNarrow, compact && styles.archivePhotoCompact]}>{asset && <Image source={{uri: asset.uri}} resizeMode="cover" style={StyleSheet.absoluteFill} accessibilityLabel={isAiMedia(asset) ? t(locale, 'aiImage') : t(locale, 'photograph')}/>}</View>
+              <Text numberOfLines={2} style={[styles.archiveName, compact && styles.archiveNameCompact]}>{String(index + 1).padStart(2, '0')} / {cocktail.name.en}</Text>
+            </Pressable></Link>;
+          })}
+        </View>
+        {!compact && <View style={[styles.collection, {right: width * .07}]}><View style={styles.collectionRule}/><Text style={styles.collectionText}>THE COLLECTION</Text><Text style={styles.collectionText}>{catalogue.cocktails.length} RECIPES</Text></View>}
+      </View>
+      {!compact && navigation}
+    </ScrollView>
+    {compact && navigation}
+  </SafeAreaView>;
 }
 
 const styles = StyleSheet.create({
   screen: {flex: 1, backgroundColor: 'transparent'},
-  page: {flexGrow: 1, paddingHorizontal: 20, paddingBottom: 26},
-  shell: {width: '100%', maxWidth: 1280, alignSelf: 'center'},
-  hero: {flexDirection: 'row', alignItems: 'center', gap: 80, paddingVertical: 26},
-  heroCompact: {flexDirection: 'column', alignItems: 'stretch', gap: 30, paddingTop: 30, paddingBottom: 0},
-  copy: {flex: 1, paddingBottom: 24},
-  copyCompact: {flex: undefined, paddingBottom: 0},
-  title: {fontFamily: serif, color: colors.text, fontSize: 53, lineHeight: 66, letterSpacing: -0.8, maxWidth: 560},
-  titleCompact: {fontSize: 36, lineHeight: 47, letterSpacing: -0.4},
-  destinations: {flexDirection:'row',flexWrap:'wrap',justifyContent:'center',gap:24,marginTop:24,borderTopWidth:1,borderColor:colors.border,paddingTop:8},
-  destination: {minHeight:44,justifyContent:'center',paddingHorizontal:12},
-  destinationText: {fontSize:14,lineHeight:22,color:colors.secondary},
-  choices: {gap: 12, marginTop: 34, maxWidth: 440},
-  choice: {minHeight: 90, paddingHorizontal: 22, paddingVertical: 18, borderRadius: radii.medium, flexDirection: 'row', alignItems: 'center', gap: 18, borderWidth: 1},
-  choiceCopy: {flex: 1},
-  primary: {backgroundColor: colors.accent, borderColor: colors.accent},
-  primaryTitle: {color: colors.background, fontSize: 18, fontWeight: '700'},
-  primaryDescription: {color: colors.accentDark, fontSize: 13, lineHeight: 20, marginTop: 6},
-  primaryArrow: {color: colors.background, fontSize: 27},
-  secondary: {borderColor: colors.border},
-  secondaryTitle: {color: colors.text, fontSize: 18},
-  secondaryDescription: {color: colors.secondary, fontSize: 13, lineHeight: 20, marginTop: 6},
-  secondaryArrow: {color: colors.accent, fontSize: 24},
-  pressed: {opacity: 0.76},
-  visual: {width: '46%', maxWidth: 560},
-  visualCompact: {width: '100%', maxWidth: undefined},
-  visualCaption: {flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 16, marginTop: 16},
-  caption: {color: colors.muted, fontSize: 11, lineHeight: 18, flex: 1},
-  captionMark: {opacity: 0.55},
+  page: {flexGrow: 1, paddingBottom: 120},
+  pageDesktop: {paddingBottom: 33},
+  scene: {position: 'relative', width: '100%'},
+  sceneDesktop: {flexGrow: 1},
+  kicker: {flexDirection: 'row', alignItems: 'center', gap: 15},
+  kickerCompact: {gap: 10},
+  kickerRule: {width: 32, height: 1, backgroundColor: colors.accent},
+  kickerRuleCompact: {width: 22},
+  kickerText: {color: colors.accent, fontSize: 10, lineHeight: 16, letterSpacing: 2.5},
+  kickerTextCompact: {fontSize: 8, lineHeight: 12.8, letterSpacing: 1.36},
+  heading: {position: 'relative', zIndex: 2},
+  lineMask: {overflow: 'hidden'},
+  title: {fontFamily: serif, color: cover.ivory, fontWeight: '400'},
+  titleAccent: {color: colors.accent, fontWeight: '400'},
+  subtitle: {color: cover.muted, fontSize: 12, lineHeight: 19.2, letterSpacing: .48},
+  subtitleCompact: {fontSize: 10, lineHeight: 16, letterSpacing: .4},
+  choices: {width: '100%'},
+  choice: {minHeight: 74, paddingVertical: 13, borderBottomWidth: 1, borderColor: cover.line, flexDirection: 'row', alignItems: 'center'},
+  choiceCompact: {minHeight: 78},
+  choiceShort: {minHeight: 65, paddingVertical: 9},
+  choiceRule: {position:'absolute',bottom:-1,left:0,right:0,height:1,backgroundColor:colors.accent,transform:[{scaleX:0}],...(Platform.OS==='web'?{transformOrigin:'left'} as never:{})},
+  choiceNumber: {width: 35, color: cover.muted, fontSize: 10, lineHeight: 16, letterSpacing: 1.2},
+  choiceNumberCompact: {width: 28},
+  choiceCopy: {flex: 1, minWidth: 0},
+  choiceTitle: {fontFamily: serif, fontWeight: '400', color: cover.ivory, fontSize: 25, lineHeight: 31.25},
+  choiceTitleCompact: {fontSize: 24, lineHeight: 30},
+  primaryTitle: {color: colors.accent},
+  choiceDescription: {color: cover.muted, fontSize: 11, lineHeight: 17.6, marginTop: 5},
+  choiceDescriptionCompact: {fontSize: 10, lineHeight: 16},
+  arrowTrack: {width: 42, minHeight: 44, justifyContent: 'center'},
+  arrowTrackCompact: {width: 35},
+  choiceArrow: {width: 36, height: 36, borderWidth: 1, borderColor: cover.line, borderRadius: 18, alignItems: 'center', justifyContent: 'center'},
+  arrowText: {color: cover.ivory, fontSize: 15, lineHeight: 24},
+  archive: {position: 'absolute', flexDirection: 'row', alignItems: 'flex-end', gap: 17},
+  archiveCompact: {top: 356, gap: 10, opacity: .85},
+  archiveNarrow: {gap: 10},
+  archiveItem: {width: 96},
+  archiveRaised: {marginBottom: 24},
+  archiveItemNarrow: {width: 70},
+  archiveItemCompact: {width: 65, marginBottom: 0},
+  archivePhoto: {height: 119, overflow: 'hidden'},
+  archivePhotoNarrow: {height: 92},
+  archivePhotoCompact: {height: 86},
+  archiveName: {color: cover.muted, fontSize: 9, lineHeight: 14.4, height: 28.8, letterSpacing: .9, marginTop: 8},
+  archiveNameCompact: {fontSize: 8, lineHeight: 12.8, height: 25.6, letterSpacing: .8},
+  collection: {position: 'absolute', bottom: 35, flexDirection: 'row', alignItems: 'center', gap: 16},
+  collectionRule: {width: 47, height: 1, backgroundColor: cover.line},
+  collectionText: {color: cover.muted, fontSize: 10, lineHeight: 16, letterSpacing: 1.5},
+  homeNav: {flexDirection: 'row', alignItems: 'center', gap: 35, zIndex: 10},
+  homeNavCompact: {position: 'absolute', left: 0, right: 0, bottom: 0, gap: 0, justifyContent: 'space-around', backgroundColor: '#142019', borderTopWidth: 1, borderColor: cover.line, paddingTop: 5, paddingHorizontal: 9, paddingBottom: 8},
+  destination: {minWidth: 44, minHeight: 44, justifyContent: 'center'},
+  destinationCompact: {minWidth: 65, height: 49},
+  destinationText: {fontSize: 11, lineHeight: 17.6, letterSpacing: 1.65, color: cover.muted},
+  destinationActive: {color: cover.ivory},
 });

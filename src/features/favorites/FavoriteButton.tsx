@@ -5,6 +5,7 @@ import {favoriteCopy} from '../../i18n/favorites';
 import {favoriteListText} from '../../i18n/favorite-lists';
 import {useFavorites} from '../../platform/FavoritesProvider';
 import {colors, radii} from '../../theme/tokens';
+import {MotionFavorite} from '../motion/Favorite';
 
 export function FavoriteButton({versionId, locale, compact = false}: {versionId: string; locale: Locale; compact?: boolean}) {
   const {versionIds, toggle, storageAvailable, saving, error, retry} = useFavorites();
@@ -22,12 +23,14 @@ export function FavoriteButton({versionId, locale, compact = false}: {versionId:
   const copy = favoriteCopy(locale);
   const label = confirmedSaved ? copy.saved : retryable ? favoriteListText(locale, 'retry') : saving && currentIntent ? favoriteListText(locale, 'saving') : copy.save;
   return <View>
+    <MotionFavorite key={versionId} selected={confirmedSaved}>
     <Pressable accessibilityRole="button" accessibilityLabel={label === copy.saved ? copy.remove : label} accessibilityHint={retryable ? favoriteListText(locale, 'saveFailed') : undefined}
       accessibilityState={{selected: saved, busy: saving}} disabled={saving} onPress={() => retryable ? void retry() : (setPendingIntent({versionId, saved: !saved}), toggle(versionId))}
       style={({pressed}) => [styles.button, compact && styles.compact, confirmedSaved && styles.saved, pressed && {opacity: 0.7}, saving && {opacity: 0.7}]}>
       <Text style={[styles.heart, confirmedSaved && styles.active]}>{confirmedSaved ? '♥' : '♡'}</Text>
       {!compact && <Text style={[styles.label, confirmedSaved && styles.active]}>{label}</Text>}
     </Pressable>
+    </MotionFavorite>
     {!compact && (!storageAvailable || retryable) && <Text accessibilityRole="alert" style={styles.warning}>{retryable ? favoriteListText(locale, 'saveFailed') : copy.storage}</Text>}
   </View>;
 }

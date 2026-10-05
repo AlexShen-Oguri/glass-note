@@ -12,7 +12,7 @@ import {Heading} from '../navigation/Heading';
 export function Workspace({section,children,showUnits=section==='lab'}: {section: 'lab'|'topics'|'bottles'; children: React.ReactNode;showUnits?:boolean}) {
   const app=useApp();
   const goBack=()=>router.canGoBack()?router.back():router.replace('/professional' as never);
-  return <SafeAreaView style={{flex:1,backgroundColor:colors.background}} edges={['top']}>
+  return <SafeAreaView style={{flex:1,backgroundColor:'transparent'}} edges={['top']}>
     <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS==='ios'?'padding':undefined}>
     <ScrollView keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" contentContainerStyle={ws.page}>
       <View style={ws.container}>
@@ -42,14 +42,14 @@ export function Fold({title,children,initial=false}: {title:string;children:Reac
   return <View style={ws.fold}><Pressable accessibilityRole="button" accessibilityLabel={title} accessibilityState={{expanded:open}} {...(Platform.OS==='web'?{'aria-expanded':open}:{})} onPress={()=>setOpen(!open)} style={ws.foldButton}><Text style={[ws.label,{flex:1,color:colors.text}]}>{title}</Text><Text style={ws.muted}>{open?'−':'＋'}</Text></Pressable>{open&&<View style={{gap:14,paddingBottom:14}}>{children}</View>}</View>;
 }
 export const ws=StyleSheet.create({
-  page:{paddingHorizontal:20,paddingTop:14,paddingBottom:100},container:{width:'100%',maxWidth:1040,alignSelf:'center',gap:20},
+  page:{paddingHorizontal:26,paddingTop:0,paddingBottom:100},container:{width:'100%',maxWidth:1180,alignSelf:'center',gap:20},
   nav:{flexDirection:'row',gap:4,borderBottomWidth:1,borderColor:colors.border,paddingBottom:8,alignItems:'center'},row:{flexDirection:'row',flexWrap:'wrap',gap:10,alignItems:'center'},
-  hero:{gap:10,paddingVertical:12},kicker:{fontSize:10,fontWeight:'700',letterSpacing:2,color:colors.accent,textTransform:'uppercase'},title:{fontFamily:serif,fontSize:34,lineHeight:43,color:colors.text},
+  hero:{gap:14,paddingTop:24,paddingBottom:32},kicker:{fontSize:10,fontWeight:'700',letterSpacing:2,color:colors.accent,textTransform:'uppercase'},title:{fontFamily:serif,fontSize:42,lineHeight:52,color:colors.text},
   heading:{fontFamily:serif,fontSize:23,lineHeight:30,color:colors.text},body:{fontSize:14,lineHeight:23,color:colors.secondary},muted:{fontSize:12,lineHeight:19,color:colors.muted},
-  panel:{backgroundColor:'rgba(25,35,30,0.96)',padding:18,borderRadius:radii.medium,borderWidth:1,borderColor:colors.border,gap:16},
-  action:{minHeight:44,paddingVertical:12,paddingHorizontal:16,borderRadius:radii.small,borderWidth:1,borderColor:colors.border,backgroundColor:colors.raised,justifyContent:'center',alignItems:'center',flexShrink:1},
+  panel:{backgroundColor:'transparent',paddingVertical:24,paddingHorizontal:0,borderRadius:0,borderTopWidth:1,borderBottomWidth:1,borderColor:colors.border,gap:18},
+  action:{minHeight:44,paddingVertical:12,paddingHorizontal:16,borderRadius:radii.small,borderWidth:1,borderColor:colors.border,backgroundColor:'transparent',justifyContent:'center',alignItems:'center',flexShrink:1},
   quiet:{backgroundColor:'transparent',borderColor:'transparent',paddingHorizontal:10},selected:{borderColor:colors.accent,backgroundColor:colors.accentDark},actionText:{fontSize:13,lineHeight:19,fontWeight:'600',color:colors.accent,textAlign:'center'},
-  field:{gap:7,flexShrink:1},label:{color:colors.secondary,fontSize:12,lineHeight:19,fontWeight:'600'},input:{minHeight:46,borderWidth:1,borderColor:colors.border,borderRadius:radii.small,paddingHorizontal:12,paddingVertical:12,color:colors.text,backgroundColor:colors.background,fontSize:16,lineHeight:22},
+  field:{gap:7,flexShrink:1},label:{color:colors.secondary,fontSize:12,lineHeight:19,fontWeight:'600'},input:{minHeight:46,borderBottomWidth:1,borderColor:colors.border,borderRadius:0,paddingHorizontal:0,paddingVertical:12,color:colors.text,backgroundColor:colors.background,fontSize:16,lineHeight:22},
   multiline:{minHeight:100,textAlignVertical:'top'},fold:{borderTopWidth:1,borderColor:colors.border},foldButton:{minHeight:50,flexDirection:'row',alignItems:'center',gap:10},
   twoCol:{flexDirection:'row',flexWrap:'wrap',gap:14},column:{flexGrow:1,flexBasis:260,minWidth:0,gap:14},error:{color:colors.danger,fontSize:13,lineHeight:21},
 });

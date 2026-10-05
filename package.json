@@ -1,6 +1,6 @@
 {
   "name": "glass-notes",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "private": true,
   "license": "MIT",
   "main": "expo-router/entry",
@@ -57,7 +57,8 @@
     "react-native-safe-area-context": "~5.7.0",
     "react-native-screens": "~4.26.0",
     "react-native-web": "^0.21.2",
-    "react-native-worklets": "^0.10.1"
+    "react-native-worklets": "^0.10.1",
+    "three": "0.180.0"
   },
   "devDependencies": {
     "@expo/ngrok": "4.1.3",

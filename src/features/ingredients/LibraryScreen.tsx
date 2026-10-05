@@ -1,3 +1,4 @@
+import {Heading} from '../navigation/Heading';
 import {CocktailOriginalName} from '../names/OriginalName';
 import React, {useMemo, useState} from 'react';
 import {FlatList, Pressable, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
@@ -73,7 +74,7 @@ export default function LibraryScreen({mode = 'library', ingredientId}: {mode?: 
         {detail && entry ? <>
           <Pressable accessibilityRole="button" onPress={() => router.canGoBack() ? router.back() : router.replace('/ingredients' as never)} style={styles.nav}><Text style={styles.subtle}>← {lib(locale,'back')}</Text></Pressable>
           <View style={styles.detailHero}><IngredientPicture ingredient={entry.ingredient} size={width < 500 ? 100 : 132}/><View style={styles.flex}><Text style={styles.eyebrow}>{lib(locale,entry.group)}</Text>
-            <Text accessibilityRole="header" style={styles.title}>{entry.ingredient.name[locale]}</Text>
+            <Heading level={1} style={styles.title}>{entry.ingredient.name[locale]}</Heading>
             {locale !== 'en' && <Text style={styles.subtitle}>{entry.ingredient.name.en}</Text>}
           </View></View>
           {entry.ingredient.guide?.nameOrigin?.[locale] === 'fallback' && <Text style={styles.note}>{guideText(locale,'fallback')}</Text>}
@@ -104,7 +105,7 @@ export default function LibraryScreen({mode = 'library', ingredientId}: {mode?: 
           </View>
         </> : detail ? <Text style={styles.note}>{lib(locale,'noResults')}</Text> : <>
           <Text style={styles.eyebrow}>GLASS NOTES / {mode === 'pantry' ? '02' : '01'}</Text>
-          <Text accessibilityRole="header" style={styles.title}>{lib(locale,mode)}</Text>
+          <Heading level={1} style={styles.title}>{lib(locale,mode)}</Heading>
           <Text style={styles.subtitle}>{mode === 'library' ? guideText(locale,'intro') : lib(locale,'intro')}</Text>
           {mode === 'library' ? <>
             <TextInput value={search} onChangeText={v => {setSearch(v);setLimit(24);}} placeholder={lib(locale,'search')} accessibilityLabel={lib(locale,'search')} placeholderTextColor={colors.muted} style={styles.search} clearButtonMode="while-editing" />
@@ -154,18 +155,18 @@ export default function LibraryScreen({mode = 'library', ingredientId}: {mode?: 
 
 const styles=StyleSheet.create({
   ownedStrip:{height:106,flexGrow:0},
-  screen:{flex:1,backgroundColor:'transparent'},scroll:{paddingHorizontal:22,paddingBottom:48},container:{width:'100%',maxWidth:1140,alignSelf:'center'},
+  screen:{flex:1,backgroundColor:'transparent'},scroll:{paddingHorizontal:22,paddingBottom:48},container:{width:'100%',maxWidth:1280,alignSelf:'center'},
   navigation:{flexDirection:'row',justifyContent:'space-between',flexWrap:'wrap',gap:8,marginVertical:20},nav:{minHeight:44,justifyContent:'center'},subtle:{color:colors.secondary,fontSize:13},link:{color:colors.accent,fontSize:13,lineHeight:20},
-  destination:{minHeight:46,justifyContent:'center',paddingHorizontal:18,borderRadius:25,backgroundColor:colors.raised,borderWidth:1,borderColor:colors.accentDark},destinationText:{fontSize:14,fontWeight:'600',color:colors.accent},
-  detailHero:{flexDirection:'row',alignItems:'center',gap:22,marginVertical:16},guidePanel:{backgroundColor:colors.panel,borderWidth:1,borderColor:colors.border,borderRadius:20,padding:23,marginTop:18,gap:12},body:{fontSize:15,lineHeight:26,color:colors.secondary,marginBottom:12},resultCount:{fontSize:23,fontFamily:serif,color:colors.text},ownedTile:{flexDirection:'row',gap:10,alignItems:'center',padding:10,paddingRight:16,borderWidth:1,borderColor:colors.border,borderRadius:18},
+  destination:{minHeight:46,justifyContent:'center',paddingHorizontal:18,borderRadius:4,backgroundColor:colors.raised,borderWidth:1,borderColor:colors.accentDark},destinationText:{fontSize:14,fontWeight:'600',color:colors.accent},
+  detailHero:{flexDirection:'row',alignItems:'center',gap:22,marginVertical:16},guidePanel:{backgroundColor:'transparent',borderTopWidth:1,borderBottomWidth:1,borderColor:colors.border,borderRadius:4,padding:23,marginTop:18,gap:12},body:{fontSize:15,lineHeight:26,color:colors.secondary,marginBottom:12},resultCount:{fontSize:23,fontFamily:serif,color:colors.text},ownedTile:{flexDirection:'row',gap:10,alignItems:'center',padding:10,paddingRight:16,borderWidth:1,borderColor:colors.border,borderRadius:18},
   eyebrow:{fontSize:10,letterSpacing:1.5,color:colors.muted,marginBottom:9},title:{fontFamily:serif,fontSize:38,lineHeight:49,color:colors.text,marginBottom:8},subtitle:{fontSize:16,lineHeight:26,color:colors.secondary,marginBottom:20},note:{fontSize:12,lineHeight:20,color:colors.muted},
-  primary:{alignSelf:'flex-start',backgroundColor:colors.accent,paddingVertical:14,paddingHorizontal:22,borderRadius:30,marginVertical:12},ownedButton:{backgroundColor:'#d1dccc'},primaryText:{fontSize:14,color:colors.background,fontWeight:'600'},
-  search:{minHeight:54,borderWidth:1,borderColor:colors.border,borderRadius:16,paddingHorizontal:18,fontSize:15,color:colors.text,backgroundColor:colors.panel,marginTop:4},
-  filters:{gap:8,paddingVertical:18},chips:{flexDirection:'row',flexWrap:'wrap',gap:9,marginTop:15},chip:{minHeight:44,paddingHorizontal:15,paddingVertical:12,borderWidth:1,borderColor:colors.border,borderRadius:24,justifyContent:'center'},chipActive:{backgroundColor:colors.raised,borderColor:colors.accent},chipText:{fontSize:13,color:colors.text},
+  primary:{alignSelf:'flex-start',backgroundColor:colors.accent,paddingVertical:14,paddingHorizontal:22,borderRadius:4,marginVertical:12},ownedButton:{backgroundColor:'#d1dccc'},primaryText:{fontSize:14,color:colors.background,fontWeight:'600'},
+  search:{minHeight:54,borderWidth:1,borderColor:colors.border,borderRadius:4,paddingHorizontal:18,fontSize:15,color:colors.text,backgroundColor:colors.panel,marginTop:4},
+  filters:{gap:8,paddingVertical:18},chips:{flexDirection:'row',flexWrap:'wrap',gap:9,marginTop:15},chip:{minHeight:44,paddingHorizontal:15,paddingVertical:12,borderWidth:1,borderColor:colors.border,borderRadius:4,justifyContent:'center'},chipActive:{backgroundColor:colors.raised,borderColor:colors.accent},chipText:{fontSize:13,color:colors.text},
   listMeta:{flexDirection:'row',flexWrap:'wrap',gap:10,justifyContent:'space-between',alignItems:'center',marginBottom:18},grid:{flexDirection:'row',flexWrap:'wrap',justifyContent:'space-between',gap:12},
-  ingredient:{minHeight:136,flexDirection:'row',borderWidth:1,borderColor:colors.border,borderRadius:18,backgroundColor:colors.panel,alignItems:'center'},ingredientInfo:{flex:1,padding:15,flexDirection:'row',gap:14,alignItems:'center'},rowName:{color:colors.text,fontSize:18,lineHeight:26,fontFamily:serif,marginBottom:4},
+  ingredient:{minHeight:136,flexDirection:'row',borderWidth:1,borderColor:colors.border,borderRadius:4,backgroundColor:colors.panel,alignItems:'center'},ingredientInfo:{flex:1,padding:15,flexDirection:'row',gap:14,alignItems:'center'},rowName:{color:colors.text,fontSize:18,lineHeight:26,fontFamily:serif,marginBottom:4},
   addButton:{width:44,height:44,borderRadius:22,borderWidth:1,borderColor:colors.border,justifyContent:'center',alignItems:'center',marginRight:15},added:{backgroundColor:colors.accentDark,borderColor:colors.accent},addText:{fontSize:22,color:colors.accent},
   more:{alignSelf:'center',padding:20,marginTop:16},section:{marginTop:30},sectionTitle:{fontFamily:serif,fontSize:23,lineHeight:32,color:colors.text,marginBottom:12},recipeRow:{paddingVertical:18,borderBottomWidth:1,borderBottomColor:colors.border,flexDirection:'row',alignItems:'center',gap:15},flex:{flex:1},source:{paddingVertical:12},
-  cocktailCard:{borderWidth:1,borderColor:colors.border,borderRadius:16,overflow:'hidden',backgroundColor:colors.panel},cardCopy:{padding:17,gap:6},missing:{fontSize:13,lineHeight:21,color:colors.amber},empty:{color:colors.secondary,fontSize:14,lineHeight:24,paddingVertical:35},emptyPanel:{paddingVertical:35,maxWidth:500},emptyMark:{fontSize:44,color:colors.accent,marginBottom:20},storage:{fontSize:11,color:colors.muted,lineHeight:18,marginTop:32},
-  warningPanel:{borderWidth:1,borderColor:colors.amber,borderRadius:16,backgroundColor:colors.panel,padding:18,marginBottom:20},warningTitle:{color:colors.text,fontSize:16,fontWeight:'700'},warning:{color:colors.amber,fontSize:13,lineHeight:20,marginTop:7},retry:{alignSelf:'flex-start',minHeight:44,justifyContent:'center',paddingHorizontal:18,borderRadius:24,backgroundColor:colors.raised,borderWidth:1,borderColor:colors.accentDark,marginTop:14},retryText:{color:colors.accent,fontSize:13,fontWeight:'700'},
+  cocktailCard:{borderBottomWidth:1,borderColor:colors.border,borderRadius:0,overflow:'hidden',backgroundColor:'transparent'},cardCopy:{padding:17,gap:6},missing:{fontSize:13,lineHeight:21,color:colors.amber},empty:{color:colors.secondary,fontSize:14,lineHeight:24,paddingVertical:35},emptyPanel:{paddingVertical:35,maxWidth:500},emptyMark:{fontSize:44,color:colors.accent,marginBottom:20},storage:{fontSize:11,color:colors.muted,lineHeight:18,marginTop:32},
+  warningPanel:{borderWidth:1,borderColor:colors.amber,borderRadius:4,backgroundColor:colors.panel,padding:18,marginBottom:20},warningTitle:{color:colors.text,fontSize:16,fontWeight:'700'},warning:{color:colors.amber,fontSize:13,lineHeight:20,marginTop:7},retry:{alignSelf:'flex-start',minHeight:44,justifyContent:'center',paddingHorizontal:18,borderRadius:4,backgroundColor:colors.raised,borderWidth:1,borderColor:colors.accentDark,marginTop:14},retryText:{color:colors.accent,fontSize:13,fontWeight:'700'},
 });
