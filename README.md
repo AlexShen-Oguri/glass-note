@@ -10,7 +10,7 @@
 
 [功能介绍](#功能介绍) · [开始使用](#开始使用) · [本地数据](#本地数据与备份) · [开发与构建](#开发与构建) · [来源与许可](#来源与许可)
 
-[打开网页版](https://glass-notes.pages.dev/) · [下载 Windows / macOS 0.1.10 测试版](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.10)
+[打开网页版](https://glass-notes.pages.dev/) · [下载 Windows / macOS 0.1.11 测试版](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.11)
 
 在电脑或手机浏览器中直接使用，也可以下载 Windows 或 macOS 桌面版。无需注册，个人记录保存在自己的设备上。
 
@@ -198,7 +198,7 @@ npm run release:web
 
 ## 版本与反馈
 
-当前桌面版本为 0.1.10 公开测试版。版本详情、测试范围及下载校验信息见[发布说明](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.10)。
+当前桌面版本为 0.1.11 公开测试版。版本详情、测试范围及下载校验信息见[发布说明](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.11)。
 
 报告普通问题时，请提供复现步骤、平台和版本，不要上传私人备份、凭据或个人资料。
 

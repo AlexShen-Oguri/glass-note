@@ -1,6 +1,12 @@
 # Changelog
 
-## Unreleased
+## 0.1.11 (2026-10-04, prerelease)
+
+- Apply the accepted editorial interface across the app, preserving the existing workflows and private records.
+- Add six procedural aroma garnishes, blended liquid colours and continuous taste, body and first-sip feedback to the Three.js coupe.
+- Present recommendations after the cup solidifies, moves to the centre, turns once with damped liquid motion and fades; keep skip, pause and interruption controls usable.
+- Fix order-card and taste-feedback panel spacing, photo relay positioning, hover animation errors and repeated recommendation reveals.
+- Draw three different reviewed drinks for the home archive and keep home navigation clear of the editorial entries.
 
 - Check Windows installation registration before showing completion. A missing or mismatched version, executable or installation path stops the installer with an error.
 - Test completed making sessions across disk reload and full backup export, including preservation of older records and failed-write handling.
