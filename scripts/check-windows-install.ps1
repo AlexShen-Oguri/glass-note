@@ -1,4 +1,4 @@
-# Run only on a disposable Windows build runner; verifies the public preview upgrade.
+# Run only on a disposable Windows build runner; verifies replacement of the latest public preview.
 $ErrorActionPreference = 'Stop'
 if ($env:RUNNER_OS -ne 'Windows' -or $env:CI -ne 'true') {
   throw 'Installation checks require a disposable Windows CI runner.'
@@ -6,7 +6,7 @@ if ($env:RUNNER_OS -ne 'Windows' -or $env:CI -ne 'true') {
 $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
 $baseline = Join-Path $env:RUNNER_TEMP 'glass-notes-baseline'
 New-Item -ItemType Directory -Force $baseline | Out-Null
-gh release download v0.1.9 --repo AlexShen-Oguri/glass-note --pattern '*windows-x64.zip' --dir $baseline
+gh release download v0.1.11 --repo AlexShen-Oguri/glass-note --pattern '*windows-x64.zip' --dir $baseline
 if ($LASTEXITCODE -ne 0) { throw 'Could not download the existing public installer.' }
 Expand-Archive (Get-ChildItem $baseline -Filter '*.zip').FullName (Join-Path $baseline 'unpacked')
 $oldInstaller = @(Get-ChildItem (Join-Path $baseline 'unpacked') -Recurse -Filter '*setup.exe')
@@ -42,5 +42,5 @@ $app.Refresh()
 if ($app.HasExited) { throw 'Installed application exited during launch.' }
 Stop-Process -Id $app.Id
 New-Item -ItemType Directory -Force artifacts | Out-Null
-@{ version=$version; baseline='0.1.9'; registration=$true; localDataPreserved=$true; launch=$true } |
+@{ version=$version; baseline='0.1.11'; registration=$true; localDataPreserved=$true; launch=$true } |
   ConvertTo-Json | Set-Content artifacts/windows-install-check.json

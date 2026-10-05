@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.0 (2026-10-05)
+
+- Publish the first non-prerelease version for Web, Windows x64 and universal macOS, retaining the catalogue, editorial interface and sensory motion from the previews.
+- Validate restored records with their normal storage readers and size limits before persistence, including merged backup data.
+- Include verified dependency security backports and block desktop artifact uploads unless dependency checks, tests and platform acceptance pass.
+- Verify replacement of the 0.1.11 Windows preview with preserved local data and check the macOS bundle's actual version.
+- Keep public source snapshots free of agent instructions and unused upstream overview copies, while retaining source attribution and licence records.
+
 ## 0.1.11 (2026-10-04, prerelease)
 
 - Apply the accepted editorial interface across the app, preserving the existing workflows and private records.

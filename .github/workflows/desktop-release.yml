@@ -57,10 +57,14 @@ jobs:
           codesign --verify --deep --strict --verbose=2 "$app"
           lipo "$app/Contents/MacOS/glass-notes-desktop" -verify_arch arm64 x86_64
           test "$(/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' "$app/Contents/Info.plist")" = 'com.glassnotes.desktop'
+          test "$(/usr/libexec/PlistBuddy -c 'Print CFBundleShortVersionString' "$app/Contents/Info.plist")" = "$(node -p "require('./package.json').version")"
           hdiutil verify .cache/desktop/target/universal-apple-darwin/release/bundle/dmg/*.dmg
           open "$app"
           sleep 8
           pgrep -f "$PWD/$app/Contents/MacOS/glass-notes-desktop"
+      - name: Package static website
+        if: runner.os == 'macOS'
+        run: node scripts/package-web.mjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: ${{ success() }}
         with:
@@ -72,3 +76,5 @@ jobs:
             .cache/desktop/target/**/bundle/nsis/*.exe
             .cache/desktop/target/**/bundle/dmg/*.dmg
             artifacts/windows-install-check.json
+            release/*.tar.gz
+            release/*.tar.gz.sha256

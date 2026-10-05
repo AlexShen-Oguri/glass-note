@@ -10,7 +10,7 @@
 
 [功能介绍](#功能介绍) · [开始使用](#开始使用) · [本地数据](#本地数据与备份) · [开发与构建](#开发与构建) · [来源与许可](#来源与许可)
 
-[打开网页版](https://glass-notes.pages.dev/) · [下载 Windows / macOS 0.1.11 测试版](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.11)
+[打开网页版](https://glass-notes.pages.dev/) · [下载 Windows / macOS 1.0.0 正式版](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v1.0.0)
 
 在电脑或手机浏览器中直接使用，也可以下载 Windows 或 macOS 桌面版。无需注册，个人记录保存在自己的设备上。
 
@@ -172,7 +172,7 @@ npm run desktop:test
 npm run desktop:build -- --target universal-apple-darwin
 ```
 
-`.github/workflows/desktop-release.yml` 在版本标签推送或手动触发时分别使用 Windows、macOS runner 构建，检查 Windows 0.1.9 升级的数据保留，以及 macOS 双架构和签名。构建产物通过检查后再发布到 GitHub Release；Linux 尚未打包。
+`.github/workflows/desktop-release.yml` 在版本标签推送或手动触发时分别使用 Windows、macOS runner 构建，检查 Windows 0.1.11 升级的数据保留，以及 macOS 双架构和签名。构建产物通过检查后再发布到 GitHub Release；Linux 尚未打包。
 
 独立网站打包：
 
@@ -195,7 +195,7 @@ npm run release:web
 
 ## 版本与反馈
 
-当前桌面版本为 0.1.11 公开测试版。版本详情、测试范围及下载校验信息见[发布说明](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v0.1.11)。
+当前桌面版本为 1.0.0，项目的首个正式版本。版本详情、测试范围及下载校验信息见[发布说明](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v1.0.0)。
 
 报告普通问题时，请提供复现步骤、平台和版本，不要上传私人备份、凭据或个人资料。
 
