@@ -3,6 +3,7 @@ release/
 artifacts/
 .idea/
 .vscode/
+.DS_Store
 *.sqlite
 *.sqlite3
 *.db

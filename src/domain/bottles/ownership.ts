@@ -15,7 +15,7 @@ const MAX_RAW_LENGTH = 1_000_000;
 const MAX_IDS = 5_000;
 const MAX_ID_LENGTH = 200;
 
-function parseStored(raw: string | null): string[] {
+export function parseOwnedBottles(raw: string | null): string[] {
   if (raw === null) return [];
   if (raw.length > MAX_RAW_LENGTH) throw new Error('owned-bottles-too-large');
   const value: unknown = JSON.parse(raw);
@@ -66,7 +66,7 @@ export class BottleOwnershipStore {
     if (this.loading) return this.loading;
     this.loading = (async () => {
       try {
-        const storedIds = parseStored(await this.storage.getItem(BOTTLE_STORAGE_KEY));
+        const storedIds = parseOwnedBottles(await this.storage.getItem(BOTTLE_STORAGE_KEY));
         this.preservedUnknownIds = storedIds.filter(id => !this.allowed.has(id));
         this.emit(frozenSnapshot(storedIds.filter(id => this.allowed.has(id))));
       } catch {

@@ -2,6 +2,7 @@ import {createHash} from 'node:crypto';
 import {readFile, writeFile} from 'node:fs/promises';
 import {fileURLToPath, pathToFileURL} from 'node:url';
 import path from 'node:path';
+import {installSecurityPatches} from './patch-dependency-security.mjs';
 
 const original = "const decodeComponent = require('decode-uri-component');";
 const replacement = "const decodeComponent = require('decode-uri-component').default;";
@@ -27,6 +28,7 @@ async function install() {
   const result = compatibleQueryString(source, version);
   if (result !== source) await writeFile(target, result);
   console.log('Verified query-string 7.1.3 compatibility with the upstream fixed decoder.');
+  await installSecurityPatches(root);
 }
 
 if (process.argv[1] && pathToFileURL(path.resolve(process.argv[1])).href === import.meta.url) await install();

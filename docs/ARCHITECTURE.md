@@ -28,7 +28,7 @@ Root providers stay mounted across route changes. Business keys cover preference
 
 Saved recipes and making sessions keep exact snapshots. Private recipes append revisions on Save; experiments autosave. Optional private photos are compressed local JPEG data URLs, bounded to 200,000 characters.
 
-Full backup export uses schema 3 and reads schemas 1, 2 and 3. Individual sections are independently versioned. Restore previews changes, checks fingerprints, keeps before-images, journals writes, verifies readback and invalidates stale writers. Missing sections in an older backup must not erase newer data. Backups are not encrypted.
+Full backup export uses schema 3 and reads schemas 1, 2 and 3. Individual sections are independently versioned. Restore previews changes, uses recipe fingerprints for semantic identity, checks the exact raw before-state and storage generation before committing, keeps before-images, journals writes, verifies readback and invalidates stale writers. Selected restored bottles, favourites, private recipes, making sessions and taste experiences must pass their normal storage parsers and size limits before journal writes begin, including after merging. Missing sections in an older backup must not erase newer data. Backups are not encrypted.
 
 Browser storage belongs to its origin. A domain or protocol change does not move that data; export and restore explicitly. Desktop host storage belongs to the stable application identifier `com.glassnotes.desktop`, in each operating system's application-data directory.
 

@@ -6,7 +6,7 @@ Find a drink for tonight, make it with what you have, and remember what you enjo
 
 **367 cocktails · 371 source versions · 1,042 bottles · 8 interface languages**
 
-![Glass Notes in English, with discovery choices and a flowing cocktail gallery](docs/images/home-en.png)
+![The current Glass Notes home screen in English, with an ivory-on-green interface, a coupe model and three randomly selected drinks](docs/images/home-en.png)
 
 [Features](#features) · [Get started](#get-started) · [Local data](#local-data-and-backups) · [Development](#development-and-builds) · [Sources and licence](#sources-and-licence)
 
@@ -20,6 +20,8 @@ Use it in a desktop or phone browser, or download the Windows or macOS app. No a
 
 Start with **Find my glass** on the home screen. Choose a mode, then explore aroma, taste, strength and the first-sip experience. Select several options or skip a question. Occasion, season and your saved taste memory are optional.
 
+Your choices visibly change the glass beside the questions. Citrus, fruit, floral, herbal, spice and coffee bring different garnishes and liquid colours; palate, strength and first sip shape the continuing ripples and liquid movement. These are visual expressions of flavour, rather than an actual recipe or measured alcohol content.
+
 | Have a drink | Mix it myself |
 | --- | --- |
 | Find something that suits your taste. | Find recipes using the ingredients and bottles in your cupboard. |
@@ -27,11 +29,9 @@ Start with **Find my glass** on the home screen. Choose a mode, then explore aro
 
 If your cupboard is empty, you can add ingredients or choose by taste first. Before making a drink, check the recipe for quantities, equipment and ingredients that need advance preparation.
 
-<p>
-  <img src="docs/images/customize-zh.png" width="32%" alt="Phone view of the two discovery modes">
-  <img src="docs/images/flavours-zh.png" width="32%" alt="Guided aroma selection with multiple choices and a skip option">
-  <img src="docs/images/taste-zh.png" width="32%" alt="A drink's flavour experience with ratings and a private note">
-</p>
+![The actual English aroma screen: Floral changes the drink to violet and adds a flower garnish](docs/images/flavours-en.png)
+
+Choose **Find my glass** to reveal the recommendations: the questions fade, the coupe moves to the centre and turns, then the results appear. Skip the motion to read the results immediately. Each suggestion retains its matching source version and reasons; the layout adapts to a single drink, a pair or a larger selection.
 
 ### Browse a visual catalogue and keep the right version
 
@@ -39,11 +39,11 @@ Search names, aliases and ingredients; filter by base spirit, included or exclud
 
 Each cocktail has one card, with its source versions available in the details. Filters find a version that matches all your choices; open the card to read that recipe.
 
-![English catalogue with search, categories, filters and cocktail photographs and illustrations](docs/images/discover-en.png)
+![The current English catalogue with cocktail images, recipe links and save actions](docs/images/discover-en.png)
 
 Recipe details include ingredients, measures, steps, glassware, garnish, preparation notes and flavour guidance. Compare translated steps with the original text, or open the recipe and image sources.
 
-![Negroni details with its exact source version and making, order-card, favourite and taste actions](docs/images/recipe-zh.png)
+![Negroni in the actual English interface, with its source version and making, order-card, save and taste actions](docs/images/recipe-en.png)
 
 ### Your cupboard, ingredient library and bottle archive
 
@@ -51,7 +51,7 @@ Mark the ingredients and bottles you own so **Mix it myself** can suggest recipe
 
 Use the ingredient library to explore ingredients and related recipes. Search the bottle archive by product, brand, alias or flavour description; filter by category, inspect images and available strength information, mark ownership or select bottles for comparison.
 
-![Bottle archive with familiar gins, translated and original names, and product descriptions](docs/images/bottles-zh.png)
+![The current English bottle archive with category filters, product images and descriptions](docs/images/bottles-en.png)
 
 ### Follow a recipe or show an order card
 
@@ -61,10 +61,7 @@ Recipes estimate alcohol content from ingredient measures and bottle information
 
 An order card presents the drink name, ingredients and explicit requests. Use the app language or source language, show the card, copy its text or share text where the platform supports it. Your private tasting notes are not included.
 
-<p>
-  <img src="docs/images/making-zh.png" width="44%" alt="Phone making screen with ingredients, steps and practical tips">
-  <img src="docs/images/order-zh.png" width="44%" alt="Phone order card showing a drink name and concise ingredients">
-</p>
+![The actual English Show card view with the drink name and ingredients](docs/images/order-en.png)
 
 ### Favourites, personal lists and taste memory
 
@@ -72,19 +69,17 @@ Favourite a specific recipe, or create a list for a weekend, gathering or tastin
 
 Lists retain a snapshot of the recipe at the time it was added. Read that saved recipe or open the current catalogue version separately. Cards show the drink image and group its saved source versions together.
 
-![Demo personal list with drink images and saved recipe versions](docs/images/lists-zh.png)
-
 **Record taste** opens a drink-specific flavour experience. Record whether you drank or made it, liked or disliked the version, found it too sweet or strong, and which aromas you enjoyed. A private note is optional.
 
 Your saved taste ratings can inform future recommendations. Choose whether to use taste memory each time you look for a drink.
+
+![The current English tasting form, with explicit experience, ratings and palate adjustments](docs/images/taste-en.png)
 
 ### Your recipes, including your own photos
 
 Start from scratch, copy an exact catalogue recipe or take a version from the lab. Edit ingredients, quantities, steps, glassware, garnish and notes. Saving changes retains revision history.
 
 Choose a photo for your recipe and save it with the ingredients, steps and notes. Recipe backups include the photo.
-
-![Private recipe editor with a locally selected image and editable recipe fields](docs/images/private-recipe-zh.png)
 
 ### Research topics and your lab
 
@@ -98,21 +93,23 @@ Choose a photo for your recipe and save it with the ingredients, steps and notes
 
 Lab entries autosave locally, ready for your next trial.
 
-![Demo lab project with recipe versions, trial batches and result comparison](docs/images/lab-zh.png)
-
 ### Eight languages and responsive layouts
 
 Chinese, English, French, German, Spanish, Korean, Japanese and Italian are available. The initial choice follows supported device languages; use the toolbar to change it. Drink and bottle names follow your chosen language, with the original name below when it differs.
 
-All features are available in desktop and phone browsers. Switch liquid measures between ml and fl oz; other measures keep their original units. Page transitions, the cocktail waterfall and background motion can be paused and respect the system's reduced-motion preference.
+All features are available in desktop and phone browsers. Switch liquid measures between ml and fl oz; other measures keep their original units.
+
+Deep green, ivory, large display type and fine rules connect the home screen, discovery and personal records. Each fresh home visit draws three different drinks from the catalogue with direct recipe links; resizing or changing language keeps that selection. Cocktail images move from the catalogue into recipe details, while flavour choices remain connected to the coupe.
+
+Pause motion at any time, or use the system's reduced-motion preference. Continuing animation stops in the background or when the model is offscreen. Motion does not delay filtering or saving. Every image in this README is a screenshot of the current app running in English.
 
 ## Local data and backups
 
 Favourites, lists, cupboard records, recipes, experiments, making sessions, taste feedback and preferences stay in the current browser or app. They do not sync automatically to other devices.
 
-When moving to another device, open **My → Backup & restore** to export a JSON file, then import it on the new device. Review the sections and conflicts in the preview before choosing merge or replace.
+When moving to another device, open **My notes → Backup & restore** to export a JSON file, then import it on the new device. Review the sections and conflicts in the preview before choosing merge or replace.
 
-- Browser profiles, app installations and website origins (protocol, domain or port) have separate storage.
+- Browser profiles, website origins (protocol, domain or port) and devices have separate storage. Desktop copies and upgrades under the same operating-system user share the stable application data directory.
 - Clearing site data, ending private browsing or uninstalling can remove records. Export before migrating.
 - Backups include private notes and photos and **are not encrypted**. Keep them somewhere safe and avoid sharing them publicly.
 - Replace can remove existing records in selected sections. Review the preview and keep an earlier backup.
@@ -146,7 +143,7 @@ Open http://127.0.0.1:4173. Rebuild after source changes. The preview server is 
 
 ## Development and builds
 
-Expo, React Native and TypeScript share interface and domain code. The Windows and macOS apps use Tauri 2 to load a static Web export. Runtime use requires no application backend, database or model API key.
+Expo, React Native and TypeScript share interface and domain code. The Windows and macOS apps use Tauri 2 to load a static Web export. Web and desktop use a Three.js coupe with GSAP transitions; iOS retains its native presentation adapter. Fonts and catalogue content are bundled. Runtime use requires no application backend, database or model API key.
 
 ```sh
 npm run validate

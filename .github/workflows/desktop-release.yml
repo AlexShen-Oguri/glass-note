@@ -36,6 +36,7 @@ jobs:
         with:
           targets: ${{ runner.os == 'macOS' && 'aarch64-apple-darwin,x86_64-apple-darwin' || 'x86_64-pc-windows-msvc' }}
       - run: npm ci
+      - run: npm run audit:dependencies
       - run: npm run typecheck
       - run: npm test
       - run: npm run desktop:prepare
@@ -61,7 +62,7 @@ jobs:
           sleep 8
           pgrep -f "$PWD/$app/Contents/MacOS/glass-notes-desktop"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        if: ${{ always() && steps.desktop-build.outcome == 'success' }}
+        if: ${{ success() }}
         with:
           name: glass-notes-${{ env.DESKTOP_PLATFORM }}
           if-no-files-found: error

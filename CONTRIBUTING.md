@@ -4,6 +4,8 @@ Use Node.js 24 and install the committed dependency versions with `npm ci`. Star
 
 ## Changes
 
+Use focused changes and describe the relevant verification in your pull request.
+
 Keep a change focused and include a test for behaviour or error handling that could regress. Review interface changes at phone and desktop widths, including keyboard use and reduced motion.
 
 Run `npm run validate` before proposing a release candidate. Run `npm run brand:check` if assets or build tooling change. Windows host changes also require `npm run desktop:test` and an installation check.

@@ -9,6 +9,7 @@
     "workflow:test": "node --test scripts/workflow-*.test.mjs",
     "validate": "node scripts/validate.mjs",
     "audit:repo": "node scripts/audit-repository.mjs",
+    "audit:dependencies": "node scripts/audit-dependencies.mjs",
     "brand:build": "node scripts/trace-selected-brand.mjs && node scripts/compare-brand-reference.mjs && node scripts/build-brand.mjs",
     "brand:check": "node scripts/check-brand.mjs",
     "start": "node scripts/expo.mjs start",

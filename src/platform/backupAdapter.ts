@@ -3,6 +3,7 @@ import {bottles} from '../content/bottles';
 import type {Locale} from '../domain/contracts';
 import {parseLabBackup,utf8ByteLength} from '../domain/lab';
 import {parseFavoritesState} from '../domain/favorites';
+import {parseOwnedBottles} from '../domain/bottles/ownership';
 import {parsePrivateRecipeBook} from '../domain/private-recipes';
 import {parseTasteState} from '../domain/taste';
 import {parseMakingState} from '../domain/making';
@@ -78,11 +79,16 @@ export function rawAfterRestore(before:RawPersonalData,plan:RestorePlan,choice:R
     else if(section==='favorites'){
       const lists=sections.favorites.schemaVersion===2?sections.favorites.lists:[];
       value=JSON.stringify({version:2,versionIds:sections.favorites.versionIds,lists});
-      if(utf8ByteLength(value)>BACKUP_LIMIT)throw Error(`favorites exceeds ${BACKUP_LIMIT} UTF-8 bytes`);
-      parseFavoritesState(value);
     }
     else if(section==='pantry')value=JSON.stringify({ingredientIds:sections.pantry.ingredientIds,brandsByIngredient:sections.pantry.brandsByIngredient});
     else value=JSON.stringify(sections[section]);
+    // Check the exact after-image with its normal reader before any journal can commit it.
+    if(['favorites','privateRecipes','making','taste'].includes(section)&&utf8ByteLength(value)>BACKUP_LIMIT)throw Error(`${section} exceeds ${BACKUP_LIMIT} UTF-8 bytes`);
+    if(section==='favorites')parseFavoritesState(value);
+    else if(section==='bottles')parseOwnedBottles(value);
+    else if(section==='privateRecipes')parsePrivateRecipeBook(value);
+    else if(section==='making')parseMakingState(value);
+    else if(section==='taste')parseTasteState(value);
     if(value!==before[section])after[section]=value;
   }
   const references=JSON.stringify(plan.next.references);if(references!==before.references)after.references=references;
