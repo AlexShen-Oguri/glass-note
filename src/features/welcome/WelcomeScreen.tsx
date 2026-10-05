@@ -7,7 +7,7 @@ import {catalogue} from '../../content/catalogue';
 import {media} from '../../media';
 import {t} from '../../i18n/ui';
 import {colors} from '../../theme/tokens';
-import {BrandToolbar, isAiMedia, serif, useViewport} from '../discovery/components';
+import {BrandToolbar, isAiMedia, isCompactViewport, serif, useViewport} from '../discovery/components';
 import {useSceneTransition} from '../motion/SceneTransition';
 import {motionData} from '../motion/attributes';
 import {recipeCategoryText} from '../../i18n/recipe-categories';
@@ -27,7 +27,7 @@ export default function WelcomeScreen() {
   const {run}=useSceneTransition();
   const {locale, dispatchGuided} = app;
   const {width, height} = useViewport();
-  const compact = width <= 700;
+  const compact = isCompactViewport({width, height});
   const short = !compact && height <= 800;
   const narrow = !compact && width <= 1100;
   const large = width >= 1600;
@@ -62,8 +62,18 @@ export default function WelcomeScreen() {
     {([['/', 'home'], ['/pantry', 'cabinet'], ['/professional', 'professional'], ['/my', 'my']] as const).map(([href, label]) => <Link key={href} href={href} asChild><Pressable accessibilityRole="link" accessibilityLabel={appNavigationText(locale, label)} {...(Platform.OS === 'web' && href === '/' ? {'aria-current': 'page' as const} : {})} style={StyleSheet.flatten([styles.destination, compact && styles.destinationCompact])}><Text style={[styles.destinationText, href === '/' && styles.destinationActive]}>{appNavigationText(locale, label)}</Text></Pressable></Link>)}
   </SafeAreaView>;
 
+  const archive = <View {...motionData({motionPart: 'archive'})} style={[styles.archive, !compact && {right: width * (narrow ? .04 : .058), bottom: short ? 44 : large ? 65 : 74}, narrow && styles.archiveNarrow, compact && styles.archiveCompact]}>
+    {previews.map((cocktail, index) => {
+      const asset = media[cocktail.id];
+      return <Link key={cocktail.id} asChild href={{pathname: '/cocktails/[id]', params: {id: cocktail.id, version: cocktail.defaultVersionId, from: 'welcome'}} as never}><Pressable onPress={()=>{returnFromArchive.current=true;}} accessibilityRole="link" accessibilityLabel={`${cocktail.name[locale]}. ${t(locale, 'viewRecipe')}`} accessibilityHint={asset && isAiMedia(asset) ? t(locale, 'aiImage') : asset ? `${asset.author}${asset.license ? ` · ${asset.license}` : ''}` : undefined} style={StyleSheet.flatten([styles.archiveItem, index === 1 && styles.archiveRaised, narrow && styles.archiveItemNarrow, compact && styles.archiveItemCompact, compact && {width: (width - scenePadding * 2 - 20) / 3}])}>
+        <View {...motionData({motionPhoto: cocktail.id})} style={[styles.archivePhoto, narrow && styles.archivePhotoNarrow, compact && styles.archivePhotoCompact]}>{asset && <Image source={{uri: asset.uri}} resizeMode="cover" style={StyleSheet.absoluteFill} accessibilityLabel={isAiMedia(asset) ? t(locale, 'aiImage') : t(locale, 'photograph')}/>}</View>
+        <Text numberOfLines={2} style={[styles.archiveName, compact && styles.archiveNameCompact]}>{String(index + 1).padStart(2, '0')} / {cocktail.name.en}</Text>
+      </Pressable></Link>;
+    })}
+  </View>;
+
   return <SafeAreaView {...motionData({nightHome: ''})} style={styles.screen} edges={['top']}>
-    <ScrollView contentContainerStyle={[styles.page, !compact && styles.pageDesktop]}>
+    <ScrollView {...motionData({nightScroll: ''})} contentContainerStyle={[styles.page, !compact && styles.pageDesktop]}>
       <BrandToolbar {...app} showUnits={false} variant="home"/>
       <View {...motionData({sceneContent:''})} testID="night-home-copy" style={[styles.scene, !compact && styles.sceneDesktop, {paddingHorizontal: scenePadding, minHeight: compact ? 0 : height - 220, paddingTop: compact ? 23 : short ? 20 : large ? 75 : 51}]}>
         <View {...motionData({motionPart: 'kicker'})} style={[styles.kicker, compact && styles.kickerCompact]}><View style={[styles.kickerRule, compact && styles.kickerRuleCompact]}/><Text style={[styles.kickerText, compact && styles.kickerTextCompact]}>GLASS NOTES / EVERY TASTE TELLS A STORY</Text></View>
@@ -74,7 +84,8 @@ export default function WelcomeScreen() {
           </> : <View style={[styles.lineMask, mask]}><Text {...motionData({motionPart: 'title-line'})} style={[styles.title, titleStyle]}>{t(locale, 'welcomeTitle')}</Text></View>}
         </View>
         <Text {...motionData({motionPart: 'detail'})} style={[styles.subtitle, {marginLeft: compact ? (width - scenePadding * 2) * .07 : width * .05, marginTop: compact ? 16 : short ? 14 : 18}, compact && styles.subtitleCompact]}>{locale === 'zh' ? '让这一杯，刚好属于此刻。' : t(locale, 'welcomeSubtitle')}</Text>
-        <View style={[styles.choices, {maxWidth: compact ? '100%' : short ? 490 : narrow ? 460 : large ? 600 : 530, marginTop: compact ? 365 : short ? 24 : large ? 65 : 40}]}>
+        {compact && <View {...motionData({nightGlassAnchor: ''})} style={styles.glassCompact}>{archive}</View>}
+        <View style={[styles.choices, {maxWidth: compact ? '100%' : short ? 490 : narrow ? 460 : large ? 600 : 530, marginTop: compact ? 24 : short ? 24 : large ? 65 : 40}]}>
           {entries.map(entry => {
             const button = <Pressable {...motionData({motionPart: 'entry', nightEntry: entry.number})} accessibilityRole={entry.href ? 'link' : 'button'} accessibilityLabel={entry.title} onPress={entry.action} style={StyleSheet.flatten([styles.choice, compact && styles.choiceCompact, short && styles.choiceShort])}>
               <View {...motionData({nightRule:''})} pointerEvents="none" style={styles.choiceRule}/>
@@ -83,15 +94,7 @@ export default function WelcomeScreen() {
             return entry.href ? <Link key={entry.number} href={entry.href} asChild>{button}</Link> : <React.Fragment key={entry.number}>{button}</React.Fragment>;
           })}
         </View>
-        <View {...motionData({motionPart: 'archive'})} style={[styles.archive, {right: width * (compact ? .05 : narrow ? .04 : .058), bottom: compact ? undefined : short ? 44 : large ? 65 : 74}, compact && styles.archiveCompact, narrow && styles.archiveNarrow]}>
-          {previews.map((cocktail, index) => {
-            const asset = media[cocktail.id];
-            return <Link key={cocktail.id} asChild href={{pathname: '/cocktails/[id]', params: {id: cocktail.id, version: cocktail.defaultVersionId, from: 'welcome'}} as never}><Pressable onPress={()=>{returnFromArchive.current=true;}} accessibilityRole="link" accessibilityLabel={`${cocktail.name[locale]}. ${t(locale, 'viewRecipe')}`} accessibilityHint={asset && isAiMedia(asset) ? t(locale, 'aiImage') : asset ? `${asset.author}${asset.license ? ` · ${asset.license}` : ''}` : undefined} style={StyleSheet.flatten([styles.archiveItem, index === 1 && styles.archiveRaised, narrow && styles.archiveItemNarrow, compact && styles.archiveItemCompact])}>
-              <View {...motionData({motionPhoto: cocktail.id})} style={[styles.archivePhoto, narrow && styles.archivePhotoNarrow, compact && styles.archivePhotoCompact]}>{asset && <Image source={{uri: asset.uri}} resizeMode="cover" style={StyleSheet.absoluteFill} accessibilityLabel={isAiMedia(asset) ? t(locale, 'aiImage') : t(locale, 'photograph')}/>}</View>
-              <Text numberOfLines={2} style={[styles.archiveName, compact && styles.archiveNameCompact]}>{String(index + 1).padStart(2, '0')} / {cocktail.name.en}</Text>
-            </Pressable></Link>;
-          })}
-        </View>
+        {!compact && archive}
         {!compact && <View style={[styles.collection, {right: width * .07}]}><View style={styles.collectionRule}/><Text style={styles.collectionText}>THE COLLECTION</Text><Text style={styles.collectionText}>{catalogue.cocktails.length} RECIPES</Text></View>}
       </View>
       {!compact && navigation}
@@ -136,17 +139,18 @@ const styles = StyleSheet.create({
   choiceArrow: {width: 36, height: 36, borderWidth: 1, borderColor: cover.line, borderRadius: 18, alignItems: 'center', justifyContent: 'center'},
   arrowText: {color: cover.ivory, fontSize: 15, lineHeight: 24},
   archive: {position: 'absolute', flexDirection: 'row', alignItems: 'flex-end', gap: 17},
-  archiveCompact: {top: 356, gap: 10, opacity: .85},
+  glassCompact: {height: 350, marginTop: 16},
+  archiveCompact: {left: 0, right: 0, bottom: 0, gap: 10},
   archiveNarrow: {gap: 10},
   archiveItem: {width: 96},
   archiveRaised: {marginBottom: 24},
   archiveItemNarrow: {width: 70},
-  archiveItemCompact: {width: 65, marginBottom: 0},
+  archiveItemCompact: {marginBottom: 0},
   archivePhoto: {height: 119, overflow: 'hidden'},
   archivePhotoNarrow: {height: 92},
-  archivePhotoCompact: {height: 86},
+  archivePhotoCompact: {height: 108},
   archiveName: {color: cover.muted, fontSize: 9, lineHeight: 14.4, height: 28.8, letterSpacing: .9, marginTop: 8},
-  archiveNameCompact: {fontSize: 8, lineHeight: 12.8, height: 25.6, letterSpacing: .8},
+  archiveNameCompact: {fontSize: 10, lineHeight: 15, height: 30, letterSpacing: .5},
   collection: {position: 'absolute', bottom: 35, flexDirection: 'row', alignItems: 'center', gap: 16},
   collectionRule: {width: 47, height: 1, backgroundColor: cover.line},
   collectionText: {color: cover.muted, fontSize: 10, lineHeight: 16, letterSpacing: 1.5},

@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Keep the phone coupe anchored to its own scrolling content area, with home drink images, guided titles and controls in document flow instead of overlapping a fixed model.
+
 ## 1.0.0 (2026-10-05)
 
 - Publish the first non-prerelease version for Web, Windows x64 and universal macOS, retaining the catalogue, editorial interface and sensory motion from the previews.

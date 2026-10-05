@@ -4,28 +4,29 @@ import {usePathname} from 'expo-router';
 import {useApp} from '../../platform/AppProvider';
 import {motionData} from '../motion/attributes';
 import {element, gsap, useGSAP, useVisibleMotion} from '../motion/gsap.web';
+import {livePart} from '../motion/choreography.web';
 import {useGlassReveal} from '../motion/SceneTransition.web';
 import {useMotionStatus} from '../motion/useMotionEnabled';
-import {useViewport} from './components';
+import {isCompactViewport, useViewport} from './components';
 import type {AmbientLightProps} from './AmbientLight';
 import type {GlassScene, GlassStage} from './sculpture.web';
 
 type Box = {left:number; top:number; width:number; height:number; opacity:number};
 /** Exact spatial endpoints from the accepted Night Score prototype. */
 function composition(scene:GlassScene, width:number, height:number) {
-  const phone=width<=700, short=!phone&&height<=800, tablet=!phone&&width<=1100;
+  const phone=isCompactViewport({width,height}), short=!phone&&height<=800, tablet=!phone&&width<=1100;
   const glass=(w:number,h:number,x:number,y:number,opacity=1):Box=>({width:w,height:h,left:x-w/2,top:y-h/2,opacity});
   const portal=(diameter:number,x:number,y:number,opacity=1)=>glass(diameter,diameter,x,y,opacity);
   if(scene==='home') {
-    if(phone)return {glass:glass(380,460,width*.57,510),portal:portal(290,width*.57,488)};
+    if(phone)return {glass:glass(Math.min(350,width*.92),330,width*.5,200),portal:portal(Math.min(290,width*.8),width*.5,200)};
     if(short)return {glass:glass(540,610,width*.74,height*.48),portal:portal(470,width*.74,height*.49)};
     if(tablet)return {glass:glass(540,620,width*.75,height*.48),portal:portal(450,width*.75,height*.49)};
     return {glass:glass(650,720,width*.72,height*.48),portal:portal(580,width*.72,height*.49)};
   }
-  if(scene==='guided')return phone?{glass:glass(320,300,width*.5,235),portal:portal(250,width*.5,235,.8)}:{glass:glass(500,530,width*.78,height*.54),portal:portal(440,width*.78,height*.54)};
+  if(scene==='guided')return phone?{glass:glass(Math.min(320,width*.86),280,width*.5,200),portal:portal(Math.min(250,width*.72),width*.5,200,.8)}:{glass:glass(500,530,width*.78,height*.54),portal:portal(440,width*.78,height*.54)};
   if(scene==='mode') {
     const opacity=1;
-    if(phone)return {glass:glass(350,430,width*.93,390,1),portal:portal(260,width*.93,386,1)};
+    if(phone)return {glass:glass(Math.min(320,width*.86),280,width*.5,200),portal:portal(Math.min(250,width*.72),width*.5,200)};
     return {glass:glass(500,600,width*.80,height*.50,opacity),portal:portal(410,width*.80,height*.48,1)};
   }
   if(scene==='recipe')return {glass:glass(500,600,width*.3,height*.49,0),portal:phone?portal(290,width*.5,415,.55):portal(470,width*.3,height*.49,.55)};
@@ -35,6 +36,8 @@ function composition(scene:GlassScene, width:number, height:number) {
 /** One continuous, non-interactive space; route changes never remount the coupe. */
 export function AmbientLight({paused, reduceMotion = false}: AmbientLightProps) {
   const host=useRef<View>(null), portal=useRef<View>(null), glassRig=useRef<View>(null), glass=useRef<View>(null);
+  const flow=useRef<View>(null),[slotVisible,setSlotVisible]=useState(false);
+  const alignMobile=useRef<(()=>void)|null>(null);
   const stage=useRef<GlassStage|null>(null),loaded=useRef<Promise<GlassStage|null>>(Promise.resolve(null));
   const revealController=useGlassReveal(),[revealActive,setRevealActive]=useState(false),signature=useRef<Text>(null);
   const revealCancel=useRef<(()=>void)|null>(null);
@@ -43,13 +46,47 @@ export function AmbientLight({paused, reduceMotion = false}: AmbientLightProps) 
   const {ready,enabled}=useMotionStatus();
   const animated=ready&&enabled&&!paused&&!reduceMotion;
   const {width,height}=useViewport();
+  const compact=isCompactViewport({width,height});
   const pathname=usePathname();
-  const {guided}=useApp();
+  const {guided,locale}=useApp();
   const scene:GlassScene=pathname==='/'?'home':pathname.startsWith('/cocktails/')?'recipe':pathname==='/make'?'guided':pathname==='/customize'?guided.mode===null?'mode':guided.phase==='choosing'||guided.phase==='revealing'||revealActive?'guided':'results':'discover';
   const sculptureVisible=scene==='home'||scene==='mode'||scene==='guided';
-  const running=useVisibleMotion(host,paused||reduceMotion||!sculptureVisible);
-  const latest=useRef({scene,running,reduceMotion});latest.current={scene,running,reduceMotion};
+  const running=useVisibleMotion(host,paused||reduceMotion||!sculptureVisible||(compact&&!slotVisible&&!revealActive));
+  const latest=useRef({scene,running,reduceMotion,revealing:false});latest.current={scene,running,reduceMotion,revealing:guided.phase==='revealing'||revealActive};
   const geometry=composition(scene,width,height);
+  useGSAP(()=>{
+    const node=element(flow),root=element(host);
+    if(!node||!root||!compact||!sculptureVisible){setSlotVisible(false);return;}
+    let anchor=Array.from(document.querySelectorAll<HTMLElement>('[data-night-glass-anchor]')).find(livePart);
+    const scroller=anchor?.closest<HTMLElement>('[data-night-scroll]');
+    if(!anchor||!scroller){gsap.set(node,{opacity:0});setSlotVisible(false);return;}
+    gsap.set(node,{opacity:1});
+    const moveX=gsap.quickSetter(node,'x','px'),moveY=gsap.quickSetter(node,'y','px');
+    let origin=0;
+    const scroll=()=>{if(!latest.current.revealing)moveY(origin-scroller.scrollTop);};
+    const measure=()=>{
+      const current=Array.from(scroller.querySelectorAll<HTMLElement>('[data-night-glass-anchor]')).find(livePart);
+      if(!current)return;
+      if(current!==anchor){
+        resize.unobserve(anchor!);visible.unobserve(anchor!);anchor=current;
+        resize.observe(anchor);visible.observe(anchor);
+      }
+      const frame=anchor.getBoundingClientRect(),bounds=root.getBoundingClientRect();
+      origin=frame.top+frame.height/2-bounds.top-200+scroller.scrollTop;
+      moveX(frame.left+frame.width/2-bounds.left-width/2);moveY(origin-scroller.scrollTop);
+    };
+    // The persistent GPU scene follows the real content slot. Scroll reads only
+    // its offset; remeasure after layout changes, never once per animation frame.
+    alignMobile.current=measure;
+    const resize=new ResizeObserver(()=>{if(!latest.current.revealing)measure();});
+    resize.observe(scroller.firstElementChild??anchor);resize.observe(anchor);
+    const visible=new IntersectionObserver(([entry])=>setSlotVisible(Boolean(entry?.isIntersecting)),{root:scroller});
+    const content=new MutationObserver(()=>{if(!latest.current.revealing)measure();});
+    content.observe(scroller,{childList:true,subtree:true});
+    visible.observe(anchor);measure();
+    scroller.addEventListener('scroll',scroll,{passive:true});
+    return()=>{alignMobile.current=null;content.disconnect();resize.disconnect();visible.disconnect();scroller.removeEventListener('scroll',scroll);gsap.set(node,{clearProps:'transform'});};
+  },{scope:host,dependencies:[pathname,scene,width,height,locale,guided.step,guided.mode],revertOnUpdate:true});
   useEffect(()=>{
     let disposed=false;
     loaded.current=import('./sculpture.web').then(({createGlassStage})=>{
@@ -121,6 +158,11 @@ export function AmbientLight({paused, reduceMotion = false}: AmbientLightProps) 
         if(!model||!await model.ready){if(!stopped){restore();onResults();onComplete();}return;}
         if(stopped)return;
         model.setScene('guided',{duration:0});model.setPaused(false);model.setPresentation(presentation);
+        if(compact){
+          const scroller=outgoing.closest<HTMLElement>('[data-night-scroll]');
+          if(scroller)scroller.scrollTop=0;
+          alignMobile.current?.();
+        }
         const rect=rig.getBoundingClientRect();
         const x=window.innerWidth/2-(rect.left+rect.width/2),y=window.innerHeight/2-(rect.top+rect.height/2);
         outgoing.inert=true;gsap.set(rig,{willChange:'transform,opacity'});
@@ -156,9 +198,11 @@ export function AmbientLight({paused, reduceMotion = false}: AmbientLightProps) 
   },{scope:host,dependencies:[width,height],revertOnUpdate:true});
   return <View ref={host} {...motionData({motionLoop:'night-space',nightScene:scene})} pointerEvents="none" accessible={false} importantForAccessibility="no-hide-descendants" aria-hidden style={styles.root}>
     <View style={styles.light}/><View style={styles.grain}/>
-    <View ref={portal} {...motionData({motionSpacePortal:''})} style={[styles.rig,styles.portal,geometry.portal]}><View style={styles.inner}/><View style={styles.orbit}/><View style={styles.secondOrbit}/></View>
-    <View ref={glassRig} {...motionData({motionSpaceGlass:''})} style={[styles.rig,geometry.glass]}><View ref={glass} style={styles.fill}/></View>
-    {width>700&&<Text ref={signature} style={[styles.signature,{opacity:scene==='guided'||scene==='home'?1:0}]}>A STUDY IN TASTE &amp; TIME</Text>}
+    <View ref={flow} style={styles.fill}>
+      <View ref={portal} {...motionData({motionSpacePortal:''})} style={[styles.rig,styles.portal,geometry.portal]}><View style={styles.inner}/><View style={styles.orbit}/><View style={styles.secondOrbit}/></View>
+      <View ref={glassRig} {...motionData({motionSpaceGlass:''})} style={[styles.rig,geometry.glass]}><View ref={glass} style={styles.fill}/></View>
+    </View>
+    {!compact&&<Text ref={signature} style={[styles.signature,{opacity:scene==='guided'||scene==='home'?1:0}]}>A STUDY IN TASTE &amp; TIME</Text>}
   </View>;
 }
 export default AmbientLight;

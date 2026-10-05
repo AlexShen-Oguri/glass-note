@@ -101,6 +101,8 @@ All features are available in desktop and phone browsers. Switch liquid measures
 
 Deep green, ivory, large display type and fine rules connect the home screen, discovery and personal records. Each fresh home visit draws three different drinks from the catalogue with direct recipe links; resizing or changing language keeps that selection. Cocktail images move from the catalogue into recipe details, while flavour choices remain connected to the coupe.
 
+On phones, the coupe has its own content area and scrolls with the page. Home images, question titles and choices follow the content flow, keeping the model clear of text and controls.
+
 Pause motion at any time, or use the system's reduced-motion preference. Continuing animation stops in the background or when the model is offscreen. Motion does not delay filtering or saving. Every image in this README is a screenshot of the current app running in English.
 
 ## Local data and backups

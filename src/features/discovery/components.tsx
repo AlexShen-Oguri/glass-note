@@ -39,6 +39,10 @@ export function useViewport() {
   return client ? live : serverViewport;
 }
 
+export function isCompactViewport({width, height}: {width: number; height: number}) {
+  return width <= 700 || (width <= 900 && height <= 500);
+}
+
 export function useReduceMotion() {
   return useSystemMotionPreference().reduced;
 }

@@ -51,7 +51,7 @@ import {t} from '../../i18n/ui';
 import {media} from '../../media';
 import {useApp} from '../../platform/AppProvider';
 import {colors, radii} from '../../theme/tokens';
-import {BrandToolbar, PhotoFrame, serif, useReduceMotion, useViewport} from '../discovery/components';
+import {BrandToolbar, PhotoFrame, isCompactViewport, serif, useReduceMotion, useViewport} from '../discovery/components';
 import {Heading} from '../navigation/Heading';
 import {ContextReasons, ContextSelector} from '../context';
 import {GuidedReveal} from './GuidedReveal';
@@ -397,6 +397,7 @@ function ModeChoice({locale,dispatch,compact}:{locale:Locale;dispatch:React.Disp
     <Text {...motionData({motionPart:'kicker'})} style={styles.sceneKicker}>YOUR WAY / YOUR GLASS</Text>
     <View {...motionData({motionPart: 'title'})}><Heading level={1} style={[styles.modeTitle,{fontSize:compact?53:Math.min(98,Math.max(65,width*.062)),lineHeight:compact?61:Math.min(112,Math.max(75,width*.071))}]}>{g175(locale,'modeTitle')}</Heading></View>
     <View {...motionData({motionPart: 'copy'})}><Text style={styles.questionHint}>{g175(locale,'modeHint')}</Text></View>
+    {compact && Platform.OS==='web' && <View {...motionData({nightGlassAnchor: ''})} pointerEvents="none" style={styles.glassCompact}/>}
     <View {...motionData({motionPart: 'options'})} style={[styles.modeChoices,compact&&styles.modeChoicesCompact]}>
       {(['drink','make'] as const).map(mode=><Pressable {...motionData({motionPart:'entry'})} key={mode} accessibilityRole="button" onPress={()=>dispatch({type:'set-mode',mode})} style={({pressed})=>[styles.modeChoice,pressed&&styles.pressed]}>
         <View {...motionData({nightRule:''})} pointerEvents="none" style={styles.modeRule}/>
@@ -409,8 +410,10 @@ function ModeChoice({locale,dispatch,compact}:{locale:Locale;dispatch:React.Disp
 }
 
 function PantryGate({locale,access,onRetry,onContinue,onDrink}:{locale:Locale;access:PantryAccess;onRetry:()=>void;onContinue:()=>void;onDrink:()=>void}) {
-  return <View style={styles.modeIntro}>
+  const compact=isCompactViewport(useViewport());
+  return <View style={[styles.modeIntro,compact&&styles.modeIntroCompact]}>
     <Heading level={1} style={styles.questionTitle}>{g175(locale,access==='empty'?'emptyTitle':access==='error'?'pantryError':'pantryLoading')}</Heading>
+    {compact && Platform.OS==='web' && <View {...motionData({nightGlassAnchor: ''})} pointerEvents="none" style={styles.glassCompact}/>}
     {access==='empty'?<>
       <Text style={styles.questionHint}>{g175(locale,'emptyBody')}</Text>
       <View style={styles.gateActions}>
@@ -451,6 +454,7 @@ function ChoosingView({
           <Text style={[styles.questionHint,short&&styles.questionHintShort,compact&&styles.questionHintCompact]}>{t(locale, step.hintKey)}</Text>
           <Text style={[styles.selectionHint,short&&styles.selectionHintShort]}>{t(locale, step.multi ? 'guidedMultiHint' : 'guidedSingleHint')}</Text>
         </View>
+        {compact && Platform.OS==='web' && <View {...motionData({nightGlassAnchor: ''})} pointerEvents="none" style={styles.glassCompact}/>}
         {guided.step === 0 ? <ContextSelector editorial compact={compact||short} locale={locale} value={guided.contextDraft ?? {}} onApply={(selection) => dispatch({type: 'set-context', selection})} /> : null}
         <View {...motionData({motionPart: 'options'})} style={[styles.options, compact && styles.optionsCompact,short&&styles.optionsShort]}>
           {step.options.map((option) => (
@@ -611,10 +615,10 @@ export default function GuidedScreen() {
     if(node)resultPhotoRefs.current.set(cocktailId,node);
     else resultPhotoRefs.current.delete(cocktailId);
   },[]);
-  const {width} = useViewport();
+  const {width, height} = useViewport();
   const reduceMotion = useReduceMotion();
   const focused = useIsFocused();
-  const compact = width <= 700;
+  const compact = isCompactViewport({width, height});
   const screenPaused = !canAnimate || !focused;
   const mode=guided.mode===undefined?'drink':guided.mode;
   const ownedPantry=useMemo(()=>mergeOwnedPantry(pantry.pantry,bottles.filter(bottle=>owned.ids.includes(bottle.id))),[pantry.pantry,owned.ids]);
@@ -677,7 +681,7 @@ export default function GuidedScreen() {
 
   return (
     <SafeAreaView style={styles.screen} edges={['top', 'bottom']}>
-      <ScrollView ref={scrollRef} style={stableWebScrollGutter} contentContainerStyle={[styles.page,{paddingHorizontal:width*(compact ? 0.07 : 0.065)}]} keyboardShouldPersistTaps="handled">
+      <ScrollView {...motionData({nightScroll: ''})} ref={scrollRef} style={stableWebScrollGutter} contentContainerStyle={[styles.page,{paddingHorizontal:width*(compact ? 0.07 : 0.065)}]} keyboardShouldPersistTaps="handled">
         <View style={styles.shell}>
           <BrandToolbar {...{locale, setLocale, unit, setUnit, motionPaused, setMotionPaused}} showUnits={false} />
           <MotionTransition changeKey={`${mode}:${gate}:${guided.phase==='choosing'?`choosing:${guided.step}`:'reveal-results'}`} kind="step" disabled={!focused}>
@@ -751,7 +755,8 @@ const styles = StyleSheet.create({
   shell: {width: '100%', maxWidth: 1500, alignSelf: 'center'},
   chooseLayout: {flexDirection: 'row', gap: 28, alignItems: 'stretch', paddingTop: 20},
   chooseLayoutShort:{paddingTop:0},
-  chooseLayoutCompact: {flexDirection: 'column', gap: 12, paddingTop: Platform.OS==='web'?285:8},
+  chooseLayoutCompact: {flexDirection: 'column', gap: 12, paddingTop: 8},
+  glassCompact: {height: 280, marginBottom: 16},
   questionPane: {flex: 1, maxWidth:920,minWidth: 0},
   questionPaneShort:{paddingVertical:0},
   questionPaneCompact: {paddingVertical: 0, paddingBottom: 20},
