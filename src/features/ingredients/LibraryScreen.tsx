@@ -5,12 +5,17 @@ import {FlatList, Pressable, ScrollView, StyleSheet, Text, TextInput, View} from
 import {router} from 'expo-router';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {catalogue} from '../../content/catalogue';
-import {INGREDIENT_GROUPS, filterIngredientEntries, ingredientEntries, pantryMatches, type IngredientGroup, type PantryMatch} from '../../domain/ingredients';
+import {INGREDIENT_GROUPS, filterIngredientEntries, pantryMatches, type IngredientGroup, type PantryMatch} from '../../domain/ingredients';
+import {canonicalIngredientEntries,canonicalIngredientId,canonicalMemberIds,canonicalOwned} from '../../domain/ingredients/canonical';
+import {materialDisplayName} from './materialDisplay';
+import {materialText} from '../../i18n/materials';
 import {lib} from '../../i18n/library';
 import {guideText, ingredientUseNote} from '../../i18n/ingredientGuide';
 import {t} from '../../i18n/ui';
 import {useApp} from '../../platform/AppProvider';
 import {usePantry} from '../../platform/PantryProvider';
+import {useBottles} from '../../platform/BottleProvider';
+import {mergeOwnedPantry} from '../../domain/ingredients/presence';
 import {media} from '../../media';
 import {colors} from '../../theme/tokens';
 import {BrandToolbar, PhotoFrame, serif, useViewport} from '../discovery/components';
@@ -21,7 +26,7 @@ import {labText} from '../../i18n/lab';
 import {persistenceText} from '../../i18n/local-persistence';
 import {Fold} from '../workspace/ui';
 
-const entries = ingredientEntries(catalogue);
+const entries = canonicalIngredientEntries(catalogue);
 const availableGroups = INGREDIENT_GROUPS.filter(group=>entries.some(entry=>entry.group===group));
 type Shelf = 'ready' | 'one' | 'two' | 'check' | 'preparationCheck';
 const shelfFor = (match: PantryMatch): Shelf => match.missingIngredientIds.length === 2 ? 'two' : match.missingIngredientIds.length === 1 ? 'one' : match.preparationNeedsReview ? 'preparationCheck' : match.unconfirmedBrands.length ? 'check' : 'ready';
@@ -29,7 +34,11 @@ const shelfFor = (match: PantryMatch): Shelf => match.missingIngredientIds.lengt
 export default function LibraryScreen({mode = 'library', ingredientId}: {mode?: 'library' | 'pantry'; ingredientId?: string}) {
   const app = useApp();
   const {locale} = app;
-  const {pantry, hydrated, storageAvailable, error, toggleIngredient, toggleBrand, retry} = usePantry();
+  const {pantry, hydrated, storageAvailable, error, toggleCanonicalIngredient:toggleIngredient, toggleBrand, retry} = usePantry();
+  const bottleStore=useBottles();
+  const ownedBottles=useMemo(()=>bottles.filter(item=>bottleStore.ids.includes(item.id)),[bottleStore.ids]);
+  const mergedPantry=useMemo(()=>mergeOwnedPantry(pantry,ownedBottles),[pantry,ownedBottles]);
+  const ownershipReady=hydrated&&bottleStore.hydrated&&error!=='read'&&bottleStore.error!=='read';
   const {width} = useViewport();
   const [search, setSearch] = useState('');
   const [group, setGroup] = useState<IngredientGroup>();
@@ -38,16 +47,18 @@ export default function LibraryScreen({mode = 'library', ingredientId}: {mode?: 
   const [onlyOwned, setOnlyOwned] = useState(false);
   const [onlyLinked, setOnlyLinked] = useState(false);
   const [retrying, setRetrying] = useState(false);
-  const entry = entries.find(e => e.ingredient.id === ingredientId);
+  const entry = entries.find(e => e.ingredient.id === canonicalIngredientId(catalogue,ingredientId??''));
   const filtered = useMemo(() => {
-    const result = filterIngredientEntries(entries, catalogue, search, locale, group).filter(e => (!onlyOwned || pantry.ingredientIds.includes(e.ingredient.id)) && (!onlyLinked || e.cocktailIds.length > 0));
+    const result = filterIngredientEntries(entries, catalogue, search, locale, group).filter(e => (!onlyOwned || ownershipReady&&canonicalOwned(catalogue,mergedPantry,e.ingredient.id)) && (!onlyLinked || e.cocktailIds.length > 0));
     // Start with familiar bar materials; the full independent directory remains searchable.
     return search.trim() ? result : result.sort((a,b) => b.cocktailIds.length-a.cocktailIds.length);
-  }, [search,locale,group,onlyOwned,onlyLinked,pantry.ingredientIds]);
-  const matches = useMemo(() => pantryMatches(catalogue, pantry), [pantry]);
+  }, [search,locale,group,onlyOwned,onlyLinked,mergedPantry,ownershipReady]);
+  const matches = useMemo(() => ownershipReady?pantryMatches(catalogue, mergedPantry):[], [mergedPantry,ownershipReady]);
   const visibleMatches = matches.filter(m => shelf === 'all' || shelfFor(m) === shelf);
-  const name = (id: string) => catalogue.ingredients.find(i => i.id === id)?.name[locale] ?? id;
-  const owned = (id: string) => pantry.ingredientIds.includes(id);
+  const name = (id: string) => materialDisplayName(id,locale);
+  const owned = (id: string) => ownershipReady&&canonicalOwned(catalogue,mergedPantry,id);
+  const derivedOnly=(id:string)=>owned(id)&&!canonicalOwned(catalogue,pantry,id);
+  const toggleOwnership=(id:string)=>{if(derivedOnly(id))router.push({pathname:'/bottles' as never,params:{concept:id}});else toggleIngredient(id);};
   const ingredientPath = (id: string) => router.push({pathname: '/ingredients/[id]', params: {id}} as never);
   const detail = Boolean(ingredientId);
   const columns = width >= 980 ? 3 : width >= 650 ? 2 : 1;
@@ -55,7 +66,7 @@ export default function LibraryScreen({mode = 'library', ingredientId}: {mode?: 
   const retryStorage = async () => {
     if (retrying) return;
     setRetrying(true);
-    try { await retry(); } finally { setRetrying(false); }
+    try { await retry();if(bottleStore.error==='read')await bottleStore.load();else if(bottleStore.error==='write')await bottleStore.retrySave(); } finally { setRetrying(false); }
   };
 
   return <SafeAreaView style={styles.screen}>
@@ -64,11 +75,11 @@ export default function LibraryScreen({mode = 'library', ingredientId}: {mode?: 
         <BrandToolbar {...app} />
         <View style={styles.navigation}>
           <Pressable accessibilityRole="link" onPress={() => router.push('/discover' as never)} style={styles.nav}><Text style={styles.subtle}>← {lib(locale,'browse')}</Text></Pressable>
-          <Pressable accessibilityRole="link" onPress={() => router.push((mode === 'pantry' ? '/ingredients' : '/pantry') as never)} style={styles.destination}><Text style={styles.destinationText}>{lib(locale,mode === 'pantry' ? 'library' : 'pantry')} · {mode === 'pantry' ? entries.length : hydrated ? pantry.ingredientIds.length : '—'} ↗</Text></Pressable>
+          <Pressable accessibilityRole="link" onPress={() => router.push((mode === 'pantry' ? '/ingredients' : '/pantry') as never)} style={styles.destination}><Text style={styles.destinationText}>{lib(locale,mode === 'pantry' ? 'library' : 'pantry')} · {mode === 'pantry' ? entries.length : ownershipReady ? entries.filter(item=>owned(item.ingredient.id)).length : '—'} ↗</Text></Pressable>
         </View>
-        {!storageAvailable && <View accessibilityRole="alert" style={styles.warningPanel}>
-          <Text style={styles.warningTitle}>{persistenceText(locale, error === 'read' ? 'readTitle' : 'writeTitle')}</Text>
-          <Text style={styles.warning}>{persistenceText(locale, error === 'read' ? 'pantryRead' : 'pantryWrite')}</Text>
+        {(!storageAvailable||bottleStore.error==='read'||bottleStore.error==='write') && <View accessibilityRole="alert" style={styles.warningPanel}>
+          <Text style={styles.warningTitle}>{persistenceText(locale, error === 'read'||bottleStore.error==='read' ? 'readTitle' : 'writeTitle')}</Text>
+          <Text style={styles.warning}>{persistenceText(locale, error === 'read'||bottleStore.error==='read' ? 'pantryRead' : 'pantryWrite')}</Text>
           <Pressable accessibilityRole="button" disabled={retrying} onPress={() => void retryStorage()} style={styles.retry}><Text style={styles.retryText}>{persistenceText(locale, retrying ? 'retrying' : 'retry')}</Text></Pressable>
         </View>}
         {detail && entry ? <>
@@ -79,20 +90,22 @@ export default function LibraryScreen({mode = 'library', ingredientId}: {mode?: 
           </View></View>
           {entry.ingredient.guide?.nameOrigin?.[locale] === 'fallback' && <Text style={styles.note}>{guideText(locale,'fallback')}</Text>}
           {entry.ingredient.guide?.nameOrigin?.[locale] === 'draft' && <Text style={styles.note}>{guideText(locale,'draft')}</Text>}
-          <Pressable accessibilityRole="checkbox" accessibilityState={{checked:owned(entry.ingredient.id)}} onPress={() => toggleIngredient(entry.ingredient.id)} style={[styles.primary,owned(entry.ingredient.id)&&styles.ownedButton]}><Text style={styles.primaryText}>{owned(entry.ingredient.id) ? '✓ ' : '+ '}{lib(locale,owned(entry.ingredient.id)?'owned':'add')}</Text></Pressable>
-          <View style={styles.guidePanel}><Text style={styles.sectionTitle}>{guideText(locale,'guide')}</Text><Text style={styles.body}>{ingredientUseNote(entry.ingredient,locale)}</Text><Text style={styles.note}>{guideText(locale,'matching')}</Text></View>
+          <Pressable accessibilityRole={derivedOnly(entry.ingredient.id)?"link":"checkbox"} accessibilityState={derivedOnly(entry.ingredient.id)?undefined:{checked:owned(entry.ingredient.id)}} disabled={!ownershipReady||!storageAvailable} onPress={() => toggleOwnership(entry.ingredient.id)} style={[styles.primary,owned(entry.ingredient.id)&&styles.ownedButton]}><Text style={styles.primaryText}>{owned(entry.ingredient.id) ? '✓ ' : '+ '}{lib(locale,owned(entry.ingredient.id)?'owned':'add')}</Text></Pressable>
+          <View style={styles.guidePanel}><Text style={styles.sectionTitle}>{guideText(locale,'guide')}</Text><Text style={styles.body}>{ingredientUseNote(entry.ingredient,locale)}</Text><Text style={styles.note}>{materialText(locale,'matching')}</Text></View>
           <View style={styles.section}><Text style={styles.sectionTitle}>{guideText(locale,'identity')}</Text>
             <Text style={styles.note}>{guideText(locale,'original')}</Text><Text style={styles.body}>{entry.ingredient.guide?.source?.canonicalName ?? entry.ingredient.name.en}</Text>
             {Boolean(entry.ingredient.guide?.parents.length) && <><Text style={styles.note}>{guideText(locale,'parent')}</Text><Text style={styles.body}>{entry.ingredient.guide!.parents.join(' · ')}</Text></>}
             {Boolean(entry.ingredient.guide?.aliases.length) && <><Text style={styles.note}>{guideText(locale,'aliases')}</Text><Text style={styles.body}>{entry.ingredient.guide!.aliases.slice(0,18).join(' · ')}</Text></>}
           </View>
           {entry.brandIds.length > 0 && <View style={styles.section}>
-            {bottles.some(b=>b.ingredientIds.includes(entry.ingredient.id))&&<Pressable accessibilityRole="link" onPress={()=>router.push({pathname:'/bottles' as never,params:{ingredient:entry.ingredient.id}})} style={styles.destination}><Text style={styles.destinationText}>{labText(locale,'bottles')} · {bottles.filter(b=>b.ingredientIds.includes(entry.ingredient.id)).length} ↗</Text></Pressable>}
+            {bottles.some(b=>b.ingredientIds.some(id=>canonicalMemberIds(catalogue,entry.ingredient.id).includes(id)))&&<Pressable accessibilityRole="link" onPress={()=>router.push({pathname:'/bottles' as never,params:{concept:entry.ingredient.id}})} style={styles.destination}><Text style={styles.destinationText}>{labText(locale,'bottles')} · {bottles.filter(b=>b.ingredientIds.some(id=>canonicalMemberIds(catalogue,entry.ingredient.id).includes(id))).length} ↗</Text></Pressable>}
             <Fold title={`${lib(locale,'brands')} · ${entry.brandIds.length}`}><Text style={styles.note}>{lib(locale,'brandHint')}</Text>
             <View style={styles.chips}>{entry.brandIds.map(id => {
               const brand = catalogue.brands.find(b => b.id === id);
               const selected = pantry.brandsByIngredient[entry.ingredient.id]?.includes(id) ?? false;
-              return brand ? <Pressable key={id} accessibilityRole="checkbox" accessibilityState={{checked:selected}} onPress={() => toggleBrand(entry.ingredient.id,id)} style={[styles.chip,selected&&styles.chipActive]}><Text style={styles.chipText}>{selected ? '✓ ' : '+ '}{brand.name}</Text></Pressable> : null;
+              return brand ? (entry.memberIds?.length??1)>1
+                ? <Pressable key={id} accessibilityRole="link" onPress={()=>router.push({pathname:'/bottles' as never,params:{concept:entry.ingredient.id,brand:id}})} style={styles.chip}><Text style={styles.chipText}>{brand.name} ↗</Text></Pressable>
+                : <Pressable key={id} accessibilityRole="checkbox" accessibilityState={{checked:selected}} onPress={() => toggleBrand(entry.ingredient.id,id)} style={[styles.chip,selected&&styles.chipActive]}><Text style={styles.chipText}>{selected ? '✓ ' : '+ '}{brand.name}</Text></Pressable> : null;
             })}</View></Fold>
           </View>}
           <View style={styles.section}><Text accessibilityRole="header" style={styles.sectionTitle}>{lib(locale,'usedIn')} · {entry.cocktailIds.length}</Text>
@@ -116,7 +129,7 @@ export default function LibraryScreen({mode = 'library', ingredientId}: {mode?: 
             <View style={styles.listMeta}><Text style={styles.resultCount}>{filtered.length} <Text style={styles.note}>/ {entries.length}</Text></Text><View style={styles.chips}><Pressable accessibilityRole="checkbox" accessibilityState={{checked:onlyLinked}} onPress={() => {setOnlyLinked(!onlyLinked);setLimit(24);}} style={[styles.chip,onlyLinked&&styles.chipActive]}><Text style={styles.chipText}>{onlyLinked ? '✓ ' : ''}{guideText(locale,'barOnly')}</Text></Pressable><Pressable accessibilityRole="checkbox" accessibilityState={{checked:onlyOwned}} onPress={() => {setOnlyOwned(!onlyOwned);setLimit(24);}} style={[styles.chip,onlyOwned&&styles.chipActive]}><Text style={styles.chipText}>{onlyOwned ? '✓ ' : ''}{lib(locale,'owned')}</Text></Pressable></View></View>
             <View style={styles.grid}>{filtered.slice(0,limit).map(e => <View key={e.ingredient.id} style={[styles.ingredient,{width:columns===3?'32%':columns===2?'49%':'100%'}]}>
               <Pressable accessibilityRole="button" onPress={() => ingredientPath(e.ingredient.id)} style={styles.ingredientInfo}><IngredientPicture ingredient={e.ingredient}/><View style={styles.flex}><Text style={styles.eyebrow}>{lib(locale,e.group)}</Text><Text style={styles.rowName}>{e.ingredient.name[locale]}</Text><Text style={styles.note}>{e.cocktailIds.length ? `${guideText(locale,'barOnly')} · ${e.cocktailIds.length}` : guideText(locale,'learn')} ↗</Text></View></Pressable>
-              <Pressable accessibilityRole="checkbox" accessibilityLabel={`${lib(locale,owned(e.ingredient.id)?'owned':'add')}: ${e.ingredient.name[locale]}`} accessibilityState={{checked:owned(e.ingredient.id)}} onPress={() => toggleIngredient(e.ingredient.id)} style={[styles.addButton,owned(e.ingredient.id)&&styles.added]}><Text style={styles.addText}>{owned(e.ingredient.id)?'✓':'+'}</Text></Pressable>
+              <Pressable accessibilityRole={derivedOnly(e.ingredient.id)?"link":"checkbox"} accessibilityLabel={`${lib(locale,owned(e.ingredient.id)?'owned':'add')}: ${e.ingredient.name[locale]}`} accessibilityState={derivedOnly(e.ingredient.id)?undefined:{checked:owned(e.ingredient.id)}} disabled={!ownershipReady||!storageAvailable} onPress={() => toggleOwnership(e.ingredient.id)} style={[styles.addButton,owned(e.ingredient.id)&&styles.added]}><Text style={styles.addText}>{owned(e.ingredient.id)?'✓':'+'}</Text></Pressable>
             </View>)}</View>
             {!filtered.length&&<Text style={styles.empty}>{lib(locale,'noResults')}</Text>}
             {filtered.length>limit&&<Pressable accessibilityRole="button" onPress={() => setLimit(limit+24)} style={styles.more}><Text style={styles.link}>{lib(locale,'more')} ↓</Text></Pressable>}
@@ -125,7 +138,7 @@ export default function LibraryScreen({mode = 'library', ingredientId}: {mode?: 
             <Pressable accessibilityRole="link" onPress={() => router.push('/ingredients' as never)} style={styles.primary}><Text style={styles.primaryText}>{lib(locale,'manage')} ↗</Text></Pressable>
             {pantry.ingredientIds.length ? <>
               <FlatList horizontal data={pantry.ingredientIds} keyExtractor={id=>id} initialNumToRender={12} maxToRenderPerBatch={12} windowSize={3} style={styles.ownedStrip} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filters} renderItem={({item:id})=><Pressable accessibilityRole="button" onPress={() => ingredientPath(id)} style={styles.ownedTile}><IngredientPicture ingredient={entries.find(e=>e.ingredient.id===id)!.ingredient} size={44}/><Text style={styles.chipText}>{name(id)} ↗</Text></Pressable>}/>
-              <Text style={styles.note}>{lib(locale,'matchingNote')}</Text>
+              <Text style={styles.note}>{materialText(locale,'matching')}</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filters}>{(['all','ready','one','two','check','preparationCheck'] as const).map(value => <Pressable key={value} accessibilityRole="button" accessibilityState={{selected:shelf===value}} onPress={() => {setShelf(value);setLimit(24);}} style={[styles.chip,shelf===value&&styles.chipActive]}><Text style={styles.chipText}>{lib(locale,value)} · {matches.filter(m=>value==='all'||shelfFor(m)===value).length}</Text></Pressable>)}</ScrollView>
               <View style={styles.grid}>{visibleMatches.slice(0,limit).map(m => {
                 const cocktail=catalogue.cocktails.find(c=>c.id===m.cocktailId)!;

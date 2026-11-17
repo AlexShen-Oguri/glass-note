@@ -1,9 +1,10 @@
 import type {Locale, Localized} from '../../domain/contracts';
 import type {ResearchMaterial, ResearchPreparation, ResearchWork} from '../topics';
+import {competitionRecipeLocalization} from './competition-recipes';
 
 /**
  * The research pages are source records, so their localized copy lives in an
- * overlay.  This keeps the canonical fields in topics.ts and topics-eleven.ts
+ * overlay.  This keeps the canonical fields in the content data
  * immutable while allowing the reading view to carry reviewed draft text.
  */
 export interface ResearchMaterialView {
@@ -22,6 +23,7 @@ export interface ResearchWorkView {
   id: string;
   title: string;
   author: string;
+  year?: number;
   bar?: string;
   region?: string;
   /** Localized display of the source's award or competition stage. */
@@ -79,92 +81,16 @@ const methods = (...steps: LocalizedValues[]): Localized[] => steps.map(([en, zh
 const gap = (en: string, zh: string, fr: string, de: string, es: string, ko: string, ja: string, it: string): Localized => L(en, zh, fr, de, es, ko, ja, it);
 
 const region = {
-  australia: L('Australia', '澳大利亚', 'Australie', 'Australien', 'Australia', '호주', 'オーストラリア', 'Australia'),
-  belgium: L('Belgium', '比利时', 'Belgique', 'Belgien', 'Bélgica', '벨기에', 'ベルギー', 'Belgio'),
-  dubai: L('Dubai, UAE', '迪拜，阿联酋', 'Dubaï, Émirats arabes unis', 'Dubai, VAE', 'Dubái, EAU', '두바이, 아랍에미리트', 'ドバイ、アラブ首長国連邦', 'Dubai, Emirati Arabi Uniti'),
-  france: L('France', '法国', 'France', 'Frankreich', 'Francia', '프랑스', 'フランス', 'Francia'),
   germany: L('Germany', '德国', 'Allemagne', 'Deutschland', 'Alemania', '독일', 'ドイツ', 'Germania'),
-  italy: L('Italy', '意大利', 'Italie', 'Italien', 'Italia', '이탈리아', 'イタリア', 'Italia'),
-  japan: L('Japan', '日本', 'Japon', 'Japan', 'Japón', '일본', '日本', 'Giappone'),
-  mexicoCity: L('Mexico City', '墨西哥城', 'Mexico', 'Mexiko-Stadt', 'Ciudad de México', '멕시코시티', 'メキシコシティ', 'Città del Messico'),
-  southAfrica: L('South Africa', '南非', 'Afrique du Sud', 'Südafrika', 'Sudáfrica', '남아프리카공화국', '南アフリカ', 'Sudafrica'),
-  southKorea: L('South Korea', '韩国', 'Corée du Sud', 'Südkorea', 'Corea del Sur', '대한민국', '韓国', 'Corea del Sud'),
-  spain: L('Spain', '西班牙', 'Espagne', 'Spanien', 'España', '스페인', 'スペイン', 'Spagna'),
   unitedKingdom: L('United Kingdom', '英国', 'Royaume-Uni', 'Vereinigtes Königreich', 'Reino Unido', '영국', 'イギリス', 'Regno Unito'),
   unitedStates: L('United States', '美国', 'États-Unis', 'Vereinigte Staaten', 'Estados Unidos', '미국', 'アメリカ合衆国', 'Stati Uniti'),
 };
 
 const stage = {
-  australia2016: L('Australia winner · global finalist', '澳大利亚赛区优胜者 · 全球决赛入围者', 'Vainqueur australien · finaliste mondial', 'Australischer Sieger · globaler Finalist', 'Ganador de Australia · finalista mundial', '호주 우승자 · 글로벌 결선 진출자', 'オーストラリア優勝者 · 世界大会ファイナリスト', 'Vincitore australiano · finalista globale'),
-  belgium2018: L('Belgium winner · global finalist', '比利时赛区优胜者 · 全球决赛入围者', 'Vainqueur belge · finaliste mondial', 'Belgischer Sieger · globaler Finalist', 'Ganador de Bélgica · finalista mundial', '벨기에 우승자 · 글로벌 결선 진출자', 'ベルギー優勝者 · 世界大会ファイナリスト', 'Vincitore del Belgio · finalista globale'),
-  dubai2016: L('Dubai winner · global finalist', '迪拜赛区优胜者 · 全球决赛入围者', 'Vainqueur de Dubaï · finaliste mondial', 'Sieger aus Dubai · globaler Finalist', 'Ganador de Dubái · finalista mundial', '두바이 우승자 · 글로벌 결선 진출자', 'ドバイ優勝者 · 世界大会ファイナリスト', 'Vincitore di Dubai · finalista globale'),
-  france2016: L('France winner · global finalist', '法国赛区优胜者 · 全球决赛入围者', 'Vainqueur de France · finaliste mondial', 'Französischer Sieger · globaler Finalist', 'Ganador de Francia · finalista mundial', '프랑스 우승자 · 글로벌 결선 진출자', 'フランス優勝者 · 世界大会ファイナリスト', 'Vincitore della Francia · finalista globale'),
-  france2018: L('France winner · global finalist', '法国赛区优胜者 · 全球决赛入围者', 'Vainqueur de France · finaliste mondial', 'Französischer Sieger · globaler Finalist', 'Ganador de Francia · finalista mundial', '프랑스 우승자 · 글로벌 결선 진출자', 'フランス優勝者 · 世界大会ファイナリスト', 'Vincitore della Francia · finalista globale'),
   germany2018: L('Germany winner · global finalist', '德国赛区优胜者 · 全球决赛入围者', 'Vainqueur d’Allemagne · finaliste mondial', 'Deutscher Sieger · globaler Finalist', 'Ganador de Alemania · finalista mundial', '독일 우승자 · 글로벌 결선 진출자', 'ドイツ優勝者 · 世界大会ファイナリスト', 'Vincitore della Germania · finalista globale'),
-  italy2016: L('Italy winner · global finalist', '意大利赛区优胜者 · 全球决赛入围者', 'Vainqueur d’Italie · finaliste mondial', 'Italienischer Sieger · globaler Finalist', 'Ganador de Italia · finalista mundial', '이탈리아 우승자 · 글로벌 결선 진출자', 'イタリア優勝者 · 世界大会ファイナリスト', 'Vincitore dell’Italia · finalista globale'),
-  italy2018: L('Italy winner · global finalist', '意大利赛区优胜者 · 全球决赛入围者', 'Vainqueur d’Italie · finaliste mondial', 'Italienischer Sieger · globaler Finalist', 'Ganador de Italia · finalista mundial', '이탈리아 우승자 · 글로벌 결선 진출자', 'イタリア優勝者 · 世界大会ファイナリスト', 'Vincitore dell’Italia · finalista globale'),
-  japan2018: L('Japan winner · global finalist', '日本赛区优胜者 · 全球决赛入围者', 'Vainqueur du Japon · finaliste mondial', 'Japanischer Sieger · globaler Finalist', 'Ganador de Japón · finalista mundial', '일본 우승자 · 글로벌 결선 진출자', '日本優勝者 · 世界大会ファイナリスト', 'Vincitore del Giappone · finalista globale'),
-  mexicoCity2016: L('Mexico City winner · global finalist', '墨西哥城赛区优胜者 · 全球决赛入围者', 'Vainqueur de Mexico · finaliste mondial', 'Sieger aus Mexiko-Stadt · globaler Finalist', 'Ganador de Ciudad de México · finalista mundial', '멕시코시티 우승자 · 글로벌 결선 진출자', 'メキシコシティ優勝者 · 世界大会ファイナリスト', 'Vincitore di Città del Messico · finalista globale'),
-  southAfrica2018: L('South Africa winner · global finalist', '南非赛区优胜者 · 全球决赛入围者', 'Vainqueur d’Afrique du Sud · finaliste mondial', 'Südafrikanischer Sieger · globaler Finalist', 'Ganador de Sudáfrica · finalista mundial', '남아프리카공화국 우승자 · 글로벌 결선 진출자', '南アフリカ優勝者 · 世界大会ファイナリスト', 'Vincitore del Sudafrica · finalista globale'),
-  southKorea2018: L('South Korea winner · global finalist', '韩国赛区优胜者 · 全球决赛入围者', 'Vainqueur de Corée du Sud · finaliste mondial', 'Südkoreanischer Sieger · globaler Finalist', 'Ganador de Corea del Sur · finalista mundial', '대한민국 우승자 · 글로벌 결선 진출자', '韓国優勝者 · 世界大会ファイナリスト', 'Vincitore della Corea del Sud · finalista globale'),
-  spain2016: L('Spain winner · global finalist', '西班牙赛区优胜者 · 全球决赛入围者', 'Vainqueur d’Espagne · finaliste mondial', 'Spanischer Sieger · globaler Finalist', 'Ganador de España · finalista mundial', '스페인 우승자 · 글로벌 결선 진출자', 'スペイン優勝者 · 世界大会ファイナリスト', 'Vincitore della Spagna · finalista globale'),
-  spain2018: L('Spain winner · global finalist', '西班牙赛区优胜者 · 全球决赛入围者', 'Vainqueur d’Espagne · finaliste mondial', 'Spanischer Sieger · globaler Finalist', 'Ganador de España · finalista mundial', '스페인 우승자 · 글로벌 결선 진출자', 'スペイン優勝者 · 世界大会ファイナリスト', 'Vincitore della Spagna · finalista globale'),
   unitedKingdom2016: L('United Kingdom winner · global finalist', '英国赛区优胜者 · 全球决赛入围者', 'Vainqueur du Royaume-Uni · finaliste mondial', 'Sieger des Vereinigten Königreichs · globaler Finalist', 'Ganador del Reino Unido · finalista mundial', '영국 우승자 · 글로벌 결선 진출자', '英国優勝者 · 世界大会ファイナリスト', 'Vincitore del Regno Unito · finalista globale'),
-  unitedKingdomGlobal2016: L('United Kingdom winner · 2016 global winner', '英国赛区优胜者 · 2016 全球冠军', 'Vainqueur du Royaume-Uni · vainqueur mondial 2016', 'Sieger des Vereinigten Königreichs · globaler Sieger 2016', 'Ganador del Reino Unido · ganador global de 2016', '영국 우승자 · 2016 글로벌 우승', '英国優勝者 · 2016年グローバル優勝', 'Vincitore del Regno Unito · vincitore globale 2016'),
   unitedStates2024: L('Work contributing to the 2024 U.S. Bartender of the Year win', '助力 2024 美国年度调酒师夺冠的作品', 'Création ayant contribué au titre de Bartender of the Year 2024 aux États-Unis', 'Werk, das zum US-Titel Bartender of the Year 2024 beitrug', 'Obra que contribuyó al título Bartender of the Year 2024 en EE. UU.', '2024년 미국 Bartender of the Year 우승에 기여한 작품', '2024年米国 Bartender of the Year 優勝に貢献した作品', 'Creazione che ha contribuito al titolo Bartender of the Year 2024 negli Stati Uniti'),
-  bacardi2019: L('Japan national finalist · Bacardí Legacy 2019', '日本全国决赛入围者 · 2019 Bacardí Legacy', 'Finaliste national japonais · Bacardí Legacy 2019', 'Japanischer nationaler Finalist · Bacardí Legacy 2019', 'Finalista nacional de Japón · Bacardí Legacy 2019', 'Bacardí Legacy 2019 일본 내셔널 결선 진출자', 'Bacardí Legacy 2019 日本国内ファイナリスト', 'Finalista nazionale giapponese · Bacardí Legacy 2019'),
 };
-
-const identitySummary = (title: string, author: string, place: Localized, stageName: Localized): Localized => L(
-  `The cited official page identifies ${title} by ${author} in ${place.en} at the ${stageName.en}; this research record does not claim a recipe.`,
-  `引用的官方页面确认 ${author} 的作品《${title}》代表${place.zh}并进入${stageName.zh}；本研究记录不声称包含配方。`,
-  `La page officielle citée identifie ${title} de ${author} pour ${place.fr}, au stade « ${stageName.fr} » ; cette fiche de recherche ne revendique aucune recette.`,
-  `Die zitierte offizielle Seite führt ${title} von ${author} für ${place.de} in der Phase „${stageName.de}“; dieser Forschungseintrag beansprucht kein Rezept.`,
-  `La página oficial citada identifica ${title}, de ${author}, por ${place.es}, en la fase «${stageName.es}»; esta ficha de investigación no afirma contener una receta.`,
-  `인용한 공식 페이지는 ${author}의 ${title}을(를) ${place.ko}의 ${stageName.ko}(으)로 확인합니다. 이 연구 기록은 레시피를 제공한다고 주장하지 않습니다.`,
-  `引用した公式ページは、${author}の${title}を${place.ja}の「${stageName.ja}」として確認しています。この研究記録はレシピを収録したものではありません。`,
-  `La pagina ufficiale citata identifica ${title} di ${author} per ${place.it}, nella fase «${stageName.it}»; questa scheda di ricerca non dichiara una ricetta.`,
-);
-
-const identityGap = (stageName: Localized): Localized => gap(
-  `Recipe quantities and a complete method are not included in this research record for the ${stageName.en.toLowerCase()} entry.`,
-  `本研究记录未收录这条${stageName.zh}作品的配方用量和完整手法。`,
-  `Les quantités et la méthode complète ne figurent pas dans cette fiche pour l’entrée « ${stageName.fr} ».`,
-  `Für den Eintrag „${stageName.de}“ enthält dieser Forschungseintrag keine Mengen und keine vollständige Methode.`,
-  `Esta ficha no incluye cantidades ni un método completo para la obra «${stageName.es}».`,
-  `이 연구 기록에는 ${stageName.ko} 작품의 분량과 전체 제조법이 포함되어 있지 않습니다.`,
-  `この研究記録には「${stageName.ja}」作品の分量と全工程を収録していません。`,
-  `Questa scheda non include quantità né metodo completo per l’opera «${stageName.it}».`,
-);
-
-const bacardiSummary = (title: string, author: string): Localized => L(
-  `The cited Bacardí Japan release lists ${title} by ${author} among the five 2019 Japan national finalists; this record does not claim a complete recipe.`,
-  `引用的 Bacardí Japan 发布资料将 ${author} 的作品《${title}》列为 2019 年日本全国五强之一；本记录不声称包含完整配方。`,
-  `La publication japonaise de Bacardí citée classe ${title} de ${author} parmi les cinq finalistes nationaux japonais de 2019 ; cette fiche ne revendique pas une recette complète.`,
-  `Die zitierte Veröffentlichung von Bacardí Japan führt ${title} von ${author} unter den fünf japanischen nationalen Finalisten 2019; dieser Eintrag beansprucht kein vollständiges Rezept.`,
-  `La publicación japonesa de Bacardí citada incluye ${title}, de ${author}, entre los cinco finalistas nacionales de Japón de 2019; esta ficha no afirma contener una receta completa.`,
-  `인용한 Bacardí Japan 자료는 ${author}의 ${title}을(를) 2019년 일본 내셔널 결선 진출 5개 작품 중 하나로 소개합니다. 이 기록은 완전한 레시피를 제공한다고 주장하지 않습니다.`,
-  `引用した Bacardí Japan の資料は、${author}の${title}を2019年日本国内ファイナリスト5作品の一つとして掲載しています。この記録は完全なレシピを収録したものではありません。`,
-  `La pubblicazione giapponese Bacardí citata include ${title} di ${author} tra i cinque finalisti nazionali giapponesi del 2019; questa scheda non dichiara una ricetta completa.`,
-);
-
-const bacardiGap = (): Localized => gap(
-  'The cited finalist release lists the materials but does not provide their quantities or a complete method.',
-  '引用的入围资料列出材料，但未提供用量或完整手法。',
-  'La publication des finalistes citée liste les ingrédients, sans quantités ni méthode complète.',
-  'Die zitierte Finalistenveröffentlichung nennt die Zutaten, aber keine Mengen und keine vollständige Methode.',
-  'La publicación citada de los finalistas enumera los ingredientes, pero no sus cantidades ni un método completo.',
-  '인용한 결선 자료는 재료를 나열하지만 분량과 전체 제조법은 제공하지 않습니다.',
-  '引用したファイナリスト資料は材料を列挙していますが、分量と全工程は示していません。',
-  'La pubblicazione citata dei finalisti elenca gli ingredienti, ma non le quantità né il metodo completo.',
-);
-
-const identityOverlay = (title: string, author: string, place: Localized, stageName: Localized): ResearchWorkOverlay => ({
-  region: place,
-  stage: stageName,
-  summary: identitySummary(title, author, place, stageName),
-  missingDetails: [identityGap(stageName)],
-});
 
 const researchMaterialOverlays: Record<string, ResearchWorkOverlay> = {
   'patron-2018-godfathers-affinity': {
@@ -343,29 +269,10 @@ const researchMaterialOverlays: Record<string, ResearchWorkOverlay> = {
       'La ricetta ufficiale pubblica l’infusione della vodka alla mela, ma indica cordial, succo chiarificato, bitter e ghiaccio dedicato senza fornirne le formule.',
     ),
   },
-  'patron-2016-song-of-the-sea': identityOverlay('Song of the Sea', 'Nick Cozens', region.australia, stage.australia2016),
-  'patron-2016-bell-of-jalisco': identityOverlay('The Bell of Jalisco', 'Mike McGinty', region.unitedKingdom, stage.unitedKingdomGlobal2016),
-  'patron-2016-el-pacto': identityOverlay('El Pacto', 'Fernando Fastuca', region.spain, stage.spain2016),
-  'patron-2016-pimiento-goloso': identityOverlay('Pimiento Goloso', 'Brice Martaud', region.france, stage.france2016),
-  'patron-2016-patron-atole': identityOverlay('Patrón Atole', 'Nicola Ruggiero', region.italy, stage.italy2016),
-  'patron-2016-augurio': identityOverlay('Augurio', 'Macario Vazquez', region.mexicoCity, stage.mexicoCity2016),
-  'patron-2016-jalisco-swizzle': identityOverlay('Jalisco Swizzle', 'Sudeera Fernando', region.dubai, stage.dubai2016),
-  'patron-2018-cielo-de-jalisco': identityOverlay('Cielo de Jalisco', 'Antonio Rosato', region.italy, stage.italy2018),
-  'patron-2018-coral-and-coast': identityOverlay('Coral & Coast', 'Thomas Begbie', region.belgium, stage.belgium2018),
-  'patron-2018-mayagarita': identityOverlay('Mayagarita', 'François Descamps', region.france, stage.france2018),
-  'patron-2018-harmony': identityOverlay('Harmony', 'Bruce Dorfling', region.southAfrica, stage.southAfrica2018),
-  'patron-2018-wind': identityOverlay('Wind', 'Yeray Monforte', region.spain, stage.spain2018),
-  'patron-2018-best-promise': identityOverlay('The Best Promise', 'Mitsuhiro Nakamura', region.japan, stage.japan2018),
-  'patron-2018-muldejewangk': identityOverlay('The Muldejewangk', 'Abby Wegener', region.australia, stage.australia2016),
-  'patron-2018-kosmos': identityOverlay('KOSMOS', 'Pat Park', region.southKorea, stage.southKorea2018),
-  'legacy-2019-evolver': {region: region.japan, stage: stage.bacardi2019, summary: bacardiSummary('EVOLVER', '岡沼弘泰'), missingDetails: [bacardiGap()]},
-  'legacy-2019-oracion': {region: region.japan, stage: stage.bacardi2019, summary: bacardiSummary('oracion', '佐藤麻美'), missingDetails: [bacardiGap()]},
-  'legacy-2019-possibilita': {region: region.japan, stage: stage.bacardi2019, summary: bacardiSummary('Possibilita', '高宮裕輔'), missingDetails: [bacardiGap()]},
-  'legacy-2019-logos': {region: region.japan, stage: stage.bacardi2019, summary: bacardiSummary('LOGOS', '西野真司'), missingDetails: [bacardiGap()]},
-  'legacy-2019-partir': {region: region.japan, stage: stage.bacardi2019, summary: bacardiSummary('PARTIR', '水岸直也'), missingDetails: [bacardiGap()]},
+
 };
 
-export const researchWorkLocalization = researchMaterialOverlays;
+export const researchWorkLocalization = {...researchMaterialOverlays,...competitionRecipeLocalization};
 /** Alias kept short for callers that only need the overlay table. */
 export const researchLocalization = researchWorkLocalization;
 
@@ -431,6 +338,7 @@ export function getResearchWorkView(work: ResearchWork, locale: Locale, showOrig
     id: work.id,
     title: work.title,
     author: work.author,
+    ...(work.year === undefined ? {} : {year:work.year}),
     materials,
     disclosure,
     ...(work.bar === undefined ? {} : {bar: work.bar}),

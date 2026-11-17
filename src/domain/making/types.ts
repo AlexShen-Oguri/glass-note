@@ -13,13 +13,23 @@ export interface MakingAssumptions {
   volumeMl:Record<string,number>; abv:Record<string,number>; dilutionMl:number|null;
   bottleIds:Record<string,string>;
 }
+/** Rules and source labels used by this batch; replay never consults the live catalogue. */
+export interface MakingMaterialRow {
+  rowId:string; ingredientId:string; canonicalId:string; candidateIngredientIds:string[]; allowedIngredientIds:string[];
+  /** Supplies sharing the original candidate require its stated brand; distinct source OR candidates do not. */
+  brandIngredientIds:string[];
+  known:boolean; match:'exact'|'equivalent'|'style'|'alternative'; sourceName:Localized;
+}
+export interface MakingMaterialSemantics {digest:string; rows:MakingMaterialRow[]}
+export interface MakingSupplyBinding {ingredientId:string; bottleId?:string}
 export interface MakingSession {
   id:string; consumptionId:string; recipe:MakingRecipe; fingerprint:string; servings:number;
   checkedRows:string[]; stepIndex:number; completed:boolean; consumptionApplied:boolean;
   startedAt:string; updatedAt:string; assumptions:MakingAssumptions;
+  materialSemantics?:MakingMaterialSemantics; materialBindings?:Record<string,MakingSupplyBinding>;
 }
 export interface MakingState {
-  format:'glass-notes-making'; schemaVersion:1;
+  format:'glass-notes-making'; schemaVersion:1|2;
   stock:StockEntry[]; reviews:ReadinessReview[]; sessions:MakingSession[];
 }
 export interface MakingContext {catalogue:Catalogue; pantry:Pantry; ownedBottleIds:readonly string[]; bottles:readonly Bottle[]; making:MakingState}
@@ -33,5 +43,5 @@ export interface RestockSuggestion {ingredientId:string; readyCocktailIds:string
 export interface ScaledRow {rowId:string; ingredientId:string; amount:number|null; unit:MeasureUnit; optional:boolean; linear:boolean}
 export interface AbvResult {status:'estimated'|'incomplete'; abv:number|null; alcoholMl:number; totalMl:number; missingRowIds:string[]; dilutionUnknown:boolean}
 export interface ConsumptionPlan {sessionId:string; fingerprint:string; before:StockEntry[]; after:StockEntry[]; deductions:Array<{ingredientId:string;amount:number;unit:StockUnit}>; skippedRowIds:string[]}
-export const emptyMakingState = ():MakingState => ({format:'glass-notes-making',schemaVersion:1,stock:[],reviews:[],sessions:[]});
+export const emptyMakingState = ():MakingState => ({format:'glass-notes-making',schemaVersion:2,stock:[],reviews:[],sessions:[]});
 export type MakingLocale = Locale;

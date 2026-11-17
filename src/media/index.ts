@@ -1,9 +1,9 @@
 import {Asset} from 'expo-asset';
 import type {MediaAsset} from '../domain/contracts';
-import {expansionMedia} from './expansion-100';
+import {cocktailIllustrations} from './cocktail-illustrations';
 
 export const media: Record<string, MediaAsset> = {
-  ...expansionMedia,
+  ...cocktailIllustrations,
   "daiquiri": {
     uri: Asset.fromModule(require('../../assets/styled/daiquiri.jpg')).uri,
     thumbnailUri: Asset.fromModule(require('../../assets/styled/daiquiri-thumb.jpg')).uri,

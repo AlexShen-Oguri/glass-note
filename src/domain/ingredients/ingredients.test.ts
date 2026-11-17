@@ -25,10 +25,10 @@ test('material search uses tolerant scoring while preserving editorial group fil
   assert.deepEqual(filterIngredientEntries(entries, catalogue, 'gin impossibleword', 'en'), []);
 });
 
-test('pantry tracks exact materials, missing counts and optional ingredients at version level', () => {
+test('pantry tracks canonical purchases, missing counts and optional ingredients at version level', () => {
   const pantry = {ingredientIds: ['gin','lime-juice','superfine-sugar'], brandsByIngredient:{}};
   const daiquiri = pantryMatches(catalogue, pantry).find(m => m.cocktailId === 'daiquiri')!;
-  assert.deepEqual(daiquiri.missingIngredientIds, ['white-rum']);
+  assert.deepEqual(daiquiri.missingIngredientIds, ['rum']);
   assert.equal(daiquiri.status, 'missing');
   const ready = pantryMatches(catalogue, {...pantry,ingredientIds:[...pantry.ingredientIds,'white-rum']}).find(m => m.cocktailId === 'daiquiri')!;
   assert.equal(ready.status, 'ready');

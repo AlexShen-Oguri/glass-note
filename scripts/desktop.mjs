@@ -2,10 +2,12 @@ import {spawn} from 'node:child_process';
 import {existsSync} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {prepareBrand} from './prepare-brand.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const mode = process.argv[2] || 'build';
 if (!['win32', 'darwin'].includes(process.platform)) throw Error('Desktop builds currently support Windows and macOS.');
+await prepareBrand();
 const env = {...process.env, CARGO_TARGET_DIR:path.join(root,'.cache/desktop/target')};
 // Windows environment names are case-insensitive; Node may retain `Path`.
 const inheritedPath = Object.entries(process.env).find(([key]) => key.toLowerCase()==='path')?.[1] ?? '';

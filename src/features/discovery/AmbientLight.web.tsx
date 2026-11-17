@@ -51,8 +51,12 @@ export function AmbientLight({paused, reduceMotion = false}: AmbientLightProps) 
   const {guided,locale}=useApp();
   const scene:GlassScene=pathname==='/'?'home':pathname.startsWith('/cocktails/')?'recipe':pathname==='/make'?'guided':pathname==='/customize'?guided.mode===null?'mode':guided.phase==='choosing'||guided.phase==='revealing'||revealActive?'guided':'results':'discover';
   const sculptureVisible=scene==='home'||scene==='mode'||scene==='guided';
+  // Deep links to utility pages need no GPU context or shader warm-up. Once
+  // requested, keep the same stage across routes for continuous transitions.
+  const [stageRequested,setStageRequested]=useState(sculptureVisible);
+  useEffect(()=>{if(sculptureVisible)setStageRequested(true);},[sculptureVisible]);
   const running=useVisibleMotion(host,paused||reduceMotion||!sculptureVisible||(compact&&!slotVisible&&!revealActive));
-  const latest=useRef({scene,running,reduceMotion,revealing:false});latest.current={scene,running,reduceMotion,revealing:guided.phase==='revealing'||revealActive};
+  const latest=useRef({scene,running,reduceMotion,revealing:false,draft:guided.draft});latest.current={scene,running,reduceMotion,revealing:guided.phase==='revealing'||revealActive,draft:guided.draft};
   const geometry=composition(scene,width,height);
   useGSAP(()=>{
     const node=element(flow),root=element(host);
@@ -88,17 +92,18 @@ export function AmbientLight({paused, reduceMotion = false}: AmbientLightProps) 
     return()=>{alignMobile.current=null;content.disconnect();resize.disconnect();visible.disconnect();scroller.removeEventListener('scroll',scroll);gsap.set(node,{clearProps:'transform'});};
   },{scope:host,dependencies:[pathname,scene,width,height,locale,guided.step,guided.mode],revertOnUpdate:true});
   useEffect(()=>{
+    if(!stageRequested)return;
     let disposed=false;
     loaded.current=import('./sculpture.web').then(({createGlassStage})=>{
       const node=element(glass);if(disposed||!node)return null;
       const current=latest.current;
       stage.current=createGlassStage(node,{paused:!current.running,reduced:current.reduceMotion});
       stage.current.setScene(current.scene,{duration:0});
-      stage.current.setFlavourState({aromas:guided.draft.flavours,tastes:guided.draft.tastes,strength:guided.draft.strengths?.[0],approach:guided.draft.approachability?.[0]});
+      stage.current.setFlavourState({aromas:current.draft.flavours,tastes:current.draft.tastes,strength:current.draft.strengths?.[0],approach:current.draft.approachability?.[0]});
       return stage.current;
     }).catch(()=>{const node=element(glass);if(node)node.dataset.glassError='unavailable';return null;});
     return()=>{disposed=true;revealCancel.current?.();stage.current?.dispose();stage.current=null;};
-  },[]);
+  },[stageRequested]);
   useEffect(()=>{
     stage.current?.setReduced(reduceMotion);
     stage.current?.setPaused(!running);

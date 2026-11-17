@@ -1,6 +1,50 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {sampleSensoryWave} from '../src/features/discovery/sculpture.web.js';
+import {createGlassFrameBudget} from '../src/features/discovery/glass-frame-budget.web.js';
+
+test('a DPR 1 software renderer downscales promptly and leaves input time at its floor',()=>{
+  const budget=createGlassFrameBudget(1);
+  budget.recordRender(1240,1240);
+  assert.equal(budget.pixelRatio,1);
+  budget.recordRender(1240,2580);
+  assert.equal(budget.pixelRatio,.5);
+  assert.equal(budget.canRender(2630),false);
+  assert.equal(budget.canRender(2680),true);
+  for(let frame=0;frame<120;frame++)budget.recordRender(310,3000+frame*410);
+  assert.equal(budget.pixelRatio,.5);
+  assert.equal(budget.canRender(3000+119*410+50),false);
+  assert.equal(budget.canRender(3000+119*410+100),true);
+});
+
+test('fast rendering and isolated shader or GC spikes preserve display resolution and cadence',()=>{
+  const budget=createGlassFrameBudget(1.6);
+  for(let frame=0;frame<120;frame++){
+    const end=frame*17;
+    budget.recordRender(frame===4?200:4,end);
+    assert.equal(budget.canRender(end+101),true);
+    if(frame!==4)assert.equal(budget.canRender(end),true);
+  }
+  assert.equal(budget.pixelRatio,1.6);
+});
+
+test('deferred GPU paint stalls also downscale when JS render calls return quickly',()=>{
+  const budget=createGlassFrameBudget(1);
+  budget.recordRender(2,2);
+  budget.recordPaintInterval(1240,1240);
+  assert.equal(budget.pixelRatio,1);
+  assert.equal(budget.canRender(1290),false);
+  assert.equal(budget.canRender(1340),true);
+  budget.recordRender(2,1342);
+  budget.recordPaintInterval(1240,2580);
+  assert.equal(budget.pixelRatio,.5);
+  assert.equal(budget.canRender(2630),false);
+  assert.equal(budget.canRender(2680),true);
+  // An isolated late paint is not evidence that a fast GPU needs lower quality.
+  const fast=createGlassFrameBudget(1.6);
+  for(const gap of [16,16,400,16,16]){fast.recordRender(2,1000);fast.recordPaintInterval(gap,1000);}
+  assert.equal(fast.pixelRatio,1.6);
+});
 
 test('Sensory waves persist, remain bounded and blend strength without late phase jumps',()=>{
 // Selected patterns remain active after the entrance pulse (3–4 seconds).

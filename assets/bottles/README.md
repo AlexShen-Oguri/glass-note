@@ -7,3 +7,6 @@ The UI's framing bounds centre complete bottles without changing image pixels. R
 These are third-party assets, excluded from the application-code MIT licence. Public availability does not grant redistribution rights. Unconfirmed permission remains unconfirmed even when the image is included in a public repository, website or installer. Preserve the attribution and review the applicable source terms before reuse.
 
 See [third-party notices](../../THIRD_PARTY_NOTICES.md). Historical acquisition scripts are not part of the public build; update the current manifests and source indexes together and run the media/content tests.
+
+
+`originals/supplier-candidates/` keeps four distinct alternative supplier photographs for packaging/source comparison; the app does not load these candidates. They are optional maintenance evidence, distinct from the selected originals referenced by the manifest. Keep selected source bytes and delivery images when reorganizing assets; a filename change must update its manifest path and preserve its SHA-256.

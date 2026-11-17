@@ -40,6 +40,8 @@ const REGION_COUNTRIES: ReadonlyArray<[RegExp, string]> = [
   [/\bsingapore\b/, 'SG'],
   [/\bargentina\b/, 'AR'],
   [/\baustralia\b/, 'AU'],
+  [/\bcanada\b/, 'CA'],
+  [/\bnew zealand\b/, 'NZ'],
   [/\b(south korea|korea)\b/, 'KR'],
   [/\bsouth africa\b/, 'ZA'],
   [/\b(united arab emirates|uae|dubai)\b/, 'AE'],
@@ -88,7 +90,7 @@ export function buildTopicDirectory(topics: readonly ResearchTopic[], catalogue:
       const cocktail = cocktails.get(versions.get(versionId)?.cocktailId ?? '');
       return cocktail ? [cocktail.name[locale], ...cocktail.aliases] : [];
     });
-    const researchWorkNames = (topic.research ?? []).flatMap((work) => [work.title, work.author, work.bar ?? '', work.region ?? '']);
+    const researchWorkNames = (topic.research ?? []).flatMap((work) => [work.title, work.author, work.bar ?? '', work.region ?? '', work.year ? String(work.year) : '']);
     return {
       topic,
       kind: topicKind(topic),
@@ -100,6 +102,8 @@ export function buildTopicDirectory(topics: readonly ResearchTopic[], catalogue:
         topic.organization ?? '',
         topic.region,
         topic.year > 0 ? String(topic.year) : '',
+        topic.yearEnd ? String(topic.yearEnd) : '',
+        topicYearLabel(topic),
         topic.venue?.name ?? '',
         topic.venue?.city ?? '',
         topic.venue?.country ?? '',
@@ -107,6 +111,21 @@ export function buildTopicDirectory(topics: readonly ResearchTopic[], catalogue:
         ...researchWorkNames,
       ],
     };
+  });
+}
+
+export function topicYearLabel(topic:ResearchTopic):string {
+  return topic.year>0?`${topic.year}${topic.yearEnd&&topic.yearEnd!==topic.year?`–${topic.yearEnd}`:''}`:'';
+}
+
+export function sortTopicDirectory(entries:readonly TopicDirectoryEntry[],locale:Locale):TopicDirectoryEntry[] {
+  return [...entries].sort((left,right)=>{
+    if(left.kind!==right.kind) return left.kind==='competition'?-1:1;
+    const leftYear=left.topic.yearEnd??left.topic.year;
+    const rightYear=right.topic.yearEnd??right.topic.year;
+    if(left.kind==='competition'&&leftYear!==rightYear) return rightYear-leftYear;
+    const title=(entry:TopicDirectoryEntry)=>entry.kind==='bar'?entry.topic.venue?.name??entry.topic.competition:entry.topic.competition;
+    return title(left).localeCompare(title(right),locale);
   });
 }
 

@@ -5,7 +5,7 @@ import {bottleDisplayName} from '../../../domain/bottles/format';
 import type {Locale} from '../../../domain/contracts';
 import {bottleFamilyName,bottleProfileLabel} from '../../../i18n/bottle-categories';
 import {bottleComparisonText} from '../../../i18n/bottle-comparison';
-import {p02BottleText} from '../../../i18n/p02-bottles';
+import {bottleControlsText} from '../../../i18n/bottle-controls';
 import {bottleMarketSummary} from '../../../i18n/bottle-market';
 import {workText} from '../../../i18n/workspace';
 import {colors,radii} from '../../../theme/tokens';
@@ -53,7 +53,7 @@ export function BottleComparisonTable({selected,locale,disabled=false,onRemove}:
           <View style={styles.photo}><BottlePhoto bottle={bottle} locale={locale} size={wide?'compare':'chooser'}/></View>
           <Text style={styles.brand}>{bottle.brandName}</Text>
           <Text style={[styles.name,wide&&styles.nameWide]}>{bottleDisplayName(bottle,locale)}</Text>
-          {bottleDisplayName(bottle,locale)!==bottleDisplayName(bottle)&&<Text style={styles.originalName}>{p02BottleText(locale,'originalName')}: {bottleDisplayName(bottle)}</Text>}
+          {bottleDisplayName(bottle,locale)!==bottleDisplayName(bottle)&&<Text style={styles.originalName}>{bottleControlsText(locale,'originalName')}: {bottleDisplayName(bottle)}</Text>}
         </View>)}
       </View>
       {selected.length>=2&&<>

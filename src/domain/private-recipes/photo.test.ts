@@ -24,7 +24,7 @@ test('photo revisions survive refresh and backup merge with old books; old reads
   const reloaded=new PrivateRecipeStore(storage);await reloaded.load();
   assert.equal(reloaded.getSnapshot().recipes[0]!.revisions[0]!.content.photo,photo);
   assert.equal(reloaded.getSnapshot().recipes[0]!.revisions[1]!.content.photo,undefined);
-  const blank={preferences:null,favorites:null,pantry:null,bottles:null,lab:null,privateRecipes:null,references:null,making:null,taste:null};
+  const blank={preferences:null,favorites:null,pantry:null,bottles:null,lab:null,privateRecipes:null,references:null,making:null,taste:null,shopping:null};
   const current=fullBackupFromRaw({...blank,privateRecipes:raw},'en','2026-09-17T10:00:00Z');
   const incoming=fullBackupFromRaw(blank,'en','2026-09-17T10:00:00Z');
   const next=planRestore({sections:current.sections,references:current.references},incoming,{mode:'merge',sections:['privateRecipes'],preferenceFields:[]}).next;

@@ -2,31 +2,31 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
 import type {Locale} from '../../../domain/contracts';
-import type {Round17WorkReview} from '../../../content/round17-research';
-import {round17DimensionText, round17EditorialText, round17NoteText, round17StatusText, round17Text} from '../../../i18n/round17-research';
+import type {DisclosureWorkReview} from '../../../content/source-disclosure';
+import {disclosureDimensionText, disclosureEditorialText, disclosureNoteText, disclosureStatusText, sourceDisclosureText} from '../../../i18n/source-disclosure';
 import {colors, radii} from '../../../theme/tokens';
 import {Fold, ws} from '../ui';
 
-export default function ResearchAudit({locale, review}: {locale: Locale; review: Round17WorkReview}) {
+export default function ResearchAudit({locale, review}: {locale: Locale; review: DisclosureWorkReview}) {
   return (
-    <Fold title={round17Text(locale, 'reviewTitle')}>
-      <Text style={styles.boundary}>{round17Text(locale, 'researchOnly')}</Text>
-      <Text style={styles.translation}>{round17Text(locale, 'translationReview')}</Text>
+    <Fold title={sourceDisclosureText(locale, 'reviewTitle')}>
+      <Text style={styles.boundary}>{sourceDisclosureText(locale, 'researchOnly')}</Text>
+      <Text style={styles.translation}>{sourceDisclosureText(locale, 'translationReview')}</Text>
       <View style={styles.section}>
-        <Text style={ws.label}>{round17Text(locale, 'factLayer')} · {round17Text(locale, 'completeness')}</Text>
+        <Text style={ws.label}>{sourceDisclosureText(locale, 'factLayer')} · {sourceDisclosureText(locale, 'completeness')}</Text>
         {review.dimensions.map((item) => (
           <View key={item.dimension} style={styles.dimension}>
             <View style={styles.dimensionTop}>
-              <Text style={styles.dimensionName}>{round17DimensionText(locale, item.dimension)}</Text>
-              <Text style={[styles.status, item.status === 'published' && styles.published, item.status === 'partial' && styles.partial]}>{round17StatusText(locale, item.status)}</Text>
+              <Text style={styles.dimensionName}>{disclosureDimensionText(locale, item.dimension)}</Text>
+              <Text style={[styles.status, item.status === 'published' && styles.published, item.status === 'partial' && styles.partial]}>{disclosureStatusText(locale, item.status)}</Text>
             </View>
-            <Text style={ws.muted}>{round17NoteText(locale, item.note)}</Text>
+            <Text style={ws.muted}>{disclosureNoteText(locale, item.note)}</Text>
           </View>
         ))}
       </View>
       <View style={styles.editorial}>
-        <Text style={ws.label}>{round17Text(locale, 'editorialLayer')}</Text>
-        <Text style={ws.body}>{round17EditorialText(locale, review.editorialNote)}</Text>
+        <Text style={ws.label}>{sourceDisclosureText(locale, 'editorialLayer')}</Text>
+        <Text style={ws.body}>{disclosureEditorialText(locale, review.editorialNote)}</Text>
       </View>
     </Fold>
   );

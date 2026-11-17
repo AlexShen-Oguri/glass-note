@@ -3,14 +3,14 @@ import {Text, View} from 'react-native';
 import {bottles} from '../../content/bottles';
 import {bottleDisplayName} from '../../domain/bottles/format';
 import type {Locale} from '../../domain/contracts';
-import {p02BottleText} from '../../i18n/p02-bottles';
+import {bottleControlsText} from '../../i18n/bottle-controls';
 import {makingStyles as s} from './styles';
 import type {MakingCopy} from './ui';
 
 function BottleNameLines({bottle,locale}:{bottle:typeof bottles[number];locale:Locale}) {
   const localized=bottleDisplayName(bottle,locale);
   const original=bottleDisplayName(bottle);
-  return <View style={s.grow}><Text style={s.strong}>{localized}</Text>{localized!==original?<Text style={s.meta}>{p02BottleText(locale,'originalName')}: {original}</Text>:null}</View>;
+  return <View style={s.grow}><Text style={s.strong}>{localized}</Text>{localized!==original?<Text style={s.meta}>{bottleControlsText(locale,'originalName')}: {original}</Text>:null}</View>;
 }
 
 /** Bottle identity remains available for the optional ABV calculator. */

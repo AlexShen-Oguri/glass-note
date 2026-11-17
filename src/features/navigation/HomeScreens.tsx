@@ -19,7 +19,7 @@ import {usePrivateRecipes} from '../../platform/PrivateRecipesProvider';
 import {tm} from '../../i18n/taste';
 import {useTaste} from '../../platform/TasteProvider';
 import {backupText} from '../../i18n/backup';
-import {p02NavigationText} from '../../i18n/p02-navigation';
+import {navigationStatusText} from '../../i18n/navigation-status';
 import {helpText} from '../../i18n/help';
 
 export function ProfessionalHomeScreen() {
@@ -66,14 +66,14 @@ export function PersonalHomeScreen() {
       <BrandToolbar {...app} showUnits={false}/>
       <View style={styles.hero}><Text style={styles.sectionNumber}>04 / GLASS NOTES</Text><Heading style={styles.title}>{appNavigationText(locale,'myTitle')}</Heading></View>
       <View style={styles.destinations}>
-        <Destination index="01" href="/my-recipes" title={backupText(locale,'privateTitle')} description={p02NavigationText(locale,'privateHint')} count={count(privateRecipes.hydrated,privateRecipes.storageAvailable&&!privateRecipes.error,privateRecipes.recipes.length)}/>
-        <Destination index="02" href="/favorites" title={copy.title} description={`${p02NavigationText(locale,'favoriteHint')}\n${favoritesSummary}`}/>
+        <Destination index="01" href="/my-recipes" title={backupText(locale,'privateTitle')} description={navigationStatusText(locale,'privateHint')} count={count(privateRecipes.hydrated,privateRecipes.storageAvailable&&!privateRecipes.error,privateRecipes.recipes.length)}/>
+        <Destination index="02" href="/favorites" title={copy.title} description={`${navigationStatusText(locale,'favoriteHint')}\n${favoritesSummary}`}/>
         <Destination index="03" href="/taste" title={tm(locale,'memoryTitle')} description={tm(locale,'memoryHint')} count={count(taste.hydrated,!taste.error,taste.savedState.entries.length)}/>
       </View>
-      {unavailableSections.filter(item=>item.failed).map(item=><View key={item.href} style={styles.storageNotice}><Text accessibilityRole="alert" style={styles.warning}>{item.title} · {p02NavigationText(locale,'storageIssue')}</Text><Link href={item.href} asChild><Pressable accessibilityRole="link" style={styles.issueLink}><Text style={styles.hint}>{p02NavigationText(locale,'reviewIssue')} ›</Text></Pressable></Link></View>)}
+      {unavailableSections.filter(item=>item.failed).map(item=><View key={item.href} style={styles.storageNotice}><Text accessibilityRole="alert" style={styles.warning}>{item.title} · {navigationStatusText(locale,'storageIssue')}</Text><Link href={item.href} asChild><Pressable accessibilityRole="link" style={styles.issueLink}><Text style={styles.hint}>{navigationStatusText(locale,'reviewIssue')} ›</Text></Pressable></Link></View>)}
       <View style={styles.settings}>
         <Fold title={appNavigationText(locale,'preferences')}>
-          <Text style={styles.hint}>{p02NavigationText(locale,'languageHint')}</Text>
+          <Text style={styles.hint}>{navigationStatusText(locale,'languageHint')}</Text>
           <View style={styles.settingRow}><Text style={styles.settingLabel}>{appNavigationText(locale,'units')}</Text><Action label={unit==='ml'?'ML':'FL OZ'} onPress={()=>app.setUnit(unit==='ml'?'oz':'ml')}/></View>
           <View style={styles.settingRow}><Text style={styles.settingLabel}>{appNavigationText(locale,'motion')}</Text><Action label={appNavigationText(locale,motionPaused?'motionPaused':'motionOn')} onPress={()=>app.setMotionPaused(!motionPaused)}/></View>
         </Fold>

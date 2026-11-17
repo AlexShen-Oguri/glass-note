@@ -3,7 +3,7 @@ import test from 'node:test';
 
 import {LOCALES, type Locale} from '../domain/contracts';
 import type {ResearchTopic} from './topics';
-import {buildTopicDirectory, directoryCountries, directoryPage, filterTopicDirectory, topicCountries, topicKind, uniqueWorkCount} from '../domain/research/directory';
+import {buildTopicDirectory, directoryCountries, directoryPage, filterTopicDirectory, sortTopicDirectory, topicCountries, topicKind, topicYearLabel, uniqueWorkCount} from '../domain/research/directory';
 import {TOPIC_DIRECTORY_KEYS, topicCountryText, topicDirectoryText} from '../i18n/topic-directory';
 
 const localized = (value: string) => Object.fromEntries(['en','zh','fr','de','es','ko','ja','it'].map((locale) => [locale, value])) as Record<Locale, string>;
@@ -84,4 +84,23 @@ test('directory controls and known country names have copy in all eight locales'
     for (const key of TOPIC_DIRECTORY_KEYS) assert.ok(topicDirectoryText(locale, key, {topics:2,works:3,count:1}).trim(), `${locale}.${key}`);
     for (const code of ['JP','US','GB','FR','DE','ES','IT','BE','NL','TH','MX','SG','AR','AU','KR','ZA','AE','HK']) assert.ok(topicCountryText(locale, code).trim(), `${locale}.${code}`);
   }
+});
+
+test('multi-edition selections display and search their range and actual work years',()=>{
+  const selection:ResearchTopic={...topics[1]!,id:'years',year:2008,yearEnd:2018,research:[{id:'2011-work',title:'Middle edition',author:'A',year:2011,materials:[]}]};
+  const entries=buildTopicDirectory([selection,{...topics[0]!,id:'2016',year:2016}],catalogue,'en');
+  for(const year of ['2008','2011','2018']) assert.deepEqual(filterTopicDirectory(entries,{text:year}).map(entry=>entry.topic.id),['years']);
+  assert.equal(topicYearLabel(selection),'2008–2018');
+  assert.equal(topicYearLabel(topics[0]!),'2024');
+  assert.equal(topicYearLabel(topics[2]!), '');
+  assert.deepEqual(sortTopicDirectory(entries,'en').map(entry=>entry.topic.id),['years','2016']);
+});
+
+test('new Canadian and New Zealand works expose usable country filters in eight languages',()=>{
+  const collection:ResearchTopic={...topics[1]!,research:[
+    {id:'canadian',title:'Cyanocitta',author:'Makina Labrecque',region:'Canada',materials:[]},
+    {id:'new-zealand',title:'Deliciousness',author:'Ray Letoa',region:'New Zealand',materials:[]},
+  ]};
+  assert.deepEqual(topicCountries(collection),['CA','NZ']);
+  for(const locale of LOCALES) for(const code of ['CA','NZ']) assert.notEqual(topicCountryText(locale,code),code);
 });

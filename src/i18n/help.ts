@@ -1,7 +1,7 @@
 import {LOCALES, type Locale} from '../domain/contracts';
 
 /** Product behaviour checked against this local release; language/legal review remains separate. */
-export const helpReview = {revision:'round17', languageStatus:'awaiting-native-review', legalStatus:'draft-not-legally-reviewed'} as const;
+export const helpReview = {revision:'help-reading-copy', languageStatus:'awaiting-native-review', legalStatus:'draft-not-legally-reviewed'} as const;
 const copy = {
   title:['Help & data','帮助与数据说明','Aide et données','Hilfe und Daten','Ayuda y datos','도움말 및 데이터','ヘルプとデータ','Aiuto e dati'],
   hint:['Using the app, saving your work and reading sources.','使用方法、保存记录与资料来源。','Utilisation, sauvegarde et sources.','Bedienung, Sicherung und Quellen.','Uso, copias de seguridad y fuentes.','사용 방법, 기록 보관 및 출처 안내.','使い方、記録の保存、出典について。','Uso, salvataggio e fonti.'],

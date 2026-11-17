@@ -8,7 +8,7 @@ const original = "const decodeComponent = require('decode-uri-component');";
 const replacement = "const decodeComponent = require('decode-uri-component').default;";
 const expectedHash = 'caa3f2c8b45dfe1e91db22ae10743af68de8d96f26515132bb52485ec0f037fa';
 
-// The upstream decoder is fixed in 0.5.0, but query-string 7 expects CommonJS.
+// The upstream decoder's default export supplies the function query-string 7 expects.
 // Fail closed on an upstream change instead of silently applying a stale patch.
 export function compatibleQueryString(source, version) {
   const normalized = source.replace(/\r\n/g, '\n');

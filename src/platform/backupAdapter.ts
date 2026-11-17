@@ -6,8 +6,9 @@ import {parseFavoritesState} from '../domain/favorites';
 import {parseOwnedBottles} from '../domain/bottles/ownership';
 import {parsePrivateRecipeBook} from '../domain/private-recipes';
 import {parseTasteState} from '../domain/taste';
+import {parseShoppingState} from '../domain/shopping';
 import {parseMakingState} from '../domain/making';
-import {BACKUP_LIMIT,validateFullBackup} from '../domain/backup';
+import {BACKUP_SECTION_LIMIT,validateFullBackup} from '../domain/backup';
 import type {BackupReference,FullBackup,KnownReferences,RestoreChoice,RestorePlan} from '../domain/backup/types';
 import {resolvePreferences} from './preferences';
 import type {RawPersonalData} from './personalStorage';
@@ -31,10 +32,13 @@ export function fullBackupFromRaw(raw:RawPersonalData,locale:Locale,now=new Date
     favorites:{schemaVersion:2,versionIds:favorites.versionIds,lists:favorites.lists},pantry:{schemaVersion:1,ingredientIds:pantry.ingredientIds,brandsByIngredient:pantry.brandsByIngredient??{}},
     bottles:{schemaVersion:1,ids:owned.ids},lab:raw.lab===null?{format:'glass-notes-lab',schemaVersion:1,exportedAt:now,projects:[]}:parseLabBackup(raw.lab),privateRecipes:parsePrivateRecipeBook(raw.privateRecipes),
     making:parseMakingState(raw.making),
+    shopping:parseShoppingState(raw.shopping),
     taste:parseTasteState(raw.taste),
   },references:raw.references===null?[]:JSON.parse(raw.references)});
   const references:BackupReference[]=[...base.references];
-  const add=(ref:BackupReference)=>{if(!references.some(r=>JSON.stringify(r)===JSON.stringify(ref)))references.push(ref);};
+  // References are bounded display summaries; exact source facts remain in their snapshots.
+  const label=(value:string)=>value.length>2000?value.trim().slice(0,2000).replace(/[\uD800-\uDBFF]$/,''):value;
+  const add=(ref:BackupReference)=>{const summary={...ref,name:label(ref.name),...(ref.sourceTitle!==undefined?{sourceTitle:label(ref.sourceTitle)}:{})};if(!references.some(r=>JSON.stringify(r)===JSON.stringify(summary)))references.push(summary);};
   const ingredient=(id:string,name?:string)=>add({kind:'ingredient',id,name:catalogue.ingredients.find(i=>i.id===id)?.name[locale]??name??base.references.find(r=>r.kind==='ingredient'&&r.id===id)?.name??id});
   const source=(id:string)=>{const s=catalogue.sources.find(s=>s.id===id);if(s)add({kind:'source',id,name:s.title,sourceUrl:s.url});};
   const bottle=(id:string,name?:string)=>{const b=bottles.find(b=>b.id===id);add({kind:'bottle',id,name:b?.name??name??base.references.find(r=>r.kind==='bottle'&&r.id===id)?.name??id,...(b?.ingredientIds[0]?{ingredientId:b.ingredientIds[0]}:{})});};
@@ -53,11 +57,16 @@ export function fullBackupFromRaw(raw:RawPersonalData,locale:Locale,now=new Date
   for(const id of base.sections.pantry.ingredientIds)ingredient(id);
   for(const [ingredientId,ids] of Object.entries(base.sections.pantry.brandsByIngredient))for(const id of ids)add({kind:'brand',id,name:catalogue.brands.find(b=>b.id===id)?.name??base.references.find(r=>r.kind==='brand'&&r.id===id)?.name??id,ingredientId});
   for(const id of base.sections.bottles.ids)bottle(id);
+  for(const target of base.sections.shopping?.targets??[]){const r=target.recipe;version(r.version.id);add({kind:'recipeVersion',id:r.version.id,name:r.title[locale],cocktailId:r.version.cocktailId,sourceId:r.source.id,sourceTitle:r.source.title,sourceUrl:r.source.url});add({kind:'source',id:r.source.id,name:r.source.title,sourceUrl:r.source.url});
+    for(const line of r.version.ingredients){ingredient(line.ingredientId,r.ingredientNames[line.ingredientId]?.[locale]);if(line.brandId)row({ingredientId:line.ingredientId,brandId:line.brandId,brandName:r.brandNames[line.brandId],name:r.ingredientNames[line.ingredientId]?.[locale]??line.ingredientId});}
+    for(const material of target.rows)for(const candidate of material.candidates){ingredient(candidate.ingredientId,candidate.name[locale]);add({kind:'ingredient',id:candidate.ingredientId,name:candidate.name[locale]});candidate.memberIds.forEach(id=>ingredient(id,candidate.name[locale]));}}
   for(const stock of base.sections.making?.stock??[]){ingredient(stock.ingredientId);if(stock.bottleId)bottle(stock.bottleId);}
   for(const review of base.sections.making?.reviews??[])version(review.versionId);
   for(const session of base.sections.making?.sessions??[]){const r=session.recipe;version(r.version.id);add({kind:'recipeVersion',id:r.version.id,name:r.title[locale],cocktailId:r.version.cocktailId,sourceId:r.source.id,sourceTitle:r.source.title,sourceUrl:r.source.url});add({kind:'source',id:r.source.id,name:r.source.title,sourceUrl:r.source.url});
     for(const line of r.version.ingredients){ingredient(line.ingredientId,r.ingredientNames[line.ingredientId]?.[locale]);if(line.brandId)row({ingredientId:line.ingredientId,brandId:line.brandId,brandName:r.brandNames[line.brandId],name:r.ingredientNames[line.ingredientId]?.[locale]??line.ingredientId});}
-    Object.values(session.assumptions.bottleIds).forEach(id=>bottle(id));}
+    Object.values(session.assumptions.bottleIds).forEach(id=>bottle(id));
+    for(const material of session.materialSemantics?.rows??[]){ingredient(material.canonicalId);material.allowedIngredientIds.forEach(id=>ingredient(id));}
+    for(const binding of Object.values(session.materialBindings??{})){ingredient(binding.ingredientId);if(binding.bottleId)bottle(binding.bottleId);}}
   for(const entry of base.sections.taste?.entries??[]){const r=entry.recipe;version(r.version.id);add({kind:'recipeVersion',id:r.version.id,name:r.title[locale],cocktailId:r.version.cocktailId,sourceId:r.source.id,sourceTitle:r.source.title,sourceUrl:r.source.url});add({kind:'source',id:r.source.id,name:r.source.title,sourceUrl:r.source.url});for(const line of r.version.ingredients){ingredient(line.ingredientId,r.ingredientNames[line.ingredientId]?.[locale]);if(line.brandId)row({ingredientId:line.ingredientId,brandId:line.brandId,brandName:r.brandNames[line.brandId],name:r.ingredientNames[line.ingredientId]?.[locale]??line.ingredientId});}}
   const labSource=(s:{versionId:string;cocktailId:string;title:string;sourceTitle:string;url:string;ingredients:{name:string;ingredientId?:string;bottleId?:string;bottleName?:string}[]})=>{version(s.versionId);add({kind:'recipeVersion',id:s.versionId,name:s.title,cocktailId:s.cocktailId,sourceTitle:s.sourceTitle,sourceUrl:s.url});s.ingredients.forEach(row);};
   for(const project of base.sections.lab.projects){if(project.source)labSource(project.source);for(const v of project.versions)v.ingredients.forEach(row);for(const batch of project.batches)batch.versionSnapshot.ingredients.forEach(row);}
@@ -83,14 +92,17 @@ export function rawAfterRestore(before:RawPersonalData,plan:RestorePlan,choice:R
     else if(section==='pantry')value=JSON.stringify({ingredientIds:sections.pantry.ingredientIds,brandsByIngredient:sections.pantry.brandsByIngredient});
     else value=JSON.stringify(sections[section]);
     // Check the exact after-image with its normal reader before any journal can commit it.
-    if(['favorites','privateRecipes','making','taste'].includes(section)&&utf8ByteLength(value)>BACKUP_LIMIT)throw Error(`${section} exceeds ${BACKUP_LIMIT} UTF-8 bytes`);
+    if(utf8ByteLength(value)>BACKUP_SECTION_LIMIT)throw Error(`${section} exceeds ${BACKUP_SECTION_LIMIT} UTF-8 bytes`);
     if(section==='favorites')parseFavoritesState(value);
     else if(section==='bottles')parseOwnedBottles(value);
     else if(section==='privateRecipes')parsePrivateRecipeBook(value);
     else if(section==='making')parseMakingState(value);
     else if(section==='taste')parseTasteState(value);
+    else if(section==='shopping')parseShoppingState(value);
     if(value!==before[section])after[section]=value;
   }
-  const references=JSON.stringify(plan.next.references);if(references!==before.references)after.references=references;
+  const references=JSON.stringify(plan.next.references);
+  if(utf8ByteLength(references)>BACKUP_SECTION_LIMIT)throw Error(`references exceeds ${BACKUP_SECTION_LIMIT} UTF-8 bytes`);
+  if(references!==before.references)after.references=references;
   return after;
 }

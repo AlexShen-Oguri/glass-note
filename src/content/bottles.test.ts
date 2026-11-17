@@ -1,17 +1,17 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {LOCALES} from '../domain/contracts';
-import {bottleBrands, bottles, roundEightNewBrandIds} from './bottles';
+import {bottleBrands, bottles, supplementalBrandIds} from './bottles';
 import {catalogue} from './catalogue';
 
 const brandById = new Map(bottleBrands.map((brand) => [brand.id, brand]));
 const allowedIngredientIds = new Set(catalogue.ingredients.map(i=>i.id));
 
-test('round-eight clears the approved bottle and brand coverage', () => {
+test('bottle catalogue meets the reviewed bottle and brand coverage', () => {
   assert.ok(bottles.length >= 70, 'expected at least 70 products, got ' + bottles.length);
-  assert.ok(roundEightNewBrandIds.length >= 53, 'expected at least 53 new brands, got ' + roundEightNewBrandIds.length);
-  assert.equal(new Set(roundEightNewBrandIds).size, roundEightNewBrandIds.length);
-  assert.ok(roundEightNewBrandIds.every((brandId) => bottles.some((bottle) => bottle.brandId === brandId)));
+  assert.ok(supplementalBrandIds.length >= 53, 'expected at least 53 new brands, got ' + supplementalBrandIds.length);
+  assert.equal(new Set(supplementalBrandIds).size, supplementalBrandIds.length);
+  assert.ok(supplementalBrandIds.every((brandId) => bottles.some((bottle) => bottle.brandId === brandId)));
 });
 
 test('every product has one canonical brand, exact material references, and an audit source', () => {

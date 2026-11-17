@@ -3,7 +3,7 @@ import type {PreparationCard, RecipePreparation} from '../domain/preparations/ty
 import {competitionExtensionPreparations} from './preparations-extension-competitions';
 import {barExtensionPreparations} from './preparations-extension-bars';
 import {patronExtensionPreparations} from './preparations-extension-patron';
-import {batchMPreparations} from './expansion/batch-m';
+import {mixedDrinkPreparations} from './recipe-collections/mixed-drinks';
 
 const L = (en:string, zh:string, fr:string, de:string, es:string, ko:string, ja:string, it:string): Localized => ({en,zh,fr,de,es,ko,ja,it});
 const same = (value:string): Localized => L(value,value,value,value,value,value,value,value);
@@ -232,7 +232,7 @@ export const recipePreparations: RecipePreparation[] = [
   ...competitionExtensionPreparations,
   ...barExtensionPreparations,
   ...patronExtensionPreparations,
-  ...batchMPreparations,
+  ...mixedDrinkPreparations,
   houmei,
   ...japanPartials,
   brownButter,

@@ -2,11 +2,14 @@ import type {Preferences} from '../../platform/preferences';
 import type {LabBackup} from '../lab/types';
 import type {PrivateRecipeBook} from '../private-recipes/types';
 import type {TasteState} from '../taste/types';
+import type {ShoppingState} from '../shopping/types';
 import type {MakingState} from '../making/types';
 import type {FavoriteList} from '../favorites';
 
-export const BACKUP_LIMIT = 5_000_000;
-export const BACKUP_SECTIONS = ['preferences','favorites','pantry','bottles','lab','privateRecipes','making','taste'] as const;
+// A full backup combines independently bounded personal stores and references.
+export const BACKUP_LIMIT = 50_000_000;
+export const BACKUP_SECTION_LIMIT = 5_000_000;
+export const BACKUP_SECTIONS = ['preferences','favorites','pantry','bottles','lab','privateRecipes','making','taste','shopping'] as const;
 export type BackupSection = typeof BACKUP_SECTIONS[number];
 export type FavoritesBackupSection =
   | {schemaVersion:1; versionIds:string[]}
@@ -21,6 +24,7 @@ export interface BackupSections {
   /** Absent only in an older backup: never interpret absence as an empty replacement. */
   making?:MakingState;
   taste?:TasteState;
+  shopping?:ShoppingState;
 }
 export type ReferenceKind = 'ingredient'|'brand'|'bottle'|'recipeVersion'|'source';
 export interface BackupReference {

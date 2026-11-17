@@ -22,7 +22,6 @@ import {BrandLockup} from '../brand/BrandIdentity';
 import {useSystemMotionPreference} from '../motion/systemPreference';
 
 export const serif = typography.display;
-export const nativeDriver = Platform.OS !== 'web';
 export function isAiMedia(asset?: MediaAsset) {
   return asset?.origin === 'ai-generated' || asset?.origin === 'ai-styled';
 }

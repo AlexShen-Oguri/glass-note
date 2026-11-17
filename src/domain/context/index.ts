@@ -181,10 +181,18 @@ export function diversifyContextResults(
   return diversified;
 }
 
-interface VersionContext {
+export interface VersionContext {
   versionId: string;
   score: number;
   reasons: ContextReason[];
+}
+
+/** All exact source versions, without selecting a cocktail winner or applying taste. */
+export function scoreContextVersions(catalogue:Catalogue,selectionValue:ContextSelection,evidence:readonly ContextEvidence[]):VersionContext[]{
+  const selection=normalizeContextSelection(selectionValue);
+  const versions=indexFirst(catalogue.versions);
+  const indexed=validEvidenceByVersion(versions,evidence);
+  return [...versions.values()].map(version=>contextForVersion(version,selection,indexed.get(version.id)??[]));
 }
 
 function validEvidenceByVersion(

@@ -36,5 +36,5 @@ export function mergeMaking(current:MakingState|undefined,incoming:MakingState,m
   }
   if(mode==='replace')removed+=a.sessions.filter(s=>!incoming.sessions.some(i=>i.id===s.id)).length;
   const consumed=new Set([...a.sessions,...incoming.sessions].filter(s=>s.consumptionApplied).map(s=>s.consumptionId));
-  return {value:{...a,stock,reviews,sessions:sessions.map(s=>consumed.has(s.consumptionId)?{...s,consumptionApplied:true}:s)},same,added,removed,conflicts};
+  return {value:{...a,schemaVersion:a.schemaVersion===2||incoming.schemaVersion===2?2:1,stock,reviews,sessions:sessions.map(s=>consumed.has(s.consumptionId)?{...s,consumptionApplied:true}:s)},same,added,removed,conflicts};
 }

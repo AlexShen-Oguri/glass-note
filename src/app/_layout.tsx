@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Platform, Pressable, Text, View} from 'react-native';
 import {DarkTheme, router, Stack, ThemeProvider, usePathname} from 'expo-router';
 import Head from 'expo-router/head';
-import {StatusBar} from 'expo-status-bar';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {AppProvider, useApp} from '../platform/AppProvider';
 import {colors} from '../theme/tokens';
@@ -19,6 +18,7 @@ import {backupText} from '../i18n/backup';
 import {privateRecipeText} from '../features/private-recipes/copy';
 import {TasteProvider} from '../platform/TasteProvider';
 import {MakingProvider} from '../platform/MakingProvider';
+import {ShoppingProvider} from '../platform/ShoppingProvider';
 import {MotionPhotoRelay,MotionTransition,useMotionEnabled} from '../features/motion';
 import {MotionInteractions} from '../features/motion/Interactions';
 import {RelayTrace} from '../features/motion/RelayTrace';
@@ -60,11 +60,10 @@ function AppScene() {
 }
 
 export default function RootLayout() {
-  return <SafeAreaProvider><RecoveryProvider><AppProvider><PantryProvider><FavoritesProvider><LabProvider><BottleProvider><PrivateRecipesProvider><MakingProvider><TasteProvider>
+  return <SafeAreaProvider><RecoveryProvider><AppProvider><PantryProvider><FavoritesProvider><LabProvider><BottleProvider><PrivateRecipesProvider><MakingProvider><TasteProvider><ShoppingProvider>
     <ThemeProvider value={nightTheme}>
     <Head><title>Glass Notes</title></Head>
-    <StatusBar style="light" />
     <SceneTransitionProvider><AppScene /></SceneTransitionProvider>
     </ThemeProvider>
-  </TasteProvider></MakingProvider></PrivateRecipesProvider></BottleProvider></LabProvider></FavoritesProvider></PantryProvider></AppProvider></RecoveryProvider></SafeAreaProvider>;
+  </ShoppingProvider></TasteProvider></MakingProvider></PrivateRecipesProvider></BottleProvider></LabProvider></FavoritesProvider></PantryProvider></AppProvider></RecoveryProvider></SafeAreaProvider>;
 }

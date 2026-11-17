@@ -44,6 +44,14 @@ test('every returned pantry suggestion obeys the distinct-missing and required-o
     assert.ok(match.missingIngredientIds.length <= 2);
     assert.equal(match.missingIngredientIds.length, new Set(match.missingIngredientIds).size);
     assert.equal(match.optionalMissingIngredientIds.length, new Set(match.optionalMissingIngredientIds).size);
-    assert.ok(version.ingredients.some(row => !row.optional && owned.has(row.ingredientId)));
+    // Independent membership check: do not use the production resolver as its own oracle.
+    assert.ok(version.ingredients.some((row,index) => {
+      if(row.optional)return false;
+      const accepted=catalogue.materialRequirements?.find(rule=>rule.versionId===version.id&&rule.rowIndex===index)?.acceptedIngredientIds??[row.ingredientId];
+      return accepted.some(id=>{
+        const members=catalogue.materialConcepts?.find(concept=>concept.memberIds.includes(id))?.memberIds??[id];
+        return members.some(member=>owned.has(member));
+      });
+    }));
   }
 });

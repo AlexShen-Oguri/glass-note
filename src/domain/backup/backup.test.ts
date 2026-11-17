@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
+import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import test from 'node:test';
+import {fileURLToPath} from 'node:url';
 import {usedReferences} from './plan';
 import type {LabProject} from '../lab/types';
 import type {PrivateRecipe,PrivateRecipeContent} from '../private-recipes/types';
@@ -49,6 +51,22 @@ function backup(data:PersonalData=personal()):FullBackup{return{format:'glass-no
 
 const all:RestoreChoice={mode:'merge',sections:['preferences','favorites','pantry','bottles','lab','privateRecipes'],preferenceFields:['locale','unit','motionPaused']};
 const known:KnownReferences={ingredient:new Set(),brand:new Set(),bottle:new Set(['known-bottle']),recipeVersion:new Set(['known-version']),source:new Set()};
+
+test('a wide backup within the byte limit returns the structural error under a bounded heap', () => {
+  const result = spawnSync(process.execPath, ['--max-old-space-size=192', '--import', 'tsx', '-e', `
+    const assert = require('node:assert/strict');
+    const {parseFullBackup} = require('./src/domain/backup/validation.ts');
+    const raw = '[' + '0,'.repeat(4_999_999) + '0]';
+    assert.throws(() => parseFullBackup(raw), {code: 'invalid-data', message: /exceeds 250000 nested values/});
+  `], {
+    cwd: fileURLToPath(new URL('../../../', import.meta.url)),
+    encoding: 'utf8',
+    timeout: 15_000,
+    windowsHide: true,
+  });
+  assert.ifError(result.error);
+  assert.equal(result.status, 0, result.stderr);
+});
 
 test('full backup round trips exact source units and reference snapshot variants',()=>{
   const value=backup();value.references.push({kind:'ingredient',id:'unknown-ingredient',name:'New snapshot'},{kind:'ingredient',id:'unknown-ingredient',name:'New snapshot'});
@@ -169,7 +187,7 @@ test('parser rejects unsafe, unknown, malformed, oversized, and broken nested da
   const broken=backup();broken.sections.lab.projects[0]!.batches[0]!.versionId='missing';cases.push([JSON.stringify(broken),/unknown version/]);
   const badPrivate=backup();badPrivate.sections.privateRecipes.recipes[0]!.activeRevisionId='missing';cases.push([JSON.stringify(badPrivate),/does not reference/]);
   for(const [raw,message] of cases)assert.throws(()=>parseFullBackup(raw),(error:unknown)=>error instanceof BackupError&&message.test(error.message));
-  assert.throws(()=>parseFullBackup(' '.repeat(BACKUP_LIMIT+1)),/exceeds 5000000/);
+  assert.throws(()=>parseFullBackup(' '.repeat(BACKUP_LIMIT+1)),new RegExp(`exceeds ${BACKUP_LIMIT}`));
 });
 
 test('reference traversal visits a reversed chain once instead of repeatedly scanning it',()=>{

@@ -1,22 +1,25 @@
 import React,{createContext,useCallback,useContext,useEffect,useRef,useState,useSyncExternalStore} from 'react';
 import {Platform,Pressable,StyleSheet,Text,View} from 'react-native';
+import {useNavigationContainerRef} from 'expo-router';
 import {getLocales} from 'expo-localization';
 import type {Locale} from '../domain/contracts';
 import {BACKUP_SECTIONS,type BackupSection} from '../domain/backup/types';
 import {backupText} from '../i18n/backup';
 import {localeFromDeviceLanguages} from './preferences';
 import {personalStorage} from './storage';
-import type {RawPersonalData,RecoveryState} from './personalStorage';
+import type {RawPersonalData,RecoveryState,RecoveryNotice} from './personalStorage';
 import {colors} from '../theme/tokens';
 
 interface RecoveryContextValue {
   state:RecoveryState; register:(key:BackupSection,callback:()=>Promise<boolean>)=>()=>void;
   prepare:()=>Promise<RawPersonalData>;
-  restore:(before:RawPersonalData,after:Partial<RawPersonalData>)=>Promise<void>;
+  restore:(before:RawPersonalData,after:Partial<RawPersonalData>,notice?:RecoveryNotice)=>Promise<void>;
 }
 const Context=createContext<RecoveryContextValue|null>(null);
 export function RecoveryProvider({children}:{children:React.ReactNode}){
   const state=useSyncExternalStore(personalStorage.subscribe,personalStorage.getSnapshot,personalStorage.getSnapshot);
+  const navigation=useNavigationContainerRef();
+  const navigationBefore=useRef<ReturnType<typeof navigation.getRootState>|undefined>(undefined);
   const participants=useRef(new Map<BackupSection,()=>Promise<boolean>>());
   const [locale,setLocale]=useState<Locale>('en');const [rescueMessage,setRescueMessage]=useState('');
   useEffect(()=>{try{setLocale(localeFromDeviceLanguages(getLocales().map(l=>l.languageTag)));}catch{/* Recovery must also work when locale detection is unavailable. */}void personalStorage.initialize();},[]);
@@ -26,7 +29,18 @@ export function RecoveryProvider({children}:{children:React.ReactNode}){
     const ok=await Promise.all(BACKUP_SECTIONS.map(key=>participants.current.get(key)!()));
     if(ok.some(value=>!value))throw Error('personal-data-not-ready');return personalStorage.readAll();
   },[]);
-  const restore=useCallback(async(before:RawPersonalData,after:Partial<RawPersonalData>)=>{await prepare();await personalStorage.restore(before,after);},[prepare]);
+  // The epoch intentionally recreates every personal store. React Navigation clears a
+  // navigator's state on unmount, so preserve it before recreating the provider subtree.
+  const restore=useCallback(async(before:RawPersonalData,after:Partial<RawPersonalData>,notice?:RecoveryNotice)=>{
+    await prepare();const epoch=personalStorage.getSnapshot().epoch;
+    navigationBefore.current=navigation.isReady()?navigation.getRootState():undefined;
+    try{await personalStorage.restore(before,after,notice);}
+    finally{if(personalStorage.getSnapshot().epoch===epoch)navigationBefore.current=undefined;}
+  },[prepare,navigation]);
+  useEffect(()=>{
+    const saved=navigationBefore.current;
+    if(state.phase==='ready'&&saved&&navigation.isReady()){navigationBefore.current=undefined;navigation.resetRoot(saved);}
+  },[state.phase,state.epoch,navigation]);
   const rescue=async()=>{try{const raw=await personalStorage.readRecoveryBefore();const {fullBackupFromRaw}=await import('./backupAdapter');const {serializeFullBackup}=await import('../domain/backup');const {saveBackupFile}=await import('./backupFiles');const saved=await saveBackupFile(serializeFullBackup(fullBackupFromRaw(raw,locale)));setRescueMessage(saved?backupText(locale,Platform.OS==='web'?'exported':'shared'):'');}catch{setRescueMessage(backupText(locale,'rescueUnavailable'));}};
   return <Context.Provider value={{state,register,prepare,restore}}>{state.phase==='ready'?<React.Fragment key={state.epoch}>{children}</React.Fragment>:<View style={styles.screen}>
     <Text style={styles.title}>{backupText(locale,state.phase==='blocked'?'recoveryTitle':state.phase==='restoring'?'busy':'loading')}</Text>

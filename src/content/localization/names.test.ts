@@ -27,7 +27,7 @@ test("applies reviewed names while preserving catalogue records", () => {
 
 test("name review report covers every cocktail and locale", async () => {
   const reportPath = fileURLToPath(new URL(
-    "../../../research/localization/round-ten/names-review.json",
+    "../../../research/localization/cocktail-name-review.json",
     import.meta.url,
   ));
   const report = JSON.parse(await readFile(reportPath, "utf8")) as {

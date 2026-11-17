@@ -7,7 +7,7 @@ import {contextEvidence, contextRecipeFacts} from './context-evidence';
 import {CONTEXT_REASONS, OCCASIONS, SEASONS} from '../domain/context/types';
 import {needsPreparationReview} from '../domain/preparations';
 
-const review = JSON.parse(readFileSync(new URL('../../research/recommendations/p02-context-review.json', import.meta.url), 'utf8')) as {
+const review = JSON.parse(readFileSync(new URL('../../research/recommendations/context-review.json', import.meta.url), 'utf8')) as {
   editorial: boolean;
   entries: Array<{versionId: string; sourceId: string; sourceUrl: string; recipeDigest: string; recipeFacts: unknown; note: string}>;
 };

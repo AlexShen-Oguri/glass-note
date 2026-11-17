@@ -6,11 +6,14 @@ import {
   type MemoryReason,
   type TasteFeedback,
   type TasteFeedbackInput,
+  type TasteProfile,
   type TasteResult,
+  type TasteSignal,
   type TasteState,
 } from './types';
 
 export * from './types';
+export * from './recommendations';
 
 const MAX_ENTRIES=5_000;
 const MAX_ID=200;
@@ -130,12 +133,44 @@ export function recordExperience(state:TasteState,recipeValue:TasteFeedback['rec
 
 interface VersionMemory {score:number;reasons:MemoryReason[]}
 
+/** Recompute from the latest observation of each frozen recipe; never persist a learned accumulator. */
+export function deriveTasteProfile(stateValue:TasteState):TasteProfile{
+  return profileFromLatest(latestByIdentity(validateTasteState(stateValue).entries).values());
+}
+
+function profileFromLatest(entries:Iterable<TasteFeedback>):TasteProfile{
+  let ratedRecipeCount=0,featureRecipeCount=0;
+  const flavourEvidence=new Map<Flavour,string[]>(),sweetEvidence:string[]=[],strongEvidence:string[]=[];
+  for(const entry of entries){
+    const hasFeatures=entry.likedFlavours.length>0||entry.tooSweet||entry.tooStrong;
+    if(entry.sentiment!=='neutral'||hasFeatures)ratedRecipeCount++;
+    if(hasFeatures)featureRecipeCount++;
+    for(const flavour of entry.likedFlavours)addEvidence(flavourEvidence,flavour,entry.id);
+    if(entry.tooSweet)sweetEvidence.push(entry.id);
+    if(entry.tooStrong)strongEvidence.push(entry.id);
+  }
+  return{
+    ratedRecipeCount,featureRecipeCount,
+    flavours:[...FLAVOURS].flatMap(flavour=>{
+      const ids=flavourEvidence.get(flavour);return ids?.length?[{flavour,...signal(ids)}]:[];
+    }),
+    sweetness:sweetEvidence.length?signal(sweetEvidence):null,
+    strength:strongEvidence.length?signal(strongEvidence):null,
+  };
+}
+
+function signal(ids:string[]):TasteSignal{
+  const supportCount=ids.length;
+  return{supportCount,weight:2*supportCount/(supportCount+2),feedbackIds:[...ids].sort().slice(0,3)};
+}
+
 export function rankWithTaste(catalogue:Catalogue,query:SearchQuery,stateValue:TasteState):TasteResult[]{
   const searched=searchCocktails(catalogue,query);
   const state=validateTasteState(stateValue);
   if(state.entries.length===0)return searched.map(result=>({...result,memoryReasons:[]}));
   const versions=new Map(catalogue.versions.map(version=>[version.id,version]));
   const latest=latestByIdentity(state.entries);
+  const profile=profileFromLatest(latest.values());
   const exactByVersion=new Map<string,TasteFeedback>();
   for(const id of new Set(searched.flatMap(result=>result.versionIds))){
     const version=versions.get(id);if(!version)continue;
@@ -144,17 +179,10 @@ export function rankWithTaste(catalogue:Catalogue,query:SearchQuery,stateValue:T
     const entry=latest.get(identity(id,recipeFingerprint(current)));
     if(entry&&entry.recipe.version.sourceId===version.sourceId&&entry.recipe.source.id===version.sourceId)exactByVersion.set(id,entry);
   }
-  const flavourEvidence=new Map<Flavour,string[]>();
-  const sweetEvidence:string[]=[],strongEvidence:string[]=[];
-  for(const entry of latest.values()){
-    for(const flavour of entry.likedFlavours)addEvidence(flavourEvidence,flavour,entry.id);
-    if(entry.tooSweet)sweetEvidence.push(entry.id);
-    if(entry.tooStrong)strongEvidence.push(entry.id);
-  }
   const ranked=searched.map((result,index)=>{
     const candidates=result.versionIds.map((id,versionIndex)=>{
       const version=versions.get(id);
-      const memory=version?versionMemory(version,exactByVersion.get(id),flavourEvidence,sweetEvidence,strongEvidence):{score:0,reasons:[]};
+      const memory=version?versionMemory(version,exactByVersion.get(id),profile):{score:0,reasons:[]};
       return{id,versionIndex,memory};
     });
     const originalIndex=Math.max(0,result.versionIds.indexOf(result.selectedVersionId));
@@ -176,25 +204,30 @@ function latestByIdentity(entries:readonly TasteFeedback[]):Map<string,TasteFeed
 }
 function identity(versionId:string,fingerprint:string):string{return `${versionId}\u0000${fingerprint}`;}
 function compareFeedback(left:TasteFeedback,right:TasteFeedback):number{
-  return Date.parse(left.updatedAt)-Date.parse(right.updatedAt)||Date.parse(left.createdAt)-Date.parse(right.createdAt)||left.id.localeCompare(right.id);
+  return Date.parse(left.updatedAt)-Date.parse(right.updatedAt)||Date.parse(left.createdAt)-Date.parse(right.createdAt)||(left.id<right.id?-1:left.id>right.id?1:0);
 }
+/** One locale-independent winner per frozen identity, newest first in every derived view. */
+export function latestTasteFeedback(entries:readonly TasteFeedback[]):TasteFeedback[]{return [...latestByIdentity(entries).values()].sort((left,right)=>compareFeedback(right,left));}
 function addEvidence(map:Map<Flavour,string[]>,flavour:Flavour,id:string):void{
   const ids=map.get(flavour)??[];if(!ids.includes(id))ids.push(id);map.set(flavour,ids);
 }
-function reason(kind:MemoryReason['kind'],feedbackIds:string[],flavours?:Flavour[]):MemoryReason{
-  return{kind,feedbackIds:[...new Set(feedbackIds)].sort().slice(0,3),...(flavours?.length?{flavours:[...new Set(flavours)]}:{})};
+function reason(kind:MemoryReason['kind'],feedbackIds:string[],flavours?:Flavour[],supportCount?:number):MemoryReason{
+  return{kind,feedbackIds:[...new Set(feedbackIds)].sort().slice(0,3),...(flavours?.length?{flavours:[...new Set(flavours)]}:{}),...(supportCount===undefined?{}:{supportCount})};
 }
-function versionMemory(version:RecipeVersion,exact:TasteFeedback|undefined,flavourEvidence:Map<Flavour,string[]>,sweetEvidence:string[],strongEvidence:string[]):VersionMemory{
+function versionMemory(version:RecipeVersion,exact:TasteFeedback|undefined,profile:TasteProfile):VersionMemory{
   let score=0;const reasons:MemoryReason[]=[];
   if(exact?.sentiment==='like'){score+=12;reasons.push(reason('liked-version',[exact.id]));}
   else if(exact?.sentiment==='dislike'){score-=12;reasons.push(reason('disliked-version',[exact.id]));}
-  const liked=version.flavours.filter(flavour=>flavourEvidence.has(flavour));
-  if(liked.length){score+=liked.length*2;reasons.push(reason('liked-flavour',liked.flatMap(flavour=>flavourEvidence.get(flavour)??[]),liked));}
-  if(sweetEvidence.length){
-    if(version.tastes.includes('sweet')){score-=2;reasons.push(reason('sweet-caution',sweetEvidence));}
+  for(const preference of profile.flavours){
+    if(!version.flavours.includes(preference.flavour))continue;
+    score+=preference.weight;
+    reasons.push(reason('liked-flavour',preference.feedbackIds,[preference.flavour],preference.supportCount));
   }
-  if(strongEvidence.length){
-    if(version.strength==='strong'){score-=2;reasons.push(reason('strong-caution',strongEvidence));}
+  if(profile.sweetness&&version.tastes.includes('sweet')){
+    score-=profile.sweetness.weight;reasons.push(reason('sweet-caution',profile.sweetness.feedbackIds,undefined,profile.sweetness.supportCount));
+  }
+  if(profile.strength&&version.strength==='strong'){
+    score-=profile.strength.weight;reasons.push(reason('strong-caution',profile.strength.feedbackIds,undefined,profile.strength.supportCount));
   }
   return{score,reasons};
 }

@@ -37,3 +37,15 @@ test('making store keeps legacy completed sessions whose stock deduction was nev
   assert.equal(loaded.sessions[0]!.completed,true);assert.equal(loaded.sessions[0]!.consumptionApplied,false);assert.equal(loaded.stock[0]!.amount,10);
   assert.equal(await store.retry(),true);assert.equal(JSON.parse(disk).sessions[0].consumptionApplied,false);
 });
+
+test('loading v1 performs no migration write; the next explicit edit preserves legacy data and writes v2',async()=>{
+  const recipe=recipeSnapshot(catalogue,catalogue.versions[0]!.id)!,old=createSession(recipe,'old','2026-10-12T12:00:00Z');
+  let disk=JSON.stringify({...emptyMakingState(),schemaVersion:1,sessions:[old]}),writes=0;
+  const store=new MakingStore({getItem:async()=>disk,setItem:async(key,value)=>{assert.equal(key,'glass-notes.making.v1');writes++;disk=value;}});
+  await store.load();assert.equal(writes,0);assert.equal(store.getSnapshot().state.schemaVersion,1);
+  const context={catalogue,pantry:{ingredientIds:[],brandsByIngredient:{}},ownedBottleIds:[],bottles:[],making:store.getSnapshot().state};
+  const session=createSession(recipe,'new','2026-10-12T12:01:00Z',context);
+  assert.equal(await store.change(state=>({...state,sessions:[...state.sessions,session]})),true);
+  const saved=JSON.parse(disk);assert.equal(saved.schemaVersion,2);assert.deepEqual(saved.sessions[0],old);
+  assert(saved.sessions[1].materialSemantics);
+});

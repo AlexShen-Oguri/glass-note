@@ -4,7 +4,7 @@ import type {Bottle} from '../bottles/types';
 import {LOCALES,type Catalogue,type Flavour,type Localized,type MeasureUnit,type RecipeVersion,type Strength} from '../contracts';
 import {recipeSnapshot} from '../making';
 import {buildOrderCard,formatOrderCard,formatSimpleOrderCard,OrderCardError,type OrderCardFormatCopy,type OrderCardInput} from '.';
-import {orderCopy,round175OrderCopy,type Round175OrderKey} from '../../i18n/round17-5-order';
+import {orderCopy,orderTranslations,type OrderKey} from '../../i18n/order';
 
 const L=(en:string,zh=`中-${en}`):Localized=>({en,zh,fr:`fr-${en}`,de:`de-${en}`,es:`es-${en}`,ko:`ko-${en}`,ja:`ja-${en}`,it:`it-${en}`});
 function version(options:Partial<RecipeVersion>={}):RecipeVersion{return{id:'v',cocktailId:'drink',label:L('Source version'),sourceId:'source',servings:1,ingredients:[{ingredientId:'gin',amount:30,unit:'ml',brandId:'brand-source',note:L('Source note')}],steps:{en:['Stir'],zh:['搅拌'],fr:['fr'],de:['de'],es:['es'],ko:['ko'],ja:['ja'],it:['it']},originalLanguage:'en',originalSteps:['Original source wording'],glass:L('Coupe'),garnish:L('Twist'),flavours:['herbal'],tastes:['dry'],strength:'strong',approachability:'bold',profileBasis:'source',profileNote:L('Source profile'),sourceChecked:true,translationStatus:'reviewed',...options};}
@@ -73,7 +73,7 @@ test('simple formatter keeps the order card short and carries explicit bottle an
 });
 
 test('round 17.5 order copy has a value in all eight locales',()=>{
-  const keys=Object.keys(round175OrderCopy) as Round175OrderKey[];
+  const keys=Object.keys(orderTranslations) as OrderKey[];
   assert.ok(keys.length>0);
   for(const locale of LOCALES)for(const key of keys)assert.equal(typeof orderCopy(locale,key),'string');
   for(const locale of LOCALES)for(const key of keys)assert.ok(orderCopy(locale,key).trim().length>0,`${locale}.${key}`);

@@ -1,5 +1,5 @@
 {
-  "source": "design/brand/selected-reference.png",
+  "source": "assets/brand/reference.png",
   "sourceSha256": "13d2cce880a22c5e15e45bd26b9fc42d209571c926ff2b1cfa3b11a611eb692f",
   "method": "Marching squares at midtone 129 in original R/G pixel samples; linear subpixel interpolation; original wordmark and relative positions; no font substitution or hand-redrawn geometry",
   "regions": {

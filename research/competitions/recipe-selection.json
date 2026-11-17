@@ -1,0 +1,107 @@
+{
+  "checkedAt": "2026-10-13",
+  "selectionPolicy": "Select official competition works with quantified core serving ingredients, a serving method and disclosed essential bespoke preparations. Preserve source units, unknown specifications and garnish limitations. This is selected coverage, not the entire competition field or a validated production process.",
+  "factsFile": "src/content/competition-recipes.ts",
+  "translationStatus": "Editorial eight-language reading copy; native-language final review remains pending.",
+  "sources": [
+    {
+      "organization": "Patrón",
+      "directoryUrl": "https://www.patrontequila.com/stories/2018-12/patron-perfectionists-finalists.html",
+      "officialFieldCount": 20,
+      "edition": 2018,
+      "rightsUrl": "https://www.patrontequila.com/terms.html",
+      "rightsStatus": "The terms permit professional and domestic recipe use but do not provide an open redistribution licence for the website, photographs or brand assets. Recipes here are source-linked factual ingredients and paraphrased instructions; no photographs are imported. Public redistribution still requires the repository release review."
+    },
+    {
+      "organization": "Angostura",
+      "directoryUrl": "https://angosturaglobalcocktailchallenge.com/winners/",
+      "officialFieldCount": null,
+      "selectedEditions": [2008, 2011, 2014, 2018],
+      "rightsStatus": "Official pages carry Angostura Limited copyright and no open redistribution licence was found. The selection records factual ingredients and paraphrased methods with author and source links, without photographs. This is not a licence clearance for public release."
+    }
+  ],
+  "works": [
+    {
+      "id": "patron-2018-wind",
+      "author": "Yeray Monforte",
+      "year": 2018,
+      "url": "https://www.patrontequila.com/cocktails/patron-silver/wind.html",
+      "preparations": ["eternal-youth-mixture", "pollen-reposado-spray"],
+      "sourceNotes": ["Three thyme branches and three sprays are published serving measures; the spray infuses 10 g pollen in 3.5 oz Reposado for one hour."]
+    },
+    {
+      "id": "patron-2018-harmony",
+      "author": "Bruce Dorfling",
+      "year": 2018,
+      "url": "https://www.patrontequila.com/cocktails/patron-anejo/harmony.html",
+      "preparations": ["marigold-tincture"],
+      "sourceNotes": ["Four whole flowers steep in 3 oz Añejo for 24 hours. Vanilla syrup has no specified brand or extra formula; garnish quantity and flower species are unspecified."]
+    },
+    {
+      "id": "patron-2018-best-promise",
+      "author": "Mitsuhiro Nakamura",
+      "year": 2018,
+      "url": "https://www.patrontequila.com/cocktails/patron-reposado/the-best-promise.html",
+      "preparations": ["tepache-syrup"],
+      "sourceNotes": ["Green tea is not reinterpreted as matcha. Syrup spices are heated for 60 minutes; no fermentation is added. Original cup and oz measures retain their unspecified standard."]
+    },
+    {
+      "id": "patron-2018-cyanocitta",
+      "author": "Makina Labrecque",
+      "year": 2018,
+      "url": "https://www.patrontequila.com/cocktails/patron-silver/cyanocitta.html",
+      "preparations": ["szechuan-lime-oleo", "blue-citronge"],
+      "sourceIngredients": [
+        {"preparationId":"szechuan-lime-oleo","name":"Dried whole Szechuan peppercorns","amount":"4 tbsp"},
+        {"preparationId":"szechuan-lime-oleo","name":"Whole white peppercorns","amount":"1 tbsp"},
+        {"preparationId":"szechuan-lime-oleo","name":"Fine granulated white sugar","amount":"300 g"}
+      ],
+      "sourceNotes": ["Six spruce tips are muddled and two garnish the serve. The warm water bath is not boiling and may take up to 12 hours. The source permits rosemary and crushed ice alternatives."]
+    },
+    {
+      "id": "patron-2018-balancing-act",
+      "author": "Lance Bowman",
+      "year": 2018,
+      "url": "https://www.patrontequila.com/cocktails/patron-reposado/the-balancing-act.html",
+      "preparations": ["sirop-capillaire", "bergamot-essence"],
+      "sourceIngredients": [{"preparationId":"sirop-capillaire","name":"Dried maidenhair fern","amount":"15 g","species":null}],
+      "sourceNotes": ["Syrup uses 32 oz water and 32 oz sugar without an explicit weight/volume basis. Maidenhair fern steeps for 45 minutes. Garnish mist dose, oil grade and fern species are not specified."]
+    },
+    {
+      "id": "patron-2018-maestranza",
+      "author": "Peter Hannah",
+      "year": 2018,
+      "url": "https://www.patrontequila.com/cocktails/patron-silver/maestranza.html",
+      "preparations": ["pink-peppercorn-tequila", "fermented-papaya-juice", "guava-cordial"],
+      "sourceIngredients": [{"preparationId":"guava-cordial","name":"Granulated white sugar","amount":"3 parts"}],
+      "sourceNotes": ["Tequila infuses for 48 hours. Papaya ferments for three days and spends another two days bottled. The source warns of bottle rupture from trapped gas and mentions periodic venting. It omits fermentation temperature and validated safety controls. Guava/sugar is 4:3 parts with no mass/volume basis."]
+    },
+    {"id":"angostura-2008-narrow-minded","author":"Jamie Stephenson","year":2008,"region":"Europe","url":"https://angosturaglobalcocktailchallenge.com/winners/?Y=2008","sourceNotes":["The source shakes all four ingredients including cream soda. No zero-alcohol assertion is made."]},
+    {"id":"angostura-2011-scarlet-ibis","author":"Andrew Griffiths","year":2011,"region":"Australia","url":"https://angosturaglobalcocktailchallenge.com/winners/?Y=2011","sourceNotes":["Madeira identity, cherry infusion time and extra garnish whisky quantity are not specified."]},
+    {"id":"angostura-2011-orinoco-flip","author":"Andrew Griffiths","year":2011,"region":"Australia","url":"https://angosturaglobalcocktailchallenge.com/winners/?Y=2011","sourceNotes":["Angostura Rum has no age expression. Preserve Mozart Dark and one flat teaspoon of treacle."]},
+    {"id":"angostura-2014-big-bird","author":"Mike Tomasic","year":2014,"region":"Australia","url":"https://angosturaglobalcocktailchallenge.com/winners/?Y=2014","sourceNotes":["Crawley's Spiced Honey Apple is the named commercial component, not plain honey syrup. Its current availability was not checked. Lemon or lime is the source choice."]},
+    {"id":"angostura-2014-olympia","author":"Mike Tomasic","year":2014,"region":"Australia","url":"https://angosturaglobalcocktailchallenge.com/winners/?Y=2014","sourceNotes":["Preserve Paul Simon Fig & Lemon Jam; current availability was not checked. Six bitters dashes are one in the drink plus five floated. Tobacco leaves are presented beside the glass."]},
+    {"id":"angostura-2018-deliciousness","author":"Ray Letoa","year":2018,"region":"New Zealand","url":"https://angosturaglobalcocktailchallenge.com/winners/?Y=2018","sourceNotes":["Pineapple syrup and coffee liqueur have no specified brand or additional formula. Coffee liqueur is folded into whipped egg white."]}
+  ],
+  "exclusions": [
+    {"scope":"Patrón 2016","url":"https://www.patrontequila.com/global-es/campaign/patron-perfectionists/2016.html","priorCheckedAt":"2026-09-08","ids":["patron-2016-song-of-the-sea","patron-2016-bell-of-jalisco","patron-2016-el-pacto","patron-2016-pimiento-goloso","patron-2016-patron-atole","patron-2016-augurio","patron-2016-jalisco-swizzle"],"reason":"The seven identity-only entries have no complete recipes in the maintained research data; the empty topic is removed."},
+    {"scope":"Patrón 2018 remaining identity-only entries","ids":["patron-2018-cielo-de-jalisco","patron-2018-coral-and-coast","patron-2018-mayagarita","patron-2018-muldejewangk","patron-2018-kosmos"],"reason":"Unquantified or contradictory essential preparation facts, or no recipe link in the directory."},
+    {
+      "scope":"Bacardí Legacy Japan 2019",
+      "url":"https://www.atpress.ne.jp/news/171847",
+      "publishedAt":"2018-11-22",
+      "priorCheckedAt":"2026-09-08",
+      "reason":"The five finalist lists have ingredient names but no actual measures or serving method; the empty topic is removed. Preserve the prior source lists below as maintenance evidence, not app recipe cards.",
+      "priorTranscriptions":[
+        {"id":"legacy-2019-evolver","title":"EVOLVER","author":"岡沼弘泰","original":"バカルディスペリオール／マルティーニビター／ベルベットファレナム／フレッシュレモンジュース／アブサン／オレンジピール"},
+        {"id":"legacy-2019-oracion","title":"oracion","author":"佐藤麻美","original":"バカルディ８／アップルジュース／スパークリングワイン／ライムジュース／アブサン／アプリコットジャム"},
+        {"id":"legacy-2019-possibilita","title":"Possibilita","author":"高宮裕輔","original":"バカルディ８／グラッパ／アマレット／アマーロ／ホワイトバルサミコのレディクション（１/２になるまで煮詰めたもの）／コーヒー豆（粗挽き）"},
+        {"id":"legacy-2019-logos","title":"LOGOS","author":"西野真司","original":"バカルディゴールド／アンゴスチュラビターズ／ホワイトワインビネガー／サトウキビシロップ／水／ミント"},
+        {"id":"legacy-2019-partir","title":"PARTIR","author":"水岸直也","original":"バカルディゴールド／マラスキーノリキュール／グレープフルーツジュース／シナモンシロップ／ホワイトエール／ココナッツソルト"}
+      ]
+    },
+    {"scope":"Angostura 2008 Easily Satisfied","url":"https://angosturaglobalcocktailchallenge.com/winners/?Y=2008","reason":"The source describes Velvet Falernum as non-alcoholic syrup; product classification is unresolved."},
+    {"scope":"Angostura 2020 Mas Curried","url":"https://angosturaglobalcocktailchallenge.com/winners/?Y=2020","reason":"Essential homemade curry shrub and cauliflower purée formulas are not published."}
+  ],
+  "retainedPartialWorks": ["patron-2018-godfathers-affinity", "world-class-us-2024-such-great-heights", "world-class-us-2024-apples-for-whales"]
+}

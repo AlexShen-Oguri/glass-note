@@ -2,7 +2,16 @@
 
 ## Unreleased
 
-- Keep the phone coupe anchored to its own scrolling content area, with home drink images, guided titles and controls in document flow instead of overlapping a fixed model.
+## 1.1.0 (2026-11-16)
+
+- Plan one or two cupboard additions by how many new drinks they unlock or how closely those drinks match your saved taste. Group interchangeable pure spirits for everyday matching, with distinct entries for flavoured and prepared ingredients.
+- Add an exact recipe version to a shopping list from its detail page. Merge shared missing ingredients, choose alternatives and update the cupboard by confirming purchases.
+- Discover up to five drinks that match your saved ratings and one new drink to try. Recommendations are computed locally, with short reasons available on demand.
+- See sourced strength estimates and short/long serving classifications for 20 reviewed IBA recipes. Compare a reference with your confirmed bottles and optional dilution when the needed information is available.
+- Explore 12 selected recipes from Patrón Perfectionists and the Angostura Global Cocktail Challenge, with organizer links, serving measures and preparation notes. Remove empty research cards.
+- Keep the phone coupe in the scrolling layout and its position stable during reveals. Fix displaced or duplicate recipe images when returning from making or the order card.
+- Reject oversized backup structures without queuing every item for validation. Existing backup byte limits and restore formats are preserved.
+- Update the Chinese project manual with the new feature workflows, storage rules and worked examples.
 
 ## 1.0.0 (2026-10-05)
 

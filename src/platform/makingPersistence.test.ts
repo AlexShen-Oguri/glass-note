@@ -65,7 +65,7 @@ test('completed desktop sessions reload from disk and survive full backup export
   assert.deepEqual(second.making.getSnapshot().state, JSON.parse(saved));
   const backup = parseFullBackup(serializeFullBackup(fullBackupFromRaw(await second.personal.readAll(), 'zh', finished)));
   assert.equal(backup.schemaVersion, 3);
-  assert.equal(Object.keys(backup.sections).length, 8);
+  assert.equal(Object.keys(backup.sections).length, 9);
   assert.deepEqual(backup.sections.making?.sessions.map(s => [s.id, s.completed]), [
     ['older-session', false], ['new-session', true],
   ]);

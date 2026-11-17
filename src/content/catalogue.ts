@@ -1,14 +1,14 @@
 import {bottleBrands} from './bottles';
 import {applyCocktailNames} from './localization/names';
-import {expandedBottleIngredients} from './bottles/expansion';
+import {expandedBottleIngredients} from './bottles/product-catalogue';
 import {chinaMarketIngredients} from './bottles/china-market';
-import {addedBottleIngredients} from './bottles/expansion-300';
+import {addedBottleIngredients} from './bottles/product-supplement';
 import {applyMixingMethods} from './mixing-methods';
 import {applyRecipeOrigins} from './recipe-origins';
-import {batchJ} from './expansion/batch-j';
-import {batchK} from './expansion/batch-k';
-import {batchL} from './expansion/batch-l';
-import {batchM} from './expansion/batch-m';
+import {bacardiLegacyCatalogue} from './recipe-collections/bacardi-legacy';
+import {barSignaturesCatalogue} from './recipe-collections/bar-signatures';
+import {patronPerfectionistsCatalogue} from './recipe-collections/patron-perfectionists';
+import {mixedDrinksCatalogue} from './recipe-collections/mixed-drinks';
 import type {
   Catalogue,
   Cocktail,
@@ -17,19 +17,20 @@ import type {
   RecipeVersion,
   Source,
 } from "../domain/contracts";
-import { batchA } from "./expansion/batch-a";
-import { batchB } from "./expansion/batch-b";
-import { batchC } from "./expansion/batch-c";
-import { batchD } from "./expansion/batch-d";
-import { batchE } from "./expansion/batch-e";
-import { batchF } from "./expansion/batch-f";
-import { batchG } from "./expansion/batch-g";
-import { batchH } from "./expansion/batch-h";
-import { batchI } from "./expansion/batch-i";
-import { japanVenues } from "./expansion/venues-h";
-import { mergeIngredients, mergeBrands } from "./expansion/merge";
-import { expansionBrands, expansionIngredients } from "./expansion/ingredients";
+import { ginWhiskeyClassicsCatalogue } from "./recipe-collections/gin-whiskey-classics";
+import { ibaPopularClassicsCatalogue } from "./recipe-collections/iba-popular-classics";
+import { ibaAngelFaceToMimosaCatalogue } from "./recipe-collections/iba-angel-face-to-mimosa";
+import { ibaMissionarysDownfallToZombieCatalogue } from "./recipe-collections/iba-missionarys-downfall-to-zombie";
+import { ginVodkaAperitifsCatalogue } from "./recipe-collections/gin-vodka-aperitifs";
+import { whiskeyBrandyTikiCatalogue } from "./recipe-collections/whiskey-brandy-tiki";
+import { historicalClassicsCatalogue } from "./recipe-collections/historical-classics";
+import { japaneseSignaturesCatalogue } from "./recipe-collections/japanese-signatures";
+import { modernClassicVariationsCatalogue } from "./recipe-collections/modern-classic-variations";
+import { japanVenues } from "./recipe-collections/japanese-venues";
+import { mergeIngredients, mergeBrands } from "./recipe-collections/merge";
+import { expansionBrands, expansionIngredients } from "./recipe-collections/ingredients";
 import {withIndependentIngredients} from './ingredients';
+import {buildMaterialConcepts,buildRecipeMaterialRequirements} from './ingredients/concepts';
 
 const L = (
   en: string,
@@ -952,17 +953,19 @@ const versions: RecipeVersion[] = [
   },
 ];
 
-export const recipeIngredients = mergeIngredients(ingredients, expansionIngredients, batchC.ingredients, batchD.ingredients, batchE.ingredients, batchF.ingredients, batchG.ingredients, batchH.ingredients, batchI.ingredients, batchJ.ingredients, batchK.ingredients, batchL.ingredients, batchM.ingredients);
+export const recipeIngredients = mergeIngredients(ingredients, expansionIngredients, ibaAngelFaceToMimosaCatalogue.ingredients, ibaMissionarysDownfallToZombieCatalogue.ingredients, ginVodkaAperitifsCatalogue.ingredients, whiskeyBrandyTikiCatalogue.ingredients, historicalClassicsCatalogue.ingredients, japaneseSignaturesCatalogue.ingredients, modernClassicVariationsCatalogue.ingredients, bacardiLegacyCatalogue.ingredients, barSignaturesCatalogue.ingredients, patronPerfectionistsCatalogue.ingredients, mixedDrinksCatalogue.ingredients);
 
-const allSources = [...sources, ...batchA.sources, ...batchB.sources, ...batchC.sources, ...batchD.sources, ...batchE.sources, ...batchF.sources, ...batchG.sources, ...batchH.sources, ...batchI.sources, ...batchJ.sources, ...batchK.sources, ...batchL.sources, ...batchM.sources];
+const allSources = [...sources, ...ginWhiskeyClassicsCatalogue.sources, ...ibaPopularClassicsCatalogue.sources, ...ibaAngelFaceToMimosaCatalogue.sources, ...ibaMissionarysDownfallToZombieCatalogue.sources, ...ginVodkaAperitifsCatalogue.sources, ...whiskeyBrandyTikiCatalogue.sources, ...historicalClassicsCatalogue.sources, ...japaneseSignaturesCatalogue.sources, ...modernClassicVariationsCatalogue.sources, ...bacardiLegacyCatalogue.sources, ...barSignaturesCatalogue.sources, ...patronPerfectionistsCatalogue.sources, ...mixedDrinksCatalogue.sources];
 
 export const catalogue: Catalogue = {
-  cocktails: applyCocktailNames([...cocktails, ...batchA.cocktails, ...batchB.cocktails, ...batchC.cocktails, ...batchD.cocktails, ...batchE.cocktails, ...batchF.cocktails, ...batchG.cocktails, ...batchH.cocktails, ...batchI.cocktails, ...batchJ.cocktails, ...batchK.cocktails, ...batchL.cocktails, ...batchM.cocktails]).map(cocktail=>{
-    const additions=batchK.versions.filter(version=>version.cocktailId===cocktail.id&&!cocktail.versionIds.includes(version.id));
+  cocktails: applyCocktailNames([...cocktails, ...ginWhiskeyClassicsCatalogue.cocktails, ...ibaPopularClassicsCatalogue.cocktails, ...ibaAngelFaceToMimosaCatalogue.cocktails, ...ibaMissionarysDownfallToZombieCatalogue.cocktails, ...ginVodkaAperitifsCatalogue.cocktails, ...whiskeyBrandyTikiCatalogue.cocktails, ...historicalClassicsCatalogue.cocktails, ...japaneseSignaturesCatalogue.cocktails, ...modernClassicVariationsCatalogue.cocktails, ...bacardiLegacyCatalogue.cocktails, ...barSignaturesCatalogue.cocktails, ...patronPerfectionistsCatalogue.cocktails, ...mixedDrinksCatalogue.cocktails]).map(cocktail=>{
+    const additions=barSignaturesCatalogue.versions.filter(version=>version.cocktailId===cocktail.id&&!cocktail.versionIds.includes(version.id));
     return additions.length?{...cocktail,versionIds:[...cocktail.versionIds,...additions.map(version=>version.id)]}:cocktail;
   }),
-  versions: applyRecipeOrigins(applyMixingMethods([...versions, ...batchA.versions, ...batchB.versions, ...batchC.versions, ...batchD.versions, ...batchE.versions, ...batchF.versions, ...batchG.versions, ...batchH.versions.map(version => ({...version, bar: japanVenues[version.cocktailId]})), ...batchI.versions, ...batchJ.versions, ...batchK.versions, ...batchL.versions, ...batchM.versions]), allSources),
+  versions: applyRecipeOrigins(applyMixingMethods([...versions, ...ginWhiskeyClassicsCatalogue.versions, ...ibaPopularClassicsCatalogue.versions, ...ibaAngelFaceToMimosaCatalogue.versions, ...ibaMissionarysDownfallToZombieCatalogue.versions, ...ginVodkaAperitifsCatalogue.versions, ...whiskeyBrandyTikiCatalogue.versions, ...historicalClassicsCatalogue.versions, ...japaneseSignaturesCatalogue.versions.map(version => ({...version, bar: japanVenues[version.cocktailId]})), ...modernClassicVariationsCatalogue.versions, ...bacardiLegacyCatalogue.versions, ...barSignaturesCatalogue.versions, ...patronPerfectionistsCatalogue.versions, ...mixedDrinksCatalogue.versions]), allSources),
   ingredients: mergeIngredients(withIndependentIngredients(recipeIngredients),expandedBottleIngredients,chinaMarketIngredients,addedBottleIngredients),
-  brands: mergeBrands(brands, expansionBrands, batchC.brands, batchD.brands, batchE.brands, batchF.brands, batchG.brands, batchH.brands, batchI.brands, batchJ.brands, batchK.brands, batchL.brands, bottleBrands),
+  brands: mergeBrands(brands, expansionBrands, ibaAngelFaceToMimosaCatalogue.brands, ibaMissionarysDownfallToZombieCatalogue.brands, ginVodkaAperitifsCatalogue.brands, whiskeyBrandyTikiCatalogue.brands, historicalClassicsCatalogue.brands, japaneseSignaturesCatalogue.brands, modernClassicVariationsCatalogue.brands, bacardiLegacyCatalogue.brands, barSignaturesCatalogue.brands, patronPerfectionistsCatalogue.brands, bottleBrands),
   sources: allSources,
 };
+catalogue.materialConcepts = buildMaterialConcepts(catalogue.ingredients);
+catalogue.materialRequirements = buildRecipeMaterialRequirements(catalogue.versions);

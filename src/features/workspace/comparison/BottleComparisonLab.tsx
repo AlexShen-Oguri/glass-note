@@ -3,7 +3,7 @@ import React,{useMemo,useRef,useState} from 'react';
 import {Text,View} from 'react-native';
 import {router} from 'expo-router';
 import {catalogue} from '../../../content/catalogue';
-import {GIN_COMPARISON_PILOT_VERSION_ID,ginComparisonPilotBottle} from '../../../content/gin-comparison-pilot';
+import {GIN_COMPARISON_EXAMPLE_VERSION_ID,ginComparisonExampleBottle} from '../../../content/gin-comparison-example';
 import type {Bottle} from '../../../domain/bottles/types';
 import {bottleDisplayName} from '../../../domain/bottles/format';
 import type {Locale,RecipeVersion,UnitPreference} from '../../../domain/contracts';
@@ -11,11 +11,11 @@ import {bottleComparisonProjectDraft,bottleComparisonRecipePreview,bottleSupport
 import {getRecipePreparation} from '../../../domain/preparations';
 import {formatAmount,scoreTextSearch} from '../../../domain/search';
 import {bottleComparisonText} from '../../../i18n/bottle-comparison';
-import {p02BottleText} from '../../../i18n/p02-bottles';
+import {bottleControlsText} from '../../../i18n/bottle-controls';
 import {useLab} from '../../../platform/LabProvider';
 import {Action,Field,Panel,ws} from '../ui';
 import {BottleComparisonRecipePreview} from './BottleComparisonRecipePreview';
-import {GinComparisonPilotPanel} from './GinComparisonPilotPanel';
+import {GinComparisonExamplePanel} from './GinComparisonExamplePanel';
 
 const RESULT_LIMIT=8;
 
@@ -74,10 +74,10 @@ export function BottleComparisonLab({selected,locale,unit}:{selected:Bottle[];lo
     if(!previewDraft||kind!=='recipe'||targetIndex===undefined)return undefined;
     try{return bottleComparisonRecipePreview(previewDraft,targetIndex);}catch{return undefined;}
   },[previewDraft,kind,targetIndex]);
-  const pilotEligible=selected.every(bottle=>!!ginComparisonPilotBottle(bottle.id));
-  const pilotLoaded=kind==='recipe'&&versionId===GIN_COMPARISON_PILOT_VERSION_ID;
+  const exampleEligible=selected.every(bottle=>!!ginComparisonExampleBottle(bottle.id));
+  const pilotLoaded=kind==='recipe'&&versionId===GIN_COMPARISON_EXAMPLE_VERSION_ID;
   const loadPilot=()=>{
-    setKind('recipe');setSearch('');setVersionId(GIN_COMPARISON_PILOT_VERSION_ID);
+    setKind('recipe');setSearch('');setVersionId(GIN_COMPARISON_EXAMPLE_VERSION_ID);
     setTargetIndex(undefined);setConfirmedMismatch(false);setError('');
   };
   const create=async()=>{
@@ -106,7 +106,7 @@ export function BottleComparisonLab({selected,locale,unit}:{selected:Bottle[];lo
   if(selected.length<2)return <View style={{gap:6}}><Text style={ws.muted}>{c('needSelection')}</Text>{selected.length===1&&<Text style={ws.muted}>{c('sameFamily')}</Text>}</View>;
   return <Panel title={c('createProject')}>
     <Text style={ws.body}>{c('createHint')}</Text>
-    {pilotEligible&&<GinComparisonPilotPanel selected={selected} locale={locale} loaded={pilotLoaded} disabled={!!pendingProjectId} onLoad={loadPilot}/>}
+    {exampleEligible&&<GinComparisonExamplePanel selected={selected} locale={locale} loaded={pilotLoaded} disabled={!!pendingProjectId} onLoad={loadPilot}/>}
     <View style={ws.row}>
       <Action label={c('scratch')} selected={kind==='scratch'} disabled={!!pendingProjectId} onPress={()=>{setKind('scratch');setConfirmedMismatch(false);setError('');}}/>
       <Action label={c('recipe')} selected={kind==='recipe'} disabled={!!pendingProjectId} onPress={()=>{setKind('recipe');setConfirmedMismatch(false);setError('');}}/>
@@ -137,7 +137,7 @@ export function BottleComparisonLab({selected,locale,unit}:{selected:Bottle[];lo
           ?catalogue.ingredients.find(ingredient=>ingredient.id===replacement.ingredientId)?.name[locale]??replacement.name
           :replacement?.name??'';
         const comparedName=compatible?targetName:`${targetName} → ${replacementName}`;
-        return <View key={item.bottleId} style={[ws.column,{flexBasis:220}]}><Text style={ws.label}>{displayName}</Text>{displayName!==item.name&&<Text style={ws.muted}>{p02BottleText(locale,'originalName')}: {item.name}</Text>}<Text style={ws.body}>{kind==='recipe'&&displayedTarget?`${displayedTarget.amount} ${displayedTarget.unit} · ${comparedName}`:c('scratchAmount')}</Text>{kind==='recipe'&&<Text style={ws.muted}>{c('unchangedAmount')}</Text>}</View>;
+        return <View key={item.bottleId} style={[ws.column,{flexBasis:220}]}><Text style={ws.label}>{displayName}</Text>{displayName!==item.name&&<Text style={ws.muted}>{bottleControlsText(locale,'originalName')}: {item.name}</Text>}<Text style={ws.body}>{kind==='recipe'&&displayedTarget?`${displayedTarget.amount} ${displayedTarget.unit} · ${comparedName}`:c('scratchAmount')}</Text>{kind==='recipe'&&<Text style={ws.muted}>{c('unchangedAmount')}</Text>}</View>;
       })}</View>}
       {kind==='recipe'&&!recipePreview&&<Text style={ws.muted}>{c('sourcePreserved')}</Text>}
     </View>}

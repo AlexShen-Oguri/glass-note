@@ -2,9 +2,11 @@ import type {Catalogue, Ingredient, Locale, SearchQuery} from '../contracts';
 import {matchVersion, scoreTextSearch} from '../search';
 import {emptyPantry, type IngredientEntry, type IngredientGroup, type Pantry, type PantryMatch} from './types';
 import {familyGroup, ingredientFamily} from './guide';
-import {needsPreparationReview,preparationStatus} from '../preparations';
+import {evaluateOwnedVersion} from './presence';
+import {compileMaterialResolver} from './canonical';
 export * from './types';
 export * from './guide';
+export * from './canonical';
 
 /** Editorial navigation categories, not claims about exact composition. */
 export function ingredientGroup(item: Ingredient): IngredientGroup {
@@ -30,7 +32,7 @@ export function filterIngredientEntries(entries: IngredientEntry[], catalogue: C
     const brands = catalogue.brands.filter(b => entry.brandIds.includes(b.id)).map(b => b.name);
     const aliases: Partial<Record<string,string>> = {gin:'琴酒 杜松子酒',rum:'兰姆酒 蘭姆酒',whiskey:'威士基',vodka:'伏特加',tequila:'龙舌兰酒 龍舌蘭酒',brandy:'白兰地 白蘭地'};
     const alias = aliases[entry.ingredient.base ?? ''] ?? '';
-    const fields = [...Object.values(entry.ingredient.name), entry.ingredient.id, ...brands, alias, ...(entry.ingredient.guide?.aliases ?? [])];
+    const fields = [...Object.values(entry.ingredient.name), entry.ingredient.id, ...brands, alias, ...(entry.ingredient.guide?.aliases ?? []), ...(entry.searchNames ?? [])];
     const score = scoreTextSearch(text, fields);
     scores.set(entry.ingredient.id, score);
     return text.trim().length === 0 || score > 0;
@@ -58,8 +60,7 @@ export function parsePantry(raw: string | null, catalogue: Catalogue, preserveUn
 
 export function pantryMatches(catalogue: Catalogue, pantry: Pantry, query: SearchQuery = {}): PantryMatch[] {
   if (!pantry.ingredientIds.length) return [];
-  const owned = new Set(pantry.ingredientIds);
-  const validIngredients = new Set(catalogue.ingredients.map(i => i.id));
+  const resolver = compileMaterialResolver(catalogue);
   const score = (m: PantryMatch): [number, number] => [m.missingIngredientIds.length, m.unconfirmedBrands.length + Number(m.preparationNeedsReview)];
   const matches: PantryMatch[] = [];
   for (const cocktail of catalogue.cocktails) {
@@ -67,22 +68,14 @@ export function pantryMatches(catalogue: Catalogue, pantry: Pantry, query: Searc
     for (const versionId of cocktail.versionIds) {
       const version = catalogue.versions.find(v => v.id === versionId && v.cocktailId === cocktail.id);
       if (!version || !matchVersion(catalogue, version, query)) continue;
-      if (version.ingredients.some(row => !validIngredients.has(row.ingredientId))) continue;
-      const missing = new Set<string>(), optional = new Set<string>();
-      const requiredBrands = new Map<string, {ingredientId: string; brandId: string}>();
-      for (const row of version.ingredients) {
-        if (row.optional) { if (!owned.has(row.ingredientId)) optional.add(row.ingredientId); continue; }
-        if (!owned.has(row.ingredientId)) missing.add(row.ingredientId);
-        else if (row.brandId && !pantry.brandsByIngredient[row.ingredientId]?.includes(row.brandId)) {
-          requiredBrands.set(`${row.ingredientId}:${row.brandId}`, {ingredientId: row.ingredientId, brandId: row.brandId});
-        }
-      }
-      // No hidden pantry staples or family substitutions; ice and garnish stay in method text.
-      if (missing.size > 2 || !version.ingredients.some(row => !row.optional && owned.has(row.ingredientId))) continue;
-      const unconfirmedBrands = [...requiredBrands.values()];
-      const preparationNeedsReview = needsPreparationReview(versionId);
-      candidates.push({cocktailId: cocktail.id, versionId, missingIngredientIds: [...missing], optionalMissingIngredientIds: [...optional].filter(id => !missing.has(id)), unconfirmedBrands,
-        preparationNeedsReview, preparationStatus:preparationStatus(versionId), status: missing.size ? 'missing' : preparationNeedsReview ? 'preparation-check' : unconfirmedBrands.length ? 'brand-check' : 'ready'});
+      const match = evaluateOwnedVersion(catalogue, version, pantry, resolver);
+      if (!match || match.missingIngredientIds.length > 2) continue;
+      const hasRequiredSupply = match.materialResolutions
+        ? match.materialResolutions.some(resolution => !version.ingredients[resolution.rowIndex]!.optional && resolution.match !== 'missing')
+        : version.ingredients.some(row => !row.optional && pantry.ingredientIds.includes(row.ingredientId));
+      if (!hasRequiredSupply) continue;
+      const {baseReady: _baseReady, missingBaseIngredientIds: _missingBases, ...pantryMatch} = match;
+      candidates.push(pantryMatch);
     }
     candidates.sort((a,b) => score(a)[0] - score(b)[0] || score(a)[1] - score(b)[1] || Number(b.versionId === cocktail.defaultVersionId) - Number(a.versionId === cocktail.defaultVersionId));
     if (candidates[0]) matches.push(candidates[0]);

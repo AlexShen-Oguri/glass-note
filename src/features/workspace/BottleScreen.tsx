@@ -3,7 +3,9 @@ import {Pressable,ScrollView,StyleSheet,Text,View} from 'react-native';
 import {router,useLocalSearchParams} from 'expo-router';
 import {bottles} from '../../content/bottles';
 import {catalogue} from '../../content/catalogue';
-import {ginComparisonPilot} from '../../content/gin-comparison-pilot';
+import {canonicalIngredientId} from '../../domain/ingredients/canonical';
+import {materialDisplayName} from '../ingredients/materialDisplay';
+import {ginComparisonExample} from '../../content/gin-comparison-example';
 import type {Bottle,BottleFamily} from '../../domain/bottles/types';
 import {bottleDisplayName,bottleSearchNames} from '../../domain/bottles/format';
 import {normalizeSearchText,scoreTextSearch} from '../../domain/search';
@@ -12,8 +14,8 @@ import {useApp} from '../../platform/AppProvider';
 import {useLab} from '../../platform/LabProvider';
 import {useBottles} from '../../platform/BottleProvider';
 import {labText} from '../../i18n/lab';
-import {p02BottleText} from '../../i18n/p02-bottles';
-import {round17ComparisonText} from '../../i18n/round17-comparison';
+import {bottleControlsText} from '../../i18n/bottle-controls';
+import {comparisonEvidenceText} from '../../i18n/comparison-evidence';
 import {workText,type WorkspaceKey} from '../../i18n/workspace';
 import {t} from '../../i18n/ui';
 import {bottleFamilyName as familyName,bottleProfileLabel} from '../../i18n/bottle-categories';
@@ -26,15 +28,17 @@ import {BottleComparisonTable} from './comparison/BottleComparisonTable';
 
 export default function BottleScreen() {
   const {locale,unit}=useApp();const w=(key:WorkspaceKey)=>workText(locale,key);const lab=useLab();const owned=useBottles();
-  const params=useLocalSearchParams<{ingredient?:string}>();
-  const p=(key:Parameters<typeof p02BottleText>[1],values?:Record<string,string|number>)=>p02BottleText(locale,key,values);
+  const params=useLocalSearchParams<{ingredient?:string;concept?:string;brand?:string}>();
+  const p=(key:Parameters<typeof bottleControlsText>[1],values?:Record<string,string|number>)=>bottleControlsText(locale,key,values);
   const [search,setSearch]=useState('');const [family,setFamily]=useState<BottleFamily|'all'>('all');const [mine,setMine]=useState(false);const [limit,setLimit]=useState(24);const [compare,setCompare]=useState<string[]>([]);const [view,setView]=useState<'browse'|'select'|'compare'>('browse');const [openBottle,setOpenBottle]=useState('');const [error,setError]=useState('');
   const ingredient=catalogue.ingredients.find(i=>i.id===params.ingredient);
+  const conceptId=params.concept&&catalogue.ingredients.some(i=>i.id===params.concept)?canonicalIngredientId(catalogue,params.concept):undefined;
+  const brand=catalogue.brands.find(item=>item.id===params.brand);
   const families=[...new Set(bottles.map(b=>b.family))];
   const tokens=normalizeSearchText(search).split(' ').filter(Boolean);
-  const visible=useMemo(()=>bottles.filter(b=>(!ingredient||b.ingredientIds.includes(ingredient.id))&&(family==='all'||b.family===family)&&(!mine||owned.ids.includes(b.id)))
+  const visible=useMemo(()=>bottles.filter(b=>(!ingredient||b.ingredientIds.includes(ingredient.id))&&(!conceptId||b.ingredientIds.some(id=>canonicalIngredientId(catalogue,id)===conceptId))&&(!brand||b.brandId===brand.id)&&(family==='all'||b.family===family)&&(!mine||owned.ids.includes(b.id)))
     .map(b=>({b,score:tokens.length?Math.max(scoreTextSearch(search,bottleSearchNames(b))*2,scoreTextSearch(search,[...b.flavours,...Object.values(b.profile)])):1}))
-    .filter(r=>r.score>0).sort((a,b)=>b.score-a.score).map(r=>r.b),[search,family,mine,owned.ids,ingredient]);
+    .filter(r=>r.score>0).sort((a,b)=>b.score-a.score).map(r=>r.b),[search,family,mine,owned.ids,ingredient,conceptId,brand]);
   const selected=compare.map(id=>bottles.find(b=>b.id===id)!).filter(Boolean);
   const comparisonLocked=lab.saving||lab.error==='write';
   const toggleCompare=(id:string)=>setCompare(ids=>{
@@ -47,17 +51,17 @@ export default function BottleScreen() {
   const cancelComparison=()=>{if(comparisonLocked)return;setCompare([]);setView('browse');};
   const leaveFocusedComparison=(next:'browse'|'select')=>{if(comparisonLocked)return;setView(next);};
   const removeFromFocusedComparison=(id:string)=>{if(comparisonLocked)return;toggleCompare(id);if(selected.length<=2)setView('select');};
-  const openGinPilot=()=>{if(comparisonLocked)return;setCompare(ginComparisonPilot.bottles.map(record=>record.bottleId));setView('compare');};
+  const openGinExample=()=>{if(comparisonLocked)return;setCompare(ginComparisonExample.bottles.map(record=>record.bottleId));setView('compare');};
   const trial=(b:Bottle)=>{try{const id=lab.createProject({name:bottleDisplayName(b),goal:w('trialGoal')});const p=lab.getSnapshot().projects.find(p=>p.id===id)!;lab.updateVersion(id,p.versions[0]!.id,{ingredients:[{id:`bottle-${b.id}`,name:catalogue.ingredients.find(i=>i.id===b.ingredientIds[0])?.name[locale]??b.name,amount:'',unit:'ml',ingredientId:b.ingredientIds[0],bottleId:b.id,bottleName:bottleDisplayName(b)}],notes:''});router.push({pathname:'/lab' as never,params:{project:id}});}catch{setError(labText(locale,'failed'));}};
   return <Workspace section="bottles" showUnits={view==='compare'}>
     <View style={styles.intro}><Heading level={1} style={ws.title}>{view==='compare'?w('compare'):labText(locale,'bottles')}</Heading><Text style={ws.muted}>{catalogue.brands.length} {t(locale,'brand')} · {bottles.length} {w('products')}</Text></View>
     {view!=='compare'&&<>
     <Field label={w('search')} placeholder={p('searchPlaceholder')} value={search} onChange={value=>{setSearch(value);setLimit(24);}}/>
     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{flexGrow:0}} contentContainerStyle={{gap:8,paddingBottom:8}}><Action label={w('all')} selected={family==='all'&&!mine} onPress={()=>{setFamily('all');setMine(false);setLimit(24);}}/>{families.map(f=><Action key={f} label={familyName(f,locale)} selected={family===f} onPress={()=>{setFamily(family===f?'all':f);setLimit(24);}}/>)}</ScrollView>
-    <View style={ws.row}><Action label={w('owned')+` · ${owned.ids.length}`} selected={mine} onPress={()=>{setMine(!mine);setLimit(24);}}/>{ingredient&&<Action label={ingredient.name[locale]+' ×'} selected onPress={()=>router.replace('/bottles' as never)}/>}<Action label={w('compare')+(selected.length?` · ${selected.length}`:'')} selected={view==='select'} onPress={()=>setView('select')}/><Text style={ws.muted}>{visible.length}</Text></View>
+    <View style={ws.row}><Action label={w('owned')+` · ${owned.ids.length}`} selected={mine} onPress={()=>{setMine(!mine);setLimit(24);}}/>{ingredient&&<Action label={ingredient.name[locale]+' ×'} selected onPress={()=>router.replace('/bottles' as never)}/>}{conceptId&&<Action label={materialDisplayName(conceptId,locale)+' ×'} selected onPress={()=>router.replace('/bottles' as never)}/>} {brand&&<Action label={brand.name+' ×'} selected onPress={()=>router.replace({pathname:'/bottles' as never,params:conceptId?{concept:conceptId}:{}})}/>}<Action label={w('compare')+(selected.length?` · ${selected.length}`:'')} selected={view==='select'} onPress={()=>setView('select')}/><Text style={ws.muted}>{visible.length}</Text></View>
     {!!owned.error&&<Panel><Text accessibilityRole="alert" style={ws.error}>{labText(locale,'storageError')}</Text><Action label={labText(locale,owned.hydrated?'retrySave':'retry')} onPress={()=>void(owned.hydrated?owned.retrySave():owned.load())}/></Panel>}
     {!!error&&<Text accessibilityRole="alert" style={ws.error}>{error}</Text>}
-    {view==='select'&&<SelectionTray selected={selected} locale={locale} comparisonLocked={comparisonLocked} onClear={clearComparison} onCancel={cancelComparison} onOpen={()=>setView('compare')} onPilot={openGinPilot}/>}
+    {view==='select'&&<SelectionTray selected={selected} locale={locale} comparisonLocked={comparisonLocked} onClear={clearComparison} onCancel={cancelComparison} onOpen={()=>setView('compare')} onPilot={openGinExample}/>}
     {!visible.length&&<Text style={ws.body}>{w('empty')}</Text>}
     <View style={ws.twoCol}>{visible.slice(0,limit).map(b=><BottleCard key={b.id} bottle={b} locale={locale} compareMode={view==='select'} compared={compare.includes(b.id)} compareDisabled={comparisonLocked||!compare.includes(b.id)&&(compare.length===3||selected.length>0&&selected[0]!.family!==b.family)} detailsOpen={openBottle===b.id} owned={owned.ids.includes(b.id)} ownershipHydrated={owned.hydrated} labHydrated={lab.hydrated} onToggleDetails={()=>setOpenBottle(openBottle===b.id?'':b.id)} onToggleCompare={()=>toggleCompare(b.id)} onToggleOwned={()=>owned.toggle(b.id)} onTrial={()=>trial(b)}/>)}</View>
     {visible.length>limit&&<Action label={w('more')} onPress={()=>setLimit(limit+24)}/>}<Text style={ws.muted}>{w('local')}</Text>
@@ -69,8 +73,8 @@ export default function BottleScreen() {
 }
 
 function SelectionTray({selected,locale,comparisonLocked,onClear,onCancel,onOpen,onPilot}:{selected:Bottle[];locale:Locale;comparisonLocked:boolean;onClear:()=>void;onCancel:()=>void;onOpen:()=>void;onPilot:()=>void}){
-  const p=(key:Parameters<typeof p02BottleText>[1],values?:Record<string,string|number>)=>p02BottleText(locale,key,values);
-  const r=(key:Parameters<typeof round17ComparisonText>[1])=>round17ComparisonText(locale,key);
+  const p=(key:Parameters<typeof bottleControlsText>[1],values?:Record<string,string|number>)=>bottleControlsText(locale,key,values);
+  const r=(key:Parameters<typeof comparisonEvidenceText>[1])=>comparisonEvidenceText(locale,key);
   return <Panel title={p('selectedBottles')}><Text style={ws.body}>{selected.length?p('selectedCount',{count:selected.length}):p('compareIntro')}</Text>
     {!!selected.length&&<View style={styles.selectedNames}>{selected.map(bottle=>{
       const name=bottleDisplayName(bottle,locale),original=bottleDisplayName(bottle);
@@ -82,7 +86,7 @@ function SelectionTray({selected,locale,comparisonLocked,onClear,onCancel,onOpen
 }
 
 function FocusedComparison({selected,locale,unit,comparisonLocked,onBack,onClose,onClear,onRemove}:{selected:Bottle[];locale:Locale;unit:Parameters<typeof BottleComparisonLab>[0]['unit'];comparisonLocked:boolean;onBack:()=>void;onClose:()=>void;onClear:()=>void;onRemove:(id:string)=>void}){
-  const p=(key:Parameters<typeof p02BottleText>[1])=>p02BottleText(locale,key);
+  const p=(key:Parameters<typeof bottleControlsText>[1])=>bottleControlsText(locale,key);
   return <View style={styles.focused}><View style={ws.row}><Action label={p('backToSelection')} disabled={comparisonLocked} onPress={onBack}/><Action quiet label={p('closeComparison')} disabled={comparisonLocked} onPress={onClose}/><Action quiet label={p('clearSelection')} disabled={comparisonLocked} onPress={onClear}/></View>
     <BottleComparisonTable selected={selected} locale={locale} disabled={comparisonLocked} onRemove={onRemove}/>
     <BottleComparisonLab key={selected.map(b=>b.id).join('|')} selected={selected} locale={locale} unit={unit}/>
@@ -90,7 +94,7 @@ function FocusedComparison({selected,locale,unit,comparisonLocked,onBack,onClose
 }
 
 function BottleCard({bottle,locale,compareMode,compared,compareDisabled,detailsOpen,owned,ownershipHydrated,labHydrated,onToggleDetails,onToggleCompare,onToggleOwned,onTrial}:{bottle:Bottle;locale:Locale;compareMode:boolean;compared:boolean;compareDisabled:boolean;detailsOpen:boolean;owned:boolean;ownershipHydrated:boolean;labHydrated:boolean;onToggleDetails:()=>void;onToggleCompare:()=>void;onToggleOwned:()=>void;onTrial:()=>void}){
-  const w=(key:WorkspaceKey)=>workText(locale,key);const p=(key:Parameters<typeof p02BottleText>[1],values?:Record<string,string|number>)=>p02BottleText(locale,key,values);const name=bottleDisplayName(bottle,locale),original=bottleDisplayName(bottle);
+  const w=(key:WorkspaceKey)=>workText(locale,key);const p=(key:Parameters<typeof bottleControlsText>[1],values?:Record<string,string|number>)=>bottleControlsText(locale,key,values);const name=bottleDisplayName(bottle,locale),original=bottleDisplayName(bottle);
   const detailsLabel=p(detailsOpen?'closeDetails':'openDetails',{name});
   return <View style={ws.column}><Panel>
     <Pressable accessibilityRole="button" accessibilityLabel={detailsLabel} accessibilityState={{expanded:detailsOpen}} onPress={onToggleDetails} style={({pressed})=>[styles.cardLead,pressed&&styles.pressed]}>
@@ -118,5 +122,4 @@ const styles=StyleSheet.create({
   details:{gap:14,borderTopWidth:1,borderTopColor:colors.border,paddingTop:14},
   pressed:{opacity:0.72},
 });
-
 

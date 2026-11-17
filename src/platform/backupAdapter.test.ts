@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {fullBackupFromRaw,knownBackupReferences,rawAfterRestore} from './backupAdapter';
 import {PersonalStorage,PERSONAL_KEYS,JOURNAL_KEY,type RawPersonalData} from './personalStorage';
-import {BACKUP_LIMIT,parseFullBackup,planRestore,serializeFullBackup,type FullBackup,type RestoreChoice} from '../domain/backup';
+import {BACKUP_SECTION_LIMIT,parseFullBackup,planRestore,serializeFullBackup,type FullBackup,type RestoreChoice} from '../domain/backup';
 import {FavoritesStore,parseFavoritesState} from '../domain/favorites';
 import {createSession,parseMakingState,recipeFingerprint,recipeSnapshot} from '../domain/making';
 import {createFeedback,parseTasteState} from '../domain/taste';
@@ -129,6 +129,30 @@ const mergedCases={
   making:{populate:(backup:FullBackup,prefix:string)=>{const recipe=largeSnapshot();backup.sections.making!.sessions=bottleIds(8,prefix).map(id=>createSession(recipe,id,restoreAt));},parse:parseMakingState},
   taste:{populate:(backup:FullBackup,prefix:string)=>{const recipe=largeSnapshot();backup.sections.taste!.entries=bottleIds(8,prefix).map(id=>createFeedback(recipe,id,restoreAt,{experience:'drank',sentiment:'neutral',tooSweet:false,tooStrong:false,likedFlavours:[],notes:id}));},parse:parseTasteState},
 };
+
+test('individually valid stores above five MB combined can export and restore a full backup', async () => {
+  const original = fullBackupFromRaw(empty(), 'en', restoreAt);
+  mergedCases.privateRecipes.populate(original, 'private-');
+  mergedCases.making.populate(original, 'making-');
+  const stored = empty();
+  stored.privateRecipes = JSON.stringify(original.sections.privateRecipes);
+  stored.making = JSON.stringify(original.sections.making);
+  assert.doesNotThrow(() => parsePrivateRecipeBook(stored.privateRecipes));
+  assert.doesNotThrow(() => parseMakingState(stored.making));
+  const encoded = serializeFullBackup(fullBackupFromRaw(stored, 'en', restoreAt));
+  assert(utf8ByteLength(encoded) > 5_000_000);
+  const incoming = parseFullBackup(encoded), before = empty();
+  const choice: RestoreChoice = {mode: 'replace', sections: ['privateRecipes', 'making'], preferenceFields: []};
+  const current = fullBackupFromRaw(before, 'en', restoreAt);
+  const after = rawAfterRestore(before, planRestore(personal(current), incoming, choice, knownBackupReferences), choice);
+  const values = new Map<string, string>();
+  const storage = new PersonalStorage({getItem: async key => values.get(key) ?? null,
+    setItem: async (key, value) => { values.set(key, value); }, removeItem: async key => { values.delete(key); }});
+  await storage.initialize(); await storage.restore(before, after);
+  const roundTrip = parseFullBackup(serializeFullBackup(fullBackupFromRaw(await storage.readAll(), 'en', restoreAt)));
+  assert.deepEqual(roundTrip.sections.privateRecipes, incoming.sections.privateRecipes);
+  assert.deepEqual(roundTrip.sections.making, incoming.sections.making);
+});
 for(const section of Object.keys(mergedCases) as Array<keyof typeof mergedCases>){
   test(`${section} rejects oversized merged UTF-8 bytes but accepts a valid replacement`,()=>{
     const before=empty(),current=fullBackupFromRaw(before,'en',restoreAt),incoming=structuredClone(current),fixture=mergedCases[section];
@@ -138,8 +162,8 @@ for(const section of Object.keys(mergedCases) as Array<keyof typeof mergedCases>
     const parsed=incomingFile(incoming);
     const choice:RestoreChoice={mode:'merge',sections:[section],preferenceFields:[]};
     const plan=planRestore(personal(current),parsed,choice,knownBackupReferences),oversized=JSON.stringify(plan.next.sections[section]);
-    assert(oversized.length<BACKUP_LIMIT,'UTF-16 length alone would miss this oversized UTF-8 payload');
-    assert(utf8ByteLength(oversized)>BACKUP_LIMIT);
+    assert(oversized.length<BACKUP_SECTION_LIMIT,'UTF-16 length alone would miss this oversized UTF-8 payload');
+    assert(utf8ByteLength(oversized)>BACKUP_SECTION_LIMIT);
     assert.throws(()=>rawAfterRestore(before,plan,choice),/5000000|invalid JSON/);
     const replace={...choice,mode:'replace' as const};
     const after=rawAfterRestore(before,planRestore(personal(current),parsed,replace,knownBackupReferences),replace);
@@ -152,7 +176,7 @@ test('a merged private book at the exact UTF-8 limit keeps compact bytes without
   const before=empty(),current=fullBackupFromRaw(before,'en',restoreAt),incoming=structuredClone(current);
   const book={...current.sections.privateRecipes,recipes:bottleIds(50).map(largePrivateRecipe)};
   for(const recipe of book.recipes)recipe.revisions[0]!.content.notes='x'.repeat(99_000);
-  let remaining=BACKUP_LIMIT-utf8ByteLength(JSON.stringify(book));
+  let remaining=BACKUP_SECTION_LIMIT-utf8ByteLength(JSON.stringify(book));
   assert(remaining>0);
   for(const recipe of book.recipes){
     const content=recipe.revisions[0]!.content,extra=Math.min(remaining,100_000-content.notes.length);
@@ -166,7 +190,7 @@ test('a merged private book at the exact UTF-8 limit keeps compact bytes without
   const choice:RestoreChoice={mode:'merge',sections:['privateRecipes'],preferenceFields:[]};
   const plan=planRestore(personal(current),incomingFile(incoming),choice,knownBackupReferences);
   const after=rawAfterRestore(before,plan,choice);
-  assert.equal(utf8ByteLength(after.privateRecipes!),BACKUP_LIMIT);
+  assert.equal(utf8ByteLength(after.privateRecipes!),BACKUP_SECTION_LIMIT);
   assert.equal(after.privateRecipes,JSON.stringify(book));
   assert.deepEqual(parsePrivateRecipeBook(after.privateRecipes!),book);
 });

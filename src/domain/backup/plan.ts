@@ -4,6 +4,7 @@ import type {PrivateIngredient,PrivateRecipe,PrivateRecipeContent,PrivateRecipeO
 import {canonicalJson,semanticFingerprint} from './canonical';
 import {validateFullBackup,validatePersonalData} from './validation';
 import {mergeTaste} from './taste';
+import {shoppingCount,mergeShopping} from './shopping';
 import {makingCount,mergeMaking} from './making';
 import {favoriteSectionCount,restoreFavorites} from './favorites';
 import {
@@ -166,6 +167,7 @@ function replaceConflicts<T extends{id:string}>(section:'lab'|'privateRecipes',c
 function pantryCount(value:BackupSections['pantry']):number{return value.ingredientIds.length+Object.values(value.brandsByIngredient).reduce((sum,ids)=>sum+ids.length,0);}
 function pantryEntries(value:BackupSections['pantry']):Set<string>{const entries=new Set(value.ingredientIds.map(id=>`ingredient:${id}`));for(const [ingredientId,brands] of Object.entries(value.brandsByIngredient))for(const brand of brands)entries.add(`brand:${ingredientId}:${brand}`);return entries;}
 function sectionCount(section:BackupSection,value:BackupSections[BackupSection]):number{
+  if(section==='shopping')return shoppingCount(value as BackupSections['shopping']);
   if(section==='taste')return (value as BackupSections['taste'])?.entries.length??0;
   if(section==='making')return makingCount(value as BackupSections['making']);
   if(section==='preferences')return 3;if(section==='favorites')return favoriteSectionCount(value as BackupSections['favorites']);
@@ -182,11 +184,14 @@ export function usedReferences(sections:BackupSections,references:BackupReferenc
   }
   sections.pantry.ingredientIds.forEach(value=>add('ingredient',value));Object.values(sections.pantry.brandsByIngredient).flat().forEach(value=>add('brand',value));
   sections.bottles.ids.forEach(value=>add('bottle',value));
+  for(const target of sections.shopping?.targets??[]){add('recipeVersion',target.recipe.version.id);add('source',target.recipe.source.id);for(const row of target.recipe.version.ingredients){add('ingredient',row.ingredientId);add('brand',row.brandId);}for(const row of target.rows)for(const candidate of row.candidates){add('ingredient',candidate.ingredientId);candidate.memberIds.forEach(id=>add('ingredient',id));}}
   for(const entry of sections.taste?.entries??[]){add('recipeVersion',entry.recipe.version.id);add('source',entry.recipe.source.id);for(const row of entry.recipe.version.ingredients){add('ingredient',row.ingredientId);add('brand',row.brandId);}}
   for(const stock of sections.making?.stock??[]){add('ingredient',stock.ingredientId);add('bottle',stock.bottleId);}
   for(const review of sections.making?.reviews??[])add('recipeVersion',review.versionId);
   for(const session of sections.making?.sessions??[]){add('recipeVersion',session.recipe.version.id);add('source',session.recipe.source.id);
-    for(const row of session.recipe.version.ingredients){add('ingredient',row.ingredientId);add('brand',row.brandId);}Object.values(session.assumptions.bottleIds).forEach(id=>add('bottle',id));}
+    for(const row of session.recipe.version.ingredients){add('ingredient',row.ingredientId);add('brand',row.brandId);}Object.values(session.assumptions.bottleIds).forEach(id=>add('bottle',id));
+    for(const row of session.materialSemantics?.rows??[]){add('ingredient',row.canonicalId);row.allowedIngredientIds.forEach(id=>add('ingredient',id));}
+    for(const binding of Object.values(session.materialBindings??{})){add('ingredient',binding.ingredientId);add('bottle',binding.bottleId);}}
   const ingredient=(item:LabIngredient|PrivateIngredient)=>{add('ingredient',item.ingredientId);add('bottle',item.bottleId);if('brandId'in item)add('brand',item.brandId);};
   for(const project of sections.lab.projects){project.source?.ingredients.forEach(ingredient);if(project.source){add('recipeVersion',project.source.versionId);}
     project.versions.forEach(version=>version.ingredients.forEach(ingredient));project.batches.forEach(batch=>batch.versionSnapshot.ingredients.forEach(ingredient));}
@@ -220,6 +225,7 @@ export function planRestore(currentValue:PersonalData,incomingValue:FullBackup,c
   // Version 1 has no making data. Absence is never permission to clear current progress.
   if(!incoming.sections.making)chosen.delete('making');
   if(!incoming.sections.taste)chosen.delete('taste');
+  if(!incoming.sections.shopping)chosen.delete('shopping');
   const preferenceFields=new Set(choiceValue.preferenceFields);for(const field of preferenceFields)if(!PREFERENCE_FIELDS.includes(field))throw new TypeError(`unsupported preference field ${String(field)}`);
   const next:BackupSections={...current.sections,preferences:{schemaVersion:1,value:{...current.sections.preferences.value}}};
   const preview:BackupPreviewRow[]=[];const conflicts:BackupConflict[]=[];const stats=new Map<BackupSection,{same:number;added:number;conflicts:number;removed?:number}>();
@@ -270,6 +276,10 @@ export function planRestore(currentValue:PersonalData,incomingValue:FullBackup,c
     next.taste=result.value;conflicts.push(...result.conflicts);stats.set('taste',{same:result.same,added:result.added,removed:result.removed,conflicts:result.conflicts.length});
   }else stats.set('taste',{same:0,added:0,conflicts:0});
 
+  if(chosen.has('shopping')&&incoming.sections.shopping){const result=mergeShopping(current.sections.shopping,incoming.sections.shopping,choiceValue.mode);
+    next.shopping=result.value;conflicts.push(...result.conflicts);stats.set('shopping',{same:result.same,added:result.added,removed:result.removed,conflicts:result.conflicts.length});
+  }else stats.set('shopping',{same:0,added:0,conflicts:0});
+
   const emptyLab:BackupSections['lab']={format:'glass-notes-lab',schemaVersion:1,exportedAt:incoming.sections.lab.exportedAt,projects:[]};
   const emptyPrivate:BackupSections['privateRecipes']={format:'glass-notes-private-recipes',schemaVersion:1,recipes:[]};
   const incomingReferenceSections:BackupSections={preferences:incoming.sections.preferences,
@@ -277,6 +287,7 @@ export function planRestore(currentValue:PersonalData,incomingValue:FullBackup,c
     pantry:chosen.has('pantry')?incoming.sections.pantry:{schemaVersion:1,ingredientIds:[],brandsByIngredient:{}},
     bottles:chosen.has('bottles')?incoming.sections.bottles:{schemaVersion:1,ids:[]},lab:chosen.has('lab')?incoming.sections.lab:emptyLab,
     privateRecipes:chosen.has('privateRecipes')?incoming.sections.privateRecipes:emptyPrivate,
+    ...(chosen.has('shopping')&&incoming.sections.shopping?{shopping:incoming.sections.shopping}:{}),
     ...(chosen.has('taste')&&incoming.sections.taste?{taste:incoming.sections.taste}:{}),
     ...(chosen.has('making')&&incoming.sections.making?{making:incoming.sections.making}:{})};
   const mergedReferences=mergeReferences(current.references,incoming.references,next,incomingReferenceSections);conflicts.push(...mergedReferences.conflicts);

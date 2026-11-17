@@ -1,13 +1,13 @@
 import {useGSAP} from '@gsap/react';
 import {gsap} from 'gsap';
 import {useEffect, useState, type RefObject} from 'react';
-import type {View} from 'react-native';
+import type {Text, View} from 'react-native';
 
 gsap.registerPlugin(useGSAP);
 export {gsap, useGSAP};
 
-/** React Native Web exposes the host element through its View ref. */
-export function element(ref: RefObject<View | null>) {
+/** React Native Web exposes the host element through View and Text refs. */
+export function element(ref: RefObject<View | Text | null>) {
   return ref.current as unknown as HTMLElement | null;
 }
 

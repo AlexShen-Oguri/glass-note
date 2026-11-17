@@ -18,11 +18,19 @@ import {
   diversifyContextResults,
   normalizeContextSelection,
   rankForContext,
+  scoreContextVersions,
 } from '.';
 import type {ContextEvidence, ContextResult} from './types';
 
 const NOW = '2026-09-15T18:00:00.000Z';
 const DIGEST = 'a'.repeat(64);
+
+test('bulk planning context scores every source independently and ignores evidence from another source',()=>{
+  const data=catalogue([version('first','same','one','gin'),version('second','same','two','rum')],[cocktail('same',['first','second'])]);
+  const records=[evidence('first','one',{occasions:[{value:'aperitif',reason:'bitter-dry'}],seasons:[{value:'summer',reason:'sparkling'}]}),evidence('second','wrong-source',{occasions:[{value:'aperitif',reason:'bitter-dry'}],seasons:[]})];
+  assert.deepEqual(scoreContextVersions(data,{occasion:'aperitif',season:'summer'},records).map(v=>({id:v.versionId,score:v.score})),[{id:'first',score:2},{id:'second',score:0}]);
+  assert.deepEqual(scoreContextVersions(data,{},records).map(v=>v.score),[0,0]);
+});
 
 function localized(value: string): Localized {
   return {en: value, zh: value, fr: value, de: value, es: value, ko: value, ja: value, it: value};

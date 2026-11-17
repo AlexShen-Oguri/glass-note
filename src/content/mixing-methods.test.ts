@@ -7,7 +7,7 @@ import {applyMixingMethods, mixingMethodRecords} from './mixing-methods';
 import {MIXING_METHODS, type MixingMethodEvidence} from '../domain/contracts';
 import {searchCocktails} from '../domain/search';
 
-const review = JSON.parse(readFileSync(new URL('../../research/techniques/p02-mixing-methods-review.json', import.meta.url), 'utf8')) as {
+const review = JSON.parse(readFileSync(new URL('../../research/techniques/mixing-methods-review.json', import.meta.url), 'utf8')) as {
   summary: {classifiedVersionCount: number; unclassifiedVersionCount: number; unclassifiedVersionIds: string[]};
   reviews: Array<{versionId: string; sourceId: string; sourceURL: string; originalStepsHash: string; methodEvidence: MixingMethodEvidence[]; unknowns: string[]}>;
 };

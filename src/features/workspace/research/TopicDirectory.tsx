@@ -4,7 +4,7 @@ import {Pressable, ScrollView, StyleSheet, Text, TextInput, View} from 'react-na
 import {catalogue} from '../../../content/catalogue';
 import type {ResearchTopic} from '../../../content/topics';
 import type {Locale} from '../../../domain/contracts';
-import {buildTopicDirectory, directoryCountries, directoryPage, filterTopicDirectory, type DirectoryKind, type DirectoryKindFilter, uniqueWorkCount} from '../../../domain/research/directory';
+import {buildTopicDirectory, directoryCountries, directoryPage, filterTopicDirectory, sortTopicDirectory, topicYearLabel, type DirectoryKind, type DirectoryKindFilter, uniqueWorkCount} from '../../../domain/research/directory';
 import {topicCountryText, topicDirectoryText} from '../../../i18n/topic-directory';
 import {colors, radii} from '../../../theme/tokens';
 import {serif} from '../../discovery/components';
@@ -24,7 +24,7 @@ function entryMeta(topic: ResearchTopic): string {
   const location = cityKey && regionKey && (cityKey.includes(regionKey) || regionKey.includes(cityKey))
     ? (city.length >= region.length ? city : region)
     : [city, region].filter(Boolean).join(' · ');
-  const parts = [topic.year > 0 ? String(topic.year) : '', location].filter(Boolean);
+  const parts = [topicYearLabel(topic), location].filter(Boolean);
   return parts.join(' · ');
 }
 
@@ -48,11 +48,7 @@ export default function TopicDirectory({topics, locale, onSelect}: {topics: read
 
   const entries = useMemo(() => buildTopicDirectory(topics, catalogue, locale), [locale, topics]);
   const countries = useMemo(() => directoryCountries(entries), [entries]);
-  const filtered = useMemo(() => filterTopicDirectory(entries, {text:query, kind, country}).sort((left, right) => {
-    if (left.kind !== right.kind) return left.kind === 'competition' ? -1 : 1;
-    if (left.kind === 'competition' && left.topic.year !== right.topic.year) return right.topic.year - left.topic.year;
-    return entryTitle(left.topic).localeCompare(entryTitle(right.topic), locale);
-  }), [country, entries, kind, locale, query]);
+  const filtered = useMemo(() => sortTopicDirectory(filterTopicDirectory(entries, {text:query, kind, country}),locale), [country, entries, kind, locale, query]);
   const page = useMemo(() => directoryPage(filtered, limit), [filtered, limit]);
   const groups = (['competition','bar'] as DirectoryKind[]).map((groupKind) => {
     const all = filtered.filter((entry) => entry.kind === groupKind);
@@ -161,7 +157,7 @@ const styles = StyleSheet.create({
   choiceSelected:{borderColor:colors.accent,backgroundColor:colors.accentDark},
   choiceText:{color:colors.secondary,fontSize:13,lineHeight:19,fontWeight:'700'},
   choiceTextSelected:{color:colors.text},
-  countrySummary:{minHeight:48,flexDirection:'row',flexWrap:'wrap',alignItems:'center',justifyContent:'space-between',gap:10,paddingHorizontal:12,borderWidth:1,borderColor:colors.border,borderRadius:radii.small,backgroundColor:colors.background},
+  countrySummary:{minHeight:48,flexDirection:'row',flexWrap:'wrap',alignItems:'center',alignContent:'center',justifyContent:'space-between',gap:10,paddingHorizontal:12,borderWidth:1,borderColor:colors.border,borderRadius:radii.small,backgroundColor:colors.background},
   countryValue:{color:colors.text,fontSize:14,lineHeight:20,fontWeight:'700'},
   countryAction:{color:colors.accent,fontSize:12,lineHeight:18,fontWeight:'700'},
   countryViewport:{maxHeight:232,borderWidth:1,borderColor:colors.border,borderRadius:radii.small},

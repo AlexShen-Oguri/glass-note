@@ -50,6 +50,32 @@ export interface RecipeIngredient {
   optional?: boolean;
   brandId?: string;
 }
+export interface MaterialAlias {
+  value: string;
+  locale: Locale | 'unknown';
+  ingredientId: string;
+  sourceId?: string;
+}
+export interface MaterialConcept {
+  /** Existing ingredient ID used as the stable daily material identity. */
+  id: string;
+  name: Localized;
+  memberIds: string[];
+  kind: 'pure-spirit' | 'synonym' | 'recipe-specification' | 'unreviewed';
+  /** Human review evidence; never inferred from taxonomy ancestry. */
+  basis: string;
+  /** Language-tagged names plus unchanged flattened legacy aliases. Search evidence only. */
+  aliases?: MaterialAlias[];
+}
+export interface RecipeMaterialRequirement {
+  versionId: string;
+  rowIndex: number;
+  /** Complete immutable source row; stale display rules must not rebind. */
+  originalRow: RecipeIngredient;
+  sourceName: Localized;
+  /** Explicit reviewed OR candidates; the original row is still preserved unchanged. */
+  acceptedIngredientIds?: string[];
+}
 export interface Source {
   id: string;
   title: string;
@@ -109,6 +135,8 @@ export interface Catalogue {
   ingredients: Ingredient[];
   brands: Brand[];
   sources: Source[];
+  materialConcepts?: MaterialConcept[];
+  materialRequirements?: RecipeMaterialRequirement[];
 }
 export interface SearchQuery {
   recipeCategory?:'classic'|'competition'|'bar';

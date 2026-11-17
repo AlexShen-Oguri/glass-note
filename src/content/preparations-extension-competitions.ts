@@ -1,4 +1,4 @@
-import {L} from './expansion/localized';
+import {L} from './recipe-collections/localized';
 import type {RecipePreparation} from '../domain/preparations/types';
 
 const checkedAt = '2026-09-16';

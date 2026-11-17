@@ -1,12 +1,14 @@
 import React, {createContext, useCallback, useContext, useEffect, useState, useSyncExternalStore} from 'react';
 import {catalogue} from '../content/catalogue';
 import {ingredientEntries, PANTRY_STORAGE_KEY, parsePantry} from '../domain/ingredients';
+import {canonicalIngredientEntries,canonicalIngredientId,canonicalOwned,setCanonicalOwned} from '../domain/ingredients/canonical';
 import {createStorageSession} from './storage';
 import {useStorageParticipant} from './RecoveryProvider';
 import {PantryStore} from './pantryStore';
 
 const Context = createContext<PantryStore | null>(null);
 const entries = ingredientEntries(catalogue);
+const concepts = canonicalIngredientEntries(catalogue);
 
 export function PantryProvider({children}: {children: React.ReactNode}) {
   const [store] = useState(() => new PantryStore(createStorageSession(), PANTRY_STORAGE_KEY, raw => parsePantry(raw, catalogue, true)));
@@ -40,5 +42,9 @@ export function usePantry() {
         [ingredientId]: add ? [...new Set([...current, brandId])] : current.filter(id => id !== brandId)}};
     });
   }, [store]);
-  return {...snapshot, toggleIngredient, toggleBrand, retry: store.retry};
+  const toggleCanonicalIngredient = useCallback((id:string) => {
+    if(!concepts.some(entry=>entry.ingredient.id===canonicalIngredientId(catalogue,id)))return;
+    store.change(value=>setCanonicalOwned(catalogue,value,id,!canonicalOwned(catalogue,value,id)));
+  },[store]);
+  return {...snapshot, toggleIngredient, toggleBrand, toggleCanonicalIngredient,retry: store.retry};
 }

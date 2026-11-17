@@ -1,1 +1,1 @@
-export function RelayTrace(){return null;}
+export * from './RelayTrace.web';

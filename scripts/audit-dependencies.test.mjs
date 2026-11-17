@@ -24,11 +24,11 @@ function report(vulnerabilities = {}) {
 
 function patchedReport() {
   const vulnerabilities = Object.fromEntries(securityPatches.map(patch => [patch.name, entry(patch.name, [{name: patch.name, dependency: patch.name, url: `https://github.com/advisories/${patch.advisory}`, severity: 'high', range: `<=${patch.version}`}])]));
-  // Model npm's real Metro cycle, plus multiple paths to both backports.
+  // Model npm's Metro cycle anchored to the verified Braces backport.
   vulnerabilities.metro = entry('metro', ['metro-config', 'micromatch']);
   vulnerabilities['metro-config'] = entry('metro-config', ['metro']);
   vulnerabilities.micromatch = entry('micromatch', ['braces']);
-  vulnerabilities.expo = entry('expo', ['metro', 'node-forge']);
+  vulnerabilities.expo = entry('expo', ['metro']);
   return report(vulnerabilities);
 }
 
@@ -42,8 +42,8 @@ test('only verified direct backports and their anchored transitive cycles pass',
   const snapshot = JSON.stringify(raw);
   const result = assessDependencyAudit(raw, targets);
   assert.equal(result.passed, true);
-  assert.deepEqual(result.rawCounts, {info: 0, low: 0, moderate: 0, high: 6, critical: 0, total: 6});
-  assert.equal(result.mitigated.find(item => item.name === 'expo').advisories.length, 2);
+  assert.deepEqual(result.rawCounts, {info: 0, low: 0, moderate: 0, high: 5, critical: 0, total: 5});
+  assert.deepEqual(result.mitigated.find(item => item.name === 'expo').advisories, ['GHSA-vfj7-8cjw-p6xm']);
   assert.equal(JSON.stringify(raw), snapshot, 'raw audit findings must remain intact');
   assert.equal(assessDependencyAudit(report(), targets).passed, true);
 });

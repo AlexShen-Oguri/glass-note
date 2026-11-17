@@ -42,9 +42,15 @@ import {SelectionChip} from './components';
 import {lib} from '../../i18n/library';
 import {BrandMark} from '../brand/BrandIdentity';
 import {Heading} from '../navigation/Heading';
-import {p02DiscoveryText, p02ResultCount} from '../../i18n/p02-discovery';
+import {discoveryText, discoveryResultCount} from '../../i18n/discovery';
 import {ContextPicks} from '../context/ContextPicks';
 import {recipeCategoryText} from '../../i18n/recipe-categories';
+import {PersonalDiscovery} from './PersonalDiscovery';
+import type {DiscoveryRecommendation} from '../../domain/taste';
+import {RecommendationReason} from '../taste/RecommendationReason';
+import {recommendationText} from '../../i18n/recommendations';
+import {tm} from '../../i18n/taste';
+import {useTaste} from '../../platform/TasteProvider';
 
 let discoveryPagination: DiscoveryPaginationState | undefined;
 
@@ -61,21 +67,31 @@ function CocktailCard({
   index,
   photoHeight,
   compact,
+  recommendation,
 }: {
   cocktail: Cocktail;
-  result: SearchResult;
+  result: Pick<SearchResult,'selectedVersionId'>;
   locale: Locale;
   listId?: string;
   index: number;
   photoHeight: number;
   compact: boolean;
+  recommendation?:DiscoveryRecommendation;
 }) {
+  const taste=useTaste();
   const asset = media[cocktail.id];
   const [hovered, setHovered] = useState(false);
   const motionEnabled = useMotionEnabled();
   const origin = catalogue.versions.find(version => version.id === result.selectedVersionId)?.origin;
+  const primaryReason=recommendation?.reasons.find(reason=>reason.kind==='liked-version'||reason.kind==='disliked-version')
+    ??recommendation?.reasons.find(reason=>reason.kind==='learned-combination')
+    ??recommendation?.reasons.find(reason=>reason.kind==='liked-flavour')
+    ??recommendation?.reasons.find(reason=>reason.kind==='sweet-caution'||reason.kind==='strong-caution');
+  const reasonText=recommendation?.kind==='explore'?recommendationText(locale,'explorationReason')
+    :primaryReason?.kind==='disliked-version'?tm(locale,'dislikedVersion')
+    :recommendationText(locale,primaryReason?.kind==='liked-version'?'exactReason':primaryReason?.kind==='learned-combination'?'learnedReason':primaryReason?.kind==='liked-flavour'?'explicitFlavourReason':primaryReason?'cautiousReason':'diversityReason');
   return (
-    <View {...motionData({motionItem: cocktail.id})} style={styles.cardCellContent}>
+    <View {...(recommendation?{}:motionData({motionItem: cocktail.id}))} style={styles.cardCellContent}>
       <Link
         asChild
         href={{
@@ -90,7 +106,7 @@ function CocktailCard({
           onHoverOut={() => setHovered(false)}
           style={({pressed}) => [styles.card, hovered && styles.cardHovered, pressed && styles.pressed]}
         >
-          <View {...motionData({motionPhoto: cocktail.id})} style={styles.cardPhoto}>
+          <View {...(recommendation?{}:motionData({motionPhoto: cocktail.id}))} style={styles.cardPhoto}>
             <View {...motionData({motionPhotoHover:'owned'})} style={[styles.cardPhotoSurface, Platform.OS === 'web' && motionEnabled && styles.cardPhotoMotion, hovered && motionEnabled && styles.cardPhotoHovered]}>
               <PhotoFrame asset={asset} accent={cocktail.accent} locale={locale} height={photoHeight} borderRadius={0} />
             </View>
@@ -107,6 +123,7 @@ function CocktailCard({
         <FavoriteButton versionId={result.selectedVersionId} locale={locale} compact />
       </View>
       {asset?.origin === 'ai-generated' || asset?.origin === 'ai-styled' ? null : asset ? <Text style={styles.credit}>{asset.author}{asset.license ? ` · ${asset.license}` : ''}</Text> : null}
+      {recommendation&&recommendation.kind!=='discovery'?<RecommendationReason locale={locale} label={recommendationText(locale,recommendation.kind==='explore'?'explore':recommendation.meanUtility>0?'familiar':'memory')} text={reasonText} evidenceId={primaryReason?.feedbackIds[0]} disabled={taste.saving||Boolean(taste.error)}/>:null}
     </View>
   );
 }
@@ -205,7 +222,7 @@ export default function DiscoveryScreen() {
           <View {...motionData({motionPart: 'title'})} style={styles.collectionHeading}>
             <View {...motionData({motionPart:'kicker'})} style={styles.editionLine}><View style={styles.editionRule} /><Text style={[styles.editionText, compact && styles.editionTextCompact]}>THE COLLECTION / OPEN TO DISCOVERY</Text></View>
             {listId ? <ListBrowseSelection listId={listId} locale={locale} /> : <Heading level={1} style={[styles.pageTitle, {fontSize: titleSize, lineHeight: titleSize * (compact ? 1.22 : 1.13), letterSpacing: titleSize * -0.065}, compact && styles.pageTitleCompact]}>{locale === 'zh' ? '随便逛逛，慢慢遇见。' : t(locale, 'browseMode')}</Heading>}
-            <Text {...motionData({motionPart:'detail'})} style={[styles.collectionLead, compact && styles.collectionLeadCompact]}>{locale === 'zh' ? '酒单　·　每一杯，都有自己的故事。' : p02DiscoveryText(locale, 'collectionTitle')}</Text>
+            <Text {...motionData({motionPart:'detail'})} style={[styles.collectionLead, compact && styles.collectionLeadCompact]}>{locale === 'zh' ? '酒单　·　每一杯，都有自己的故事。' : discoveryText(locale, 'collectionTitle')}</Text>
           </View>
           <View {...motionData({motionSearch: ''})} style={styles.searchPanel}>
               <View style={[styles.searchField, searchFocused && styles.searchFieldFocused]}>
@@ -227,14 +244,14 @@ export default function DiscoveryScreen() {
                   value={query.text ?? ''}
                 />
               </View>
-              <Pressable ref={filterTriggerRef as never} aria-expanded={filterOpen} accessibilityRole="button" accessibilityState={{expanded: filterOpen}} accessibilityLabel={p02DiscoveryText(locale, 'filters')} onPress={openFilters} style={({pressed}) => [styles.filterButton, pressed && styles.pressed]}>
-                <Text numberOfLines={1} style={styles.filterButtonText}>{p02DiscoveryText(locale, 'filters')}</Text>
+              <Pressable ref={filterTriggerRef as never} aria-expanded={filterOpen} accessibilityRole="button" accessibilityState={{expanded: filterOpen}} accessibilityLabel={discoveryText(locale, 'filters')} onPress={openFilters} style={({pressed}) => [styles.filterButton, pressed && styles.pressed]}>
+                <Text numberOfLines={1} style={styles.filterButtonText}>{discoveryText(locale, 'filters')}</Text>
                 <Text aria-hidden style={styles.filterIcon}>↗</Text>
                 {preferenceCount(query) > 0 ? <View style={styles.filterCount}><Text style={styles.filterCountText}>{preferenceCount(query)}</Text></View> : null}
               </Pressable>
               <Link href="/ingredients" asChild>
                 <Pressable accessibilityRole="link" style={styles.searchLibrary}>
-                  <Text style={styles.filterButtonText}>{p02DiscoveryText(locale, 'ingredientLibrary')}</Text>
+                  <Text style={styles.filterButtonText}>{discoveryText(locale, 'ingredientLibrary')}</Text>
                 </Pressable>
               </Link>
           </View>
@@ -254,7 +271,7 @@ export default function DiscoveryScreen() {
               onPress={() => setCollectionsOpen((open) => !open)}
               style={({pressed}) => [styles.secondaryLink, pressed && styles.pressed]}
             >
-              <Text style={styles.secondaryLinkText}>{collectionsOpen ? p02DiscoveryText(locale, 'hideCollections') : p02DiscoveryText(locale, 'showCollections')}</Text>
+              <Text style={styles.secondaryLinkText}>{collectionsOpen ? discoveryText(locale, 'hideCollections') : discoveryText(locale, 'showCollections')}</Text>
               {collectionCount ? <Text style={styles.secondaryCount}>{collectionCount}</Text> : null}
             </Pressable>
           </View>
@@ -266,10 +283,15 @@ export default function DiscoveryScreen() {
             </View>
           ) : null}
           {!filtered && !listId ? <ContextPicks locale={locale} query={query} /> : null}
+          {!listId&&!query.text?.trim()?<PersonalDiscovery query={query} locale={locale} columns={columns} gap={columnGap} renderCard={(item,index)=>{
+            const cocktail=catalogue.cocktails.find(value=>value.id===item.cocktailId);if(!cocktail)return null;
+            return <CocktailCard cocktail={cocktail} result={item} recommendation={item} locale={locale} index={index} photoHeight={photoHeight} compact={compact}/>;
+          }}/>:null}
+          <View testID="discovery-catalogue">
           <View style={styles.resultsHeader}>
             <View style={styles.resultsHeadingLine}>
               <Heading level={2} style={styles.resultsEyebrow}>{filtered ? t(locale, 'topPicks') : t(locale, 'explore')}</Heading>
-              <Text style={styles.resultsTitle}>{p02ResultCount(locale, visibleResults.length, results.length)}</Text>
+              <Text style={styles.resultsTitle}>{discoveryResultCount(locale, visibleResults.length, results.length)}</Text>
             </View>
             {filtered ? (
               <Pressable accessibilityRole="button" onPress={clearFilters} style={styles.clearButton}>
@@ -316,9 +338,10 @@ export default function DiscoveryScreen() {
           </MotionTransition>
           {visibleResults.length < results.length ? (
             <Pressable accessibilityRole="button" onPress={loadMore} style={({pressed}) => [styles.loadMoreButton, pressed && styles.pressed]}>
-              <Text style={styles.loadMoreText}>{p02DiscoveryText(locale, 'loadMore')}</Text>
+              <Text style={styles.loadMoreText}>{discoveryText(locale, 'loadMore')}</Text>
             </Pressable>
           ) : null}
+          </View>
           <View style={styles.endMark}><View style={styles.endRule} /><View style={styles.endLogo}><BrandMark size={20} decorative /></View><View style={styles.endRule} /></View>
           <Fold title={t(locale,'credits')}><Pressable accessibilityRole="link" onPress={()=>void Linking.openURL(ingredientTaxonomy.url)} style={styles.secondaryLink}><Text style={styles.secondaryLinkText}>{ingredientTaxonomy.title} ↗</Text></Pressable><Pressable accessibilityRole="link" onPress={()=>void Linking.openURL(ingredientTaxonomy.licenseUrl)} style={styles.secondaryLink}><Text style={styles.secondaryLinkText}>{ingredientTaxonomy.license} ↗</Text></Pressable></Fold>
           </View>

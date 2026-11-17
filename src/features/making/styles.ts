@@ -37,7 +37,7 @@ export const makingStyles = StyleSheet.create({
   row: {flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 9},
   split: {flexDirection: 'row', alignItems: 'flex-start', gap: 14},
   grow: {flex: 1, minWidth: 0},
-  button: {minHeight: 44, alignSelf: 'flex-start', paddingHorizontal: 16, paddingVertical: 11, borderRadius: radii.small, borderWidth: 1, borderColor: colors.border, justifyContent: 'center', alignItems: 'center'},
+  button: {minHeight: 44, maxWidth: '100%', flexShrink: 1, alignSelf: 'flex-start', paddingHorizontal: 16, paddingVertical: 11, borderRadius: radii.small, borderWidth: 1, borderColor: colors.border, justifyContent: 'center', alignItems: 'center'},
   buttonPrimary: {backgroundColor: colors.accent, borderColor: colors.accent},
   buttonSelected: {backgroundColor: colors.accentDark, borderColor: colors.accent},
   buttonDanger: {borderColor: colors.danger},

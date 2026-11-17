@@ -4,15 +4,16 @@ import {ingredientFamily} from '../src/domain/ingredients/guide';
 import {LOCALES, type Ingredient, type IngredientFamily, type Localized} from '../src/domain/contracts';
 import type {MaterialRecord} from '../src/content/ingredients';
 
-const base='research/ingredients/round-six/';
-const product=JSON.parse(fs.readFileSync(base+'ingredients-candidates-product.json','utf8'));
-const strict=JSON.parse(fs.readFileSync(base+'ingredients-candidates-strict.json','utf8'));
-const raw=JSON.parse(fs.readFileSync(base+'taxonomy-records.json','utf8'));
-const extra=fs.readFileSync('research/ingredients/product/extra-selection.txt','utf8').split(/\r?\n/).filter(s=>s&&!s.startsWith('#'));
 type Candidate={sourceId:string;sourceLine:number;group?:string;names:Localized;aliases:Record<string,string[]>;parents:string[]};
+const base='research/ingredients/open-food-facts/';
+const source=JSON.parse(fs.readFileSync(base+'source-selection.json','utf8')) as {
+  schemaVersion:string;source:{revision:string};records:Array<{record:Candidate}>;
+};
+if(source.schemaVersion!=='ingredient-source-selection-v1')throw new Error('Unknown ingredient source-selection schema');
+// The maintained snapshot retains product selections followed by additional
+// selections, including the reviewed source merges and all original fields.
+const requested=source.records.map(selection=>selection.record);
 const normalize=(s:string)=>s.normalize('NFKD').replace(/\p{M}/gu,'').toLowerCase().replace(/[’']/g,'').replace(/[^a-z0-9]+/g,' ').trim();
-const sourceByName=new Map<string,Candidate>([...raw.records,...strict.candidates].map((r:Candidate)=>[normalize(r.names.en),r]));
-const requested=[...product.candidates,...extra.map(n=>{const r=sourceByName.get(normalize(n));if(!r)throw new Error('Missing selected source: '+n);return r;})] as Candidate[];
 
 // Explicit identity merges. Preparations with different roles remain independent.
 const equivalent:Record<string,string>={
@@ -106,8 +107,8 @@ for(const [key,record] of selected){
     names:record.names,aliases:[...new Set([...Object.values(record.names),...Object.values(record.aliases).flat()].filter(Boolean))],
     parents:record.parents,family:existing?ingredientFamily(existing):family(record)});
 }
-const technique=JSON.parse(fs.readFileSync('research/ingredients/product/bar-technique-materials.json','utf8')) as {revision:string;records:MaterialRecord[]};
-if(technique.revision!==raw.source.revision)throw new Error('Taxonomy revision mismatch');
+const technique=JSON.parse(fs.readFileSync(base+'bar-technique-materials.json','utf8')) as {revision:string;records:MaterialRecord[]};
+if(technique.revision!==source.source.revision)throw new Error('Taxonomy revision mismatch');
 for(const record of technique.records){
   if(records.some(r=>r.id===record.id))throw new Error('Duplicate technique material '+record.id);
   // Chemical source synonym lists include salts and broad legacy names. Only retain
@@ -116,12 +117,14 @@ for(const record of technique.records){
   records.push({...record,aliases:[...new Set([...Object.values(record.names).filter(Boolean),code])]});
 }
 records.sort((a,b)=>a.names.en.localeCompare(b.names.en));
-const output={revision:raw.source.revision,records};
+const output={revision:source.source.revision,records};
 fs.mkdirSync('src/content/ingredients',{recursive:true});
 fs.writeFileSync('src/content/ingredients/records.json',JSON.stringify(output)+'\n');
 const missing=records.filter(r=>!r.existingId).map(r=>({id:r.id,en:r.names.en,names:r.names,missing:LOCALES.filter(l=>!r.names[l])}));
-fs.writeFileSync('research/ingredients/product/translation-input.json',JSON.stringify(missing,null,2)+'\n');
-fs.writeFileSync('research/ingredients/product/accepted-names.txt',records.map(r=>`${r.id}\t${r.names.en}\t${r.family}\t${r.existingId??''}`).join('\n')+'\n');
+const generated='artifacts/ingredients/';
+fs.mkdirSync(generated,{recursive:true});
+fs.writeFileSync(generated+'translation-input.json',JSON.stringify(missing,null,2)+'\n');
+fs.writeFileSync(generated+'accepted-names.txt',records.map(r=>`${r.id}\t${r.names.en}\t${r.family}\t${r.existingId??''}`).join('\n')+'\n');
 const report={sourceRecords:records.length,matchedRecipeIngredients:existingIds.size,independentNew:records.filter(r=>!r.existingId).length,totalIngredients:recipeIngredients.length+records.filter(r=>!r.existingId).length,excluded:[...new Set(excluded)],missingTranslations:Object.fromEntries(LOCALES.map(l=>[l,missing.filter(r=>!r.names[l]).length]))};
-fs.writeFileSync('research/ingredients/product/merge-report.json',JSON.stringify(report,null,2)+'\n');
+fs.writeFileSync(generated+'merge-report.json',JSON.stringify(report,null,2)+'\n');
 console.log(report);

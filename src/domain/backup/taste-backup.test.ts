@@ -17,7 +17,7 @@ test('v3 requires memory; older v1 and v2 replace never clear missing memory',()
   const current=backup();current.sections.taste!.entries=[entry()];
   const broken=backup();delete broken.sections.taste;assert.throws(()=>serializeFullBackup(broken));
   for(const schemaVersion of [1,2] as const){
-    const older=backup();older.schemaVersion=schemaVersion;delete older.sections.taste;if(schemaVersion===1)delete older.sections.making;
+    const older=backup();older.schemaVersion=schemaVersion;delete older.sections.taste;delete older.sections.shopping;if(schemaVersion===1)delete older.sections.making;
     const result=planRestore(personal(current),parseFullBackup(serializeFullBackup(older)),{...choice,mode:'replace'});
     assert.deepEqual(result.next.sections.taste,current.sections.taste);assert.equal(result.preview.find(p=>p.section==='taste')!.selected,false);
     assert.equal(rawAfterRestore(raw(),result,choice).taste,undefined);

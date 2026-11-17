@@ -1,10 +1,10 @@
 import type {Cocktail, Locale, Localized} from "../../domain/contracts";
 import {editorialCocktailNames} from './cocktail-editorial';
 import {westernCocktailNames} from './cocktail-western-editorial';
-import {batchMNames} from '../expansion/batch-m';
+import {mixedDrinkNames} from '../recipe-collections/mixed-drinks';
 
 /**
- * Evidence labels used by the round-ten name audit.
+ * Evidence labels used by the cocktail-name review.
  *
  * `name-source` means that a producer, IBA, or other first-party source uses
  * the displayed form. `editorial-consistent` means that the form follows a
@@ -47,7 +47,7 @@ export const reviewedNameOverrides: Record<string, CocktailNameOverride> = {
     sourceProperName: "Americano",
     evidenceUrl: "https://www.campari.com/zh-cn/our-cocktails/other-campari-cocktails/",
     evidenceLevel: "name-source",
-    note: "Campari China uses this local name; 美式鸡尾酒 remains a valid searchable alternative. Recipe and source identities are unchanged. Reviewed 2026-09-15 in the P02 name audit.",
+    note: "Campari China uses this local name; 美式鸡尾酒 remains a valid searchable alternative. Recipe and source identities are unchanged. Reviewed 2026-09-15 in the name audit.",
     nameKind: {zh: "local-usual"},
   },
   spritz: {
@@ -420,7 +420,7 @@ const stableUnique = (values: string[]): string[] => {
 export const applyCocktailNames = (cocktails: Cocktail[]): Cocktail[] =>
   cocktails.map((cocktail) => {
     const override = reviewedNameOverrides[cocktail.id];
-    const editorial = {...westernCocktailNames[cocktail.id], ...editorialCocktailNames[cocktail.id], ...batchMNames[cocktail.id]};
+    const editorial = {...westernCocktailNames[cocktail.id], ...editorialCocktailNames[cocktail.id], ...mixedDrinkNames[cocktail.id]};
     const name = {...cocktail.name, ...override?.names};
     const snapshotName = cocktail.snapshotName ?? {...name};
     const editorialNameLocales: Locale[] = [];

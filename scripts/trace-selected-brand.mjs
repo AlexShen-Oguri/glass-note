@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import sharp from 'sharp';
 import {createHash} from 'node:crypto';
 
-const source='design/brand/selected-reference.png';
+const source='assets/brand/reference.png';
 const {data,info}=await sharp(source).ensureAlpha().raw().toBuffer({resolveWithObject:true});
 const luminance=(x,y)=>(data[(y*info.width+x)*4]+data[(y*info.width+x)*4+1])/2;
 

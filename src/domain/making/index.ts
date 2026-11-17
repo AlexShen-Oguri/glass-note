@@ -1,4 +1,5 @@
 import {semanticFingerprint,canonicalJson} from '../backup/canonical';
+import {recipeMaterialRequirement} from '../../content/ingredients/concepts';
 import type {Bottle} from '../bottles/types';
 import type {
   Approachability,
@@ -13,6 +14,8 @@ import type {
   Taste,
 } from '../contracts';
 import {LOCALES} from '../contracts';
+import {canonicalIngredientId,canonicalMemberIds,resolveRecipeMaterial} from '../ingredients/canonical';
+import type {Pantry} from '../ingredients/types';
 import {getRecipePreparation} from '../preparations';
 import type {PreparationCard,RecipePreparation} from '../preparations/types';
 import {
@@ -24,6 +27,9 @@ import {
   type MakingContext,
   type MakingRecipe,
   type MakingSession,
+  type MakingMaterialRow,
+  type MakingMaterialSemantics,
+  type MakingSupplyBinding,
   type MakingState,
   type ReadinessReview,
   type RestockSuggestion,
@@ -206,6 +212,58 @@ export function recipeSnapshot(catalogue:Catalogue,versionId:string):MakingRecip
 }
 
 export function recipeFingerprint(recipe:MakingRecipe):string{return semanticFingerprint(makingRecipeValue(recipe,'recipe'));}
+function materialSemantics(catalogue:Catalogue,recipe:MakingRecipe):MakingMaterialSemantics{
+  const rows=recipe.version.ingredients.map((row,index):MakingMaterialRow=>{
+    const indexed=recipeMaterialRequirement(catalogue,recipe.version.id,index);
+    const requirement=indexed&&canonicalJson(indexed.originalRow)===canonicalJson(row)?indexed:undefined;
+    const accepted=requirement?.acceptedIngredientIds;
+    const candidateIngredientIds=resolveRecipeMaterial(catalogue,recipe.version,index,[]).candidateIngredientIds;
+    const allowedIngredientIds=unique(candidateIngredientIds.flatMap(id=>canonicalMemberIds(catalogue,id))).sort();
+    const canonicalId=canonicalIngredientId(catalogue,candidateIngredientIds[0]!);
+    const concept=catalogue.materialConcepts?.find(value=>value.id===canonicalId&&value.memberIds.includes(row.ingredientId));
+    const brandIngredientIds=row.brandId?canonicalMemberIds(catalogue,row.ingredientId).filter(id=>allowedIngredientIds.includes(id)).sort():[];
+    return{rowId:rowId(recipe,index),ingredientId:row.ingredientId,canonicalId,candidateIngredientIds,allowedIngredientIds,brandIngredientIds,
+      known:catalogue.ingredients.some(value=>value.id===row.ingredientId)&&candidateIngredientIds.every(id=>catalogue.ingredients.some(value=>value.id===id)),match:accepted?'alternative':allowedIngredientIds.length===1?'exact':concept?.kind==='pure-spirit'?'style':'equivalent',
+      sourceName:copy(requirement?.sourceName??recipe.ingredientNames[row.ingredientId]!)};
+  });
+  return{digest:semanticFingerprint(rows),rows};
+}
+export function readinessFingerprint(recipe:MakingRecipe,catalogue:Catalogue):string{
+  return semanticFingerprint({recipe:recipeFingerprint(recipe),materials:materialSemantics(catalogue,recipe).digest});
+}
+/** Selectable actual supplies use saved rules and current ownership, even when quantity is unknown. */
+export function sessionSupplyOptions(session:MakingSession,context:MakingContext,rowIdValue:string):MakingSupplyBinding[]{
+  const material=session.materialSemantics?.rows.find(row=>row.rowId===rowIdValue);
+  const source=session.recipe.version.ingredients.find((_,index)=>rowId(session.recipe,index)===rowIdValue);
+  if(!source)throw Error('unknown session row');
+  const allowed=new Set(material?.allowedIngredientIds??[source.ingredientId]);
+  const needsBrand=(ingredientId:string)=>source.brandId!==undefined&&(material?material.brandIngredientIds.includes(ingredientId):true);
+  if(material&&!material.known)return [];
+  const owned=new Set(context.ownedBottleIds);
+  const options:MakingSupplyBinding[]=unique(context.pantry.ingredientIds).filter(id=>allowed.has(id)&&!needsBrand(id)).map(ingredientId=>({ingredientId}));
+  for(const bottle of context.bottles){
+    if(!owned.has(bottle.id))continue;
+    const ingredientId=bottle.ingredientIds.find(id=>allowed.has(id)&&(!needsBrand(id)||bottle.brandId===source.brandId));if(!ingredientId)continue;
+    const measured=context.making.stock.filter(stock=>stock.bottleId===bottle.id&&allowed.has(stock.ingredientId)&&(!needsBrand(stock.ingredientId)||bottle.brandId===source.brandId));
+    if(measured.length)options.push(...measured.map(stock=>({ingredientId:stock.ingredientId,bottleId:bottle.id})));
+    else options.push({ingredientId,bottleId:bottle.id});
+  }
+  return options;
+}
+function bindSupplies(session:MakingSession,context:MakingContext):MakingSession{
+  if(!session.materialSemantics)return session;
+  const materialBindings:Record<string,MakingSupplyBinding>={};
+  for(const row of session.materialSemantics.rows){
+    const selected=session.assumptions.bottleIds[row.rowId],existing=session.materialBindings?.[row.rowId];
+    const options=sessionSupplyOptions(session,context,row.rowId).filter(value=>!selected||value.bottleId===selected);
+    const explicit=existing&&options.find(value=>canonicalJson(value)===canonicalJson(existing));
+    const measured=options.filter(option=>context.making.stock.some(stock=>stock.ingredientId===option.ingredientId&&stock.bottleId===option.bottleId));
+    if(explicit)materialBindings[row.rowId]=explicit;
+    else if(measured.length===1)materialBindings[row.rowId]=measured[0]!;
+    else if(measured.length===0&&options.length===1)materialBindings[row.rowId]=options[0]!;
+  }
+  return{...session,materialBindings};
+}
 export function rowId(recipe:MakingRecipe,index:number):string{
   if(!Number.isInteger(index)||index<0||index>=recipe.version.ingredients.length)throw RangeError('row index is outside the recipe');
   return `${recipe.version.id}:${index}`;
@@ -225,7 +283,8 @@ export function scaleRecipe(recipe:MakingRecipe,servings:number):ScaledRow[]{
 function currentSession(context:MakingContext,recipe:MakingRecipe,servings:number,fingerprint:()=>string):MakingSession|undefined{
   const candidates=context.making.sessions.filter(session=>session.recipe.version.id===recipe.version.id&&session.servings===servings&&!session.completed);
   if(!candidates.length)return undefined;const expected=fingerprint();
-  return candidates.filter(session=>session.fingerprint===expected)
+  const digest=context.catalogue.materialConcepts?.length||context.making.schemaVersion===2?materialSemantics(context.catalogue,recipe).digest:undefined;
+  return candidates.filter(session=>session.fingerprint===expected&&(digest===undefined||session.materialSemantics?.digest===digest))
     .sort((a,b)=>Date.parse(b.updatedAt)-Date.parse(a.updatedAt))[0];
 }
 function reviewFor(making:MakingState,recipe:MakingRecipe,fingerprint:()=>string):ReadinessReview|undefined{
@@ -252,6 +311,12 @@ function demandFor(row:ScaledRow,assumptions:MakingAssumptions):{dimension:'volu
   return null;
 }
 function sortedIssues(values:Iterable<FeasibilityIssue>):FeasibilityIssue[]{const set=new Set(values);return ISSUE_ORDER.filter(issue=>set.has(issue));}
+/** Legacy alias records cannot establish multiple capacities for one bottle. */
+function ambiguousBottleStocks(stock:readonly StockEntry[]):Set<string>{
+  const counts=new Map<string,number>();
+  for(const entry of stock)if(entry.bottleId)counts.set(entry.bottleId,(counts.get(entry.bottleId)??0)+1);
+  return new Set([...counts].filter(([,count])=>count>1).map(([id])=>id));
+}
 
 export function evaluateVersion(context:MakingContext,versionId:string,servings=1):VersionAvailability{
   const version=context.catalogue.versions.find(item=>item.id===versionId);
@@ -263,59 +328,65 @@ export function evaluateVersion(context:MakingContext,versionId:string,servings=
   const bottlesById=new Map(context.bottles.map(bottle=>[bottle.id,bottle]));
   const ownedBottles=context.bottles.filter(bottle=>ownedIds.has(bottle.id));
   const ingredients=new Set(context.catalogue.ingredients.map(item=>item.id));
-  const stockByIngredient=new Map(context.making.stock.map(entry=>[entry.ingredientId,entry]));
+  const ownedIngredientIds=unique([...context.pantry.ingredientIds,...ownedBottles.flatMap(bottle=>bottle.ingredientIds)]);
   const rows:RowAvailability[]=[];
   const stockClaims=new Map<string,Array<{row:RowAvailability;demand:{dimension:'volume'|'mass'|'count';amount:number}}>>();
+  const ambiguousBottles=ambiguousBottleStocks(context.making.stock);
+  const currentMaterials=materialSemantics(context.catalogue,recipe).rows;
 
   scaled.forEach((scaledRow,index)=>{
     const sourceRow=version.ingredients[index]!,issues=new Set<FeasibilityIssue>(),id=scaledRow.rowId;
+    const material=currentMaterials[index]!;
+    const needsBrand=(ingredientId:string)=>sourceRow.brandId!==undefined&&material.brandIngredientIds.includes(ingredientId);
+    const supplyIngredientIds=resolveRecipeMaterial(context.catalogue,recipe.version,index,ownedIngredientIds).supplyIngredientIds;
+    const allowed=new Set(material.allowedIngredientIds);
+    const maps=(bottle:{ingredientIds:string[]})=>bottle.ingredientIds.some(ingredientId=>allowed.has(ingredientId));
     const selectedId=assumptions.bottleIds[id],selected=selectedId?bottlesById.get(selectedId):undefined;
-    const selectedValid=selected!==undefined&&ownedIds.has(selected.id)&&bottleMapsIngredient(selected,sourceRow.ingredientId);
+    const selectedValid=selected!==undefined&&ownedIds.has(selected.id)&&maps(selected);
     if(selectedId&&!selectedValid)issues.add('bottle-unconfirmed');
     if(!ingredients.has(sourceRow.ingredientId))issues.add('unknown-ingredient');
-    const ownedForIngredient=ownedBottles.filter(bottle=>bottleMapsIngredient(bottle,sourceRow.ingredientId));
-    const ingredientPresent=pantryIds.has(sourceRow.ingredientId)||ownedForIngredient.length>0;
-    if(!ingredientPresent&&!selectedValid)issues.add('missing');
-    const brandConfirmed=!sourceRow.brandId||
-      (selectedValid&&selected!.brandId===sourceRow.brandId)||
-      context.pantry.brandsByIngredient[sourceRow.ingredientId]?.includes(sourceRow.brandId)||
-      ownedForIngredient.some(bottle=>bottle.brandId===sourceRow.brandId);
+    const ownedForIngredient=ownedBottles.filter(maps);
+    if(!supplyIngredientIds.length)issues.add('missing');
+    const binding=session?.materialBindings?.[id];
+    const selectedSupplies=selectedValid?selected!.ingredientIds.filter(ingredientId=>allowed.has(ingredientId)):[];
+    const brandConfirmed=!sourceRow.brandId||(selectedValid?
+      selectedSupplies.some(ingredientId=>!needsBrand(ingredientId)||selected!.brandId===sourceRow.brandId):
+      binding?(!needsBrand(binding.ingredientId)||(binding.bottleId?bottlesById.get(binding.bottleId)?.brandId===sourceRow.brandId:context.pantry.brandsByIngredient[binding.ingredientId]?.includes(sourceRow.brandId))):
+      supplyIngredientIds.some(supplyId=>!needsBrand(supplyId)||context.pantry.brandsByIngredient[supplyId]?.includes(sourceRow.brandId!))||
+      ownedForIngredient.some(bottle=>bottle.ingredientIds.some(ingredientId=>allowed.has(ingredientId)&&(!needsBrand(ingredientId)||bottle.brandId===sourceRow.brandId))));
     if(!brandConfirmed)issues.add('brand-unconfirmed');
-    if(selectedValid&&sourceRow.brandId&&selected!.brandId!==sourceRow.brandId)issues.add('brand-unconfirmed');
 
     const availability:RowAvailability={rowId:id,ingredientId:sourceRow.ingredientId,optional:scaledRow.optional,required:scaledRow.amount,unit:scaledRow.unit,issues:[]};
     if(!issues.has('missing')&&!issues.has('unknown-ingredient')&&!issues.has('bottle-unconfirmed')){
       const demand=demandFor(scaledRow,assumptions);
       if(!demand)issues.add((scaledRow.amount===null||scaledRow.unit==='top'||scaledRow.unit==='part')?'amount-unknown':'unit-incompatible');
-      const stock=stockByIngredient.get(sourceRow.ingredientId);
-      let eligible=false;
-      if(stock){
-        if(stock.bottleId){
-          const bottle=bottlesById.get(stock.bottleId);
-          eligible=!!bottle&&ownedIds.has(bottle.id)&&bottleMapsIngredient(bottle,sourceRow.ingredientId)&&
-            (!selectedId||selectedId===bottle.id)&&(!sourceRow.brandId||sourceRow.brandId===bottle.brandId);
-        }else eligible=pantryIds.has(sourceRow.ingredientId)&&!selectedId&&!sourceRow.brandId;
-      }
-      if(!stock||!eligible)issues.add('quantity-unknown');
+      const candidates=context.making.stock.filter(stock=>allowed.has(stock.ingredientId)).filter(stock=>{
+        if(stock.bottleId){const bottle=bottlesById.get(stock.bottleId);
+          if(ambiguousBottles.has(stock.bottleId))return false;
+          return !!bottle&&ownedIds.has(bottle.id)&&maps(bottle)&&(!selectedId||selectedId===bottle.id)&&(!needsBrand(stock.ingredientId)||sourceRow.brandId===bottle.brandId);}
+        return pantryIds.has(stock.ingredientId)&&!selectedId&&!needsBrand(stock.ingredientId);
+      });
+      const explicit=binding&&candidates.find(stock=>stock.ingredientId===binding.ingredientId&&stock.bottleId===binding.bottleId);
+      const stock=explicit??(candidates.length===1?candidates[0]:undefined);
+      if(!stock)issues.add('quantity-unknown');
       else if(demand){
         const available=canonicalStockAmount(stock);
         if(available.dimension!==demand.dimension)issues.add('unit-incompatible');
-        else if(scaledRow.optional){if(demand.amount>available.amount+1e-9)issues.add('insufficient');}
-        else{const claims=stockClaims.get(sourceRow.ingredientId)??[];claims.push({row:availability,demand});stockClaims.set(sourceRow.ingredientId,claims);}
+        else if(scaledRow.optional&&!session?.checkedRows.includes(id)){if(demand.amount>available.amount+1e-9)issues.add('insufficient');}
+        else{const claims=stockClaims.get(stock.ingredientId)??[];claims.push({row:availability,demand});stockClaims.set(stock.ingredientId,claims);}
       }
     }
     availability.issues=sortedIssues(issues);rows.push(availability);
   });
 
   for(const [ingredientId,claims] of stockClaims){
-    const stock=stockByIngredient.get(ingredientId)!;
+    const stock=context.making.stock.find(entry=>entry.ingredientId===ingredientId)!;
     const available=canonicalStockAmount(stock);
-    if(claims.some(claim=>claim.demand.dimension!==available.dimension))continue;
     const required=claims.reduce((sum,claim)=>sum+claim.demand.amount,0);
     if(required>available.amount+1e-9)for(const claim of claims)claim.row.issues=sortedIssues([...claim.row.issues,'insufficient']);
   }
   const requiredRows=rows.filter(row=>!row.optional),issues=new Set<FeasibilityIssue>(requiredRows.flatMap(row=>row.issues));
-  const review=reviewFor(context.making,recipe,fingerprint);
+  const review=reviewFor(context.making,recipe,()=>context.catalogue.materialConcepts?.length||context.making.schemaVersion===2?readinessFingerprint(recipe,context.catalogue):fingerprint());
   if(!review?.toolsConfirmed)issues.add('tools-unconfirmed');
   if(recipe.preparation){
     if(recipe.preparation.status!=='disclosed'||recipe.preparation.gaps.length||recipe.preparation.cards.some(card=>card.status!=='disclosed'||card.gaps.length))issues.add('preparation-gap');
@@ -323,7 +394,7 @@ export function evaluateVersion(context:MakingContext,versionId:string,servings=
   }
   const allIssues=sortedIssues(issues),hard=new Set<FeasibilityIssue>(['missing','insufficient','unknown-ingredient']);
   return{cocktailId:version.cocktailId,versionId,status:allIssues.some(issue=>hard.has(issue))?'missing':allIssues.length?'check':'ready',rows,issues:allIssues,
-    missingIngredientIds:unique(requiredRows.filter(row=>row.issues.includes('missing')).map(row=>row.ingredientId))};
+    missingIngredientIds:unique(requiredRows.filter(row=>row.issues.includes('missing')).map(row=>currentMaterials.find(material=>material.rowId===row.rowId)!.canonicalId))};
 }
 
 function availabilityScore(value:VersionAvailability,isDefault:boolean):readonly number[]{
@@ -347,21 +418,32 @@ export function rankSingleItemUnlocks(context:MakingContext,servings=1):RestockS
   for(const version of context.catalogue.versions){
     const availability=baseline.get(version.id)!;
     if(alreadyReady.has(availability.cocktailId))continue;
-    if(availability.missingIngredientIds.length!==1)continue;
-    const ingredientId=availability.missingIngredientIds[0]!;
-    const remainingRowIssues=availability.rows.filter(row=>!row.optional).flatMap(row=>row.issues.filter(issue=>!(row.ingredientId===ingredientId&&issue==='missing')));
-    const globalIssues=availability.issues.filter(issue=>!availability.rows.some(row=>!row.optional&&row.issues.includes(issue)));
-    const recipe=catalogueRecipe(context.catalogue,version)!;let cachedFingerprint:string|undefined;const fingerprint=()=>cachedFingerprint??=recipeFingerprint(recipe);
+    const missingRows=availability.rows.filter(row=>!row.optional&&row.issues.includes('missing'));
+    if(!missingRows.length)continue;
+    const recipe=catalogueRecipe(context.catalogue,version)!;
+    const materialByRow=new Map(materialSemantics(context.catalogue,recipe).rows.map(row=>[row.rowId,row]));
+    const candidateIds=unique(missingRows.flatMap(row=>materialByRow.get(row.rowId)!.candidateIngredientIds));
+    let cachedFingerprint:string|undefined;const fingerprint=()=>cachedFingerprint??=recipeFingerprint(recipe);
     const assumptions=currentSession(context,recipe,servings,fingerprint)?.assumptions??{volumeMl:{},abv:{},dilutionMl:null,bottleIds:{}};
-    const missingRows=scaleRecipe(recipe,servings).filter(row=>!row.optional&&row.ingredientId===ingredientId);
-    const demands=missingRows.map(row=>demandFor(row,assumptions));
-    const knownDemand=demands.every((demand):demand is NonNullable<typeof demand>=>demand!==null)&&new Set(demands.map(demand=>demand.dimension)).size===1;
-    const remaining=sortedIssues([...remainingRowIssues,...globalIssues,...(knownDemand?[]:['amount-unknown' as const])]);
-    if(remaining.some(issue=>issue==='missing'||issue==='insufficient'||issue==='unknown-ingredient'))continue;
-    const group=byIngredient.get(ingredientId)??{ready:new Map(),review:new Map()};
-    const target=remaining.length?group.review:group.ready;
-    target.set(availability.cocktailId,[...(target.get(availability.cocktailId)??[]),availability.versionId]);
-    byIngredient.set(ingredientId,group);
+    const scaledByRow=new Map(scaleRecipe(recipe,servings).map(row=>[row.rowId,row]));
+    for(const ingredientId of candidateIds){
+      const simulated=evaluateVersion({...context,pantry:{...context.pantry,ingredientIds:unique([...context.pantry.ingredientIds,ingredientId])}},version.id,servings);
+      if(simulated.missingIngredientIds.length)continue;
+      const suppliedRows=missingRows.filter(row=>materialByRow.get(row.rowId)!.allowedIngredientIds.includes(ingredientId));
+      if(!suppliedRows.length)continue;
+      const demands=suppliedRows.map(row=>demandFor(scaledByRow.get(row.rowId)!,assumptions));
+      const knownDemand=demands.every((demand):demand is NonNullable<typeof demand>=>demand!==null)&&new Set(demands.map(demand=>demand.dimension)).size===1;
+      const supplied=new Set(suppliedRows.map(row=>row.rowId));
+      // A purchase may hypothetically include the known compatible dose; it never adds a measured stock fact.
+      const remainingRowIssues=simulated.rows.filter(row=>!row.optional).flatMap(row=>row.issues.filter(issue=>!(issue==='quantity-unknown'&&supplied.has(row.rowId)&&knownDemand)));
+      const globalIssues=simulated.issues.filter(issue=>!simulated.rows.some(row=>!row.optional&&row.issues.includes(issue)));
+      const remaining=sortedIssues([...remainingRowIssues,...globalIssues,...(knownDemand?[]:['amount-unknown' as const])]);
+      if(remaining.some(issue=>issue==='missing'||issue==='insufficient'||issue==='unknown-ingredient'))continue;
+      const group=byIngredient.get(ingredientId)??{ready:new Map(),review:new Map()};
+      const target=remaining.length?group.review:group.ready;
+      target.set(availability.cocktailId,[...(target.get(availability.cocktailId)??[]),availability.versionId]);
+      byIngredient.set(ingredientId,group);
+    }
   }
   return [...byIngredient].map(([ingredientId,group])=>{
     for(const cocktailId of group.ready.keys())group.review.delete(cocktailId);
@@ -402,38 +484,71 @@ function assumptionsValue(value:unknown,path:string,rowIds?:Set<string>):MakingA
   return{volumeMl:numericRecord(item.volumeMl,`${path}.volumeMl`,0,1_000_000),abv:numericRecord(item.abv,`${path}.abv`,0,100),dilutionMl:item.dilutionMl===null?null:number(item.dilutionMl,`${path}.dilutionMl`,0,1_000_000),bottleIds};
 }
 function sessionValue(value:unknown,path:string):MakingSession{
-  const item=object(value,path);exactKeys(item,['id','consumptionId','recipe','fingerprint','servings','checkedRows','stepIndex','completed','consumptionApplied','startedAt','updatedAt','assumptions'],[],path);
+  const item=object(value,path);exactKeys(item,['id','consumptionId','recipe','fingerprint','servings','checkedRows','stepIndex','completed','consumptionApplied','startedAt','updatedAt','assumptions'],['materialSemantics','materialBindings'],path);
   const recipe=makingRecipeValue(item.recipe,`${path}.recipe`),fingerprint=text(item.fingerprint,`${path}.fingerprint`,{max:64});
   if(!/^[0-9a-f]{64}$/.test(fingerprint)||fingerprint!==recipeFingerprint(recipe))throw Error(`${path}.fingerprint: mismatch`);
   const validRows=new Set(recipe.version.ingredients.map((_,index)=>rowId(recipe,index)));
   const checkedRows=stringArray(item.checkedRows,`${path}.checkedRows`,{uniqueValues:true});if(checkedRows.some(id=>!validRows.has(id)))throw Error(`${path}.checkedRows: unknown row`);
+  const semantics=item.materialSemantics===undefined?undefined:materialSemanticsValue(item.materialSemantics,recipe,`${path}.materialSemantics`);
+  if((semantics===undefined)!==(item.materialBindings===undefined))throw Error(`${path}: material semantics and bindings must occur together`);
+  const bindings:Record<string,MakingSupplyBinding>={};
+  if(semantics){for(const [id,raw] of Object.entries(object(item.materialBindings,`${path}.materialBindings`))){
+    const row=semantics.rows.find(row=>row.rowId===id);if(!row)throw Error(`${path}.materialBindings: unknown row`);
+    const binding=object(raw,`${path}.materialBindings.${id}`);exactKeys(binding,['ingredientId'],['bottleId'],`${path}.materialBindings.${id}`);
+    const ingredientId=identifier(binding.ingredientId,`${path}.materialBindings.${id}.ingredientId`);
+    if(!row.allowedIngredientIds.includes(ingredientId)||!row.known)throw Error(`${path}.materialBindings: incompatible supply`);
+    bindings[id]={ingredientId,...(binding.bottleId===undefined?{}:{bottleId:identifier(binding.bottleId,`${path}.materialBindings.${id}.bottleId`)})};
+  }}
   const steps=Math.max(...LOCALES.map(locale=>recipe.version.steps[locale].length));
   return{id:identifier(item.id,`${path}.id`),consumptionId:identifier(item.consumptionId,`${path}.consumptionId`),recipe,fingerprint,
     servings:number(item.servings,`${path}.servings`,1,1_000,true),checkedRows,stepIndex:number(item.stepIndex,`${path}.stepIndex`,0,Math.max(0,steps-1),true),
     completed:boolean(item.completed,`${path}.completed`),consumptionApplied:boolean(item.consumptionApplied,`${path}.consumptionApplied`),startedAt:date(item.startedAt,`${path}.startedAt`),updatedAt:date(item.updatedAt,`${path}.updatedAt`),
-    assumptions:assumptionsValue(item.assumptions,`${path}.assumptions`,validRows)};
+    assumptions:assumptionsValue(item.assumptions,`${path}.assumptions`,validRows),...(semantics?{materialSemantics:semantics,materialBindings:bindings}:{})};
 }
 
-export function createSession(recipe:MakingRecipe,id:string,now:string):MakingSession{
+function materialSemanticsValue(value:unknown,recipe:MakingRecipe,path:string):MakingMaterialSemantics{
+  const item=object(value,path);exactKeys(item,['digest','rows'],[],path);
+  if(!Array.isArray(item.rows)||item.rows.length!==recipe.version.ingredients.length)throw Error(`${path}.rows: references mismatch`);
+  const rows=item.rows.map((raw,index):MakingMaterialRow=>{
+    const row=object(raw,`${path}.rows[${index}]`);exactKeys(row,['rowId','ingredientId','canonicalId','candidateIngredientIds','allowedIngredientIds','brandIngredientIds','known','match','sourceName'],[],`${path}.rows[${index}]`);
+    const ingredientId=identifier(row.ingredientId,`${path}.rows[${index}].ingredientId`),id=identifier(row.rowId,`${path}.rows[${index}].rowId`);
+    if(ingredientId!==recipe.version.ingredients[index]!.ingredientId||id!==rowId(recipe,index))throw Error(`${path}.rows: references mismatch`);
+    const allowedIngredientIds=stringArray(row.allowedIngredientIds,`${path}.rows[${index}].allowedIngredientIds`,{uniqueValues:true});
+    allowedIngredientIds.forEach(id=>identifier(id,`${path}.rows[${index}].allowedIngredientIds`));
+    const candidateIngredientIds=stringArray(row.candidateIngredientIds,`${path}.rows[${index}].candidateIngredientIds`,{uniqueValues:true});
+    candidateIngredientIds.forEach(id=>identifier(id,`${path}.rows[${index}].candidateIngredientIds`));
+    if(!candidateIngredientIds.length||candidateIngredientIds.some(id=>!allowedIngredientIds.includes(id)))throw Error(`${path}.rows: candidate ingredient missing`);
+    if(!['exact','equivalent','style','alternative'].includes(String(row.match))||row.match==='exact'&&allowedIngredientIds.length!==1||row.match!=='alternative'&&(candidateIngredientIds.length!==1||!allowedIngredientIds.includes(ingredientId)))throw Error(`${path}.rows: invalid match`);
+    const brandIngredientIds=stringArray(row.brandIngredientIds,`${path}.rows[${index}].brandIngredientIds`,{uniqueValues:true});
+    const sourceBrand=recipe.version.ingredients[index]!.brandId;
+    if(brandIngredientIds.some(id=>!allowedIngredientIds.includes(id))||!sourceBrand&&brandIngredientIds.length||sourceBrand&&row.match!=='alternative'&&canonicalJson([...brandIngredientIds].sort())!==canonicalJson([...allowedIngredientIds].sort())||sourceBrand&&allowedIngredientIds.includes(ingredientId)&&!brandIngredientIds.includes(ingredientId))throw Error(`${path}.rows: invalid brand applicability`);
+    return{rowId:id,ingredientId,canonicalId:identifier(row.canonicalId,`${path}.rows[${index}].canonicalId`),candidateIngredientIds,allowedIngredientIds,brandIngredientIds,known:boolean(row.known,`${path}.rows[${index}].known`),match:row.match as MakingMaterialRow['match'],sourceName:localized(row.sourceName,`${path}.rows[${index}].sourceName`)};
+  });
+  const digest=text(item.digest,`${path}.digest`,{max:64});if(digest!==semanticFingerprint(rows))throw Error(`${path}.digest: mismatch`);
+  return{digest,rows};
+}
+
+export function createSession(recipe:MakingRecipe,id:string,now:string,context?:MakingContext):MakingSession{
   identifier(id,'session.id');date(now,'session.startedAt');const snapshot=makingRecipeValue(recipe,'session.recipe');const fingerprint=recipeFingerprint(snapshot);
-  return sessionValue({id,consumptionId:id,recipe:snapshot,fingerprint,servings:snapshot.version.servings,checkedRows:[],stepIndex:0,completed:false,consumptionApplied:false,startedAt:now,updatedAt:now,assumptions:{volumeMl:{},abv:{},dilutionMl:null,bottleIds:{}}},'session');
+  const session=sessionValue({id,consumptionId:id,recipe:snapshot,fingerprint,servings:snapshot.version.servings,checkedRows:[],stepIndex:0,completed:false,consumptionApplied:false,startedAt:now,updatedAt:now,assumptions:{volumeMl:{},abv:{},dilutionMl:null,bottleIds:{}},...(context?{materialSemantics:materialSemantics(context.catalogue,snapshot),materialBindings:{}}:{})},'session');
+  return context?sessionValue(bindSupplies(session,context),'session'):session;
 }
 
 /** A completed batch is history, even when an older build never applied its legacy stock deduction. */
-export function findResumableSession(state:MakingState,fingerprint:string,servings:number):MakingSession|undefined{
+export function findResumableSession(state:MakingState,fingerprint:string,servings:number,versionId?:string):MakingSession|undefined{
   return state.sessions
-    .filter(item=>item.fingerprint===fingerprint&&item.servings===servings&&!item.completed)
+    .filter(item=>(versionId?item.recipe.version.id===versionId:item.fingerprint===fingerprint)&&item.servings===servings&&!item.completed)
     .sort((a,b)=>Date.parse(b.updatedAt)-Date.parse(a.updatedAt))[0];
 }
 
-export function updateSession(session:MakingSession,patch:Partial<Pick<MakingSession,'servings'|'checkedRows'|'stepIndex'|'completed'|'assumptions'>>,now:string):MakingSession{
+export function updateSession(session:MakingSession,patch:Partial<Pick<MakingSession,'servings'|'checkedRows'|'stepIndex'|'completed'|'assumptions'|'materialBindings'>>,now:string,context?:MakingContext):MakingSession{
   const current=sessionValue(session,'session');date(now,'session.updatedAt');
   if(current.completed&&Object.keys(patch).length)throw Error('session already completed');
   if(current.consumptionApplied&&Object.keys(patch).length)throw Error('consumption already applied');
-  const allowed=new Set(['servings','checkedRows','stepIndex','completed','assumptions']);for(const key of Object.keys(patch))if(!allowed.has(key))throw Error(`session patch: unsupported ${key}`);
+  const allowed=new Set(['servings','checkedRows','stepIndex','completed','assumptions','materialBindings']);for(const key of Object.keys(patch))if(!allowed.has(key))throw Error(`session patch: unsupported ${key}`);
   let next:MakingSession={...current,...copy(patch),updatedAt:now};
   if(patch.servings!==undefined&&patch.servings!==current.servings){next={...next,checkedRows:[],stepIndex:0,completed:false,assumptions:{...next.assumptions,volumeMl:{},dilutionMl:null}};}
-  return sessionValue(next,'session');
+  return sessionValue(context?bindSupplies(sessionValue(next,'session'),context):next,'session');
 }
 
 function quantityForConsumption(row:ScaledRow,session:MakingSession,stock:StockEntry):number|null{
@@ -450,7 +565,7 @@ function quantityForConsumption(row:ScaledRow,session:MakingSession,stock:StockE
   return null;
 }
 
-export function planConsumption(sessionValueInput:MakingSession,makingValue:MakingState,bottles:readonly Bottle[]=[],ownedBottleIds:readonly string[]=[]):ConsumptionPlan{
+export function planConsumption(sessionValueInput:MakingSession,makingValue:MakingState,bottles:readonly Bottle[]=[],ownedBottleIds:readonly string[]=[],pantry?:Pantry):ConsumptionPlan{
   const making=validateMakingState(makingValue),session=sessionValue(sessionValueInput,'session');
   const stored=making.sessions.find(item=>item.id===session.id);
   if(!stored||canonicalJson(stored)!==canonicalJson(session))throw Error('stale making session');
@@ -459,18 +574,25 @@ export function planConsumption(sessionValueInput:MakingSession,makingValue:Maki
   const checked=new Set(session.checkedRows),scaled=scaleRecipe(session.recipe,session.servings),stockByIngredient=new Map(making.stock.map(entry=>[entry.ingredientId,entry]));
   const bottlesById=new Map(bottles.map(bottle=>[bottle.id,bottle])),ownedIds=new Set(ownedBottleIds);
   const totals=new Map<string,{entry:StockEntry;amount:number;rowIds:string[]}>();
+  const ambiguousBottles=ambiguousBottleStocks(making.stock);
   const skipped:string[]=[];
   for(let index=0;index<scaled.length;index++){
     const row=scaled[index]!,source=session.recipe.version.ingredients[index]!;if(!checked.has(row.rowId))continue;
-    const stock=stockByIngredient.get(row.ingredientId),selected=session.assumptions.bottleIds[row.rowId];
+    const material=session.materialSemantics?.rows[index],binding=session.materialBindings?.[row.rowId];
+    if(material&&!binding){skipped.push(row.rowId);continue;}
+    const stock=stockByIngredient.get(binding?.ingredientId??row.ingredientId),selected=session.assumptions.bottleIds[row.rowId];
+    if(material&&stock?.bottleId&&ambiguousBottles.has(stock.bottleId)){skipped.push(row.rowId);continue;}
+    if(material&&(!material.known||!material.allowedIngredientIds.includes(binding!.ingredientId)||stock?.bottleId!==binding!.bottleId)){skipped.push(row.rowId);continue;}
     if(!stock||selected&&stock.bottleId!==selected){skipped.push(row.rowId);continue;}
     const effectiveBottleId=selected??stock.bottleId;
+    const needsBrand=source.brandId!==undefined&&(material?material.brandIngredientIds.includes(stock.ingredientId):true);
     if(effectiveBottleId){
       const bottle=bottlesById.get(effectiveBottleId);
-      if(stock.bottleId!==effectiveBottleId||!bottle||!ownedIds.has(bottle.id)||!bottleMapsIngredient(bottle,row.ingredientId)||(source.brandId!==undefined&&bottle.brandId!==source.brandId)){skipped.push(row.rowId);continue;}
-    }else if(source.brandId){skipped.push(row.rowId);continue;}
+      const mapped=bottle&&(material?bottle.ingredientIds.some(id=>material.allowedIngredientIds.includes(id)):bottleMapsIngredient(bottle,row.ingredientId));
+      if(stock.bottleId!==effectiveBottleId||!bottle||!ownedIds.has(bottle.id)||!mapped||(needsBrand&&bottle.brandId!==source.brandId)){skipped.push(row.rowId);continue;}
+    }else if(needsBrand||material&&!pantry?.ingredientIds.includes(stock.ingredientId)){skipped.push(row.rowId);continue;}
     const amount=quantityForConsumption(row,session,stock);if(amount===null){skipped.push(row.rowId);continue;}
-    const total=totals.get(row.ingredientId)??{entry:stock,amount:0,rowIds:[]};total.amount+=amount;total.rowIds.push(row.rowId);totals.set(row.ingredientId,total);
+    const total=totals.get(stock.ingredientId)??{entry:stock,amount:0,rowIds:[]};total.amount+=amount;total.rowIds.push(row.rowId);totals.set(stock.ingredientId,total);
   }
   const deductions:ConsumptionPlan['deductions']=[],after:StockEntry[]=[];
   for(const entry of making.stock){const total=totals.get(entry.ingredientId);if(!total){after.push({...entry});continue;}
@@ -481,12 +603,12 @@ export function planConsumption(sessionValueInput:MakingSession,makingValue:Maki
   return{sessionId:session.id,fingerprint:session.fingerprint,before:copy(making.stock),after,deductions,skippedRowIds:unique(skipped)};
 }
 
-export function applyConsumption(plan:ConsumptionPlan,makingValue:MakingState,now:string,bottles:readonly Bottle[]=[],ownedBottleIds:readonly string[]=[]):MakingState{
+export function applyConsumption(plan:ConsumptionPlan,makingValue:MakingState,now:string,bottles:readonly Bottle[]=[],ownedBottleIds:readonly string[]=[],pantry?:Pantry):MakingState{
   const making=validateMakingState(makingValue);date(now,'making.updatedAt');
   const session=making.sessions.find(item=>item.id===plan.sessionId);if(!session||session.fingerprint!==plan.fingerprint)throw Error('stale consumption plan');
   if(making.sessions.some(item=>item.consumptionId===session.consumptionId&&item.consumptionApplied))throw Error('consumption already applied');
   if(canonicalJson(making.stock)!==canonicalJson(plan.before))throw Error('stale consumption plan');
-  const expected=planConsumption(session,making,bottles,ownedBottleIds);if(canonicalJson(expected)!==canonicalJson(plan))throw Error('invalid consumption plan');
+  const expected=planConsumption(session,making,bottles,ownedBottleIds,pantry);if(canonicalJson(expected)!==canonicalJson(plan))throw Error('invalid consumption plan');
   const sessions=making.sessions.map(item=>item.consumptionId===session.consumptionId?{...item,consumptionApplied:true,updatedAt:now}:item);
   return validateMakingState({...making,stock:copy(plan.after),sessions});
 }
@@ -502,13 +624,14 @@ function reviewValue(value:unknown,path:string):ReadinessReview{
 
 export function validateMakingState(value:unknown):MakingState{
   const item=object(value,'making');exactKeys(item,['format','schemaVersion','stock','reviews','sessions'],[],'making');
-  if(item.format!=='glass-notes-making'||item.schemaVersion!==1)throw Error('making: unsupported format or version');
+  if(item.format!=='glass-notes-making'||item.schemaVersion!==1&&item.schemaVersion!==2)throw Error('making: unsupported format or version');
   if(!Array.isArray(item.stock)||item.stock.length>MAX_ROWS||!Array.isArray(item.reviews)||item.reviews.length>MAX_ROWS||!Array.isArray(item.sessions)||item.sessions.length>MAX_SESSIONS)throw Error('making: invalid collection');
   const stock=item.stock.map((entry,index)=>stockValue(entry,`making.stock[${index}]`));if(new Set(stock.map(entry=>entry.ingredientId)).size!==stock.length)throw Error('making.stock: duplicate ingredient');
   const reviews=item.reviews.map((review,index)=>reviewValue(review,`making.reviews[${index}]`));if(new Set(reviews.map(review=>`${review.versionId}\0${review.fingerprint}`)).size!==reviews.length)throw Error('making.reviews: duplicate review');
   const sessions=item.sessions.map((session,index)=>sessionValue(session,`making.sessions[${index}]`));if(new Set(sessions.map(session=>session.id)).size!==sessions.length)throw Error('making.sessions: duplicate id');
-  const consumption=new Map<string,{fingerprint:string;startedAt:string}>();for(const session of sessions){const previous=consumption.get(session.consumptionId);if(previous&&(previous.fingerprint!==session.fingerprint||previous.startedAt!==session.startedAt))throw Error('making.sessions: reused consumption id');consumption.set(session.consumptionId,{fingerprint:session.fingerprint,startedAt:session.startedAt});}
-  return{format:'glass-notes-making',schemaVersion:1,stock,reviews,sessions};
+  if(item.schemaVersion===1&&sessions.some(session=>session.materialSemantics))throw Error('making: material semantics require version 2');
+  const consumption=new Map<string,{fingerprint:string;startedAt:string}>();for(const session of sessions){const identity=semanticFingerprint({recipe:session.fingerprint,materials:session.materialSemantics?.digest??null});const previous=consumption.get(session.consumptionId);if(previous&&(previous.fingerprint!==identity||previous.startedAt!==session.startedAt))throw Error('making.sessions: reused consumption id');consumption.set(session.consumptionId,{fingerprint:identity,startedAt:session.startedAt});}
+  return{format:'glass-notes-making',schemaVersion:item.schemaVersion,stock,reviews,sessions};
 }
 
 export function parseMakingState(raw:string|null):MakingState{

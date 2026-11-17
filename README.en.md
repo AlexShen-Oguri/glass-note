@@ -10,7 +10,7 @@ Find a drink for tonight, make it with what you have, and remember what you enjo
 
 [Features](#features) · [Get started](#get-started) · [Local data](#local-data-and-backups) · [Development](#development-and-builds) · [Sources and licence](#sources-and-licence)
 
-[Open the website](https://glass-notes.pages.dev/) · [Download Windows / macOS 1.0.0](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v1.0.0)
+[Open the website](https://glass-notes.pages.dev/) · [Download Windows / macOS 1.1.0](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v1.1.0)
 
 Use it in a desktop or phone browser, or download the Windows or macOS app. No account is needed, and personal records stay on your device.
 
@@ -39,6 +39,8 @@ Search names, aliases and ingredients; filter by base spirit, included or exclud
 
 Each cocktail has one card, with its source versions available in the details. Filters find a version that matches all your choices; open the card to read that recipe.
 
+After you save explicit ratings, Discovery uses an on-device statistical model to pick up to five drinks that suit your taste and one new drink within the current filters. Expand a short reason or ask for a different exploratory drink. Text search continues to show ordinary catalogue matches.
+
 ![The current English catalogue with cocktail images, recipe links and save actions](docs/images/discover-en.png)
 
 Recipe details include ingredients, measures, steps, glassware, garnish, preparation notes and flavour guidance. Compare translated steps with the original text, or open the recipe and image sources.
@@ -49,6 +51,12 @@ Recipe details include ingredients, measures, steps, glassware, garnish, prepara
 
 Mark the ingredients and bottles you own so **Mix it myself** can suggest recipes using them.
 
+**Plan additions** compares the new drinks unlocked by one or two ingredients, including drinks that need both additions together. Rank plans by the number of new drinks or by your saved taste. Expand each plan for exact source versions, brand checks and advance-preparation notes. Check quantities and equipment before making a drink.
+
+**Shopping list** merges required missing ingredients from your chosen exact recipe versions, selecting one ingredient for each alternative. Add the current version directly from the recipe detail page, then review, change or remove purchases in the Cabinet. Confirming a purchase adds its material to your cupboard. The list saves locally and is included in full backups; an older backup without shopping preserves your current list. Purchase confirmation records ownership without prices or stock quantities.
+
+The ingredient library groups pure spirit styles into one everyday entry, while flavored, infused and prepared ingredients stay separate. Ordinary saline has one entry; each source recipe retains its concentration and original dose. Legacy names remain searchable, and saved bottles and records are preserved.
+
 Use the ingredient library to explore ingredients and related recipes. Search the bottle archive by product, brand, alias or flavour description; filter by category, inspect images and available strength information, mark ownership or select bottles for comparison.
 
 ![The current English bottle archive with category filters, product images and descriptions](docs/images/bottles-en.png)
@@ -57,7 +65,7 @@ Use the ingredient library to explore ingredients and related recipes. Search th
 
 Choose **Start making** to follow the ingredients, steps and practical tips. Progress saves automatically. When you finish, you can make another drink or return to the catalogue.
 
-Recipes estimate alcohol content from ingredient measures and bottle information, leaving it blank when there is not enough information. The range is an estimate before ice dilution. Do not use it to judge driving or drinking safety.
+Twenty reviewed IBA versions have sourced drink-strength estimates and a short or long serving classification. Expand the estimate to see ingredient and bottle assumptions, or add meltwater to compare strengths before and after dilution. The panel identifies missing information.
 
 An order card presents the drink name, ingredients and explicit requests. Use the app language or source language, show the card, copy its text or share text where the platform supports it. Your private tasting notes are not included.
 
@@ -71,7 +79,7 @@ Lists retain a snapshot of the recipe at the time it was added. Read that saved 
 
 **Record taste** opens a drink-specific flavour experience. Record whether you drank or made it, liked or disliked the version, found it too sweet or strong, and which aromas you enjoyed. A private note is optional.
 
-Your saved taste ratings can inform future recommendations. Choose whether to use taste memory each time you look for a drink.
+Explicit ratings inform Discovery and the taste-ranked cupboard plans. Guided search follows your current answers, with taste memory available as an option.
 
 ![The current English tasting form, with explicit experience, ratings and palate adjustments](docs/images/taste-en.png)
 
@@ -85,7 +93,7 @@ Choose a photo for your recipe and save it with the ingredients, steps and notes
 
 | Tool | What it supports |
 | --- | --- |
-| Research topics | Explore curated works by country, competition and bar; open exact catalogue versions where available. |
+| Research topics | Explore works by country, competition and bar. Twelve selected Patrón Perfectionists and Angostura Global Cocktail Challenge recipes include measurements, methods, preparations and organizer links. |
 | Bottle comparison | Compare product information and create a controlled comparison from scratch or from an existing recipe. |
 | Recipe versions | Create projects, edit quantities and methods, copy the next version and compare changes. |
 | Trial batches | Preserve the recipe used for a batch; record time, temperature, aroma, palate, appearance, results and next steps. |
@@ -103,7 +111,7 @@ Deep green, ivory, large display type and fine rules connect the home screen, di
 
 On phones, the coupe has its own content area and scrolls with the page. Home images, question titles and choices follow the content flow, keeping the model clear of text and controls.
 
-Pause motion at any time, or use the system's reduced-motion preference. Continuing animation stops in the background or when the model is offscreen. Motion does not delay filtering or saving. Every image in this README is a screenshot of the current app running in English.
+Pause motion at any time, or use the system's reduced-motion preference. Continuing animation stops in the background or when the model is offscreen. The screenshots show the running app; some screens have since changed.
 
 ## Local data and backups
 
@@ -121,7 +129,7 @@ When moving to another device, open **My notes → Backup & restore** to export 
 
 The website needs no installation. On Windows, download and run `windows-x64-setup.exe`. On macOS 12+, open `macos-universal.dmg` and drag Glass Notes to Applications; the same app supports Apple Silicon and Intel. Export a backup and quit the old app before upgrading.
 
-The macOS preview is ad-hoc signed and is not Apple-notarized; first launch may require **Open Anyway** in System Settings → Privacy & Security. The Windows installer is also unsigned. Verify the Release's SHA256 checksums. There is no in-app automatic updater yet; download each new installer to upgrade.
+The macOS app uses ad-hoc signing and has no Apple notarization. First launch may require **Open Anyway** in System Settings → Privacy & Security. The Windows installer is unsigned. Check the Release's SHA256 sums and download the new installer to upgrade.
 
 ### Run from source
 
@@ -145,14 +153,15 @@ Open http://127.0.0.1:4173. Rebuild after source changes. The preview server is 
 
 ## Development and builds
 
-Expo, React Native and TypeScript share interface and domain code. The Windows and macOS apps use Tauri 2 to load a static Web export. Web and desktop use a Three.js coupe with GSAP transitions; iOS retains its native presentation adapter. Fonts and catalogue content are bundled. Runtime use requires no application backend, database or model API key.
+Expo, React Native and TypeScript share interface and domain code. Phone use targets the website; the Windows and macOS apps use Tauri 2 to load a static Web export. Web and desktop use a Three.js coupe with GSAP transitions. Phones use the website; native mobile development tools and iOS export have been removed. Fonts and catalogue content are bundled. Runtime use requires no application backend, database or model API key.
 
 ```sh
+npm run browser:install
 npm run validate
 npm run brand:check
 ```
 
-Validation runs type checks, behaviour and content tests, Web export and iOS JavaScript/resource export. Native iOS builds and signing are separate steps.
+Install the locked Chromium before first validation. Validation runs type checks, behaviour and content tests, Web export and desktop/phone-width browser E2E. Phone acceptance also requires actual mobile browsers.
 
 For Windows x64:
 
@@ -172,7 +181,9 @@ npm run desktop:test
 npm run desktop:build -- --target universal-apple-darwin
 ```
 
-`.github/workflows/desktop-release.yml` builds on Windows and macOS runners when a version tag is pushed or the workflow is dispatched manually. Checks cover Windows installation and preservation of data from 0.1.11, and macOS architectures and signing. Publish the artifacts to GitHub Release after verification. Linux packaging is not configured.
+`.github/workflows/desktop-release.yml` builds on Windows and macOS runners when a version tag is pushed or the workflow is dispatched manually. Checks default to Windows installation and marker-file preservation from 1.0.0, and macOS architectures and signing. Publish the artifacts to GitHub Release after verification. Linux packaging is not configured.
+
+Use the [Windows/macOS upgrade acceptance guide (Chinese)](docs/DESKTOP-ACCEPTANCE.md) to verify replacement installs and valid personal-record preservation. It distinguishes the existing CI marker-file/bundle checks from business-data acceptance.
 
 For an independently hosted website:
 
@@ -190,12 +201,15 @@ This produces a static archive, file hashes and a Caddy configuration example un
 | `src/platform` | Storage, file selection, recovery and platform adapters |
 | `src-tauri` | Windows/macOS host and bounded file bridge |
 | `scripts`, `deploy` | Tests, builds, packaging and self-hosting examples |
+| `research` | Content maintenance and regression evidence; [index](research/README.md), never loaded at runtime |
+
+Brand sources live in `assets/brand`; Web/desktop entry points generate their icons. Previews and generated reports stay out of Git. Files are named by content; historical saved-data IDs remain stable.
 
 See [architecture](docs/ARCHITECTURE.md), [hosting](docs/HOSTING.md) and [contributing](CONTRIBUTING.md).
 
 ## Releases and feedback
 
-The current desktop version is 1.0.0, the first non-prerelease version. See the [release notes and checksums](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v1.0.0) for version details, tested scope and download verification.
+See the [1.1.0 release notes and checksums](https://github.com/AlexShen-Oguri/glass-note/releases/tag/v1.1.0) for changes, tested scope and download verification.
 
 For ordinary bug reports, include reproduction steps, platform and version. Do not attach personal backups, credentials or private information.
 

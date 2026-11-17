@@ -19,3 +19,4 @@ export interface DesktopRuntime {
 }
 
 export const DESKTOP_FILE_LIMIT = 5_000_000;
+export const DESKTOP_BACKUP_LIMIT = 50_000_000;

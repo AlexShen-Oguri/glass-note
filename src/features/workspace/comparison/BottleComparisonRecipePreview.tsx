@@ -6,8 +6,8 @@ import type {Locale,MeasureUnit,UnitPreference} from '../../../domain/contracts'
 import type {BottleComparisonRecipePreview as RecipePreview} from '../../../domain/lab/bottleComparison';
 import type {LabIngredient} from '../../../domain/lab/types';
 import {formatAmount} from '../../../domain/search';
-import {p02BottleText} from '../../../i18n/p02-bottles';
-import {round17ComparisonText} from '../../../i18n/round17-comparison';
+import {bottleControlsText} from '../../../i18n/bottle-controls';
+import {comparisonEvidenceText} from '../../../i18n/comparison-evidence';
 import {colors,radii} from '../../../theme/tokens';
 import {ws} from '../ui';
 
@@ -26,14 +26,14 @@ export function BottleComparisonRecipePreview({preview,selected,locale,unit}:{
   locale:Locale;
   unit:UnitPreference;
 }){
-  const p=(key:Parameters<typeof round17ComparisonText>[1])=>round17ComparisonText(locale,key);
+  const p=(key:Parameters<typeof comparisonEvidenceText>[1])=>comparisonEvidenceText(locale,key);
   const {width}=useWindowDimensions();
   const columnWidth=width>=700?220:148;
   const columns=[
     {key:'source',title:p('sourceColumn'),subtitle:'',ingredients:preview.source.ingredients,source:true},
     ...preview.versions.map(version=>{
       const bottle=selected.find(item=>item.id===version.bottleId);
-      return {key:version.bottleId,title:bottle?bottleDisplayName(bottle,locale):version.name,subtitle:bottle&&bottleDisplayName(bottle,locale)!==version.name?`${p02BottleText(locale,'originalName')}: ${version.name}`:'',ingredients:version.ingredients,source:false};
+      return {key:version.bottleId,title:bottle?bottleDisplayName(bottle,locale):version.name,subtitle:bottle&&bottleDisplayName(bottle,locale)!==version.name?`${bottleControlsText(locale,'originalName')}: ${version.name}`:'',ingredients:version.ingredients,source:false};
     }),
   ];
   return <View style={styles.wrap}>

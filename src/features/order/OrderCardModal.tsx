@@ -3,7 +3,7 @@ import React from 'react';
 import {Pressable,ScrollView,StyleSheet,Text,View} from 'react-native';
 import type {OrderCard,OrderSimpleFormatCopy} from '../../domain/order';
 import type {Locale} from '../../domain/contracts';
-import {orderCopy} from '../../i18n/round17-5-order';
+import {orderCopy} from '../../i18n/order';
 import {tm,type TasteKey} from '../../i18n/taste';
 import {useViewport} from '../discovery/components';
 import {OrderCardVisual} from './OrderCardVisual';

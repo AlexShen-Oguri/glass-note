@@ -19,7 +19,7 @@ const nested = (n, left = '{', right = '}') => left.repeat(n) + 'a,b' + right.re
 test('every installed backport is intact, idempotent and rejects changed source or versions', async () => {
   const targets = await verifySecurityPatches(root);
   assert(targets.some(target => target.name === 'braces'));
-  assert(targets.some(target => target.name === 'node-forge'));
+  assert.equal(require('node-forge/package.json').version, '1.4.3');
   for (const target of targets) {
     const patch = securityPatches.find(patch => patch.name === target.name);
     for (const file of patch.files) {
@@ -45,7 +45,7 @@ test('nested dependency copies are checked and a modified copy cannot pass insta
       }
     }
     await writeFile(path.join(fixture, 'package-lock.json'), JSON.stringify({packages}));
-    assert.equal((await verifySecurityPatches(fixture)).length, 4);
+    assert.equal((await verifySecurityPatches(fixture)).length, 2);
     await installSecurityPatches(fixture);
     const target = path.join(fixture, 'node_modules/fixture/node_modules/braces/lib/compile.js');
     await writeFile(target, (await readFile(target, 'utf8')) + '\n// modified');
@@ -159,14 +159,14 @@ test('RSA rejects extra AlgorithmIdentifier children and every malformed paramet
   }
 });
 
-test('RSA preserves absent or empty SHA parameters, legacy BER and wrong-digest behavior', () => {
+test('RSA rejects noncanonical BER and preserves absent or empty SHA parameters and wrong-digest behavior', () => {
   for (const children of [[], [node(asn1.Type.NULL, '')]]) {
     const valid = signature(children);
     assert.equal(keys.publicKey.verify(digest, valid), true);
     assert.equal(keys.publicKey.verify('\0'.repeat(32), valid), false);
   }
   const ber = signature(undefined, encoded => '\x30\x80' + encoded.slice(2) + '\0\0');
-  assert.equal(keys.publicKey.verify(digest, ber), true);
+  assert.throws(() => keys.publicKey.verify(digest, ber), /DigestInfo/);
   const md5 = forge.md.md5.create().update(message).digest().getBytes();
   assert.equal(keys.publicKey.verify(md5, signature(undefined, undefined, 'md5', md5)), true);
   assert.throws(() => keys.publicKey.verify(md5, signature([], undefined, 'md5', md5)), /Missing algorithm identifier NULL/);
@@ -186,7 +186,7 @@ test('PSS and explicit raw-signature schemes preserve their existing behavior', 
   }
 });
 
-test('Expo certificate validation, CSR verification and signing still use the patched verifier', () => {
+test('Expo certificate validation, CSR verification and signing work with the upstream verifier', () => {
   const expo = require('@expo/code-signing-certificates');
   const now = Date.now();
   const certificate = expo.generateSelfSignedCodeSigningCertificate({keyPair: keys, validityNotBefore: new Date(now - 60000), validityNotAfter: new Date(now + 3600000), commonName: 'Glass Notes ephemeral test'});

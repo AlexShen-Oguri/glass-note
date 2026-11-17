@@ -6,6 +6,7 @@ export const PERSONAL_KEYS = {
   references:'glass-notes.backup-references.v1',
   making:'glass-notes.making.v1',
   taste:'glass-notes.taste.v1',
+  shopping:'glass-notes.shopping.v1',
 } as const;
 export type PersonalKey = keyof typeof PERSONAL_KEYS;
 export type RawPersonalData = Record<PersonalKey,string|null>;
@@ -13,10 +14,11 @@ export const GENERATION_KEY='glass-notes.storage-generation.v1';
 export const JOURNAL_KEY='glass-notes.recovery.v1';
 const targets=[...Object.values(PERSONAL_KEYS),GENERATION_KEY];
 const slot=(index:number)=>`glass-notes.recovery.before.${index}`;
-interface Journal {version:1; phase:'prepared'|'committed'; entries:{key:string; slot:number; wasNull:boolean; checksum:string}[]}
-export type RecoveryNotice='restored'|'rolled-back'|'stale'|'external-change';
+interface Journal {version:1; notice?:'purchased'|'purchase-failed'; phase:'prepared'|'committed'; entries:{key:string; slot:number; wasNull:boolean; checksum:string}[]}
+export type RecoveryNotice='restored'|'rolled-back'|'stale'|'external-change'|'purchased'|'purchase-failed';
 export interface RecoveryState {phase:'loading'|'ready'|'restoring'|'blocked'; epoch:number; notice?:RecoveryNotice; error?:string}
 type Lock=<T>(task:()=>Promise<T>)=>Promise<T>;
+const newGeneration=()=>JSON.stringify(globalThis.crypto?.randomUUID?.()??`${Date.now()}-${Math.random().toString(36).slice(2)}`);
 
 // Corruption detection for saved before-images; this is not a security signature.
 function checksum(value:string|null):string {
@@ -26,7 +28,7 @@ function checksum(value:string|null):string {
 }
 function parseJournal(raw:string):Journal {
   const value=JSON.parse(raw) as Journal;
-  if(!value||Object.keys(value).some(k=>!['version','phase','entries'].includes(k))||value.version!==1||!['prepared','committed'].includes(value.phase)||!Array.isArray(value.entries)||!value.entries.length||value.entries.length>targets.length)throw Error('invalid-recovery-record');
+  if(!value||Object.keys(value).some(k=>!['version','phase','entries','notice'].includes(k))||value.version!==1||(value.notice!==undefined&&value.notice!=='purchased'&&value.notice!=='purchase-failed')||!['prepared','committed'].includes(value.phase)||!Array.isArray(value.entries)||!value.entries.length||value.entries.length>targets.length)throw Error('invalid-recovery-record');
   const seen=new Set<string>(),slots=new Set<number>();
   for(const e of value.entries){if(!e||Object.keys(e).some(k=>!['key','slot','wasNull','checksum'].includes(k))||!targets.includes(e.key)||seen.has(e.key)||!Number.isInteger(e.slot)||e.slot<0||e.slot>=targets.length||slots.has(e.slot)||typeof e.wasNull!=='boolean'||typeof e.checksum!=='string'||e.checksum.length>90)throw Error('invalid-recovery-record');seen.add(e.key);slots.add(e.slot);}
   return value;
@@ -51,14 +53,14 @@ export class PersonalStorage {
     const values=await Promise.all(journal.entries.map(async e=>{const raw=await this.raw.getItem(slot(e.slot));const before=e.wasNull?null:raw;if((!e.wasNull&&raw===null)||checksum(before)!==e.checksum)throw Error('recovery-image-unavailable');return {e,before};}));
     for(const {e,before} of values.reverse())await this.put(e.key,before);
     // Mark rollback complete before cleanup so interrupted cleanup never needs missing slots.
-    const committed:Journal={...journal,phase:'committed'};await this.put(JOURNAL_KEY,JSON.stringify(committed));await this.cleanup(committed);
+    const committed:Journal={...journal,...(journal.notice==='purchased'?{notice:'purchase-failed' as const}:{}),phase:'committed'};await this.put(JOURNAL_KEY,JSON.stringify(committed));await this.cleanup(committed);
   }
   initialize=():Promise<void>=>{
     if(this.initializing)return this.initializing;
     this.update({...this.state,phase:'loading',epoch:this.state.epoch+1,error:undefined});
     this.initializing=this.enqueue(async()=>{
       const raw=await this.raw.getItem(JOURNAL_KEY);let notice:RecoveryNotice|undefined;
-      if(raw!==null){if(!this.canRestore())throw Error('exclusive-storage-unavailable');const journal=parseJournal(raw);if(journal.phase==='prepared'){await this.rollback(journal);notice='rolled-back';}else await this.cleanup(journal);}
+      if(raw!==null){if(!this.canRestore())throw Error('exclusive-storage-unavailable');const journal=parseJournal(raw);if(journal.phase==='prepared'){await this.rollback(journal);notice=journal.notice==='purchased'?'purchase-failed':'rolled-back';}else {await this.cleanup(journal);notice=journal.notice;}}
       this.generation=await this.raw.getItem(GENERATION_KEY);
       this.update({phase:'ready',epoch:this.state.epoch,notice:notice??this.state.notice});
     }).catch(error=>{this.update({...this.state,phase:'blocked',error:error instanceof Error?error.message:'storage-unavailable'});}).finally(()=>{this.initializing=undefined;});
@@ -66,18 +68,31 @@ export class PersonalStorage {
   };
   private async checkSession(epoch:number){
     if(this.state.phase!=='ready'||epoch!==this.state.epoch)throw Error('storage-session-expired');
+    if(await this.raw.getItem(JOURNAL_KEY)!==null){this.update({phase:'blocked',epoch:this.state.epoch+1,error:'recovery-required'});throw Error('storage-session-expired');}
     if(await this.raw.getItem(GENERATION_KEY)!==this.generation){this.update({phase:'blocked',epoch:this.state.epoch+1,notice:'external-change',error:'external-change'});throw Error('storage-session-expired');}
+  }
+  private async writeSession(epoch:number,key:string,value:string|null){
+    await this.checkSession(epoch);
+    if(!Object.values(PERSONAL_KEYS).includes(key as typeof PERSONAL_KEYS[PersonalKey]))throw Error('unknown-storage-key');
+    if(!this.canRestore())throw Error('exclusive-storage-unavailable');
+    // Publish the revision first while holding the shared lock. Even an uncertain
+    // data write invalidates snapshots loaded by another window.
+    const generation=newGeneration();
+    try{await this.put(GENERATION_KEY,generation);}
+    catch(error){this.update({phase:'blocked',epoch:this.state.epoch+1,error:'storage-generation-failed'});throw error;}
+    this.generation=generation;
+    await this.put(key,value);
   }
   createSession=():LocalKeyValueStorage=>{
     const epoch=this.state.epoch;
     return {
       getItem:key=>this.enqueue(async()=>{await this.checkSession(epoch);return this.raw.getItem(key);}),
-      setItem:(key,value)=>this.enqueue(async()=>{await this.checkSession(epoch);await this.raw.setItem(key,value);}),
-      removeItem:key=>this.enqueue(async()=>{await this.checkSession(epoch);if(!this.raw.removeItem)throw Error('remove-unavailable');await this.raw.removeItem(key);}),
+      setItem:(key,value)=>this.enqueue(()=>this.writeSession(epoch,key,value)),
+      removeItem:key=>this.enqueue(()=>this.writeSession(epoch,key,null)),
     };
   };
   readAll=():Promise<RawPersonalData>=>this.enqueue(async()=>{await this.checkSession(this.state.epoch);const entries=await Promise.all(Object.entries(PERSONAL_KEYS).map(async([name,key])=>[name,await this.raw.getItem(key)]));return Object.fromEntries(entries) as RawPersonalData;});
-  restore=async(before:RawPersonalData,after:Partial<RawPersonalData>):Promise<void>=>{
+  restore=async(before:RawPersonalData,after:Partial<RawPersonalData>,notice:RecoveryNotice='restored'):Promise<void>=>{
     if(this.state.phase!=='ready')throw Error('storage-unavailable');
     if(!this.canRestore())throw Error('exclusive-storage-unavailable');
     const selected=Object.keys(after) as PersonalKey[];
@@ -90,8 +105,8 @@ export class PersonalStorage {
         for(const [name,key] of Object.entries(PERSONAL_KEYS))if(await this.raw.getItem(key)!==before[name as PersonalKey])throw Error('stale-restore-plan');
         if(await this.raw.getItem(GENERATION_KEY)!==this.generation)throw Error('stale-restore-plan');
         const data=selected.map(name=>({key:PERSONAL_KEYS[name],before:before[name],after:after[name]!}));
-        data.push({key:GENERATION_KEY as typeof data[number]['key'],before:this.generation,after:JSON.stringify(`${Date.now()}-${Math.random().toString(36).slice(2)}`)});
-        journal={version:1,phase:'prepared',entries:data.map((entry,index)=>({key:entry.key,slot:index,wasNull:entry.before===null,checksum:checksum(entry.before)}))};
+        data.push({key:GENERATION_KEY as typeof data[number]['key'],before:this.generation,after:newGeneration()});
+        journal={version:1,...(notice==='purchased'?{notice}:{}),phase:'prepared',entries:data.map((entry,index)=>({key:entry.key,slot:index,wasNull:entry.before===null,checksum:checksum(entry.before)}))};
         for(let i=0;i<data.length;i++)await this.put(slot(i),data[i]!.before);
         // Treat an uncertain write of the prepared record as pending, never as untouched.
         prepared=true;await this.put(JOURNAL_KEY,JSON.stringify(journal));
@@ -100,20 +115,20 @@ export class PersonalStorage {
         await this.put(JOURNAL_KEY,JSON.stringify(journal));committed=true;
         this.generation=data[data.length-1]!.after;
         await this.cleanup(journal);
-        this.update({phase:'ready',epoch:this.state.epoch,notice:'restored'});
+        this.update({phase:'ready',epoch:this.state.epoch,notice});
       }catch(error){
         const message=error instanceof Error?error.message:'restore-failed';
         if(prepared&&journal){
           try{
             const persisted=await this.raw.getItem(JOURNAL_KEY);
             const saved=persisted===null?null:parseJournal(persisted);
-            if(committed||saved?.phase==='committed'){if(saved)await this.cleanup(saved);this.generation=await this.raw.getItem(GENERATION_KEY);this.update({phase:'ready',epoch:this.state.epoch,notice:'restored'});return;}
+            if(committed||saved?.phase==='committed'){if(saved)await this.cleanup(saved);this.generation=await this.raw.getItem(GENERATION_KEY);this.update({phase:'ready',epoch:this.state.epoch,notice});return;}
             // Missing prepared journal means its initial write failed before any data write.
             if(saved)await this.rollback(saved);
             this.generation=await this.raw.getItem(GENERATION_KEY);
-            this.update({phase:'ready',epoch:this.state.epoch,notice:'rolled-back',error:message});
+            this.update({phase:'ready',epoch:this.state.epoch,notice:notice==='purchased'?'purchase-failed':'rolled-back',error:message});
           }catch(recoveryError){this.update({phase:'blocked',epoch:this.state.epoch,error:recoveryError instanceof Error?recoveryError.message:'recovery-required'});}
-        }else this.update({phase:'ready',epoch:this.state.epoch,notice:message==='stale-restore-plan'?'stale':undefined,error:message});
+        }else this.update({phase:'ready',epoch:this.state.epoch,notice:notice==='purchased'?'purchase-failed':message==='stale-restore-plan'?'stale':undefined,error:message});
         throw error;
       }
     });

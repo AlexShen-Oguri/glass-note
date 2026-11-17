@@ -2,11 +2,11 @@ import {LOCALES} from '../domain/contracts';
 import type {Locale,Localized} from '../domain/contracts';
 import type {PreparationCard,RecipePreparation} from '../domain/preparations/types';
 import {getResearchWorkView} from './localization/research';
-import {roundElevenTopics} from './topics-eleven';
+import {competitionTopics} from './competition-topics';
 import type {ResearchWork} from './topics';
 
 const checkedAt='2026-09-16';
-const patronTopic=roundElevenTopics.find(topic=>topic.id==='patron-perfectionists-2018-selection');
+const patronTopic=competitionTopics.find(topic=>topic.id==='patron-perfectionists-2018-selection');
 if(!patronTopic) throw new Error('Missing Patrón Perfectionists 2018 research topic');
 
 const researchWork=(id:string):ResearchWork=>{

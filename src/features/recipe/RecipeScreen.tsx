@@ -16,6 +16,8 @@ import {Link, router} from 'expo-router';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {catalogue} from '../../content/catalogue';
+import {materialDisplayName,sourceMaterialName} from '../ingredients/materialDisplay';
+import {materialText} from '../../i18n/materials';
 import type {Locale, MeasureUnit, RecipeVersion} from '../../domain/contracts';
 import {recipeReturnPath, type RecipeNavigationSource} from '../../domain/discovery/navigation-state';
 import {formatAmount, matchVersion} from '../../domain/search';
@@ -26,7 +28,7 @@ import {media} from '../../media';
 import {useApp} from '../../platform/AppProvider';
 import {tm} from '../../i18n/taste';
 import {makingText} from '../../i18n/making';
-import {p02RecipeText} from '../../i18n/p02-recipe';
+import {recipeActionsText} from '../../i18n/recipe-actions';
 import {colors, radii} from '../../theme/tokens';
 import {BrandToolbar, isAiMedia, PhotoFrame, serif, useViewport} from '../discovery/components';
 import {FavoriteButton} from '../favorites/FavoriteButton';
@@ -36,6 +38,7 @@ import {BrandMark} from '../brand/BrandIdentity';
 import {PreparationPanel} from './PreparationPanel';
 import {RecipeLabAction} from '../workspace/RecipeLabAction';
 import {MyRecipeAction} from './MyRecipeAction';
+import {RecipeShoppingAction} from './RecipeShoppingAction';
 import {Heading} from '../navigation/Heading';
 import {recipeSnapshot} from '../../domain/making';
 import {RecipeExperience} from '../taste/RecipeExperience';
@@ -84,7 +87,7 @@ function VersionPicker({versions, selectedId, locale, onSelect}: {versions: Reci
 
 function MoreActions({version, locale, leading}: {version: RecipeVersion; locale: Locale; leading?: React.ReactNode}) {
   const [open, setOpen] = useState(false);
-  const label = p02RecipeText(locale, open ? 'hideMoreActions' : 'moreActions');
+  const label = recipeActionsText(locale, open ? 'hideMoreActions' : 'moreActions');
   return (
     <View style={styles.moreActions}>
       <View style={styles.minorActionsRow}>
@@ -115,6 +118,7 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
   const {locale, setLocale, unit, setUnit, query, motionPaused, setMotionPaused, guided} = useApp();
   const {run}=useSceneTransition();
   const {width} = useViewport();
+  const photoReturn = from === 'welcome' || from === 'discover' || from === 'find' || from === 'customize';
   const cocktail = catalogue.cocktails.find((item) => item.id === cocktailId);
   const versions = useMemo(
     () => catalogue.versions.filter((version) => cocktail?.versionIds.includes(version.id) && version.cocktailId === cocktail?.id),
@@ -162,7 +166,7 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
           <BrandToolbar {...{locale, setLocale, unit, setUnit, motionPaused, setMotionPaused}} />
           <View {...motionData({sceneContent:''})}>
           <View style={styles.backline}>
-          <Pressable {...motionData({motionPhotoReturn: ''})} accessibilityRole="button" accessibilityLabel={t(locale, 'back')} onPress={() => run(()=>goBack(from, listId),{label:from==='welcome'?'此刻':from==='customize'?'遇见':'酒单',direction:-1,history:router.canGoBack(),kind:'photo'})} style={({pressed}) => [styles.backButton, pressed && styles.pressed]}>
+          <Pressable {...(photoReturn ? motionData({motionPhotoReturn: ''}) : {})} accessibilityRole="button" accessibilityLabel={t(locale, 'back')} onPress={() => run(()=>goBack(from, listId),{label:from==='welcome'?'此刻':from==='customize'?'遇见':from==='pantry'?'酒柜':'酒单',direction:-1,history:router.canGoBack(),kind:photoReturn?'photo':'page'})} style={({pressed}) => [styles.backButton, pressed && styles.pressed]}>
             <Text style={styles.backArrow}>←</Text>
             <Text style={styles.backText}>{t(locale, 'back')}</Text>
           </Pressable>
@@ -189,7 +193,7 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
               </View>
             </View>
 
-            <View nativeID="recipe-details" {...motionData({motionPart: 'menu'})} style={styles.leadCopy}>
+            <View nativeID="recipe-details" {...motionData({motionPart: 'menu'})} style={[styles.leadCopy,compact&&styles.leadCopyCompact]}>
               <Text style={[styles.description, phone && styles.descriptionCompact]}>{localize(cocktail.description, locale)}</Text>
 
               <View style={styles.divider} />
@@ -199,7 +203,7 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
               }} />
               <View style={styles.sourceIdentity}>
                 <View style={styles.sourceIdentityCopy}>
-                  <Text style={styles.sourceIdentityLabel}>{p02RecipeText(locale, 'exactSource')}</Text>
+                  <Text style={styles.sourceIdentityLabel}>{recipeActionsText(locale, 'exactSource')}</Text>
                   <Text style={styles.sourceIdentityTitle}>{source?.title ?? t(locale, 'unknown')}</Text>
                   <Text style={styles.sourceIdentityMeta}>{localize(version.label, locale)}</Text>
                 </View>
@@ -209,7 +213,7 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
                   </Pressable>
                 ) : null}
               </View>
-              <View style={styles.primaryActions}>
+              <View testID="recipe-primary-actions" style={styles.primaryActions}>
                 {listId ? <ListBrowseAddButton key={`list-add-${version.id}`} listId={listId} versionId={version.id} locale={locale} /> : null}
                 <View style={styles.majorActionsRow}>
                   <Link href={{pathname: '/make', params: {version: version.id}} as never} asChild>
@@ -223,6 +227,7 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
                     </Pressable>
                   </Link>
                 </View>
+                <RecipeShoppingAction key={`shopping-${version.id}`} versionId={version.id} locale={locale}/>
                 <MoreActions key={version.id} version={version} locale={locale} leading={<>
                   <FavoriteButton versionId={version.id} locale={locale} compact />
                   <RecipeExperience key={`experience-${version.id}`} recipe={recipeSnapshot(catalogue,version.id)!} locale={locale}/>
@@ -242,6 +247,7 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
               <View style={styles.ingredientsList}>
                 {version.ingredients.map((recipeIngredient, index) => {
                   const ingredient = catalogue.ingredients.find((item) => item.id === recipeIngredient.ingredientId);
+                  const materialName=materialDisplayName(recipeIngredient.ingredientId,locale),sourceName=sourceMaterialName(version,index,locale);
                   const brand = recipeIngredient.brandId ? catalogue.brands.find((item) => item.id === recipeIngredient.brandId) : undefined;
                   const displayed = formatAmount(recipeIngredient.amount, recipeIngredient.unit, unit);
                   const amount = displayed.amount
@@ -253,10 +259,11 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
                       <View style={styles.ingredientCopy}>
                         <Link href={{pathname: '/ingredients/[id]', params: {id: recipeIngredient.ingredientId}} as never} asChild>
                           <Pressable accessibilityRole="link" style={StyleSheet.flatten([styles.ingredientLink])}>
-                            <Text style={styles.ingredientName}>{ingredient ? localize(ingredient.name, locale) : recipeIngredient.ingredientId} ↗</Text>
+                            <Text style={styles.ingredientName}>{ingredient ? materialName : recipeIngredient.ingredientId} ↗</Text>
                           </Pressable>
                         </Link>
                         {brand ? <Text style={styles.ingredientBrand}>{t(locale, 'brand')}: {brand.name}</Text> : null}
+                        {sourceName!==materialName?<Text style={styles.ingredientNote}>{materialText(locale,'source')}: {sourceName}</Text>:null}
                         {recipeIngredient.note ? <Text style={styles.ingredientNote}>{localize(recipeIngredient.note, locale)}</Text> : null}
                         {recipeIngredient.optional ? <Text style={styles.optional}>{t(locale, 'optional')}</Text> : null}
                       </View>
@@ -302,7 +309,7 @@ export default function RecipeScreen({cocktailId, versionId, from = 'discover', 
           </View>
 
           <PreparationPanel key={version.id} versionId={version.id} locale={locale} showSources/>
-          <RecipeAbv version={version} locale={locale} showSources/>
+          {recipeSnapshot(catalogue,version.id)?<RecipeAbv recipe={recipeSnapshot(catalogue,version.id)!} locale={locale} showSources/>:null}
           <View style={[styles.sourcePanel, compact && styles.sourcePanelCompact]}>
             <View style={styles.sourceCopy}>
               <Text style={styles.sectionEyebrow}>{t(locale, 'source')}</Text>
@@ -393,6 +400,7 @@ const styles = StyleSheet.create({
   creditDivider: {color: colors.muted, fontSize: 12, lineHeight: 20},
   referenceLink: {minHeight: 32, justifyContent: 'center', marginTop: 4},
   leadCopy: {flex: 1, minWidth: 0},
+  leadCopyCompact: {flexGrow:0,flexShrink:0,flexBasis:'auto',width:'100%'},
   category: {color: colors.secondary, fontSize: 11},
   title: {color: colors.text, fontFamily: serif, fontWeight: '400', marginTop: 7},
   titleCompact: {marginTop:20,marginBottom:18},

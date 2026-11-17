@@ -8,7 +8,7 @@ import {fullBackupFromRaw,rawAfterRestore} from '../../platform/backupAdapter';
 import {PERSONAL_KEYS,type RawPersonalData} from '../../platform/personalStorage';
 const now='2026-09-11T00:00:00.000Z';
 const raw=()=>Object.fromEntries(Object.keys(PERSONAL_KEYS).map(k=>[k,null])) as RawPersonalData;
-const make=()=>{const value=fullBackupFromRaw(raw(),'zh',now);value.schemaVersion=2;delete value.sections.taste;return value;};
+const make=()=>{const value=fullBackupFromRaw(raw(),'zh',now);value.schemaVersion=2;delete value.sections.taste;delete value.sections.shopping;return value;};
 const personal=(b:FullBackup)=>({sections:b.sections,references:b.references});
 const choice:RestoreChoice={mode:'merge',sections:[...BACKUP_SECTIONS],preferenceFields:[]};
 
@@ -29,7 +29,7 @@ test('making quantities conflict visibly and are never summed when merging backu
 });
 test('source snapshots and deduction identity survive a conflicting session import and repeating that import',()=>{
   const current=make(),incoming=make();const recipe=recipeSnapshot(catalogue,catalogue.versions[0]!.id)!;
-  const session=createSession(recipe,'round15-session',now);session.completed=true;session.consumptionApplied=true;
+  const session=createSession(recipe,'restored-making-session',now);session.completed=true;session.consumptionApplied=true;
   current.sections.making!.sessions=[session];incoming.sections.making!.sessions=[{...session,stepIndex:0,consumptionApplied:false,updatedAt:'2026-09-11T00:01:00.000Z'}];
   const once=planRestore(personal(current),incoming,choice);
   assert.equal(once.next.sections.making!.sessions.length,2);
@@ -61,4 +61,28 @@ test('preparation confirmations for different snapshots of the same version both
   incoming.sections.making!.reviews=[{versionId:'changed-version',fingerprint:'b'.repeat(64),toolsConfirmed:false,preparationConfirmed:true}];
   const merged=planRestore(personal(current),incoming,choice);
   assert.equal(merged.next.sections.making!.reviews.length,2);assert.equal(merged.conflicts.length,0);
+});
+
+test('merging a making v2 section into v1 retains frozen semantics and promotes only making',()=>{
+  const current=fullBackupFromRaw(raw(),'en',now),incoming=structuredClone(current);
+  current.sections.making!.schemaVersion=1;
+  const recipe=recipeSnapshot(catalogue,catalogue.versions[0]!.id)!;
+  const context={catalogue,pantry:{ingredientIds:[],brandsByIngredient:{}},ownedBottleIds:[],bottles:[],making:emptyMakingState()};
+  const session=createSession(recipe,'frozen',now,context);
+  incoming.sections.making!.sessions=[session];
+  const restored=planRestore(personal(current),parseFullBackup(serializeFullBackup(incoming)),choice);
+  assert.equal(restored.next.sections.making!.schemaVersion,2);
+  assert.deepEqual(restored.next.sections.making!.sessions[0],session);
+  assert.equal(current.schemaVersion,3);assert.equal(incoming.schemaVersion,3);
+});
+
+test('export and restore preserve references needed by frozen allowed supplies',()=>{
+  const recipe=recipeSnapshot(catalogue,catalogue.versions.find(version=>version.ingredients.some(row=>row.ingredientId==='scotch-whisky'))!.id)!;
+  const context={catalogue,pantry:{ingredientIds:[],brandsByIngredient:{}},ownedBottleIds:[],bottles:[],making:emptyMakingState()};
+  const session=createSession(recipe,'frozen-whisky',now,context),value=raw();
+  value.making=JSON.stringify({...emptyMakingState(),sessions:[session]});
+  const backup=fullBackupFromRaw(value,'en',now);
+  assert(backup.references.some(reference=>reference.kind==='ingredient'&&reference.id==='food-generic-whisky'));
+  const restored=planRestore(personal(fullBackupFromRaw(raw(),'en',now)),backup,choice);
+  assert(restored.next.references.some(reference=>reference.kind==='ingredient'&&reference.id==='food-generic-whisky'));
 });

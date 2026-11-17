@@ -30,9 +30,10 @@ fn remove_local_entry(app: tauri::AppHandle, lock: State<'_, StorageLock>, key: 
 #[tauri::command]
 async fn export_lab_file(content: String, extension: String, kind: Option<String>) -> Result<bool, String> {
     if !["json", "md"].contains(&extension.as_str()) { return Err("invalid-file-type".into()); }
-    if content.len() as u64 > storage::FILE_LIMIT { return Err("file-too-large".into()); }
-    if extension == "json" { storage::validate_json(&content)?; }
     let kind = kind.unwrap_or_else(|| "lab".into());
+    let limit = storage::transfer_limit(&kind)?;
+    if content.len() as u64 > limit { return Err("file-too-large".into()); }
+    if extension == "json" { storage::validate_json_bounded(&content, limit)?; }
     if !["lab", "backup"].contains(&kind.as_str()) || (kind == "backup" && extension != "json") { return Err("invalid-file-type".into()); }
     tauri::async_runtime::spawn_blocking(move || {
         let chosen = rfd::FileDialog::new()
@@ -43,21 +44,22 @@ async fn export_lab_file(content: String, extension: String, kind: Option<String
         if path.extension().and_then(|v|v.to_str()).map(str::to_ascii_lowercase) != Some(extension) {
             return Err("invalid-file-type".into());
         }
-        storage::write_atomic(&path, &content)?;
+        storage::write_atomic_with_limit(&path, &content, limit)?;
         Ok(true)
     }).await.map_err(|_| "file-dialog-failed")?
 }
 
 #[tauri::command]
-async fn import_lab_file() -> Result<Option<String>, String> {
+async fn import_lab_file(kind: Option<String>) -> Result<Option<String>, String> {
+    let limit = storage::transfer_limit(kind.as_deref().unwrap_or("lab"))?;
     tauri::async_runtime::spawn_blocking(move || {
         let chosen = rfd::FileDialog::new().add_filter("Glass Notes JSON", &["json"]).pick_file();
         let Some(path) = chosen else { return Ok(None); };
         if path.extension().and_then(|v|v.to_str()).map(str::to_ascii_lowercase).as_deref() != Some("json") {
             return Err("invalid-file-type".into());
         }
-        let value = storage::read_bounded(&path)?;
-        storage::validate_json(&value)?;
+        let value = storage::read_bounded_with_limit(&path, limit)?;
+        storage::validate_json_bounded(&value, limit)?;
         Ok(Some(value))
     }).await.map_err(|_| "file-dialog-failed")?
 }

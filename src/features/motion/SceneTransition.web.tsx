@@ -24,7 +24,9 @@ export function SceneTransitionProvider({children}:{children:React.ReactNode}){
   },[]);
   useEffect(()=>{
     const click=(event:MouseEvent)=>{
-      if(replay.current||event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+      // Keyboard and assistive activation already own the anchor click; replaying
+      // it synchronously can be suppressed by the browser's click-in-progress flag.
+      if(replay.current||event.defaultPrevented||event.detail===0||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
       const node=event.target instanceof Element?event.target:null,link=node?.closest<HTMLAnchorElement>('a[href]');
       if(!link||link.origin!==location.origin||link.target==='_blank'||link.hasAttribute('download')||link.pathname+link.search===location.pathname+location.search||link.hash)return;
       event.preventDefault();event.stopImmediatePropagation();

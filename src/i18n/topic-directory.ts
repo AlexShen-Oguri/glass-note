@@ -31,6 +31,8 @@ const copy = {
 } satisfies Record<string, Eight>;
 
 const countryNames: Record<string, Eight> = {
+  CA:['Canada','加拿大','Canada','Kanada','Canadá','캐나다','カナダ','Canada'],
+  NZ:['New Zealand','新西兰','Nouvelle-Zélande','Neuseeland','Nueva Zelanda','뉴질랜드','ニュージーランド','Nuova Zelanda'],
   JP:['Japan','日本','Japon','Japan','Japón','일본','日本','Giappone'],
   US:['United States','美国','États-Unis','Vereinigte Staaten','Estados Unidos','미국','アメリカ','Stati Uniti'],
   GB:['United Kingdom','英国','Royaume-Uni','Vereinigtes Königreich','Reino Unido','영국','イギリス','Regno Unito'],

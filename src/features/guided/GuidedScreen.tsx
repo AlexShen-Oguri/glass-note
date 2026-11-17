@@ -19,7 +19,7 @@ import {rankForPantry,diversifyPantryResults} from '../../domain/guided/pantry-r
 import {pantryAccess,needsPantryPrompt,type PantryAccess} from '../../domain/guided/mode';
 import {usePantry} from '../../platform/PantryProvider';
 import {useBottles} from '../../platform/BottleProvider';
-import {g175} from '../../i18n/round17-5-guided';
+import {guidedFlowText} from '../../i18n/guided-flow';
 import {MotionTransition,useMotionEnabled} from '../motion';
 import {motionData} from '../motion/attributes';
 import {ProgressOrbit} from '../motion/ProgressOrbit';
@@ -211,6 +211,13 @@ function TasteMemorySettings({
         <Pressable
           accessibilityRole="checkbox"
           accessibilityState={{checked: useMemory}}
+          {...(Platform.OS==='web'?{
+            'aria-checked':useMemory,
+            onKeyDown:(event:React.KeyboardEvent<HTMLElement>)=>{
+              // RN Web handles Enter, but only activates Space for button roles.
+              if(event.key===' '){event.preventDefault();if(!event.repeat)onToggle();}
+            },
+          }:{})}
           onPress={onToggle}
           style={({pressed}) => [styles.memoryToggle, useMemory && styles.memoryToggleActive, pressed && styles.pressed]}
         >
@@ -349,11 +356,11 @@ function ResultCard({result, locale, query, contextActive, onHide, cardWidth, ph
             <Heading level={2} style={[styles.resultName,mobile&&styles.resultNameMobile,hero&&styles.resultNameHero]}>{cocktail.name[locale]}</Heading><CocktailOriginalName cocktail={cocktail} locale={locale} />
             <Text style={styles.resultDescription}>{cocktail.description[locale]}</Text>
             {result.pantryMatch ? <View style={styles.ownedSummary}>
-              <Text style={styles.ownedHeading}>{g175(locale,result.pantryMatch.baseReady?'baseReady':'baseMissing')}</Text>
+              <Text style={styles.ownedHeading}>{guidedFlowText(locale,result.pantryMatch.baseReady?'baseReady':'baseMissing')}</Text>
               <Text style={styles.ownedText}>{result.pantryMatch.missingIngredientIds.length
-                ? g175(locale,'missing',{count:result.pantryMatch.missingIngredientIds.length,ingredients:result.pantryMatch.missingIngredientIds.map(id=>catalogue.ingredients.find(item=>item.id===id)?.name[locale]??id).join(' · ')})
-                : g175(locale,'ready')}</Text>
-              {(result.pantryMatch.unconfirmedBrands.length>0||result.pantryMatch.preparationNeedsReview) ? <Text style={styles.ownedNote}>{g175(locale,'reviewDetails')}</Text> : null}
+                ? guidedFlowText(locale,'missing',{count:result.pantryMatch.missingIngredientIds.length,ingredients:result.pantryMatch.missingIngredientIds.map(id=>catalogue.ingredients.find(item=>item.id===id)?.name[locale]??id).join(' · ')})
+                : guidedFlowText(locale,'ready')}</Text>
+              {(result.pantryMatch.unconfirmedBrands.length>0||result.pantryMatch.preparationNeedsReview) ? <Text style={styles.ownedNote}>{guidedFlowText(locale,'reviewDetails')}</Text> : null}
             </View> : null}
             <View style={styles.matchPanel}>
               <Text style={styles.matchTitle}>{gr(locale, 'matchesThese')}</Text>
@@ -395,14 +402,14 @@ function ModeChoice({locale,dispatch,compact}:{locale:Locale;dispatch:React.Disp
   const {run}=useSceneTransition();
   return <View style={[styles.modeIntro,compact&&styles.modeIntroCompact]}>
     <Text {...motionData({motionPart:'kicker'})} style={styles.sceneKicker}>YOUR WAY / YOUR GLASS</Text>
-    <View {...motionData({motionPart: 'title'})}><Heading level={1} style={[styles.modeTitle,{fontSize:compact?53:Math.min(98,Math.max(65,width*.062)),lineHeight:compact?61:Math.min(112,Math.max(75,width*.071))}]}>{g175(locale,'modeTitle')}</Heading></View>
-    <View {...motionData({motionPart: 'copy'})}><Text style={styles.questionHint}>{g175(locale,'modeHint')}</Text></View>
+    <View {...motionData({motionPart: 'title'})}><Heading level={1} style={[styles.modeTitle,{fontSize:compact?53:Math.min(98,Math.max(65,width*.062)),lineHeight:compact?61:Math.min(112,Math.max(75,width*.071))}]}>{guidedFlowText(locale,'modeTitle')}</Heading></View>
+    <View {...motionData({motionPart: 'copy'})}><Text style={styles.questionHint}>{guidedFlowText(locale,'modeHint')}</Text></View>
     {compact && Platform.OS==='web' && <View {...motionData({nightGlassAnchor: ''})} pointerEvents="none" style={styles.glassCompact}/>}
     <View {...motionData({motionPart: 'options'})} style={[styles.modeChoices,compact&&styles.modeChoicesCompact]}>
       {(['drink','make'] as const).map(mode=><Pressable {...motionData({motionPart:'entry'})} key={mode} accessibilityRole="button" onPress={()=>dispatch({type:'set-mode',mode})} style={({pressed})=>[styles.modeChoice,pressed&&styles.pressed]}>
         <View {...motionData({nightRule:''})} pointerEvents="none" style={styles.modeRule}/>
-        <View style={styles.modeEntryLine}><Text style={styles.modeIndex}>{mode==='drink'?'01':'02'}</Text><Text style={styles.modeName}>{g175(locale,mode)}</Text><View {...motionData({nightArrow:''})} style={styles.modeArrowTrack}><Text style={styles.modeArrow}>↗</Text></View></View>
-        <Text style={styles.modeHint}>{g175(locale,mode==='drink'?'drinkHint':'makeHint')}</Text>
+        <View style={styles.modeEntryLine}><Text style={styles.modeIndex}>{mode==='drink'?'01':'02'}</Text><Text style={styles.modeName}>{guidedFlowText(locale,mode)}</Text><View {...motionData({nightArrow:''})} style={styles.modeArrowTrack}><Text style={styles.modeArrow}>↗</Text></View></View>
+        <Text style={styles.modeHint}>{guidedFlowText(locale,mode==='drink'?'drinkHint':'makeHint')}</Text>
       </Pressable>)}
     </View>
     <Pressable accessibilityRole="button" onPress={()=>run(()=>router.replace('/'),{label:'此刻',direction:-1})} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{t(locale,'back')}</Text></Pressable>
@@ -412,15 +419,15 @@ function ModeChoice({locale,dispatch,compact}:{locale:Locale;dispatch:React.Disp
 function PantryGate({locale,access,onRetry,onContinue,onDrink}:{locale:Locale;access:PantryAccess;onRetry:()=>void;onContinue:()=>void;onDrink:()=>void}) {
   const compact=isCompactViewport(useViewport());
   return <View style={[styles.modeIntro,compact&&styles.modeIntroCompact]}>
-    <Heading level={1} style={styles.questionTitle}>{g175(locale,access==='empty'?'emptyTitle':access==='error'?'pantryError':'pantryLoading')}</Heading>
+    <Heading level={1} style={styles.questionTitle}>{guidedFlowText(locale,access==='empty'?'emptyTitle':access==='error'?'pantryError':'pantryLoading')}</Heading>
     {compact && Platform.OS==='web' && <View {...motionData({nightGlassAnchor: ''})} pointerEvents="none" style={styles.glassCompact}/>}
     {access==='empty'?<>
-      <Text style={styles.questionHint}>{g175(locale,'emptyBody')}</Text>
+      <Text style={styles.questionHint}>{guidedFlowText(locale,'emptyBody')}</Text>
       <View style={styles.gateActions}>
-        <Pressable accessibilityRole="link" onPress={()=>router.push('/pantry')} style={styles.primaryAction}><Text style={styles.primaryActionText}>{g175(locale,'addIngredients')}</Text></Pressable>
-        <Pressable accessibilityRole="button" onPress={onContinue} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{g175(locale,'chooseFirst')}</Text></Pressable>
+        <Pressable accessibilityRole="link" onPress={()=>router.push('/pantry')} style={styles.primaryAction}><Text style={styles.primaryActionText}>{guidedFlowText(locale,'addIngredients')}</Text></Pressable>
+        <Pressable accessibilityRole="button" onPress={onContinue} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{guidedFlowText(locale,'chooseFirst')}</Text></Pressable>
       </View>
-    </>:access==='error'?<View style={styles.gateActions}><Pressable accessibilityRole="button" onPress={onRetry} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{g175(locale,'retry')}</Text></Pressable><Pressable accessibilityRole="button" onPress={onDrink} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{g175(locale,'switchDrink')}</Text></Pressable></View>:null}
+    </>:access==='error'?<View style={styles.gateActions}><Pressable accessibilityRole="button" onPress={onRetry} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{guidedFlowText(locale,'retry')}</Text></Pressable><Pressable accessibilityRole="button" onPress={onDrink} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{guidedFlowText(locale,'switchDrink')}</Text></Pressable></View>:null}
   </View>;
 }
 
@@ -531,7 +538,7 @@ function ResultsView({guided, locale, results, baseResultCount, allResultsHidden
       <View {...motionData({motionResultsLead: ''})} style={styles.resultsLead}>
         <Text {...motionData({motionPart:'kicker'})} style={styles.sceneKicker}>YOUR TASTE / IN {shown.length} {shown.length===1?'GLASS':'GLASSES'}</Text>
         <Heading level={1} style={[styles.resultsTitle,{fontSize:layout.mobile?51:Math.min(97,Math.max(58,viewport.width*.061)),lineHeight:layout.mobile?63:Math.min(116,Math.max(70,viewport.width*.073))}]}>{t(locale, 'guidedResultsTitle')}</Heading>
-        <Text {...motionData({motionPart:'detail'})} style={styles.resultsHint}>{pantryFiltered?g175(locale,'makeResultHint'):t(locale, 'guidedResultsHint')}</Text>
+        <Text {...motionData({motionPart:'detail'})} style={styles.resultsHint}>{pantryFiltered?guidedFlowText(locale,'makeResultHint'):t(locale, 'guidedResultsHint')}</Text>
         <Text style={styles.resultsVersionNote}>{gr(locale, 'resultIntro')}</Text>
         <SelectionSummary inline query={guided.submitted ?? {}} context={guided.contextSubmitted ?? {}} locale={locale} onEditContext={() => dispatch({type: 'edit', step: 0})} />
         {memorySettings}
@@ -557,11 +564,11 @@ function ResultsView({guided, locale, results, baseResultCount, allResultsHidden
         </>
       ) : (
         <View {...motionData({revealEmpty:''})} style={styles.empty}>
-          <Text style={styles.emptyTitle}>{allResultsHidden ? contextText(locale, 'hiddenAllTitle') : pantryFiltered?g175(locale,'noMakeTitle'):t(locale, 'noResults')}</Text>
-          <Text style={styles.emptyHint}>{allResultsHidden ? contextText(locale, 'hiddenAllHint') : pantryFiltered?g175(locale,'noMakeBody'):t(locale, 'guidedEmptyHint')}</Text>
+          <Text style={styles.emptyTitle}>{allResultsHidden ? contextText(locale, 'hiddenAllTitle') : pantryFiltered?guidedFlowText(locale,'noMakeTitle'):t(locale, 'noResults')}</Text>
+          <Text style={styles.emptyHint}>{allResultsHidden ? contextText(locale, 'hiddenAllHint') : pantryFiltered?guidedFlowText(locale,'noMakeBody'):t(locale, 'guidedEmptyHint')}</Text>
           {pantryFiltered&&!allResultsHidden?<View style={styles.gateActions}>
-            <Pressable accessibilityRole="link" onPress={()=>router.push('/pantry')} style={styles.primaryAction}><Text style={styles.primaryActionText}>{g175(locale,'openPantry')}</Text></Pressable>
-            <Pressable accessibilityRole="button" onPress={()=>dispatch({type:'set-mode',mode:'drink'})} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{g175(locale,'switchDrink')}</Text></Pressable>
+            <Pressable accessibilityRole="link" onPress={()=>router.push('/pantry')} style={styles.primaryAction}><Text style={styles.primaryActionText}>{guidedFlowText(locale,'openPantry')}</Text></Pressable>
+            <Pressable accessibilityRole="button" onPress={()=>dispatch({type:'set-mode',mode:'drink'})} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{guidedFlowText(locale,'switchDrink')}</Text></Pressable>
           </View>:null}
           {allResultsHidden ? <Pressable accessibilityRole="button" onPress={()=>{setReplayKey(value=>value+1);onRestore();}} style={styles.secondaryAction}><Text style={styles.secondaryActionText}>{contextText(locale, 'restoreHidden')}</Text></Pressable> : null}
         </View>
@@ -586,7 +593,7 @@ export default function GuidedScreen() {
   const pantry=usePantry();
   const owned=useBottles();
   const canAnimate=useMotionEnabled();
-  const [useMemory,setUseMemory]=useState(true);
+  const [useMemory,setUseMemory]=useState(false);
   const [hiddenResults, setHiddenResults] = useState<string[]>([]);
   const scrollRef = useRef<ScrollView>(null);
   const resultPhotoRefs=useRef(new Map<string,View>());
@@ -686,10 +693,10 @@ export default function GuidedScreen() {
           <BrandToolbar {...{locale, setLocale, unit, setUnit, motionPaused, setMotionPaused}} showUnits={false} />
           <MotionTransition changeKey={`${mode}:${gate}:${guided.phase==='choosing'?`choosing:${guided.step}`:'reveal-results'}`} kind="step" disabled={!focused}>
           {mode!==null?<View {...motionData({motionPart:'detail',motionModeBar:''})} style={styles.modeBar}>
-            <Text style={styles.modeBarName}>{g175(locale,mode)}</Text>
-            <Pressable accessibilityRole="button" onPress={()=>dispatchGuided({type:'set-mode',mode:null})} style={styles.modeChange}><Text style={styles.secondaryActionText}>{g175(locale,'changeMode')}</Text></Pressable>
+            <Text style={styles.modeBarName}>{guidedFlowText(locale,mode)}</Text>
+            <Pressable accessibilityRole="button" onPress={()=>dispatchGuided({type:'set-mode',mode:null})} style={styles.modeChange}><Text style={styles.secondaryActionText}>{guidedFlowText(locale,'changeMode')}</Text></Pressable>
           </View>:null}
-          {fallbackActive?<Text accessibilityLiveRegion="polite" style={styles.fallbackNote}>{g175(locale,'fallbackNote')}</Text>:null}
+          {fallbackActive?<Text accessibilityLiveRegion="polite" style={styles.fallbackNote}>{guidedFlowText(locale,'fallbackNote')}</Text>:null}
           {mode===null?<ModeChoice locale={locale} dispatch={dispatchGuided} compact={compact}/>:gate?
             <PantryGate locale={locale} access={access} onContinue={()=>dispatchGuided({type:'allow-pantry-fallback'})} onDrink={()=>dispatchGuided({type:'set-mode',mode:'drink'})} onRetry={()=>{void pantry.retry();void (owned.error==='write'?owned.retrySave():owned.load());}}/>:
           (

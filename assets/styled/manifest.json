@@ -2208,7 +2208,6 @@
     "sourceUrl": "https://www.suntory.co.jp/wnb/event/award/result_2024.html",
     "referenceUrl": "https://www.authent.co.jp/wp/wp-content/uploads/2025/02/2ceab2c5a825d2279d289b5f15add4bd.pdf",
     "referencePageUrl": "https://www.authent.co.jp/wp/wp-content/uploads/2025/02/2ceab2c5a825d2279d289b5f15add4bd.pdf",
-    "originalDocument": "research/media/round-seven-root/references/authent-spring-2025.pdf",
     "referencePage": 2,
     "observations": "Astra viewed actual hotel Spring 2025 newsletter page and enlarged upper-right Captain's Bar panel, rendered via Poppler: tall narrow inverted-conical cocktail glass on long stem/round foot, turquoise translucent liquid, no service ice, opened small blossom inside liquid; asymmetric sugar frosting on left outer face and rim, lemon-matcha fine green/yellow specks. Checked flower identity against official recipe (salt-preserved cherry blossom).",
     "revisionPrompt": "Edit this Yukishiro photograph with exactly ONE small correction: the blossom suspended inside the blue liquid must be an opened salt-preserved SAKURA cherry blossom, with FIVE delicate slightly notched, irregular pale pink petals and subtle stamens. The current radial eight-petal flower resembles a daisy and is wrong. Make the preserved cherry blossom a little smaller, softened naturally through turquoise liquid, not a crisp white fresh daisy. Keep its same submerged middle-lower location. Preserve absolutely everything else: full conical glass, stem/foot, aqua liquid, no ice, asymmetric sugar on left outside face, fine lemon-matcha rim, natural warm dark-green bar setting, 4:3 composition. No new props or text.",
@@ -2217,7 +2216,9 @@
     "origin": "ai-styled",
     "outputReviewed": true,
     "outputReview": "Astra viewed first output and rejected daisy-like eight-petal blossom. Viewed corrected image: small five-petal notched pale-pink cherry blossom inside aqua liquid, asymmetrical left-face sugar and fine rim, no ice, complete stem and foot. Warm natural bar setting; original document lettering/bottles removed.",
-    "thumbnailFile": "assets/styled/yukishiro-thumb.jpg"
+    "thumbnailFile": "assets/styled/yukishiro-thumb.jpg",
+    "referenceFileName": "authent-spring-2025.pdf",
+    "referenceAvailability": "not-bundled"
   },
   {
     "id": "atarayo",
@@ -2237,7 +2238,6 @@
     "sourceUrl": "https://www.suntory.co.jp/wnb/event/award/result_2023.html",
     "referenceUrl": "https://bartie.jp/wp/wp-content/uploads/2024/05/BAR-TIE-%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BCvol.8.pdf",
     "referencePageUrl": "https://bartie.jp/bar/",
-    "originalDocument": "research/media/round-seven-root/references/bartie-menu-2024.pdf",
     "referencePage": 3,
     "observations": "Astra viewed actual BAR TIE May 2024 menu page 3 before generation: explicitly Calla Lily 2023 by Yuichiro Okada with matching five ingredients. Rounded/conical coupe, long slim stem and round foot; transparent golden-yellow liquid, no ice/foam. Right rim has two fine citrus loops, white carved flower, red/white radish flower, green peel support and dark olive. Page2 Uizakura is a different recipe and was not used.",
     "referenceReviewed": true,
@@ -2245,7 +2245,9 @@
     "origin": "ai-styled",
     "outputReviewed": true,
     "outputReview": "Astra viewed output: matching rounded-conical glass, full stem-foot, clear golden-yellow liquid, no ice or foam, twin citrus loops and modest red-white carving/olive garnish at right rim. Clean natural warm bar setting; menu text removed.",
-    "thumbnailFile": "assets/styled/calla-lily-thumb.jpg"
+    "thumbnailFile": "assets/styled/calla-lily-thumb.jpg",
+    "referenceFileName": "bartie-menu-2024.pdf",
+    "referenceAvailability": "not-bundled"
   },
   {
     "sourceUrl": "https://www.suntory.co.jp/wnb/event/award/result_2024.html",

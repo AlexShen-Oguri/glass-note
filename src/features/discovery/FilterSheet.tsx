@@ -12,7 +12,7 @@ import {colors, radii} from '../../theme/tokens';
 import {serif, useViewport} from './components';
 import {lib} from '../../i18n/library';
 import {Heading} from '../navigation/Heading';
-import {p02DiscoveryText} from '../../i18n/p02-discovery';
+import {discoveryText} from '../../i18n/discovery';
 import IngredientFilters, {selectedIngredientSummary} from './IngredientFilters';
 
 const flavours: Flavour[] = ['citrus', 'fruit', 'floral', 'herbal', 'spice', 'coffee'];
@@ -86,14 +86,14 @@ function OptionalGroup<T extends string>({
   note?: string;
 }) {
   const selectedLabels = (selected ?? []).map(label);
-  const action = p02DiscoveryText(locale, expanded ? 'hideOptions' : 'showOptions');
+  const action = discoveryText(locale, expanded ? 'hideOptions' : 'showOptions');
   return (
     <View style={styles.optionalGroup}>
       <Pressable
         aria-expanded={expanded}
         accessibilityRole="button"
         accessibilityState={{expanded}}
-        accessibilityLabel={`${title}. ${selectedLabels.length} ${p02DiscoveryText(locale, 'selected')}. ${action}`}
+        accessibilityLabel={`${title}. ${selectedLabels.length} ${discoveryText(locale, 'selected')}. ${action}`}
         onPress={() => onExpandedChange(!expanded)}
         style={({pressed}) => [styles.groupToggle, pressed && styles.pressed]}
       >
@@ -118,11 +118,11 @@ function OptionalGroup<T extends string>({
 }
 
 function DisclosureGroup({title, summary, expanded, onExpandedChange, locale, children}: {title: string; summary: readonly string[]; expanded: boolean; onExpandedChange: (expanded: boolean) => void; locale: Locale; children: React.ReactNode}) {
-  const action = p02DiscoveryText(locale, expanded ? 'hideOptions' : 'showOptions');
+  const action = discoveryText(locale, expanded ? 'hideOptions' : 'showOptions');
   return (
     <View style={styles.optionalGroup}>
       <Pressable aria-expanded={expanded} accessibilityRole="button" accessibilityState={{expanded}}
-        accessibilityLabel={`${title}. ${summary.length} ${p02DiscoveryText(locale, 'selected')}. ${action}`}
+        accessibilityLabel={`${title}. ${summary.length} ${discoveryText(locale, 'selected')}. ${action}`}
         onPress={() => onExpandedChange(!expanded)} style={({pressed}) => [styles.groupToggle, pressed && styles.pressed]}>
         <View style={styles.groupToggleCopy}>
           <Heading level={3} style={styles.groupTitle}>{title}</Heading>
@@ -203,8 +203,8 @@ export default function FilterSheet({
           <View style={styles.handle} />
           <View style={styles.header}>
             <View style={styles.headerCopy}>
-              <Heading level={2} style={styles.title}>{p02DiscoveryText(locale, 'filterTitle')}</Heading>
-              <Text style={styles.hint}>{p02DiscoveryText(locale, 'filterHint')}</Text>
+              <Heading level={2} style={styles.title}>{discoveryText(locale, 'filterTitle')}</Heading>
+              <Text style={styles.hint}>{discoveryText(locale, 'filterHint')}</Text>
             </View>
             <Pressable ref={closeButtonRef as never} accessibilityRole="button" accessibilityLabel={t(locale, 'close')} onPress={onClose} style={styles.closeButton}>
               <Text style={styles.closeText}>×</Text>
@@ -231,7 +231,7 @@ export default function FilterSheet({
             <OptionalGroup locale={locale} title={t(locale, 'strength')} values={strengths} selected={draft.strengths} label={(value) => keyed('strength', value)} onToggle={(value) => onChange({...draft, strengths: toggle(draft.strengths, value)})} expanded={expanded.strength} onExpandedChange={(value) => setExpanded((current) => ({...current, strength: value}))} />
             <OptionalGroup locale={locale} title={t(locale, 'approachability')} values={approaches} selected={draft.approachability} label={(value) => keyed('approach', value)} onToggle={(value) => onChange({...draft, approachability: toggle(draft.approachability, value)})} expanded={expanded.approachability} onExpandedChange={(value) => setExpanded((current) => ({...current, approachability: value}))} />
             <OptionalGroup locale={locale} title={t(locale, 'exclude')} values={exclusions} selected={draft.excluded} label={(value) => value === 'egg' || value === 'dairy' ? keyed('exclude', value) : keyed('base', value)} onToggle={(value) => onChange({...draft, excluded: toggle(draft.excluded, value)})} expanded={expanded.excluded} onExpandedChange={(value) => setExpanded((current) => ({...current, excluded: value}))} note={t(locale, 'exclusionNote')} />
-            <OptionalGroup locale={locale} title={p02DiscoveryText(locale, 'preparation')} values={['documented']} selected={draft.preparationDisclosed ? ['documented'] : undefined} label={() => lib(locale, 'documented')} onToggle={() => onChange({...draft, preparationDisclosed: !draft.preparationDisclosed})} expanded={expanded.preparation} onExpandedChange={(value) => setExpanded((current) => ({...current, preparation: value}))} />
+            <OptionalGroup locale={locale} title={discoveryText(locale, 'preparation')} values={['documented']} selected={draft.preparationDisclosed ? ['documented'] : undefined} label={() => lib(locale, 'documented')} onToggle={() => onChange({...draft, preparationDisclosed: !draft.preparationDisclosed})} expanded={expanded.preparation} onExpandedChange={(value) => setExpanded((current) => ({...current, preparation: value}))} />
           </ScrollView>
           <View style={styles.footer}>
             <Pressable accessibilityRole="button" onPress={onReset} style={({pressed}) => [styles.resetButton, pressed && styles.pressed]}>

@@ -14,27 +14,6 @@ exports.checkDepth = depth => {
 };
 `;
 
-// Byte-identical rsa.js post-image from digitalbazaar/forge PR #1157,
-// commit 683ab3344899cc08a581e4d5675a33e87aff7b04 (includes PR #1152).
-// Upstream copyright/licence notices remain in node-forge; see notices.
-const forgeBefore = `          // validate DigestInfo structure and element count
-          var capture = {};
-          var errors = [];
-          if(!asn1.validate(obj, digestInfoValidator, capture, errors) ||
-            obj.value.length !== 2) {`;
-const forgeAfter = `          // validate DigestInfo structure and element counts (outer DigestInfo
-          // and nested DigestAlgorithm). asn1.validate ignores extra children,
-          // so length must be checked explicitly at each nesting level to
-          // prevent low-exponent PKCS#1 v1.5 signature forgery (CVE-2026-85393).
-          // ASN.1 NULL parameters must also be empty, not unchecked bytes.
-          var capture = {};
-          var errors = [];
-          if(!asn1.validate(obj, digestInfoValidator, capture, errors) ||
-            obj.value.length !== 2 ||
-            obj.value[0].value.length !==
-              (('parameters' in capture) ? 2 : 1) ||
-            ('parameters' in capture && capture.parameters !== '')) {`;
-
 const guardedWalk = source => source
   .replace('const walk = (node, parent = {}) => {', 'const walk = (node, parent = {}, depth = 0) => {\n    utils.checkDepth(depth);')
   .replace('walk(child, node);', 'walk(child, node, depth + 1);');
@@ -55,10 +34,6 @@ export const securityPatches = [
         .replace('const flat = arr => {', 'const flat = (arr, depth = 0) => {\n    exports.checkDepth(depth);')
         .replace('flat(ele);', 'flat(ele, depth + 1);') + depthGuard},
     ],
-  },
-  {
-    name: 'node-forge', version: '1.4.0', advisory: 'GHSA-86w9-cpqp-85rv',
-    files: [{file: 'lib/rsa.js', before: 'fd4740238145ec26470eb3f06a627c72039538ce1307dbdce40521f94dfd0a50', after: '22cdfb3220439533211cf00ff7c7e6605607761d77a2c3c263411d4c70798c4f', transform: source => source.replace(forgeBefore, forgeAfter)}],
   },
 ];
 

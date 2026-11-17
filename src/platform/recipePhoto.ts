@@ -1,11 +1,8 @@
-import {launchImageLibraryAsync,type ImagePickerResult} from 'expo-image-picker';
 import {ImageManipulator,SaveFormat} from 'expo-image-manipulator';
-import {File,Paths} from 'expo-file-system';
-import {Platform} from 'react-native';
 import {MAX_PHOTO_CHARACTERS,validateRecipePhoto} from '../domain/private-recipes/photo';
 
 export async function chooseRecipePhoto():Promise<string|null>{
-  const result=Platform.OS==='web'?await chooseWebPhoto():await launchImageLibraryAsync({mediaTypes:['images'],allowsEditing:false,allowsMultipleSelection:false,exif:false,quality:1});
+  const result=await chooseWebPhoto();
   if(result.canceled)return null;
   const asset=result.assets[0];if(!asset||asset.width<=0||asset.height<=0||asset.width*asset.height>60_000_000||(asset.fileSize??0)>25_000_000)throw Error('photo-too-large');
   const context=ImageManipulator.manipulate(asset.uri);
@@ -16,16 +13,16 @@ export async function chooseRecipePhoto():Promise<string|null>{
     try{
       for(const compress of [0.7,0.45,0.25]){
         const saved=await rendered.saveAsync({format:SaveFormat.JPEG,compress,base64:true});
-        try{const data=`data:image/jpeg;base64,${saved.base64??''}`;if(data.length<=MAX_PHOTO_CHARACTERS)return validateRecipePhoto(data);}
-        finally{if(Platform.OS!=='web'&&saved.uri.startsWith(Paths.cache.uri)){const temporary=new File(saved.uri);if(temporary.exists)temporary.delete();}}
+        const data=`data:image/jpeg;base64,${saved.base64??''}`;if(data.length<=MAX_PHOTO_CHARACTERS)return validateRecipePhoto(data);
       }
       throw Error('photo-too-large');
     }finally{rendered.release();}
-  }finally{context.release();if(Platform.OS==='web')URL.revokeObjectURL(asset.uri);}
+  }finally{context.release();URL.revokeObjectURL(asset.uri);}
 }
 
 // Same browser file-input pattern as labFiles.web; a real click preserves user activation.
-function chooseWebPhoto():Promise<ImagePickerResult>{
+type WebPhotoResult={canceled:true;assets:null}|{canceled:false;assets:{uri:string;width:number;height:number;fileSize:number}[]};
+function chooseWebPhoto():Promise<WebPhotoResult>{
   return new Promise((resolve,reject)=>{
     const input=document.createElement('input');input.type='file';input.accept='image/jpeg,image/png,image/webp';
     let settled=false,reading=false,timer:ReturnType<typeof setTimeout>|undefined;

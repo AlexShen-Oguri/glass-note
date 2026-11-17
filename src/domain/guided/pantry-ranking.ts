@@ -11,6 +11,7 @@ import {
   type OwnedVersionMatch,
 } from '../ingredients/presence';
 import type {Pantry} from '../ingredients/types';
+import {compileMaterialResolver} from '../ingredients/canonical';
 import {searchCocktails} from '../search';
 import type {TasteState} from '../taste';
 
@@ -38,12 +39,13 @@ export function rankForPantry(
   const versions = new Map(catalogue.versions.map((version) => [version.id, version]));
   const cocktails = new Map(catalogue.cocktails.map((cocktail) => [cocktail.id, cocktail]));
   const candidates: CocktailCandidates[] = [];
+  const resolver=compileMaterialResolver(catalogue);
 
   for (const searched of searchCocktails(catalogue, query)) {
     const eligible = searched.versionIds.flatMap((versionId) => {
       const version = versions.get(versionId);
       if (!version) return [];
-      const match = evaluateOwnedVersion(catalogue, version, pantry);
+      const match = evaluateOwnedVersion(catalogue, version, pantry, resolver);
       return match && match.missingIngredientIds.length < 3 ? [match] : [];
     });
     if (eligible.length === 0) continue;

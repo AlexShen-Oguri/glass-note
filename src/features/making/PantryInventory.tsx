@@ -4,10 +4,12 @@ import {Link} from 'expo-router';
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import {catalogue} from '../../content/catalogue';
 import {bottles} from '../../content/bottles';
-import {ingredientEntries, filterIngredientEntries} from '../../domain/ingredients';
+import {filterIngredientEntries} from '../../domain/ingredients';
+import {canonicalIngredientEntries,canonicalIngredientId,canonicalOwned} from '../../domain/ingredients/canonical';
 import {bottleDisplayName} from '../../domain/bottles/format';
 import {makingText} from '../../i18n/making';
-import {p02PantryText} from '../../i18n/p02-pantry';
+import {pantryText} from '../../i18n/pantry';
+import {materialText} from '../../i18n/materials';
 import {useApp} from '../../platform/AppProvider';
 import {usePantry} from '../../platform/PantryProvider';
 import {useBottles} from '../../platform/BottleProvider';
@@ -18,23 +20,24 @@ import {Heading} from '../navigation/Heading';
 import {serif} from '../discovery/components';
 import {Action, type MakingCopy} from './ui';
 
-const entries = ingredientEntries(catalogue);
+const entries = canonicalIngredientEntries(catalogue);
 const familiar = [...entries].sort((a,b) => b.cocktailIds.length - a.cocktailIds.length);
 
 /** Ownership is the first task; measurements belong to each ingredient's details. */
 export function PantryInventory({disabled, onFindDrinks}: {disabled:boolean;onFindDrinks:()=>void}) {
   const {locale} = useApp();
   const pantry = usePantry(), owned = useBottles();
-  const p = (key:Parameters<typeof p02PantryText>[1],values?:Record<string,string|number>) => p02PantryText(locale,key,values);
+  const p = (key:Parameters<typeof pantryText>[1],values?:Record<string,string|number>) => pantryText(locale,key,values);
   const copy:MakingCopy = (key,values) => makingText(locale,key,values);
   const [adding,setAdding] = useState(false), [query,setQuery] = useState(''), [addQuery,setAddQuery] = useState('');
   const [openId,setOpenId] = useState<string>();
   const [limit,setLimit] = useState(12), [addLimit,setAddLimit] = useState(12), [bottleLimit,setBottleLimit] = useState(12);
   const [bottlesOpen,setBottlesOpen] = useState(false);
   const ownedBottles = useMemo(() => bottles.filter(bottle=>owned.ids.includes(bottle.id)),[owned.ids]);
-  const bottleIngredients = useMemo(() => new Set(ownedBottles.flatMap(bottle=>bottle.ingredientIds)),[ownedBottles]);
-  const materialIds = useMemo(() => new Set([...pantry.pantry.ingredientIds,...bottleIngredients]),[pantry.pantry.ingredientIds,bottleIngredients]);
+  const bottleIngredients = useMemo(() => new Set(ownedBottles.flatMap(bottle=>bottle.ingredientIds).map(id=>canonicalIngredientId(catalogue,id))),[ownedBottles]);
+  const materialIds = useMemo(() => new Set([...pantry.pantry.ingredientIds.map(id=>canonicalIngredientId(catalogue,id)),...bottleIngredients]),[pantry.pantry.ingredientIds,bottleIngredients]);
   const mine = useMemo(() => entries.filter(entry=>materialIds.has(entry.ingredient.id)),[materialIds]);
+  const unknownIds=useMemo(()=>pantry.pantry.ingredientIds.filter(id=>!catalogue.ingredients.some(item=>item.id===id)),[pantry.pantry.ingredientIds]);
   const results = useMemo(() => filterIngredientEntries(mine,catalogue,query,locale),[mine,query,locale]);
   const additions = useMemo(() => addQuery.trim() ? filterIngredientEntries(entries,catalogue,addQuery,locale) : familiar,[addQuery,locale]);
   // Read failures must not look like an empty cabinet. The screen owns the retry notice.
@@ -50,7 +53,7 @@ export function PantryInventory({disabled, onFindDrinks}: {disabled:boolean;onFi
         </View>
         {mine.length>6 || query ? <SearchField label={p('searchOwned')} value={query} disabled={disabled} onChange={value=>{setQuery(value);setLimit(12);}}/> : null}
         <View style={styles.list}>{results.slice(0,limit).map(({ingredient})=>{
-          const id=ingredient.id, direct=pantry.pantry.ingredientIds.includes(id), derived=bottleIngredients.has(id);
+          const id=ingredient.id, direct=canonicalOwned(catalogue,pantry.pantry,id), derived=bottleIngredients.has(id);
           const expanded=openId===id, name=ingredient.name[locale]||ingredient.name.en;
           return <View key={id} style={styles.item}>
             <Pressable accessibilityRole="button" accessibilityLabel={name} accessibilityState={{expanded,disabled}}
@@ -66,8 +69,8 @@ export function PantryInventory({disabled, onFindDrinks}: {disabled:boolean;onFi
               {derived?<Text style={styles.meta}>{p('retainedFromBottle')}</Text>:null}
               {direct?<View style={styles.removeRow}>
                 <Action label={p(derived?'removeMaterialOnly':'removeMaterial')} danger disabled={disabled}
-                  onPress={()=>{pantry.toggleIngredient(id);setOpenId(undefined);}}/>
-              </View>:<Link href={{pathname:'/bottles',params:{ingredient:id}}} asChild><Pressable accessibilityRole="link" style={styles.textLink}><Text style={styles.linkText}>{p('manageBottles')}</Text></Pressable></Link>}
+                  onPress={()=>{pantry.toggleCanonicalIngredient(id);setOpenId(undefined);}}/>
+              </View>:<Link href={{pathname:'/bottles',params:{concept:id}}} asChild><Pressable accessibilityRole="link" style={styles.textLink}><Text style={styles.linkText}>{p('manageBottles')}</Text></Pressable></Link>}
             </View>:null}
           </View>;
         })}</View>
@@ -80,6 +83,11 @@ export function PantryInventory({disabled, onFindDrinks}: {disabled:boolean;onFi
         <Action primary label={p('addIngredients')} disabled={disabled} onPress={()=>setAdding(true)}/>
       </View>}
 
+      {unknownIds.length?<View style={styles.unknownSection}>
+        <Heading level={2} style={styles.sectionTitle}>{materialText(locale,'unknownMaterials')} · {unknownIds.length}</Heading>
+        <Text style={styles.emptyText}>{materialText(locale,'unknownHint')}</Text>
+        {unknownIds.map(id=><Text key={id} style={styles.name}>{id}</Text>)}
+      </View>:null}
       <View style={styles.bottleSection}>
         <View style={styles.topline}>
           {ownedBottles.length?<Pressable accessibilityRole="button" accessibilityState={{expanded:bottlesOpen}} onPress={()=>setBottlesOpen(value=>!value)} style={styles.textLink}>
@@ -101,7 +109,7 @@ export function PantryInventory({disabled, onFindDrinks}: {disabled:boolean;onFi
         const present=materialIds.has(ingredient.id), name=ingredient.name[locale]||ingredient.name.en;
         return <View key={ingredient.id} style={styles.addRow}><IngredientPicture ingredient={ingredient} size={40}/><Text style={[styles.name,styles.grow]}>{name}</Text>
           <Pressable accessibilityRole="button" accessibilityLabel={`${p(present?'added':'add')} ${name}`} accessibilityState={{disabled:disabled||present}} disabled={disabled||present}
-            onPress={()=>{if(!materialIds.has(ingredient.id))pantry.toggleIngredient(ingredient.id);}} style={({pressed})=>[styles.addButton,present&&styles.added,pressed&&styles.pressed]}>
+            onPress={()=>{if(!materialIds.has(ingredient.id))pantry.toggleCanonicalIngredient(ingredient.id);}} style={({pressed})=>[styles.addButton,present&&styles.added,pressed&&styles.pressed]}>
             <Text style={present?styles.meta:styles.linkText}>{p(present?'added':'add')}</Text>
           </Pressable>
         </View>;
@@ -119,6 +127,7 @@ function SearchField({label,value,onChange,disabled=false}:{label:string;value:s
 }
 
 const styles=StyleSheet.create({
+  unknownSection:{gap:10,paddingVertical:16},
   root:{gap:20},hidden:{display:'none'},topline:{flexDirection:'row',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12},
   sectionTitle:{fontFamily:serif,fontSize:23,lineHeight:30,color:colors.text,fontWeight:'400'},emptyTitle:{fontFamily:serif,fontSize:32,lineHeight:42,color:colors.text,fontWeight:'400'},
   empty:{width:'100%',maxWidth:760,alignItems:'flex-start',gap:17,paddingVertical:32,paddingHorizontal:24,borderTopWidth:1,borderBottomWidth:1,borderColor:colors.border},emptyText:{fontSize:14,lineHeight:23,color:colors.secondary},

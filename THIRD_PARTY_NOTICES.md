@@ -6,9 +6,9 @@ The MIT licence in `LICENSE` applies to original application code owned by AlexS
 
 JavaScript dependencies are pinned in `package-lock.json`; Rust dependencies are pinned in `src-tauri/Cargo.lock`. They retain their upstream licences. Installed package licences and notices must accompany any distribution where those terms require them.
 
-`scripts/patch-dependency-security.mjs` contains a temporary RSA validation backport from [Digital Bazaar Forge PR #1157](https://github.com/digitalbazaar/forge/pull/1157), commit `683ab3344899cc08a581e4d5675a33e87aff7b04`, including Cristhian Hernandez's [PR #1152](https://github.com/digitalbazaar/forge/pull/1152) and itsalexfer's NULL-parameter supplement. The backported code is used under Forge's BSD 3-clause option; the original source headers and installed package licence remain intact. The project-written Braces depth guard is separate original code; Braces retains Jon Schlinkert's MIT licence in the installed package.
+Version 1.1.0 uses the upstream Forge release under the BSD 3-clause option and preserves its installed licence and source headers. The earlier RSA validation backport came from [Digital Bazaar Forge PR #1157](https://github.com/digitalbazaar/forge/pull/1157), commit `683ab3344899cc08a581e4d5675a33e87aff7b04`, including Cristhian Hernandez's [PR #1152](https://github.com/digitalbazaar/forge/pull/1152) and itsalexfer's NULL-parameter supplement. The project-written Braces depth guard is original code. Braces retains Jon Schlinkert's MIT licence in the installed package.
 
-The Forge backport retains these terms:
+Forge retains these terms:
 
 > Copyright (c) 2010, Digital Bazaar, Inc.
 > All rights reserved.
@@ -39,7 +39,7 @@ Web motion uses [GSAP](https://gsap.com/) and [@gsap/react](https://github.com/g
 
 ## Ingredient database
 
-The derived Open Food Facts ingredient dataset and its editorial overlays retain the database terms described in [ingredient notes](src/content/ingredients/README.md): ODbL 1.0 and the Database Contents License. Source revision and source record identifiers remain in the data. The upstream server-code licence retained in `research/ingredients/round-six/openfoodfacts-server-LICENSE.txt` is not a substitute for the database licence.
+The derived Open Food Facts ingredient dataset and its editorial overlays retain the database terms described in [ingredient notes](src/content/ingredients/README.md): ODbL 1.0 and the Database Contents License. Source revision and source record identifiers remain in the data. The upstream server-code licence retained in `research/ingredients/open-food-facts/openfoodfacts-server-LICENSE.txt` is not a substitute for the database licence.
 
 ## Photographs and product images
 

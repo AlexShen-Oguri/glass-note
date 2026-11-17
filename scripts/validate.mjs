@@ -1,6 +1,6 @@
 import {fileURLToPath} from 'node:url';
-import {runValidation} from './workflow-validation.mjs';
-const steps=[['typecheck',['node_modules/typescript/bin/tsc','--noEmit']],['test',['--import','tsx','--test',...['src/domain/search','src/domain/discovery','src/domain/bottles','src/domain/guided','src/domain/context','src/domain/ingredients','src/domain/private-recipes','src/domain/backup','src/domain/making','src/domain/taste','src/domain/order','src/i18n','src/content','src/content/localization','src/platform'].map(path=>`${path}/*.test.ts`),'scripts/*.test.mjs']],['web',['scripts/expo.mjs','export','--platform','web']],['ios',['scripts/expo.mjs','export','--platform','ios','--output-dir','dist-ios']]];
+import {runValidation} from './validation-runner.mjs';
+const steps=[['typecheck',['node_modules/typescript/bin/tsc','--noEmit']],['test',['--import','tsx','--test',...['src/domain/search','src/domain/discovery','src/domain/bottles','src/domain/guided','src/domain/context','src/domain/ingredients','src/domain/private-recipes','src/domain/backup','src/domain/making','src/domain/shopping','src/domain/taste','src/domain/order','src/i18n','src/content','src/content/localization','src/platform'].map(path=>`${path}/*.test.ts`),'scripts/*.test.mjs']],['web',['scripts/expo.mjs','export','--platform','web']],['browser',['scripts/browser.mjs','test']]];
 const controller = new AbortController();
 const interrupt = () => controller.abort();
 process.once('SIGINT', interrupt);

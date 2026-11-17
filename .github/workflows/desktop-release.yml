@@ -32,6 +32,9 @@ jobs:
         with:
           node-version: '24'
           cache: npm
+      - name: Check Windows release-tool portability before installing dependencies
+        if: runner.os == 'Windows' && hashFiles('scripts/public-release.test.mjs') != ''
+        run: node --test scripts/public-release.test.mjs
       - uses: dtolnay/rust-toolchain@89b12181fb390509a0842a86cc55eeb8eb928c1d # stable
         with:
           targets: ${{ runner.os == 'macOS' && 'aarch64-apple-darwin,x86_64-apple-darwin' || 'x86_64-pc-windows-msvc' }}
@@ -40,6 +43,16 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run desktop:prepare
+      - run: npm run browser:install
+      - run: npm run test:e2e
+      - name: Preserve failed browser traces and screenshots
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: glass-notes-e2e-${{ env.DESKTOP_PLATFORM }}
+          path: artifacts/e2e/
+          retention-days: 7
+          if-no-files-found: warn
       - run: npm run desktop:test -- --release --target ${{ env.DESKTOP_TEST_TARGET }} --locked
       - id: desktop-build
         run: npm run desktop:build -- --target ${{ env.DESKTOP_TARGET }} -- --locked

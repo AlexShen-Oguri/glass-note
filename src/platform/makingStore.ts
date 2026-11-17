@@ -33,7 +33,7 @@ export class MakingStore {
   change=(fn:(value:MakingState)=>MakingState):Promise<boolean>=>{
     const run=this.queue.catch(()=>undefined).then(async()=>{
       if(!this.snapshot.hydrated||this.snapshot.error) return false;
-      const next=validateMakingState(fn(this.snapshot.state));
+      const next=validateMakingState({...fn(this.snapshot.state),schemaVersion:2});
       if(utf8ByteLength(JSON.stringify(next))>5_000_000)throw Error('making-too-large');
       this.update({...this.snapshot,state:next});return this.persist();
     });this.queue=run;return run;

@@ -25,7 +25,7 @@ test('the installed query parser uses the canonical fixed decoder and preserves 
   const decoderPath = queryRequire.resolve('decode-uri-component');
   const manifest = JSON.parse(readFileSync(new URL('./package.json', pathToFileURL(decoderPath)), 'utf8'));
   assert.equal(manifest.name, 'decode-uri-component');
-  assert.equal(manifest.version, '0.5.0');
+  assert.equal(manifest.version, '0.5.1');
   const input = 'q=%E9%85%92&name=Gin+Fizz&tag=citrus&tag=herbal&empty=&flag';
   const expected = {q: '酒', name: 'Gin Fizz', tag: ['citrus', 'herbal'], empty: '', flag: null};
   assert.deepEqual({...query.parse(input)}, expected);
@@ -60,8 +60,8 @@ test('malformed encoded queries finish in a bounded child process', () => {
   assert.equal(result.status, 0, result.stderr);
 });
 
-test('both UUID consumers resolve a fixed CommonJS API with checked output buffers', () => {
-  for (const parent of ['xcode', '@expo/ngrok']) {
+test('the Expo CLI UUID consumer resolves a fixed CommonJS API with checked output buffers', () => {
+  for (const parent of ['xcode']) {
     const consumerRequire = createRequire(require.resolve(parent));
     assert.equal(consumerRequire('uuid/package.json').version, '11.1.1');
     const uuid = consumerRequire('uuid');
@@ -77,18 +77,15 @@ test('both UUID consumers resolve a fixed CommonJS API with checked output buffe
   }
 });
 
-test('Xcode IDs and the optional tunnel helper still load without opening a tunnel', () => {
+test('Expo CLI Xcode IDs still load with the fixed UUID API', () => {
   const project = require('xcode').project('unused-test-project.pbxproj');
   project.hash = {project: {objects: {PBXGroup: {}}}};
   assert.match(project.generateUuid(), /^[A-F0-9]{24}$/);
-  const ngrok = require('@expo/ngrok');
-  assert.equal(typeof ngrok.connect, 'function');
-  assert.equal(ngrok.getUrl(), null);
 });
 
 test('fixed Sharp native libraries preserve image generation and reject unreadable input', async () => {
   const sharp = require('sharp');
-  assert.equal(sharp.versions.sharp, '0.35.4');
+  assert.equal(sharp.versions.sharp, '0.35.5');
   const source = Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><rect width="24" height="24" fill="#101714"/></svg>');
   for (const format of ['png', 'jpeg', 'webp']) {
     const image = await sharp(source).resize(16).toFormat(format).toBuffer();
@@ -98,4 +95,58 @@ test('fixed Sharp native libraries preserve image generation and reject unreadab
     assert.equal(metadata.format, format);
   }
   await assert.rejects(sharp(Buffer.from('not an image')).metadata());
+});
+
+// Regresses GHSA-mrhx-c7xc-m3w5 through the exact Zod installation used by Expo.
+test('Expo CLI Zod rejects oversized constrained collections before walking their elements', async () => {
+  const expoRequire = createRequire(require.resolve('expo/package.json'));
+  const cliRequire = createRequire(expoRequire.resolve('@expo/cli/package.json'));
+  const {z} = cliRequire('zod');
+  let parsed = 0;
+  const element = z.preprocess(value => {parsed++; return value;}, z.string());
+  const invalid = Array.from({length: 1000}, (_, index) => index);
+  for (const [schema, input] of [
+    [() => z.array(element).max(2), invalid],
+    [() => z.array(element).length(2), invalid],
+    [() => z.set(element).max(2), new Set(invalid)],
+    [() => z.map(element, element).max(2), new Map(invalid.map(value => [value, value]))],
+  ]) {
+    const result = schema().safeParse(input);
+    assert.equal(result.success, false);
+    assert.equal(parsed, 0, 'an oversized collection must not invoke element parsing');
+    assert.equal(result.error.issues.length, 1);
+    assert.equal(result.error.issues[0].code, 'too_big');
+  }
+  assert.deepEqual(z.array(z.string()).max(2).parse(['gin']), ['gin']);
+  assert.equal((await z.array(z.string()).max(2).safeParseAsync(invalid)).error.issues.length, 1);
+});
+
+test('Expo devtools plugin, output and generated command schemas preserve validation with fixed Zod', () => {
+  const expoRequire = createRequire(require.resolve('expo/package.json'));
+  const cliRequire = createRequire(expoRequire.resolve('@expo/cli/package.json'));
+  const {PluginSchema, DevToolsPluginOutputSchema} = cliRequire('./build/src/start/server/DevToolsPlugin.schema.js');
+  const {createMCPDevToolsExtensionSchema} = cliRequire('./build/src/start/server/createMCPDevToolsExtensionSchema.js');
+  const plugin = {
+    packageName: 'glass-notes-synthetic-plugin', packageRoot: '/synthetic',
+    bannerTitle: false, cliExtensions: {description: 'Synthetic commands', entryPoint: 'index.js', commands: [
+      {name: 'inspect', title: 'Inspect', environments: ['cli', 'mcp'], parameters: [
+        {name: 'name', type: 'text'}, {name: 'count', type: 'number'}, {name: 'enabled', type: 'confirm'},
+      ]},
+    ]},
+  };
+  const parsed = PluginSchema.parse(plugin);
+  assert.deepEqual(parsed, plugin);
+  assert(Object.isFrozen(parsed.cliExtensions.commands[0].environments));
+  assert.equal(PluginSchema.safeParse({...plugin, packageName: ''}).success, false);
+  assert.equal(PluginSchema.safeParse({...plugin, cliExtensions: {...plugin.cliExtensions, commands: []}}).success, false);
+  const schema = createMCPDevToolsExtensionSchema(parsed);
+  const command = {command: 'inspect', name: 'gin', count: 2, enabled: true};
+  assert.deepEqual(schema.parse(command), command);
+  for (const invalid of [{...command, command: 'unknown'}, {...command, count: '2'}, {...command, enabled: 'yes'}, {...command, extra: true}]) {
+    assert.equal(schema.safeParse(invalid).success, false);
+  }
+  const output = [{type: 'text', text: 'OK', level: 'info'}, {type: 'audio', url: 'https://example.invalid/audio'}, {type: 'image', url: 'https://example.invalid/image'}];
+  assert.deepEqual(DevToolsPluginOutputSchema.parse(output), output);
+  assert.equal(DevToolsPluginOutputSchema.safeParse([{type: 'audio', url: 'invalid'}]).success, false);
+  assert.equal(DevToolsPluginOutputSchema.safeParse([{type: 'text', text: 'OK', level: 'unknown'}]).success, false);
 });

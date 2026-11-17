@@ -1,5 +1,6 @@
 import {desktopRuntime} from './desktopRuntime';
 import {createDesktopLabFiles} from './desktopLabFiles';
+import {BACKUP_LIMIT,BACKUP_SECTION_LIMIT} from '../domain/backup/types';
 
 const desktopFiles = createDesktopLabFiles(desktopRuntime);
 
@@ -13,8 +14,9 @@ export async function saveLabFile(content: string, extension: 'json' | 'md'): Pr
   setTimeout(() => URL.revokeObjectURL(url), 30000);
   return true;
 }
-export function readLabFile(): Promise<string | null> {
-  if (desktopRuntime.isDesktop()) return desktopFiles.read();
+export function readLabFile(kind:'lab'|'backup'='lab'): Promise<string | null> {
+  const limit=kind==='backup'?BACKUP_LIMIT:BACKUP_SECTION_LIMIT;
+  if (desktopRuntime.isDesktop()) return createDesktopLabFiles(desktopRuntime,kind).read();
   return new Promise((resolve, reject) => {
     const input = document.createElement('input');
     input.type = 'file'; input.accept = '.json,application/json';
@@ -28,7 +30,7 @@ export function readLabFile(): Promise<string | null> {
       reading=true;
       const file = input.files?.[0];
       if (!file) return done(null);
-      if (file.size > 5_000_000) {fail(new Error('file-too-large'));return;}
+      if (file.size > limit) {fail(new Error('file-too-large'));return;}
       try {done(await file.text());} catch (error) {fail(error);}
     };
     window.addEventListener('focus',focus);

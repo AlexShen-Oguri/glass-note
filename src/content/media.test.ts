@@ -12,9 +12,9 @@ test('every catalogue drink ships a reviewed image and a smaller local thumbnail
   const expected = catalogue.cocktails.map(({id}) => id).sort();
   assert.deepEqual(assets.map(({id}) => id).sort(), expected);
   const mainIndex = readFileSync(new URL('../media/index.ts', import.meta.url), 'utf8');
-  assert.ok(mainIndex.includes("import {expansionMedia} from './expansion-100'"));
-  assert.ok(mainIndex.includes('...expansionMedia'));
-  const index = mainIndex + readFileSync(new URL('../media/expansion-100.ts', import.meta.url), 'utf8');
+  assert.ok(mainIndex.includes("import {cocktailIllustrations} from './cocktail-illustrations'"));
+  assert.ok(mainIndex.includes('...cocktailIllustrations'));
+  const index = mainIndex + readFileSync(new URL('../media/cocktail-illustrations.ts', import.meta.url), 'utf8');
   for (const asset of assets) {
     assert.equal(asset.referenceReviewed, true, `${asset.id}: unreviewed reference`);
     assert.equal(asset.outputReviewed, true, `${asset.id}: unreviewed output`);

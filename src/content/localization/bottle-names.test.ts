@@ -7,7 +7,7 @@ import {bottleDisplayName, bottleSearchNames} from '../../domain/bottles/format'
 import {applyBottleNames, reviewedBottleNames} from './bottle-names';
 
 test('every published bottle translation maps to a real product and recorded name evidence', async () => {
-  const evidence = JSON.parse(await readFile(new URL('../../../research/localization/p02/bottle-name-evidence.json', import.meta.url), 'utf8'));
+  const evidence = JSON.parse(await readFile(new URL('../../../research/localization/bottle-name-evidence.json', import.meta.url), 'utf8'));
   // This test file lives in src/content/localization; evidence is at the repository root.
   for (const [id, names] of Object.entries(reviewedBottleNames)) {
     const bottle = bottles.find(value => value.id === id);

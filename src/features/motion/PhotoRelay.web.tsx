@@ -126,7 +126,12 @@ export function MotionPhotoRelay({changeKey}: {changeKey: string}) {
       if (pending.current?.source === source) return;
       capture(source);
     };
-    const history = () => {if(!pending.current)capture(recipePhoto());};
+    const history = () => {
+      // popstate may run after the retained destination is already visible.
+      // A recipe reached from a utility page is the live destination, not a
+      // departing photo that should be captured and concealed for a relay.
+      if (!pending.current && !window.location.pathname.startsWith('/cocktails/')) capture(recipePhoto());
+    };
     // Destination geometry is measured once. A moving viewport immediately
     // hands presentation back to the live photo instead of landing stale pixels.
     // Keep the pre-launch capture through the route's own scroll restoration.

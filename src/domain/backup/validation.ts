@@ -1,6 +1,7 @@
 import {parseLabBackup, utf8ByteLength} from '../lab';
 import {validatePrivateRecipeBook} from '../private-recipes';
 import {validateTasteState} from '../taste';
+import {validateShoppingState} from '../shopping';
 import {validateMakingState} from '../making';
 import {validateFavoriteLists,type FavoriteList} from '../favorites';
 import type {Preferences} from '../../platform/preferences';
@@ -14,10 +15,10 @@ import {
   type ReferenceKind,
 } from './types';
 import {canonicalJson} from './canonical';
+import {rejectUnsafe} from './unsafe';
 import {BackupError, type BackupErrorCode} from './errors';
 
-const LIMITS = {nodes: 250_000, depth: 64, ids: 20_000, id: 200, name: 2_000, url: 4_096} as const;
-const DANGEROUS_KEYS = new Set(['__proto__','prototype','constructor']);
+const LIMITS = {ids: 20_000, id: 200, name: 2_000, url: 4_096} as const;
 const REFERENCE_KINDS = new Set<ReferenceKind>(['ingredient','brand','bottle','recipeVersion','source']);
 type RecordValue = Record<string,unknown>;
 
@@ -36,23 +37,6 @@ function exactKeys(value: RecordValue, required: readonly string[], optional: re
   for (const key of Object.keys(value)) if (!allowed.has(key)) fail('invalid-data',path,`unsupported property ${key}`);
 }
 
-function rejectUnsafe(value: unknown): void {
-  const pending: Array<{value:unknown;path:string;depth:number}> = [{value,path:'backup',depth:0}];
-  let nodes = 0;
-  while (pending.length) {
-    const current = pending.pop()!;
-    if (++nodes > LIMITS.nodes) fail('invalid-data','backup',`exceeds ${LIMITS.nodes} nested values`);
-    if (current.depth > LIMITS.depth) fail('invalid-data',current.path,`exceeds nesting depth ${LIMITS.depth}`);
-    if (Array.isArray(current.value)) {
-      current.value.forEach((item,index)=>pending.push({value:item,path:`${current.path}[${index}]`,depth:current.depth+1}));
-    } else if (current.value && typeof current.value === 'object') {
-      for (const key of Object.keys(current.value)) {
-        if (DANGEROUS_KEYS.has(key)) fail('unsafe-key',current.path,`unsafe property ${key}`);
-        pending.push({value:(current.value as RecordValue)[key],path:`${current.path}.${key}`,depth:current.depth+1});
-      }
-    }
-  }
-}
 
 function text(value: unknown, path: string, max: number = LIMITS.name, empty = false): string {
   if (typeof value !== 'string' || value.length > max || (!empty && value.trim().length === 0)) {
@@ -88,7 +72,7 @@ function preferences(value: unknown, path: string): Preferences {
 
 function sections(value: unknown): BackupSections {
   const item=record(value,'backup.sections');
-  exactKeys(item,BACKUP_SECTIONS.filter(s=>s!=='making'&&s!=='taste'),['making','taste'],'backup.sections');
+  exactKeys(item,BACKUP_SECTIONS.filter(s=>s!=='making'&&s!=='taste'&&s!=='shopping'),['making','taste','shopping'],'backup.sections');
 
   const preferenceSection=record(item.preferences,'backup.sections.preferences');
   exactKeys(preferenceSection,['schemaVersion','value'],[],'backup.sections.preferences');
@@ -144,6 +128,7 @@ function sections(value: unknown): BackupSections {
     privateRecipes,
     ...(item.making===undefined?{}:{making:validateMakingState(item.making)}),
     ...(item.taste===undefined?{}:{taste:validateTasteState(item.taste)}),
+    ...(item.shopping===undefined?{}:{shopping:validateShoppingState(item.shopping)}),
   };
 }
 
@@ -191,6 +176,7 @@ export function validateFullBackup(value: unknown): FullBackup {
   if(item.schemaVersion===1&&personal.sections.making)fail('invalid-data','backup.sections.making','version 1 cannot contain version 2 data');
   if(item.schemaVersion===3&&!personal.sections.taste)fail('invalid-data','backup.sections.taste','missing version 3 section');
   if(item.schemaVersion!==3&&personal.sections.taste)fail('invalid-data','backup.sections.taste','older versions cannot contain taste data');
+  if(item.schemaVersion!==3&&personal.sections.shopping)fail('invalid-data','backup.sections.shopping','older versions cannot contain shopping data');
   return {format:'glass-notes-backup',schemaVersion:item.schemaVersion,exportedAt:date(item.exportedAt,'backup.exportedAt'),...personal};
 }
 

@@ -8,6 +8,7 @@ Use Node.js 24 and a `tar` executable (included with current Windows and commonl
 
 ```sh
 npm ci
+npm run browser:install
 npm run validate
 npm run release:web
 ```

@@ -2,9 +2,9 @@ import {cp,mkdir,readFile,readdir,rm,lstat} from 'node:fs/promises';
 import {spawn} from 'node:child_process';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {checkBrand} from './check-brand.mjs';
+import {prepareBrand} from './prepare-brand.mjs';
 
-await checkBrand();
+await prepareBrand();
 
 const root=fileURLToPath(new URL('../',import.meta.url));
 if(!process.argv.includes('--use-existing')){

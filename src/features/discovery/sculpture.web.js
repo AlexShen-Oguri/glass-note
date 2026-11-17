@@ -4,6 +4,7 @@
  * No externally authored models, textures, or website assets are used.
  */
 import * as THREE from 'three';
+import {createGlassFrameBudget} from './glass-frame-budget.web.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const COMPOSITIONS = {
@@ -22,6 +23,9 @@ const AROMAS = ['citrus', 'fruit', 'floral', 'herbal', 'spice', 'coffee'];
 const AROMA_COLORS = ['#cf962d', '#ac3c5e', '#8f7bb6', '#668c6c', '#b96b32', '#70402d'].map(value => new THREE.Color(value));
 const AROMA_POSITIONS = [[-.68,.14],[.62,.35],[-.18,-.65],[.55,-.48],[-.73,-.38],[.04,.68]];
 const NEUTRAL = new THREE.Color('#b78749');
+const CLEAR = new THREE.Color('#ffffff');
+const CLEAR_OPACITY = .14;
+const MENISCUS_EMISSIVE = new THREE.Color('#ebb264');
 const CREAM = new THREE.Color('#d4b69a');
 const SWEET = new THREE.Color('#d39472');
 const SOUR = new THREE.Color('#c8bc60');
@@ -333,7 +337,7 @@ function buildCoupe() {
   liquid.renderOrder = 8;
   group.add(liquid);
 
-  // A separate level surface keeps a readable amber meniscus and crisp highlights.
+  // A separate level surface keeps a readable liquid boundary and crisp highlights.
   const surfaceMaterial = new THREE.MeshPhysicalMaterial({
     color: '#cd8828', metalness: 0, roughness: .045,
     clearcoat: 1, clearcoatRoughness: .04, envMapIntensity: .86,
@@ -455,18 +459,20 @@ export function createGlassStage(container, {reduced=false,paused=false}={}) {
   shadow.rotation.x=-Math.PI/2;shadow.position.set(0,-1.491,0);scene.add(shadow);
   let dead=false,contextLost=false,warmed=false,frameId=0,lastTime=0,elapsed=0,driftElapsed=0,tween=null,flavourTween=null;
   let isReduced=!!reduced,isPaused=!!paused,frameDistance=0;
-  let quality=Math.min(window.devicePixelRatio||1,1.6),sampledFrames=0,slowFrames=0;
+  let quality=Math.min(window.devicePixelRatio||1,1.6);
+  const frameBudget=createGlassFrameBudget(quality);
+  let drawnAt=0,awaitingPaint=false,lastRenderMs=0,lastPaintMs=0;
   const state={...COMPOSITIONS.home};
   let destination={...COMPOSITIONS.home};
   const presentation={turn:0,solidity:0,impulseX:0};
   const flavour={aromas:[],tastes:[],strength:null,approach:null};
-  const colour=new THREE.Color(NEUTRAL),colourTarget=new THREE.Color(NEUTRAL);
-  const highlight=new THREE.Color('#e7c482');
+  const colour=new THREE.Color(CLEAR),colourTarget=new THREE.Color(CLEAR);
+  const highlight=new THREE.Color(CLEAR);
   const lookAt=new THREE.Vector3(0,-.02,0);
   let waveX=0,waveZ=0,velocityX=0,velocityZ=0,ripple=0;
   let lastTurn=0,lastAngularVelocity=0,angularVelocity=0,angularAcceleration=0;
   let refreshAmount=0,creamAmount=0,refreshTarget=0,creamTarget=0;
-  let liquidOpacity=.90,opacityTarget=.90,surfaceRoughness=.045,roughnessTarget=.045;
+  let liquidOpacity=CLEAR_OPACITY,opacityTarget=CLEAR_OPACITY,surfaceRoughness=.045,roughnessTarget=.045;
   let damping=6,driftGain=1;
   const tasteWeights=new Float32Array(6),tasteTargets=new Float32Array(6),sensoryStyle=new Float32Array(4),styleTargets=new Float32Array(4);
   const instancePose=new THREE.Object3D();
@@ -529,6 +535,11 @@ export function createGlassStage(container, {reduced=false,paused=false}={}) {
     surfaceMaterial.color.copy(colour).lerp(highlight,.10);surfaceMaterial.emissive.copy(colour).lerp(highlight,.38);
     surfaceMaterial.roughness=surfaceRoughness;
     meniscusMaterial.color.copy(colour).lerp(highlight,.55);
+    // Clear water retains its edge without the amber ring. Every selected
+    // opacity is at least .54, so coloured states keep their original material.
+    const tint=THREE.MathUtils.clamp((liquidOpacity-CLEAR_OPACITY)/(.54-CLEAR_OPACITY),0,1);
+    meniscusMaterial.emissive.copy(CLEAR).lerp(MENISCUS_EMISSIVE,tint);
+    meniscusMaterial.opacity=THREE.MathUtils.lerp(.24,.62,tint);
     solidityUniform.value=presentation.solidity;
     glass.envMapIntensity=1.02+presentation.solidity*.35;
     stemGlass.envMapIntensity=1.55+presentation.solidity*.45;
@@ -547,7 +558,14 @@ export function createGlassStage(container, {reduced=false,paused=false}={}) {
     const distance=state.distance+frameDistance;
     camera.position.set(Math.sin(state.yaw)*distance,state.eye,Math.cos(state.yaw)*distance);camera.lookAt(lookAt);
     shadow.material.opacity=.58-state.lift*1.6;
+    const renderStarted=performance.now();
     renderer.render(scene,camera);
+    const renderFinished=performance.now();
+    lastRenderMs=renderFinished-renderStarted;
+    frameBudget.recordRender(lastRenderMs,renderFinished);applyQuality();
+  }
+  function applyQuality(){
+    if(frameBudget.pixelRatio!==quality){quality=frameBudget.pixelRatio;renderer.setPixelRatio(quality);container.dataset.glassPixelRatio=quality.toFixed(2);}
   }
   function update(delta){
     if(tween){
@@ -588,16 +606,18 @@ export function createGlassStage(container, {reduced=false,paused=false}={}) {
   function tick(time){
     if(dead||contextLost||isPaused||isReduced){frameId=0;return;}
     frameId=requestAnimationFrame(tick);
-    const delta=lastTime?Math.min((time-lastTime)/1000,.05):0;lastTime=time;elapsed+=delta;driftElapsed+=delta*driftGain;
-    if(delta>0){sampledFrames++;if(delta>.025)slowFrames++;}
-    if(sampledFrames===60){
-      if(slowFrames>18&&quality>1){quality=Math.max(1,quality-.2);renderer.setPixelRatio(quality);container.dataset.glassPixelRatio=quality.toFixed(2);}
-      sampledFrames=0;slowFrames=0;
+    if(awaitingPaint){
+      lastPaintMs=time-drawnAt;awaitingPaint=false;
+      frameBudget.recordPaintInterval(lastPaintMs,performance.now());applyQuality();
     }
-    update(delta);draw();
+    if(!frameBudget.canRender(performance.now()))return;
+    const delta=lastTime?(time-lastTime)/1000:0;lastTime=time;elapsed+=delta;driftElapsed+=delta*driftGain;
+    // Slow renders must not stretch timed transitions; only spring integration
+    // needs a bounded step to stay stable after a long frame.
+    update(Math.min(delta,.05));draw();drawnAt=time;awaitingPaint=true;
   }
   function restart(){
-    cancelAnimationFrame(frameId);frameId=0;lastTime=0;
+    cancelAnimationFrame(frameId);frameId=0;lastTime=0;awaitingPaint=false;
     const running=!dead&&!contextLost&&warmed&&!isPaused&&!isReduced;
     container.dataset.glassMotion=running?'running':'paused';
     if(running)frameId=requestAnimationFrame(tick);else draw();
@@ -644,7 +664,8 @@ export function createGlassStage(container, {reduced=false,paused=false}={}) {
       if(!aromaChanged&&!tasteChanged&&!strengthChanged&&!approachChanged)return;
       const addedTaste=nextTastes.find(name=>!flavour.tastes.includes(name));
       flavour.aromas=nextAromas;flavour.tastes=nextTastes;flavour.strength=nextStrength;flavour.approach=nextApproach;
-      colourTarget.copy(NEUTRAL);
+      const hasFlavour=nextAromas.length>0||nextTastes.length>0||nextStrength!==null||nextApproach!==null;
+      colourTarget.copy(hasFlavour?NEUTRAL:CLEAR);
       if(flavour.aromas.length){
         colourTarget.setRGB(0,0,0);
         for(let i=0;i<AROMAS.length;i++)if(flavour.aromas.includes(AROMAS[i]))colourTarget.add(AROMA_COLORS[i]);
@@ -658,12 +679,12 @@ export function createGlassStage(container, {reduced=false,paused=false}={}) {
       if(strength==='none')colourTarget.lerp(LIGHT,.62);
       if(strength==='low')colourTarget.lerp(LIGHT,.24);
       if(strength==='strong')colourTarget.lerp(DARK,.38);
-      highlight.copy(colourTarget).lerp(IVORY,.65);
+      highlight.copy(colourTarget).lerp(IVORY,hasFlavour?.65:0);
       for(let i=0;i<6;i++)tasteTargets[i]=flavour.tastes.includes(TASTES[i])?1:0;
       styleTargets.set([nextStrength?BODY[nextStrength]:0,nextApproach==='gentle'?1:0,nextApproach==='balanced'?1:0,nextApproach==='bold'?1:0]);
       refreshTarget=flavour.tastes.includes('refreshing')?1:0;
       creamTarget=flavour.tastes.includes('creamy')?1:0;
-      opacityTarget=creamTarget?.98:strength==='none'?.54:strength==='low'?.73:strength==='strong'?.98:.90;
+      opacityTarget=hasFlavour?(creamTarget?.98:strength==='none'?.54:strength==='low'?.73:strength==='strong'?.98:.90):CLEAR_OPACITY;
       roughnessTarget=creamTarget?.13:flavour.tastes.includes('dry')?.018:.040;
       damping=creamTarget?7:approach==='gentle'?8:approach==='bold'?4.8:6;
       driftGain=approach==='gentle'?.68:approach==='bold'?1.2:1;
@@ -721,9 +742,12 @@ export function createGlassStage(container, {reduced=false,paused=false}={}) {
     getDebugState(){return {ready:warmed,scene:container.dataset.glassScene||'home',aromas:[...flavour.aromas],tastes:[...flavour.tastes],strength:flavour.strength,approach:flavour.approach,
       visibleAromas:aromas.filter(item=>item.object.visible).map(item=>({name:item.name,amount:item.amount,height:item.object.position.y})),
       colour:'#'+colour.getHexString(),targetColour:'#'+colourTarget.getHexString(),turn:presentation.turn,baseTurn:state.turn,actualTurn:group.rotation.y,
+      liquid:{opacity:liquidMaterial.opacity,targetOpacity:opacityTarget,surfaceOpacity:surfaceMaterial.opacity,meniscusOpacity:meniscusMaterial.opacity,
+        volumeColour:'#'+liquidMaterial.color.getHexString(),surfaceColour:'#'+surfaceMaterial.color.getHexString(),meniscusColour:'#'+meniscusMaterial.color.getHexString(),
+        volumeEmissive:'#'+liquidMaterial.emissive.getHexString(),surfaceEmissive:'#'+surfaceMaterial.emissive.getHexString(),meniscusEmissive:'#'+meniscusMaterial.emissive.getHexString()},
       wave:{x:waveX,z:waveZ,ripple,maxHeight:MAX_WAVE,persistent:sampleSensoryWave(.57,.38,elapsed,tasteWeights,sensoryStyle,isReduced?0:1),weights:[...tasteWeights],style:[...sensoryStyle],angularVelocity,angularAcceleration,
         selection:{type:pulse.type,active:pulse.amplitude>0&&elapsed>=pulse.start&&elapsed<pulse.start+pulse.duration,age:elapsed-pulse.start,duration:pulse.duration,amplitude:pulse.amplitude,count:pulse.count,shape:pulse.shape}},solidity:solidityUniform.value,
-      motion:dead?'disposed':contextLost?'context-lost':!warmed?'warming':isReduced?'reduced':isPaused?'paused':'running',elapsed,pixelRatio:quality};},
+      motion:dead?'disposed':contextLost?'context-lost':!warmed?'warming':isReduced?'reduced':isPaused?'paused':'running',elapsed,pixelRatio:quality,renderMs:lastRenderMs,paintMs:lastPaintMs};},
     dispose(){
       if(dead)return;dead=true;container.dataset.glassMotion='paused';cancelAnimationFrame(frameId);frameId=0;
       resizeObserver.disconnect();canvas.removeEventListener('webglcontextlost',lost);canvas.removeEventListener('webglcontextrestored',restored);

@@ -4,7 +4,7 @@ import {motionData} from '../motion/attributes';
 import {useViewport} from '../discovery/components';
 
 /** Native heading traits and a real, leveled heading on React Native Web. */
-export function Heading({level = 1, style, ...props}: TextProps & {level?: 1 | 2 | 3}) {
+export function Heading({level = 1, style, ...props}: TextProps & {level?: 1 | 2 | 3 | 4}) {
   const {width} = useViewport();
   const declared = StyleSheet.flatten(style);
   const minimum = width >= 1024 ? 64 : width >= 760 ? 54 : 38;

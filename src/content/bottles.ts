@@ -1,14 +1,14 @@
 import type {Brand, Localized} from '../domain/contracts';
 import type {Bottle} from '../domain/bottles/types';
-import {expandedBottles,expandedBottleBrands} from './bottles/expansion';
+import {expandedBottles,expandedBottleBrands} from './bottles/product-catalogue';
 import {chinaMarketBottles,chinaMarketBrands} from './bottles/china-market';
-import {addedBottles,addedBottleBrands} from './bottles/expansion-300';
+import {addedBottles,addedBottleBrands} from './bottles/product-supplement';
 import {applyBottleAliases} from './localization/bottle-aliases';
 import {applyBottleNames} from './localization/bottle-names';
-import {pilotIngredientCorrections} from './bottles/pilot-corrections';
+import {ingredientIdentityCorrections} from './bottles/ingredient-identity-corrections';
 
 /**
- * Round eight bottle pilot.
+ * Core bottle product records.
  *
  * Product notes are short paraphrases of the producer page named on each
  * record. They are qualitative descriptors, not scores or community rankings.
@@ -47,10 +47,10 @@ const makeBottle = ({sourceTitle, sourceUrl, ...details}: BottleDraft): Bottle =
 
 /**
  * Existing brands are repeated here so the root catalogue merge can union
- * their ingredient references with the pilot brands. The round-eight brands
+ * their ingredient references with the base catalogue brands. The additional catalogue brands
  * are listed after the existing catalogue records.
  */
-const pilotBottleBrands: Brand[] = [
+const baseBottleBrands: Brand[] = [
   {id: 'brand-plymouth', name: 'Plymouth', ingredientIds: ['gin']},
   {id: 'brand-dolin', name: 'Dolin', ingredientIds: ['dry-vermouth']},
   {id: 'brand-campari', name: 'Campari', ingredientIds: ['campari']},
@@ -202,11 +202,11 @@ const pilotBottleBrands: Brand[] = [
   {id: 'brand-lepanto', name: 'Lepanto', ingredientIds: ['brandy']},
 ];
 
-export const roundEightNewBrandIds = pilotBottleBrands
+export const supplementalBrandIds = baseBottleBrands
   .slice(67)
   .map(({id}) => id);
 
-const pilotBottles: Bottle[] = [
+const baseBottles: Bottle[] = [
   makeBottle({
     id: 'tanqueray-london-dry',
     brandId: 'brand-tanqueray', brandName: 'Tanqueray', name: 'London Dry Gin',
@@ -2356,6 +2356,6 @@ const pilotBottles: Bottle[] = [
   }),
 ];
 
-export const bottles: Bottle[] = [...pilotBottles,...expandedBottles,...chinaMarketBottles,...addedBottles].map(bottle=>applyBottleNames(applyBottleAliases(pilotIngredientCorrections[bottle.id]?{...bottle,ingredientIds:[...pilotIngredientCorrections[bottle.id]!]}:bottle)));
-// Preserve pilot IDs and unite exact material references as the registry grows.
-export const bottleBrands: Brand[] = [...new Map([...pilotBottleBrands,...expandedBottleBrands,...chinaMarketBrands,...addedBottleBrands].map(brand=>[brand.id,brand])).values()].map(brand=>({...brand,ingredientIds:[...new Set([...brand.ingredientIds,...bottles.filter(bottle=>bottle.brandId===brand.id).flatMap(bottle=>bottle.ingredientIds)])]}));
+export const bottles: Bottle[] = [...baseBottles,...expandedBottles,...chinaMarketBottles,...addedBottles].map(bottle=>applyBottleNames(applyBottleAliases(ingredientIdentityCorrections[bottle.id]?{...bottle,ingredientIds:[...ingredientIdentityCorrections[bottle.id]!]}:bottle)));
+// Preserve product IDs and unite exact material references as the registry grows.
+export const bottleBrands: Brand[] = [...new Map([...baseBottleBrands,...expandedBottleBrands,...chinaMarketBrands,...addedBottleBrands].map(brand=>[brand.id,brand])).values()].map(brand=>({...brand,ingredientIds:[...new Set([...brand.ingredientIds,...bottles.filter(bottle=>bottle.brandId===brand.id).flatMap(bottle=>bottle.ingredientIds)])]}));
